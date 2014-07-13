@@ -1,0 +1,41 @@
+{
+  "name": "jsdoc-baseline",
+  "version": "0.0.1",
+  "description": "A basic template for JSDoc 3.",
+  "main": "publish.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/hegemonic/baseline.git"
+  },
+  "keywords": [
+    "jsdoc",
+    "api",
+    "docs",
+    "documentation",
+    "template"
+  ],
+  "author": {
+    "name": "Jeff Williams",
+    "email": "jeffrey.l.williams@gmail.com"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/hegemonic/baseline/issues"
+  },
+  "homepage": "https://github.com/hegemonic/baseline",
+  "dependencies": {
+    "js-beautify": "~1.5.1",
+    "swig": "~1.4.0",
+    "underscore-contrib": "~0.3.0"
+  },
+  "devDependencies": {
+    "gulp": "~3.8.5",
+    "gulp-csslint": "~0.1.4",
+    "gulp-htmlhint": "~0.0.8",
+    "gulp-less": "~1.3.1",
+    "gulp-recess": "~0.3.1"
+  }
+}
