@@ -77,19 +77,22 @@
 
                         {% block symbol-extends %}
                             {% if doc.augments && doc.augments.length %}
-                                {{ macros.minilist(doc.augments, 'extends', 'Extends', true) }}
+                                {{ macros.minilist(doc.augments, 'extends', 'Extends',
+                                    { needsLink: true }) }}
                             {% endif %}
                         {% endblock %}
 
                         {% block symbol-mixes %}
                             {% if doc.mixes && doc.mixes.length %}
-                                {{ macros.minilist(doc.mixes, 'mixes', 'Mixes In', true) }}
+                                {{ macros.minilist(doc.mixes, 'mixes', 'Mixes In',
+                                    { needsLink: true }) }}
                             {% endif %}
                         {% endblock %}
 
                         {% block symbol-requires %}
                             {% if doc.requires && doc.requires.length %}
-                                {{ macros.minilist(doc.requires, 'requires', 'Requires', true) }}
+                                {{ macros.minilist(doc.requires, 'requires', 'Requires',
+                                    { needsLink: true }) }}
                             {% endif %}
                         {% endblock %}
                     </section>

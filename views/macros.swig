@@ -92,13 +92,18 @@
     {% endfor %}
 {% endmacro %}
 
-{% macro minilist(data, category, listTitle, needsLink) %}
-    <dl {{ cssclass('category', 'list-wrapper') }}>
-        {% if listTitle %}
-            <dt>{{ listTitle }}</dt>
-        {% endif %}
-        {{ listitems(data, { needsLink: needsLink }) }}
-    </dl>
+{% macro minilist(data, category, listTitle, options) %}
+    {% set options = options || {} %}
+    {% if options.addWrapper %}
+        <dl {{ cssclass(category, 'list-wrapper') }}>
+    {% endif %}
+    {% if listTitle %}
+        <dt>{{ listTitle }}</dt>
+    {% endif %}
+    {{ listitems(data, options) }}
+    {% if options.addWrapper %}
+        </dl>
+    {% endif %}
 {% endmacro %}
 
 {# TODO: fix whitespace #}

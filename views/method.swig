@@ -55,28 +55,31 @@
                 {% endif %}
             {% endblock %}
 
+            {#
+                TODO: separate details into lists and non-lists, so we can just have one <dl>?
+                That would help fix some styling issues here (and probably elsewhere)
+            #}
             {% block method-details %}
                 {% include 'details.swig' with doc %}
             {% endblock %}
 
             {% block method-content-list %}
-                <dl>
+                <dl {{ cssclass('dl-compact') }}>
+                    {% block method-requires %}
+                        {% include 'includes/lists/requires.swig' with doc %}
+                    {% endblock %}
                     {% block method-fires %}
                         {% include 'includes/lists/fires.swig' with doc %}
                     {% endblock %}
-
                     {% block method-listens %}
                         {% include 'includes/lists/listens.swig' with doc %}
                     {% endblock %}
-
                     {% block method-listeners %}
                         {% include 'includes/lists/listeners.swig' with doc %}
                     {% endblock %}
-
                     {% block method-exceptions %}
                         {% include 'includes/lists/throws.swig' with doc %}
                     {% endblock %}
-
                     {% block method-returns %}
                         {% include 'includes/lists/returns.swig' with doc %}
                     {% endblock %}

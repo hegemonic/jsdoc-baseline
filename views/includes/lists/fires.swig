@@ -3,7 +3,7 @@
 {% block fires %}
     {% if fires && fires.length %}
         {% block fires-content %}
-            {{ macros.minilist(fires, 'fires', 'Fires', true) }}
+            {{ macros.minilist(fires, 'fires', 'Fires', { needsLink: true }) }}
         {% endblock %}
     {% endif %}
 {% endblock %}

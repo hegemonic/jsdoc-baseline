@@ -5,6 +5,9 @@
         {% endblock %}
         {% block details-content-list %}
             <dl {{ cssclass('dl-compact') }}>
+                {% block details-sourcefile %}
+                    {% include 'includes/sourcefile.swig' %}
+                {% endblock %}
                 {% block details-since %}
                     {% include 'includes/lists/since.swig' %}
                 {% endblock %}
@@ -36,9 +39,6 @@
                     {% include 'includes/lists/todo.swig' %}
                 {% endblock %}
             </dl>
-        {% endblock %}
-        {% block details-sourcefile %}
-            {% include 'includes/sourcefile.swig' %}
         {% endblock %}
     {% endblock %}
 {% endblock %}
