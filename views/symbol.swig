@@ -9,19 +9,23 @@
         <section>
             {% resetheadinglevel -%}
             {%- block symbol-header -%}
+                {%- set headerDoc = doc -%}
+                {%- if (doc.exports) -%}
+                    {%- set headerDoc = doc.exports -%}
+                {%- endif -%}
                 <header class="page-header">
                     {%- spaceless %}
                         <h>
                             {% block symbol-header-ancestors %}
-                                {% if doc.ancestors && doc.ancestors.length %}
+                                {% if headerDoc.ancestors && headerDoc.ancestors.length %}
                                     {# TODO: make <small> tag configurable #}
                                     <small {{ cssclass('symbol-ancestors') }}>
-                                        {{ ancestorLinks(doc) }}
+                                        {{ ancestorLinks(headerDoc) }}
                                     </small>
                                 {% endif %}
                             {% endblock %}
                             {% block symbol-header-name %}
-                                {{ doc.name }}
+                                {{ macros.nameprefix(headerDoc.kind) }}{{ headerDoc.name }}
                             {% endblock %}
                             {% block symbol-header-variation %}
                                 {# By default, the variation is not displayed. #}
@@ -30,22 +34,27 @@
                     {% endspaceless -%}
 
                     {%- block symbol-header-classdesc -%}
-                        {%- if doc.classdesc %}
+                        {%- if headerDoc.classdesc %}
                             <div {{ cssclass('symbol-classdesc') }}>
-                                {{ doc.classdesc|markdown }}
+                                {{ headerDoc.classdesc|markdown }}
                             </div>
                         {% endif -%}
-                    {%- endblock %}
+                    {%- endblock -%}
+
+                    {%- block symbol-header-description -%}
+                        {% include 'includes/description.swig' with headerDoc %}
+                    {%- endblock -%}
 
                     {%- block symbol-header-meta -%}
                         <dl {{ cssclass('dl-compact') }}>
                             {%- block symbol-header-source -%}
                                 {%- spaceless %}
-                                    {% if doc.meta && doc.meta.filename && doc.meta.lineno %}
+                                    {% if headerDoc.meta && headerDoc.meta.filename &&
+                                        headerDoc.meta.lineno %}
                                         {# TODO: or "inherited from" (or "mixed in from"?) #}
                                         <dt>Defined in</dt>
                                         <dd>
-                                            {% include 'includes/sourcelink.swig' with doc %}
+                                            {% include 'includes/sourcelink.swig' with headerDoc %}
                                         </dd>
                                     {% endif %}
                                 {% endspaceless -%}
@@ -63,8 +72,8 @@
                             symbol as the context
                             TODO: handle modules that export a non-method symbol
                         #}
-                        {% if doc.kind === 'module' && doc.module %}
-                            {% set context = { doc: doc.module } %}
+                        {% if doc.kind === 'module' && doc.exports %}
+                            {% set context = { doc: doc.exports } %}
                             {% include 'method.swig' with context %}
                         {% else %}
                             {% set context = { doc: doc } %}

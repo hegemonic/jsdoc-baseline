@@ -1,18 +1,12 @@
 {% import 'macros.swig' as macros %}
 
-{# TODO: allow users to configure the module type (or autodetect?) #}
-{% macro prefix(kind) %}
-    {% if kind === 'class' %}
-        {{ 'new' }}
-    {% endif %}
-{% endmacro %}
-
 {% block method %}
     {% block method-heading -%}
         <h id="{{ doc.id }}">
         {%- spaceless %}
             {% autoescape false %}
-                {{ doc.attribs }}{{ prefix(doc.kind) }}{{ doc.name }}
+                {# TODO: do we even set doc.attribs anymore?? should be badges, right? #}
+                {{ doc.attribs }}{{ macros.nameprefix(doc.kind) }}{{ doc.name }}
                 {% if needsSignature(doc) %}
                     {{ macros.signature(doc) }}
                 {% endif %}

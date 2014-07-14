@@ -34,6 +34,15 @@
     {% endspaceless -%}
 {%- endmacro %}
 
+{% macro nameprefix(kind) -%}
+    {%- spaceless %}
+        {% if kind === 'class' %}
+            {{ 'new ' }}
+        {% endif %}
+    {% endspaceless -%}
+{%- endmacro %}
+
+{# TODO: can we remove this? #}
 {% macro sourcefile(doc) %}
     <dl {{ cssclass('dl-compact') }}>
         {% set context = {doc: doc} %}
