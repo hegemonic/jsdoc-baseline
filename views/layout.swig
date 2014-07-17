@@ -12,18 +12,14 @@
                 {# TODO: https://github.com/typekit/webfontloader #}
                 <link rel="stylesheet" href="http://brick.a.ssl.fastly.net/Lato:400,400i,500,500i,600,600i,700,700i/Inconsolata:500">
                 <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
-                <!--
-                <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700' rel='stylesheet' type='text/css'>
-                <link href='http://fonts.googleapis.com/css?family=Crimson+Text:400,700,600' rel='stylesheet' type='text/css'>
-                <link href='http://fonts.googleapis.com/css?family=Asap:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-                -->
                 {# TODO: replace with relativePath tag #}
                 <link href="css/baseline.css" rel="stylesheet">
             {% endblock %}
         </head>
     {% endblock %}
     {% block body %}
-        <body>
+        {# TODO: move to script file #}
+        <body onload="prettyPrint()">
             {% block body-navbar %}
                 {% set context = {package: package} %}
                 {% include 'includes/navbar.swig' with context %}
@@ -80,9 +76,7 @@
                 <script src="scripts/jquery.js"></script>
                 <script src="scripts/jquery.cookie.js"></script>
                 <script src="scripts/tree.jquery.js"></script>
-                {# TODO: why not working?? #}
                 <script src="scripts/prettify/prettify.js"></script>
-                {# TODO: replace with relativePath tag #}
                 <script src="scripts/jsdoc-toc.js"></script>
             {% endblock %}
         </body>
