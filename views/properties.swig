@@ -11,8 +11,11 @@
                         {{ property.attribs }}{{ property.name }}
                         {% if needsSignature(property) %}
                             {{ macros.signature(property) }}
-                        {% else %}
-                            {{ macros.types(property) }}
+                        {% elif property.type && property.type.names %}
+                            {# TODO: make <small> tag configurable #}
+                            <small {{ cssclass('property-type') }}>
+                                {{ macros.types(property) }}
+                            </small>
                         {% endif %}
                     </h>
                 {% endspaceless %}

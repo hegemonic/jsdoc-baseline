@@ -96,9 +96,14 @@
     {% if !Array.isArray(items) %}
         {% set items = [items] %}
     {% endif %}
-    {% for item in items %}
-        <dd>{{ maybelink(item, options.needsLink) }}</dd>
-    {% endfor %}
+    {# Prevent formatting issues if the list is empty #}
+    {% if items.length === 0 %}
+        <dd>&nbsp;</dd>
+    {% else %}
+        {% for item in items %}
+            <dd>{{ maybelink(item, options.needsLink) }}</dd>
+        {% endfor %}
+    {% endif %}
 {% endmacro %}
 
 {% macro minilist(data, category, listTitle, options) %}

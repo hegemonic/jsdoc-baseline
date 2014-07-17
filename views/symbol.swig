@@ -9,23 +9,19 @@
         <section>
             {% resetheadinglevel -%}
             {%- block symbol-header -%}
-                {%- set headerDoc = doc -%}
-                {%- if (doc.exports) -%}
-                    {%- set headerDoc = doc.exports -%}
-                {%- endif -%}
                 <header class="page-header">
                     {%- spaceless %}
                         <h>
                             {% block symbol-header-ancestors %}
-                                {% if headerDoc.ancestors && headerDoc.ancestors.length %}
+                                {% if doc.ancestors && doc.ancestors.length %}
                                     {# TODO: make <small> tag configurable #}
                                     <small {{ cssclass('symbol-ancestors') }}>
-                                        {{ ancestorLinks(headerDoc) }}
+                                        {{ ancestorLinks(doc) }}
                                     </small>
                                 {% endif %}
                             {% endblock %}
                             {% block symbol-header-name %}
-                                {{ macros.nameprefix(headerDoc.kind) }}{{ headerDoc.name }}
+                                {{ doc.name }}
                             {% endblock %}
                             {% block symbol-header-variation %}
                                 {# By default, the variation is not displayed. #}
@@ -34,27 +30,26 @@
                     {% endspaceless -%}
 
                     {%- block symbol-header-classdesc -%}
-                        {%- if headerDoc.classdesc %}
+                        {%- if doc.classdesc %}
                             <div {{ cssclass('symbol-classdesc') }}>
-                                {{ headerDoc.classdesc|markdown }}
+                                {{ doc.classdesc|markdown }}
                             </div>
                         {% endif -%}
                     {%- endblock -%}
 
                     {%- block symbol-header-description -%}
-                        {% include 'includes/description.swig' with headerDoc %}
+                        {% include 'includes/description.swig' with doc %}
                     {%- endblock -%}
 
                     {%- block symbol-header-meta -%}
                         <dl {{ cssclass('dl-compact') }}>
                             {%- block symbol-header-source -%}
                                 {%- spaceless %}
-                                    {% if headerDoc.meta && headerDoc.meta.filename &&
-                                        headerDoc.meta.lineno %}
+                                    {% if doc.meta && doc.meta.filename && doc.meta.lineno %}
                                         {# TODO: or "inherited from" (or "mixed in from"?) #}
                                         <dt>Defined in</dt>
                                         <dd>
-                                            {% include 'includes/sourcelink.swig' with headerDoc %}
+                                            {% include 'includes/sourcelink.swig' with doc %}
                                         </dd>
                                     {% endif %}
                                 {% endspaceless -%}
@@ -73,9 +68,15 @@
                             TODO: handle modules that export a non-method symbol
                         #}
                         {% if doc.kind === 'module' && doc.exports %}
-                            {% set context = { doc: doc.exports } %}
-                            {% include 'method.swig' with context %}
-                        {% else %}
+                            {% for moduleExports in doc.exports %}
+                                {% set context = { doc: moduleExports } %}
+                                {% if moduleExports.kind === 'class' %}
+                                    {% include 'method.swig' with context %}
+                                {% else %}
+                                    {% include 'nonmethod.swig' with context %}
+                                {% endif %}
+                            {% endfor %}
+                        {% elif doc.kind !== 'module' %}
                             {% set context = { doc: doc } %}
                             {% if doc.kind === 'class' %}
                                 {% include 'method.swig' with context %}
