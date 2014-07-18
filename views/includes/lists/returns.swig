@@ -10,7 +10,10 @@
                         {% set descriptions[descriptions.length] = returned.description %}
                     {% endif %}
                 {% endfor %}
-                {{ macros.minilist(descriptions, 'returns', 'Returns') }}
+                {% if descriptions.length %}
+                    <dt>Returns</dt>
+                    {{ macros.listitems(descriptions) }}
+                {% endif %}
             {% endblock %}
         {% endif %}
     {% endspaceless -%}

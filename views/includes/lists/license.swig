@@ -3,7 +3,8 @@
 {% block license %}
     {% if license %}
         {% block license-content %}
-            {{ macros.minilist(license, 'license', 'License') }}
+            <dt>License</dt>
+            {{ macros.listitems(license) }}
         {% endblock %}
     {% endif %}
 {% endblock %}

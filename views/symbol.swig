@@ -4,7 +4,6 @@
 {% block banner %}{% endblock %}
 
 {% block main-content %}
-    {# TODO: more elegant way to handle variations? (e.g., constructor with multiple arities) #}
     {% for doc in docs %}
         <section>
             {% resetheadinglevel -%}
@@ -67,7 +66,6 @@
                         {#
                             If a module exports only one symbol (such as a constructor), use that
                             symbol as the context
-                            TODO: handle modules that export a non-method symbol
                         #}
                         {% if doc.kind === 'module' && doc.exports %}
                             {% for moduleExports in doc.exports %}
@@ -87,31 +85,20 @@
                             {% endif %}
                         {% endif %}
 
-                        {#
-                            TODO:
-                            - these should be include files
-                            - combine these into one list
-                            - and add a <dl> wrapper!!
-                        #}
-                        {% block symbol-extends %}
-                            {% if doc.augments && doc.augments.length %}
-                                {{ macros.minilist(doc.augments, 'extends', 'Extends',
-                                    { needsLink: true }) }}
-                            {% endif %}
-                        {% endblock %}
+                        {% block symbol-details %}
+                            <dl {{ cssclass('dl-compact') }}>
+                                {% block symbol-augments %}
+                                    {% include 'includes/lists/augments.swig' with doc %}
+                                {% endblock %}
 
-                        {% block symbol-mixes %}
-                            {% if doc.mixes && doc.mixes.length %}
-                                {{ macros.minilist(doc.mixes, 'mixes', 'Mixes In',
-                                    { needsLink: true }) }}
-                            {% endif %}
-                        {% endblock %}
+                                {% block symbol-mixes %}
+                                    {% include 'includes/lists/mixes.swig' with doc %}
+                                {% endblock %}
 
-                        {% block symbol-requires %}
-                            {% if doc.requires && doc.requires.length %}
-                                {{ macros.minilist(doc.requires, 'requires', 'Requires',
-                                    { needsLink: true }) }}
-                            {% endif %}
+                                {% block symbol-requires %}
+                                    {% include 'includes/lists/requires.swig' with doc %}
+                                {% endblock %}
+                            </dl>
                         {% endblock %}
                     </section>
                 {% endblock %}

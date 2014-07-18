@@ -3,7 +3,8 @@
 {% block inherited %}
     {% if inherited && inherits %}
         {% block inherited-content %}
-            {{ macros.minilist(inherits, 'inherits', 'Inherited From', { needsLink: true }) }}
+            <dt>Inherited from</dt>
+            {{ macros.listitems(inherits, { needsLink: true }) }}
         {% endblock %}
     {% endif %}
 {% endblock %}

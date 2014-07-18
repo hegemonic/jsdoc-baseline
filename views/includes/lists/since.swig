@@ -3,7 +3,8 @@
 {% block since %}
     {% if since %}
         {% block since-content %}
-            {{ macros.minilist(since, 'since', 'Since') }}
+            <dt>Since</dt>
+            {{ macros.listitems(since) }}
         {% endblock %}
     {% endif %}
 {% endblock %}

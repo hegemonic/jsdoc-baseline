@@ -1,6 +1,7 @@
 {% import 'macros.swig' as macros %}
 
 {# TODO: make sure this has fine-grained blocks a la method.swig #}
+{# TODO: rename to avoid confusion with includes/ (or move this?) #}
 {% block properties %}
     {% for property in properties %}
         {% block property %}
@@ -35,11 +36,14 @@
                     but this is covered by macros.types(property), right?
                 #}
 
-                {# TODO: does this work?? #}
+                {# TODO: does this work? does it make any sense here? replace with properties table? #}
                 {% block property-details %}
-                    {% include 'details.swig' with property %}
+                    <dl {{ cssclass('dl-compact') }}>
+                        {% include 'includes/details.swig' with property %}
+                    </dl>
                 {% endblock %}
 
+                {# TODO: does this work? does it make any sense here? #}
                 {% block property-examples %}
                     {% set context = { examples: property.examples } %}
                     {% include 'includes/examples.swig' with context %}

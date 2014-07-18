@@ -3,8 +3,8 @@
 {% block listeners %}
     {% if listeners && listeners.length %}
         {% block listeners-content %}
-            {{ macros.minilist(listeners, 'listeners', 'Listeners of This Event',
-            	{ needsLink: true }) }}
+            <dt>Listeners</dt>
+            {{ macros.listitems(listeners, { needsLink: true }) }}
         {% endblock %}
     {% endif %}
 {% endblock %}

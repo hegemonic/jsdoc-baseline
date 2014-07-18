@@ -30,11 +30,15 @@
             {% endblock %}
 
             {% block method-this %}
-                {# Override this block to document the value of `this` within a method. #}
+                {# By default, the value of `this` within a method is not documented. #}
             {% endblock %}
 
             {% block method-params %}
                 {% include 'includes/params.swig' with doc %}
+            {% endblock %}
+
+            {% block method-properties %}
+                {% include 'includes/properties.swig' with doc %}
             {% endblock %}
 
             {# TODO: why here? why not an include? #}
@@ -49,16 +53,11 @@
                 {% endif %}
             {% endblock %}
 
-            {#
-                TODO: separate details into lists and non-lists, so we can just have one <dl>?
-                That would help fix some styling issues here (and probably elsewhere)
-            #}
-            {% block method-details %}
-                {% include 'details.swig' with doc %}
-            {% endblock %}
-
             {% block method-content-list %}
                 <dl {{ cssclass('dl-compact') }}>
+                    {% block method-details %}
+                        {% include 'includes/details.swig' with doc %}
+                    {% endblock %}
                     {% block method-requires %}
                         {% include 'includes/lists/requires.swig' with doc %}
                     {% endblock %}

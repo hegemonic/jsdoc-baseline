@@ -21,8 +21,8 @@
             {% include 'includes/description.swig' with doc %}
         {% endblock %}
 
-        {% block nonmethod-details %}
-            {% include 'details.swig' with doc %}
+        {% block nonmethod-properties %}
+            {% include 'includes/properties.swig' with doc %}
         {% endblock %}
 
         {% block nonmethod-examples %}
@@ -30,11 +30,14 @@
         {% endblock %}
 
         {% block nonmethod-content-list %}
-            {% block nonmethod-fires %}
-                <dl>
-                    {% include 'includes/lists/fires.swig' with doc %}
-                </dl>
-            {% endblock %}
+            <dl {{ cssclass('dl-compact') }}>
+                {% block nonmethod-details %}
+                    {% include 'includes/details.swig' with doc %}
+                {% endblock %}
+                {% block nonmethod-fires %}
+                     {% include 'includes/lists/fires.swig' with doc %}
+                {% endblock %}
+            </dl>
         {% endblock %}
     {% endblock %}
 {% endblock %}

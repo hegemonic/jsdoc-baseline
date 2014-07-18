@@ -3,7 +3,8 @@
 {% block see %}
     {% if see && see.length %}
         {% block see-content %}
-            {{ macros.minilist(see, 'see', 'See', { needsLink: true }) }}
+            <dt>See also</dt>
+            {{ macros.listitems(see, { needsLink: true }) }}
         {% endblock %}
     {% endif %}
 {% endblock %}
