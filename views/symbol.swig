@@ -85,6 +85,11 @@
                             {% endif %}
                         {% endif %}
 
+                        {#
+                            TODO:
+                            - these should be include files
+                            - combine these into one list
+                        #}
                         {% block symbol-extends %}
                             {% if doc.augments && doc.augments.length %}
                                 {{ macros.minilist(doc.augments, 'extends', 'Extends',
