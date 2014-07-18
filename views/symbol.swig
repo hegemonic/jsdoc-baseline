@@ -38,7 +38,9 @@
                     {%- endblock -%}
 
                     {%- block symbol-header-description -%}
-                        {% include 'includes/description.swig' with doc %}
+                        {% if doc.kind !== 'class' %}
+                            {% include 'includes/description.swig' with doc %}
+                        {% endif %}
                     {%- endblock -%}
 
                     {%- block symbol-header-meta -%}
@@ -76,7 +78,7 @@
                                     {% include 'nonmethod.swig' with context %}
                                 {% endif %}
                             {% endfor %}
-                        {% elif doc.kind !== 'module' %}
+                        {% elif doc.kind === 'class' %}
                             {% set context = { doc: doc } %}
                             {% if doc.kind === 'class' %}
                                 {% include 'method.swig' with context %}
@@ -89,6 +91,7 @@
                             TODO:
                             - these should be include files
                             - combine these into one list
+                            - and add a <dl> wrapper!!
                         #}
                         {% block symbol-extends %}
                             {% if doc.augments && doc.augments.length %}
