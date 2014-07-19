@@ -33,9 +33,8 @@
   },
   "devDependencies": {
     "gulp": "~3.8.5",
-    "gulp-csslint": "~0.1.4",
-    "gulp-htmlhint": "~0.0.8",
+    "gulp-csso": "~0.2.9",
     "gulp-less": "~1.3.1",
-    "gulp-recess": "~0.3.1"
+    "gulp-uglify": "~0.3.1"
   }
 }
