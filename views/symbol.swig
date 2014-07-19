@@ -38,7 +38,9 @@
 
                     {%- block symbol-header-description -%}
                         {% if doc.kind !== 'class' %}
-                            {% include 'includes/description.swig' with doc %}
+                            <div {{ cssclass('symbol-description') }}>
+                                {% include 'includes/description.swig' with doc %}
+                            </div>
                         {% endif %}
                     {%- endblock -%}
 
