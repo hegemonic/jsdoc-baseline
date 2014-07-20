@@ -30,7 +30,7 @@
         {% endblock %}
 
         {% block nonmethod-content-list %}
-            <dl {{ cssclass('dl-compact') }}>
+            <dl {{ cssclass('!dl-compact') }}>
                 {% block nonmethod-details %}
                     {% include 'includes/details.swig' with doc %}
                 {% endblock %}

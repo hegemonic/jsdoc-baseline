@@ -30,7 +30,7 @@
 
                     {%- block symbol-header-classdesc -%}
                         {%- if doc.classdesc %}
-                            <div {{ cssclass('symbol-classdesc') }}>
+                            <div {{ cssclass('!symbol-classdesc') }}>
                                 {{ doc.classdesc|markdown }}
                             </div>
                         {% endif -%}
@@ -38,14 +38,14 @@
 
                     {%- block symbol-header-description -%}
                         {% if doc.kind !== 'class' %}
-                            <div {{ cssclass('symbol-description') }}>
+                            <div {{ cssclass('!symbol-description') }}>
                                 {% include 'includes/description.swig' with doc %}
                             </div>
                         {% endif %}
                     {%- endblock -%}
 
                     {%- block symbol-header-meta -%}
-                        <dl {{ cssclass('dl-compact') }}>
+                        <dl {{ cssclass('!dl-compact') }}>
                             {%- block symbol-header-source -%}
                                 {%- spaceless %}
                                     {% if doc.meta && doc.meta.filename && doc.meta.lineno %}
@@ -88,7 +88,7 @@
                         {% endif %}
 
                         {% block symbol-details %}
-                            <dl {{ cssclass('dl-compact') }}>
+                            <dl {{ cssclass('!dl-compact') }}>
                                 {% block symbol-augments %}
                                     {% include 'includes/lists/augments.swig' with doc %}
                                 {% endblock %}

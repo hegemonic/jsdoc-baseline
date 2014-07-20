@@ -38,7 +38,7 @@
 
                 {# TODO: does this work? does it make any sense here? replace with properties table? #}
                 {% block property-details %}
-                    <dl {{ cssclass('dl-compact') }}>
+                    <dl {{ cssclass('!dl-compact') }}>
                         {% include 'includes/details.swig' with property %}
                     </dl>
                 {% endblock %}

@@ -141,7 +141,7 @@
 {# TODO: move to an include? rename classes? #}
 {% macro infotable(data, title) %}
 {% block infotable %}
-    <table {{ cssclass('details-table') }}>
+    <table {{ cssclass('!jsdoc-details-table') }}>
         {% block infotable-head %}
         <thead>
             <tr>
