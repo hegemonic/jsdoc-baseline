@@ -71,13 +71,14 @@
             {% endblock %}
 
             {% block body-scripts %}
-                {# TODO: combine/minify JS #}
+                {# TODO: combine JS for JSDoc-only files #}
                 {# TODO: fix up path relative to current output directory #}
                 <script src="scripts/jquery.min.js"></script>
                 <script src="scripts/jquery.cookie.js"></script>
                 <script src="scripts/tree.jquery.js"></script>
                 <script src="scripts/prettify.js"></script>
                 <script src="scripts/jsdoc-toc.js"></script>
+                <script src="scripts/linenumber.js"></script>
             {% endblock %}
         </body>
     {% endblock %}
