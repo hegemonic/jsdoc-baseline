@@ -47,15 +47,7 @@
                     {%- block symbol-header-meta -%}
                         <dl {{ cssclass('!dl-compact') }}>
                             {%- block symbol-header-source -%}
-                                {%- spaceless %}
-                                    {% if doc.meta && doc.meta.filename && doc.meta.lineno %}
-                                        {# TODO: or "inherited from" (or "mixed in from"?) #}
-                                        <dt>Defined in</dt>
-                                        <dd>
-                                            {% include 'includes/sourcelink.swig' with doc %}
-                                        </dd>
-                                    {% endif %}
-                                {% endspaceless -%}
+                                {{ macros.sourcefile(doc) }}
                             {%- endblock -%}
                         </dl>
                     {%- endblock -%}

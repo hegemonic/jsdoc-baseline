@@ -44,10 +44,12 @@
 
 {# TODO: can we remove this? #}
 {% macro sourcefile(doc) %}
-    <dl {{ cssclass('dl-compact') }}>
-        {% set context = {doc: doc} %}
-        {% include 'includes/sourcefile.swig' with context %}
-    </dl>
+    {% if outputSourceFiles && doc.meta && doc.meta.filename && doc.meta.lineno %}
+        <dl {{ cssclass('dl-compact') }}>
+            {% set context = {doc: doc} %}
+            {% include 'includes/sourcefile.swig' with context %}
+        </dl>
+    {% endif %}
 {% endmacro %}
 
 {% macro returntypes(returns) -%}
