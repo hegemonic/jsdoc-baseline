@@ -47,7 +47,7 @@
                     {%- block symbol-header-meta -%}
                         <dl {{ cssclass('!dl-compact') }}>
                             {%- block symbol-header-source -%}
-                                {{ macros.sourcefile(doc) }}
+                                {% include 'includes/sourcefile.swig' with doc %}
                             {%- endblock -%}
                         </dl>
                     {%- endblock -%}
@@ -140,7 +140,7 @@
 
                 {% block symbol-properties %}
                     {% set context = { properties: members[CATEGORIES.MEMBERS] } %}
-                    {% if properties && properties.length %}
+                    {% if context.properties && context.properties.length %}
                         <section id="properties">
                             <h>Properties</h>
                             <section>

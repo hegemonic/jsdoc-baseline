@@ -31,6 +31,9 @@
 
         {% block nonmethod-content-list %}
             <dl {{ cssclass('!dl-compact') }}>
+                {% block nonmethod-sourcefile %}
+                    {% include 'includes/sourcefile.swig' with doc %}
+                {% endblock %}
                 {% block nonmethod-details %}
                     {% include 'includes/details.swig' with doc %}
                 {% endblock %}

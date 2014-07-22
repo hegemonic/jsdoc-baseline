@@ -55,6 +55,9 @@
 
             {% block method-content-list %}
                 <dl {{ cssclass('!dl-compact') }}>
+                    {% block method-sourcefile %}
+                        {% include 'includes/sourcefile.swig' with doc %}
+                    {% endblock %}
                     {% block method-details %}
                         {% include 'includes/details.swig' with doc %}
                     {% endblock %}

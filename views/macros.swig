@@ -45,7 +45,7 @@
 {# TODO: can we remove this? #}
 {% macro sourcefile(doc) %}
     {% if outputSourceFiles && doc.meta && doc.meta.filename && doc.meta.lineno %}
-        <dl {{ cssclass('dl-compact') }}>
+        <dl {{ cssclass('!dl-compact') }}>
             {% set context = {doc: doc} %}
             {% include 'includes/sourcefile.swig' with context %}
         </dl>
@@ -141,15 +141,18 @@
 {%- endmacro %}
 
 {# TODO: move to an include? rename classes? #}
-{% macro infotable(data, title) %}
+{% macro infotable(data, options) %}
 {% block infotable %}
+    {% set options = options || {} %}
     <table {{ cssclass('!jsdoc-details-table') }}>
         {% block infotable-head %}
         <thead>
             <tr>
                 <th>Name</th>
                 <th>Type</th>
-                <th>Optional</th>
+                {% if !options.hideOptional %}
+                    <th>Optional</th>
+                {% endif %}
                 <th>Description</th>
             </tr>
         </thead>
@@ -157,7 +160,7 @@
         {% block infotable-body %}
         <tbody>
             {% for item in data %}
-                {{ inforow(item) }}
+                {{ inforow(item, options) }}
             {% endfor %}
         </tbody>
         {% endblock %}
@@ -165,7 +168,7 @@
 {% endblock %}
 {% endmacro %}
 
-{% macro inforow(item) %}
+{% macro inforow(item, options) %}
 {% block infotable-row %}
 <tr>
     {% block item-name -%}
@@ -195,14 +198,16 @@
     {% endblock %}
     {% block item-optional -%}
         {%- spaceless %}
-        <td {{ cssclass('details-table-optional') }}>
-            {% if item.optional %}
-                {# TODO: improve #}
-                Yes
-            {% else %}
-                &nbsp;
+            {% if !options.hideOptional %}
+                <td {{ cssclass('details-table-optional') }}>
+                    {% if item.optional %}
+                        {# TODO: improve #}
+                        Yes
+                    {% else %}
+                        &nbsp;
+                    {% endif %}
+                </td>
             {% endif %}
-        </td>
         {% endspaceless -%}
     {%- endblock %}
     {% block item-description %}

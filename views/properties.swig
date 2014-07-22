@@ -6,30 +6,32 @@
     {% for property in properties %}
         {% block property %}
             {% block property-heading %}
-                {% spaceless %}
-                    <h {{ cssclass('property-name', 'list-wrapper') }} id="{{ property.id }}">
-                        {# TODO: can we move this to an include? #}
-                        {{ property.attribs }}{{ property.name }}
-                        {% if needsSignature(property) %}
-                            {{ macros.signature(property) }}
-                        {% elif property.type && property.type.names %}
-                            {# TODO: make <small> tag configurable #}
-                            <small {{ cssclass('property-type') }}>
-                                {{ macros.types(property) }}
-                            </small>
-                        {% endif %}
-                    </h>
-                {% endspaceless %}
+                <h {{ cssclass('property-name') }} id="{{ property.id }}">
+                    {# TODO: can we move this to an include? #}
+                    {{ property.attribs }}{{ property.name }}
+                    {% if needsSignature(property) %}
+                        {{ macros.signature(property) }}
+                    {% elif property.type && property.type.names %}
+                        {# TODO: make <small> tag configurable #}
+                        <small {{ cssclass('property-type') }}>
+                            {{ macros.types(property) }}
+                        </small>
+                    {% endif %}
+                </h>
+                {% block property-description %}
+                    {% include 'includes/description.swig' with property %}
+                {% endblock %}
+                {% block property-properties %}
+                    {% if property.properties %}
+                        {{ macros.infotable(property.properties, { hideOptional: true }) }}
+                    {% endif %}
+                {% endblock %}
                 {% block property-source %}
                     {{ macros.sourcefile(property) }}
                 {% endblock %}
             {% endblock %}
 
             <section>
-                {% block property-description %}
-                    {% include 'includes/description.swig' with property %}
-                {% endblock %}
-
                 {#
                     TODO: display the type of typedefs:
                     https://github.com/jsdoc3/jsdoc/commit/bca6cdc5
@@ -37,9 +39,11 @@
                 #}
 
                 {# TODO: does this work? does it make any sense here? replace with properties table? #}
-                {% block property-details %}
+                {% block property-content-list %}
                     <dl {{ cssclass('!dl-compact') }}>
-                        {% include 'includes/details.swig' with property %}
+                        {% block property-details %}
+                            {% include 'includes/details.swig' with property %}
+                        {% endblock %}
                     </dl>
                 {% endblock %}
 

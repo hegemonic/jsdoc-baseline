@@ -3,7 +3,7 @@
 {% block main-content %}
     <h {{ cssclass('page-title') }}>{{ pageTitle }}</h>
     <section>
-        {% block symbol-members %}
+        {% block symbol-properties %}
             {% parent %}
         {% endblock %}
 
