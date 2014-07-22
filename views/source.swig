@@ -5,11 +5,11 @@
     <section>
         <article>
             {% block source -%}
-            	{%- spaceless %}
-                	<pre {{ cssclass('!prettyprint', '!linenums', 'source') }}><code>
-                		{{ docs }}
-                	</code></pre>
-            	{% endspaceless -%}
+                {%- spaceless %}
+                    <pre {{ cssclass('!prettyprint', '!linenums', 'source') }}><code>
+                        {{ docs }}
+                    </code></pre>
+                {% endspaceless -%}
             {%- endblock %}
         </article>
     </section>
