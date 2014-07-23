@@ -3,7 +3,7 @@
 {% block listeners %}
     {% if listeners && listeners.length %}
         {% block listeners-content %}
-            <dt>Listeners</dt>
+            <dt>{{ translate('headings.listeners', listeners.length) }}</dt>
             {{ macros.listitems(listeners, { needsLink: true }) }}
         {% endblock %}
     {% endif %}

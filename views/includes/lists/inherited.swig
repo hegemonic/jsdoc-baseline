@@ -3,7 +3,7 @@
 {% block inherited %}
     {% if inherited && inherits %}
         {% block inherited-content %}
-            <dt>Inherited from</dt>
+            <dt>{{ translate('headings.inheritedFrom') }}</dt>
             {{ macros.listitems(inherits, { needsLink: true }) }}
         {% endblock %}
     {% endif %}

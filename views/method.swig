@@ -45,7 +45,7 @@
             {% block method-type %}
                 {% if doc.kind === 'event' && doc.type && doc.type.names %}
                     <dl {{ cssclass('method-type') }}>
-                        <dt>Type</dt>
+                        <dt>{{ translate('headings.type') }}</dt>
                         <dd>
                             {{ macros.type(doc) }}
                         </dd>

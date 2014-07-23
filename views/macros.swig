@@ -46,7 +46,7 @@
 {% macro sourcefile(doc) %}
     {% if outputSourceFiles && doc.meta && doc.meta.filename && doc.meta.lineno %}
         <dl {{ cssclass('!dl-compact') }}>
-            {% set context = {doc: doc} %}
+            {% set context = { doc: doc } %}
             {% include 'includes/sourcefile.swig' with context %}
         </dl>
     {% endif %}
@@ -148,12 +148,12 @@
         {% block infotable-head %}
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Type</th>
+                <th>{{ translate('tables.header.name') }}</th>
+                <th>{{ translate('tables.header.type') }}</th>
                 {% if !options.hideOptional %}
-                    <th>Optional</th>
+                    <th>{{ translate('tables.header.optional') }}</th>
                 {% endif %}
-                <th>Description</th>
+                <th>{{ translate('tables.header.description') }}</th>
             </tr>
         </thead>
         {% endblock %}
@@ -191,7 +191,7 @@
             {% if item.type && item.type.names %}
                 {{ typelist(item.type.names) }}
             {% else %}
-                ?
+                {{ translate('tables.body.unknownType') }}
             {% endif %}
         </td>
         {% endspaceless %}
@@ -202,9 +202,9 @@
                 <td {{ cssclass('details-table-optional') }}>
                     {% if item.optional %}
                         {# TODO: improve #}
-                        Yes
+                        {{ translate('tables.body.isOptional') }}
                     {% else %}
-                        &nbsp;
+                        {{ translate('tables.body.isRequired') }}
                     {% endif %}
                 </td>
             {% endif %}
@@ -216,17 +216,16 @@
             {% block item-nullable %}
                 {% if item.nullable === true %}
                     {# TODO: formatting #}
-                    <p>Value can be null.</p>
+                    <p>{{ translate('tables.body.nullable.long') }}</p>
                 {% elif item.nullable === false %}
                     {# TODO: formatting #}
-                    <p>Value must not be null.</p>
+                    <p>{{ translate('tables.body.nonNullable.long') }}</p>
                 {% endif %}
             {% endblock %}
             {% block item-defaultvalue %}
                 {% if item.defaultvalue %}
                     {# TODO: formatting #}
-                    <p>Defaults to
-                    <span {{ cssclass('details-table-default') }}>{{ item.defaultvalue }}</span>.</p>
+                    <p>{{ translate('tables.body.defaultValue', { value: item.defaultvalue }) }}</p>
                 {% endif %}
             {% endblock %}
         </td>

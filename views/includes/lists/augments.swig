@@ -3,7 +3,7 @@
 {% block augments %}
 	{% if augments && augments.length %}
 		{% block augments-content %}
-            <dt>Extends</dt>
+            <dt>{{ translate('headings.augments') }}</dt>
             {{ macros.listitems(augments, { needsLink: true }) }}
         {% endblock %}
 	{% endif %}

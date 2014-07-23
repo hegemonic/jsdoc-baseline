@@ -6,7 +6,7 @@
         {% if exceptions && exceptions.length %}
             {% block throws-content %}
                 <dl {{ cssclass('block-throws-content') }}>
-                    <dt>Throws</dt>
+                    <dt>{{ translate('headings.throws') }}</dt>
                     {% for exception in exceptions %}
                         <dd>
                             {% if exception.type && exception.type.names %}

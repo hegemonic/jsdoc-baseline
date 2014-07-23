@@ -3,7 +3,7 @@
 {% block license %}
     {% if license %}
         {% block license-content %}
-            <dt>License</dt>
+            <dt>{{ translate('headings.license') }}</dt>
             {{ macros.listitems(license) }}
         {% endblock %}
     {% endif %}

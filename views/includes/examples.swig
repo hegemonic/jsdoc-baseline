@@ -3,9 +3,10 @@
         {% if examples && examples.length %}
             {# TODO: "examples-heading" or similar? #}
             {% block examples-content %}
-                {# TODO: pluralize appropriately #}
                 {# TODO: maybe make more subtle a la bootstrap docs #}
-                <h {{ cssclass('examples') }}>Examples</h>
+                <h {{ cssclass('examples') }}>
+                    {{ translate('headings.examples', examples.length) }}
+                </h>
                 {% for example in examples %}
                     {# TODO: WIP #}
                     <div {{ cssclass('example') }}>

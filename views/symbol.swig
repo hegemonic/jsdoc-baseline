@@ -102,7 +102,7 @@
                     {% set classes = members[CATEGORIES.CLASSES] %}
                     {% if classes && classes.length %}
                         <section id="classes">
-                            <h>Classes</h>
+                            <h>{{ translate('headings.classes', classes.length) }}</h>
                             <section>
                                 {% for klass in classes %}
                                     <h>{{ link(klass.longname, klass.name)|safe }}</h>
@@ -122,7 +122,7 @@
                     {% set namespaces = members[CATEGORIES.NAMESPACES] %}
                     {% if namespaces && namespaces.length %}
                         <section id="namespaces">
-                            <h>Namespaces</h>
+                            <h>{{ translate('headings.namespaces', namespaces.length) }}</h>
                             <section>
                                 {% for namespace in namespaces %}
                                     <h>{{ link(namespace.longname, namespace.name)|safe }}</h>
@@ -138,11 +138,12 @@
                     {% endif %}
                 {% endblock %}
 
+                {# TODO: should use this or properties.swig, not both #}
                 {% block symbol-properties %}
                     {% set context = { properties: members[CATEGORIES.MEMBERS] } %}
                     {% if context.properties && context.properties.length %}
                         <section id="properties">
-                            <h>Properties</h>
+                            <h>{{ translate('headings.properties', context.properties.length) }}</h>
                             <section>
                                 {% include 'properties.swig' with context %}
                             </section>
@@ -154,7 +155,7 @@
                     {% set methods = members[CATEGORIES.FUNCTIONS] %}
                     {% if methods && methods.length %}
                         <section id="methods">
-                            <h>Methods</h>
+                            <h>{{ translate('headings.methods', methods.length) }}</h>
                             <section>
                                 {% for method in methods %}
                                     {% set context = { doc: method } %}
@@ -170,7 +171,7 @@
                     {% set typedefs = members[CATEGORIES.TYPEDEFS] %}
                     {% if typedefs && typedefs.length %}
                         <section id="typedefs">
-                            <h>Type Definitions</h>
+                            <h>{{ translate('headings.typedefs', typedefs.length) }}</h>
                             <section>
                                 {% for typedef in typedefs %}
                                     {% if containsFunctionType(typedef.type) %}
@@ -192,7 +193,7 @@
                     {% set events = members[CATEGORIES.EVENTS] %}
                     {% if events && events.length %}
                         <section id="events">
-                            <h>Events</h>
+                            <h>{{ translate('headings.events', events.length) }}</h>
                             <section>
                                 {% for method in events %}
                                     {% set context = { doc: method } %}

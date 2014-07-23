@@ -28,6 +28,8 @@
   "homepage": "https://github.com/hegemonic/baseline",
   "dependencies": {
     "js-beautify": "~1.5.1",
+    "moment": "~2.7.0",
+    "node-polyglot": "~0.4.1",
     "swig": "~1.4.0",
     "underscore-contrib": "~0.3.0"
   },

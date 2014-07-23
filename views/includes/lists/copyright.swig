@@ -3,7 +3,7 @@
 {% block copyright %}
     {% if copyright %}
         {% block copyright-content %}
-            <dt>Copyright</dt>
+            <dt>{{ translate('headings.copyright') }}</dt>
             {{ macros.listitems(copyright) }}
         {% endblock %}
     {% endif %}

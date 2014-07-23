@@ -4,7 +4,7 @@
     {% if properties && properties.length %}
         {% set properties = moveChildren(properties) %}
         {% block properties-content %}
-            <h>Properties</h>
+            <h>{{ translate('headings.properties', properties.length) }}</h>
             {{ macros.infotable(properties) }}
         {% endblock %}
     {% endif %}

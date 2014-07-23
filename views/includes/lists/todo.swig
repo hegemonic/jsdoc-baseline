@@ -3,7 +3,7 @@
 {% block todo %}
     {% if todo && todo.length %}
         {% block todo-content %}
-            <dt>To do</dt>
+            <dt>{{ translate('headings.todo') }}</dt>
             {{ macros.listitems(todo) }}
         {% endblock %}
     {% endif %}

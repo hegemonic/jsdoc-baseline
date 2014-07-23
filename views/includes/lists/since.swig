@@ -3,7 +3,7 @@
 {% block since %}
     {% if since %}
         {% block since-content %}
-            <dt>Since</dt>
+            <dt>{{ translate('headings.since') }}</dt>
             {{ macros.listitems(since) }}
         {% endblock %}
     {% endif %}

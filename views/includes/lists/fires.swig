@@ -3,7 +3,7 @@
 {% block fires %}
     {% if fires && fires.length %}
         {% block fires-content %}
-            <dt>Fires</dt>
+            <dt>{{ translate('headings.fires') }}</dt>
             {{ macros.listitems(fires, { needsLink: true }) }}
         {% endblock %}
     {% endif %}

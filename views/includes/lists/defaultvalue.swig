@@ -5,7 +5,7 @@
         {% block defaultvalue-content %}
             {# TODO: incorporate changes from https://github.com/jsdoc3/jsdoc/commit/70109a29 and
                 https://github.com/jsdoc3/jsdoc/commit/9af5ea42 #}
-            <dt>Default Value</dt>
+            <dt>{{ translate('headings.defaultValue') }}</dt>
             {{ macros.listitems(defaultvalue) }}
         {% endblock %}
     {% endif %}
