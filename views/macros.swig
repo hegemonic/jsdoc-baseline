@@ -1,6 +1,7 @@
 {% macro linklist(items, joiner, open, close) -%}
     {%- spaceless %}
 
+    {% set links = [] %}
     {% if items.length > 1 %}
         {% if open === null || open === undefined %}
             {% set open = '(' %}
@@ -17,8 +18,12 @@
         {% set joiner = '' %}
     {% endif %}
 
+    {% for item in items %}
+        {% set links[links.length] = link(item)|safe %}
+    {% endfor %}
+
     {{ open }}
-    {{ link(items)|join(joiner)|safe }}
+    {{ links|join(joiner)|safe }}
     {{ close }}
 
     {% endspaceless -%}
