@@ -23,7 +23,10 @@
                 {% endblock %}
                 {% block property-properties %}
                     {% if property.properties %}
-                        {{ macros.infotable(property.properties, { hideOptional: true }) }}
+                        {{ macros.infotable(property.properties, {
+                            hideOptional: true,
+                            isEnum: property.isEnum
+                        }) }}
                     {% endif %}
                 {% endblock %}
                 {% block property-source %}

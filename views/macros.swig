@@ -228,7 +228,7 @@
                 {% endif %}
             {% endblock %}
             {% block item-defaultvalue %}
-                {% if item.defaultvalue %}
+                {% if item.defaultvalue && !options.isEnum %}
                     {# TODO: formatting #}
                     <p>{{ translate('tables.body.defaultValue', { value: item.defaultvalue }) }}</p>
                 {% endif %}
