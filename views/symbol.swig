@@ -85,10 +85,6 @@
                                     {% include 'includes/lists/augments.swig' with doc %}
                                 {% endblock %}
 
-                                {% block symbol-mixes %}
-                                    {% include 'includes/lists/mixes.swig' with doc %}
-                                {% endblock %}
-
                                 {% block symbol-requires %}
                                     {% include 'includes/lists/requires.swig' with doc %}
                                 {% endblock %}

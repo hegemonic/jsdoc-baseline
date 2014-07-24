@@ -18,9 +18,12 @@
                         </small>
                     {% endif %}
                 </h>
+            {% endblock %}
+            {% block property-content %}
                 {% block property-description %}
                     {% include 'includes/description.swig' with property %}
                 {% endblock %}
+
                 {% block property-properties %}
                     {% if property.properties %}
                         {{ macros.infotable(property.properties, {
@@ -29,33 +32,29 @@
                         }) }}
                     {% endif %}
                 {% endblock %}
-                {% block property-source %}
-                    {{ macros.sourcefile(property) }}
-                {% endblock %}
-            {% endblock %}
 
-            <section>
-                {#
-                    TODO: display the type of typedefs:
-                    https://github.com/jsdoc3/jsdoc/commit/bca6cdc5
-                    but this is covered by macros.types(property), right?
-                #}
-
-                {# TODO: does this work? does it make any sense here? replace with properties table? #}
                 {% block property-content-list %}
                     <dl {{ cssclass('!dl-compact') }}>
-                        {% block property-details %}
-                            {% include 'includes/details.swig' with property %}
+                        {% block property-source %}
+                            {% set context = { doc: property } %}
+                            {% include 'includes/sourcefile.swig' with context %}
+                        {% endblock %}
+
+                        {#
+                            TODO: display the type of typedefs:
+                            https://github.com/jsdoc3/jsdoc/commit/bca6cdc5
+                            but this is covered by macros.types(property), right?
+                        #}
+
+                        {# TODO: does this work? does it make any sense here? replace with properties table? #}
+                        {% block property-content-list %}
+                            {% block property-details %}
+                                {% include 'includes/details.swig' with property %}
+                            {% endblock %}
                         {% endblock %}
                     </dl>
                 {% endblock %}
-
-                {# TODO: does this work? does it make any sense here? #}
-                {% block property-examples %}
-                    {% set context = { examples: property.examples } %}
-                    {% include 'includes/examples.swig' with context %}
-                {% endblock %}
-            </section>
+            {% endblock %}
         {% endblock %}
     {% endfor %}
 {% endblock %}

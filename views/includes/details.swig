@@ -5,6 +5,9 @@
     {% block details-inherited %}
         {% include 'lists/inherited.swig' %}
     {% endblock %}
+    {% block details-mixes %}
+        {% include 'lists/mixes.swig' %}
+    {% endblock %}
     {% block details-deprecated %}
         {% include 'lists/deprecated.swig' %}
     {% endblock %}
