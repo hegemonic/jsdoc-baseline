@@ -18,6 +18,7 @@
     "listens": "Listens to",
     "methods": "Method |||| Methods",
     "mixes": "Mixes in",
+    "mixins": "Mixin |||| Mixins",
     "modules": "Module |||| Modules",
     "namespaces": "Namespace |||| Namespaces",
     "parameters": "Parameter |||| Parameters",
