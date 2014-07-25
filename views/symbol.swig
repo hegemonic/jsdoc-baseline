@@ -14,7 +14,7 @@
                             {% block symbol-header-ancestors %}
                                 {% if doc.ancestors && doc.ancestors.length %}
                                     {# TODO: make <small> tag configurable #}
-                                    <small {{ cssclass('symbol-ancestors') }}>
+                                    <small {{ cssClass('symbol-ancestors') }}>
                                         {{ ancestorLinks(doc) }}
                                     </small>
                                 {% endif %}
@@ -30,7 +30,7 @@
 
                     {%- block symbol-header-classdesc -%}
                         {%- if doc.classdesc %}
-                            <div {{ cssclass('!symbol-classdesc') }}>
+                            <div {{ cssClass('!symbol-classdesc') }}>
                                 {{ doc.classdesc|markdown }}
                             </div>
                         {% endif -%}
@@ -38,14 +38,14 @@
 
                     {%- block symbol-header-description -%}
                         {% if doc.kind !== 'class' %}
-                            <div {{ cssclass('!symbol-description') }}>
+                            <div {{ cssClass('!symbol-description') }}>
                                 {% include 'includes/description.swig' with doc %}
                             </div>
                         {% endif %}
                     {%- endblock -%}
 
                     {%- block symbol-header-meta -%}
-                        <dl {{ cssclass('!dl-compact') }}>
+                        <dl {{ cssClass('!dl-compact') }}>
                             {%- block symbol-header-source -%}
                                 {% include 'includes/sourcefile.swig' with doc %}
                             {%- endblock -%}
@@ -80,7 +80,7 @@
                         {% endif %}
 
                         {% block symbol-details %}
-                            <dl {{ cssclass('!dl-compact') }}>
+                            <dl {{ cssClass('!dl-compact') }}>
                                 {% block symbol-augments %}
                                     {% include 'includes/lists/augments.swig' with doc %}
                                 {% endblock %}

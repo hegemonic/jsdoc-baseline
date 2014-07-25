@@ -1,7 +1,7 @@
 {% extends 'symbol.swig' %}
 
 {% block main-content %}
-    <h {{ cssclass('page-title') }}>{{ translate('headings.globals') }}</h>
+    <h {{ cssClass('page-title') }}>{{ translate('headings.globals') }}</h>
     <section>
         {% block symbol-properties %}
             {% parent %}

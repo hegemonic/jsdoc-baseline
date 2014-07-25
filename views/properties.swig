@@ -6,14 +6,14 @@
     {% for property in properties %}
         {% block property %}
             {% block property-heading %}
-                <h {{ cssclass('property-name') }} id="{{ property.id }}">
+                <h {{ cssClass('property-name') }} id="{{ property.id }}">
                     {# TODO: can we move this to an include? #}
                     {{ property.attribs }}{{ property.name }}
                     {% if needsSignature(property) %}
                         {{ macros.signature(property) }}
                     {% elif property.type && property.type.names %}
                         {# TODO: make <small> tag configurable #}
-                        <small {{ cssclass('property-type') }}>
+                        <small {{ cssClass('property-type') }}>
                             {{ macros.types(property) }}
                         </small>
                     {% endif %}
@@ -34,7 +34,7 @@
                 {% endblock %}
 
                 {% block property-content-list %}
-                    <dl {{ cssclass('!dl-compact') }}>
+                    <dl {{ cssClass('!dl-compact') }}>
                         {% block property-source %}
                             {% set context = { doc: property } %}
                             {% include 'includes/sourcefile.swig' with context %}

@@ -33,7 +33,7 @@
     {%- spaceless %}
 
     {% if doclet.type && doclet.type.names && doclet.type.names.length %}
-        <span {{ cssclass('type-names') }}>{{ linklist(doclet.type.names) }}</span>
+        <span {{ cssClass('type-names') }}>{{ linklist(doclet.type.names) }}</span>
     {% endif %}
 
     {% endspaceless -%}
@@ -49,8 +49,8 @@
 
 {# TODO: can we remove this? #}
 {% macro sourcefile(doc) %}
-    {% if outputSourceFiles && doc.meta && doc.meta.filename && doc.meta.lineno %}
-        <dl {{ cssclass('!dl-compact') }}>
+    {% if config('outputSourceFiles') && doc.meta && doc.meta.filename && doc.meta.lineno %}
+        <dl {{ cssClass('!dl-compact') }}>
             {% set context = { doc: doc } %}
             {% include 'includes/sourcefile.swig' with context %}
         </dl>
@@ -72,8 +72,8 @@
 {% macro signature(doclet) -%}
     {%- spaceless %}
     {% if doclet.kind !== 'event' %}
-        <span {{ cssclass('signature') }}>
-            <span {{ cssclass('signature-params') }}>{{ formatParams(doclet.params || []) }}</span>
+        <span {{ cssClass('signature') }}>
+            <span {{ cssClass('signature-params') }}>{{ formatParams(doclet.params || []) }}</span>
             {#
                 omit the return type for:
                 + constructors
@@ -81,7 +81,7 @@
             #}
             {% if doclet.kind !== 'class' && doclet.returns && doclet.returns.length %}
                 &nbsp;&rarr;
-                <span {{ cssclass('signature-returns') }}>{{ returntypes(doclet.returns) }}</span>
+                <span {{ cssClass('signature-returns') }}>{{ returntypes(doclet.returns) }}</span>
             {% endif %}
         </span>
     {% endif %}
@@ -116,7 +116,7 @@
 {% macro minilist(data, category, listTitle, options) %}
     {% set options = options || {} %}
     {% if options.addWrapper %}
-        <dl {{ cssclass(category, 'list-wrapper') }}>
+        <dl {{ cssClass(category, 'list-wrapper') }}>
     {% endif %}
     {% if listTitle %}
         <dt>{{ listTitle }}</dt>
@@ -140,7 +140,7 @@
                 {{ ', ' }}
             {% endif %}
         {% endif %}
-        <span {{ cssclass('type-name') }}>{{ link(name)|safe }}</span>
+        <span {{ cssClass('type-name') }}>{{ link(name)|safe }}</span>
     {% endfor %}
 {% endspaceless -%}
 {%- endmacro %}
@@ -149,7 +149,7 @@
 {% macro infotable(data, options) %}
 {% block infotable %}
     {% set options = options || {} %}
-    <table {{ cssclass('!jsdoc-details-table') }}>
+    <table {{ cssClass('!jsdoc-details-table') }}>
         {% block infotable-head %}
         <thead>
             <tr>
@@ -178,7 +178,7 @@
 <tr>
     {% block item-name -%}
         {%- spaceless %}
-        <td {{ cssclass('details-table-name') }}>
+        <td {{ cssClass('details-table-name') }}>
             {% if item.variable -%}
                 &hellip;
             {% endif %}
@@ -192,7 +192,7 @@
     {% endblock %}
     {% block item-types -%}
         {%- spaceless %}
-        <td {{ cssclass('details-table-types') }}>
+        <td {{ cssClass('details-table-types') }}>
             {% if item.type && item.type.names %}
                 {{ typelist(item.type.names) }}
             {% else %}
@@ -204,7 +204,7 @@
     {% block item-optional -%}
         {%- spaceless %}
             {% if !options.hideOptional %}
-                <td {{ cssclass('details-table-optional') }}>
+                <td {{ cssClass('details-table-optional') }}>
                     {% if item.optional %}
                         {# TODO: improve #}
                         {{ translate('tables.body.isOptional') }}
@@ -216,7 +216,7 @@
         {% endspaceless -%}
     {%- endblock %}
     {% block item-description %}
-        <td {{ cssclass('details-table-description') }}>
+        <td {{ cssClass('details-table-description') }}>
             {{ item.description|markdown }}
             {% block item-nullable %}
                 {% if item.nullable === true %}

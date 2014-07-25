@@ -1,7 +1,7 @@
 {% extends 'symbol.swig' %}
 
 {% block main-content %}
-    <h {{ cssclass('page-title') }}>{{ pageTitle }}</h>
+    <h {{ cssClass('page-title') }}>{{ pageTitle }}</h>
     <section>
         {% block symbol-members %}
             {% parent %}

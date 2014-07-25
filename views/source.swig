@@ -1,12 +1,12 @@
 {% extends 'layout.swig' %}
 
 {% block main-content %}
-    <h {{ cssclass('page-title') }}>{{ title }}</h>
+    <h {{ cssClass('page-title') }}>{{ title }}</h>
     <section>
         <article>
             {% block source -%}
                 {%- spaceless %}
-                    <pre {{ cssclass('!prettyprint', '!linenums', 'source') }}><code>
+                    <pre {{ cssClass('!prettyprint', '!linenums', 'source') }}><code>
                         {{ docs }}
                     </code></pre>
                 {% endspaceless -%}

@@ -7,7 +7,7 @@
 {% block main-content %}
     {% block package-title %}
         {% if package %}
-            <h {{ cssclass('page-title') }}>{{ package.name }} {{ package.version }}</h>
+            <h {{ cssClass('page-title') }}>{{ package.name }} {{ package.version }}</h>
         {% endif %}
     {% endblock %}
 

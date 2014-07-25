@@ -9,7 +9,7 @@
                         {{ macros.signature(doc) }}
                     {% elif doc.type && doc.type.names %}
                         {# TODO: make <small> tag configurable #}
-                        <small {{ cssclass('symbol-type') }}> {{ macros.types(doc) }}</small>
+                        <small {{ cssClass('symbol-type') }}> {{ macros.types(doc) }}</small>
                     {% endif %}
                 {% endautoescape %}
             {% endspaceless -%}
@@ -30,7 +30,7 @@
         {% endblock %}
 
         {% block nonmethod-content-list %}
-            <dl {{ cssclass('!dl-compact') }}>
+            <dl {{ cssClass('!dl-compact') }}>
                 {% block nonmethod-sourcefile %}
                     {% include 'includes/sourcefile.swig' with doc %}
                 {% endblock %}

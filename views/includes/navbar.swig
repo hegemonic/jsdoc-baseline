@@ -1,14 +1,14 @@
 {% block navbar %}
-    <nav id="jsdoc-navbar" role="navigation" {{ cssclass('!jsdoc-navbar') }}>
+    <nav id="jsdoc-navbar" role="navigation" {{ cssClass('!jsdoc-navbar') }}>
         {% block navbar-container %}
-            <div id="jsdoc-navbar-container" {{ cssclass('jsdoc-navbar-container') }}>
+            <div id="jsdoc-navbar-container" {{ cssClass('jsdoc-navbar-container') }}>
                 {% block navbar-content %}
-                    <div id="jsdoc-navbar-content" {{ cssclass('jsdoc-navbar-content') }}>
+                    <div id="jsdoc-navbar-content" {{ cssClass('jsdoc-navbar-content') }}>
                         {% spaceless %}
                             {% if package %}
                                 {# TODO: fix href #}
                                 <a id="jsdoc-navbar-package-name"
-                                {{ cssclass('!jsdoc-navbar-package-name') }} href="#">
+                                {{ cssClass('!jsdoc-navbar-package-name') }} href="#">
                                     {{ package.name || '' }}
                                     {% if package.name && package.version %}
                                         {{ ' ' + package.version }}

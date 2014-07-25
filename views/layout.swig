@@ -66,7 +66,7 @@
             {% endblock %}
 
             {% block footer %}
-                <footer id="jsdoc-footer" {{ cssclass('!jsdoc-footer') }}>
+                <footer id="jsdoc-footer" {{ cssClass('!jsdoc-footer') }}>
                     {% block footer-container %}
                         <div id="jsdoc-footer-container">
                             {% block footer-content %}

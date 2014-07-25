@@ -44,7 +44,7 @@
             {# TODO: why here? why not an include? #}
             {% block method-type %}
                 {% if doc.kind === 'event' && doc.type && doc.type.names %}
-                    <dl {{ cssclass('method-type') }}>
+                    <dl {{ cssClass('method-type') }}>
                         <dt>{{ translate('headings.type') }}</dt>
                         <dd>
                             {{ macros.type(doc) }}
@@ -54,7 +54,7 @@
             {% endblock %}
 
             {% block method-content-list %}
-                <dl {{ cssclass('!dl-compact') }}>
+                <dl {{ cssClass('!dl-compact') }}>
                     {% block method-sourcefile %}
                         {% include 'includes/sourcefile.swig' with doc %}
                     {% endblock %}
