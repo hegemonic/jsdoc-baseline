@@ -1,19 +1,12 @@
-lib-cov
-*.seed
-*.log
-*.csv
-*.dat
-*.out
-*.pid
-*.gz
-
-pids
-logs
-results
-
+# npm-managed files
 npm-debug.log
 node_modules
 
+# bower-managed files
 bower_components
 
+# Static files (excluded temporarily)
 static/
+
+# Dotfile detritus
+.DS_Store
