@@ -8,5 +8,8 @@ bower_components
 # Static files (excluded temporarily)
 static/
 
+# Development files
+coverage/
+
 # Dotfile detritus
 .DS_Store
