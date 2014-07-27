@@ -5,20 +5,24 @@
 {% endblock %}
 
 {% block main-content %}
-    {% block package-title %}
-        {% if package %}
-            <h {{ cssClass('page-title') }}>{{ package.name }} {{ package.version }}</h>
-        {% endif %}
-    {% endblock %}
+    {% if package || readme %}
+        <section>
+            {% resetheadinglevel %}
+            {% block package-title %}
+                {% if package %}
+                    <header {{ cssClass('!page-header') }}>
+                        <h {{ cssClass('page-title') }}>{{ package.name }} {{ package.version }}</h>
+                    </header>
+                {% endif %}
+            {% endblock %}
 
-    {# TODO default to a list of modules/classes/namespaces/events/etc. #}
-    {# TODO show module descs depending on the config #}
-    {# TODO: clean up the following #}
-    {% block readme %}
-        {% if readme %}
-            <section>
-                <article>{{ readme }}</article>
-            </section>
-        {% endif %}
-    {% endblock %}
+            {# TODO default to a list of modules/classes/namespaces/events/etc. #}
+            {# TODO show module descs depending on the config #}
+            {% block readme %}
+                {% if readme %}
+                    <article>{{ readme }}</article>
+                {% endif %}
+            {% endblock %}
+        </section>
+    {% endif %}
 {% endblock %}

@@ -8,25 +8,29 @@
         <section>
             {% resetheadinglevel -%}
             {%- block symbol-header -%}
-                <header class="page-header">
-                    {%- spaceless %}
-                        <h>
-                            {% block symbol-header-ancestors %}
-                                {% if doc.ancestors && doc.ancestors.length %}
-                                    {# TODO: make <small> tag configurable #}
-                                    <small {{ cssClass('symbol-ancestors') }}>
-                                        {{ ancestorLinks(doc) }}
-                                    </small>
-                                {% endif %}
-                            {% endblock %}
-                            {% block symbol-header-name %}
-                                {{ doc.name }}
-                            {% endblock %}
-                            {% block symbol-header-variation %}
-                                {# By default, the variation is not displayed. #}
-                            {% endblock %}
-                        </h>
-                    {% endspaceless -%}
+                <header {{ cssClass('!page-header') }}>
+                    {%- block symbol-header-heading -%}
+                        <div>
+                            {%- spaceless %}
+                                <h>
+                                    {% block symbol-header-ancestors %}
+                                        {% if doc.ancestors && doc.ancestors.length %}
+                                            {# TODO: make <small> tag configurable #}
+                                            <small {{ cssClass('symbol-ancestors') }}>
+                                                {{ ancestorLinks(doc) }}
+                                            </small>
+                                        {% endif %}
+                                    {% endblock %}
+                                    {% block symbol-header-name %}
+                                        {{ doc.name }}
+                                    {% endblock %}
+                                    {% block symbol-header-variation %}
+                                        {# By default, the variation is not displayed. #}
+                                    {% endblock %}
+                                </h>
+                            {% endspaceless -%}
+                        </div>
+                    {%- endblock -%}
 
                     {%- block symbol-header-classdesc -%}
                         {%- if doc.classdesc %}
