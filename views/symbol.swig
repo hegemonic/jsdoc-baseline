@@ -1,22 +1,22 @@
 {% extends 'layout.swig' %}
 {% import 'macros.swig' as macros %}
 
-{% macro membersSummary(members, headingKey) %}
+{% macro membersLinks(members, headingKey) %}
     {% if members && members.length %}
-        {% block symbol-members-summary %}
+        {% block symbol-members-links %}
             <section>
-                {% block symbol-members-summary-heading %}
+                {% block symbol-members-links-heading %}
                     <h>{{ translate('headings.' + headingKey, members.length) }}</h>
                 {% endblock %}
 
-                {% block symbol-members-summary-content %}
+                {% block symbol-members-links-content %}
                     <section>
                         {% for member in members %}
                             <h>{{ link(member.longname, member.name)|safe }}</h>
                             {% if member.summary %}
                                 <p>{% include 'includes/summary.swig' with member %}</p>
                             {% endif %}
-                            {% block symbol-members-summary-source %}
+                            {% block symbol-members-links-source %}
                                 {{ macros.sourcefile(member) }}
                             {% endblock %}
                         {% endfor %}
@@ -144,12 +144,12 @@
 
                 {% block symbol-classes %}
                     {% set classes = members[CATEGORIES.CLASSES] %}
-                    {{ membersSummary(classes, CATEGORIES.CLASSES) }}
+                    {{ membersLinks(classes, CATEGORIES.CLASSES) }}
                 {% endblock %}
 
                 {% block symbol-namespaces %}
                     {% set namespaces = members[CATEGORIES.NAMESPACES] %}
-                    {{ membersSummary(namespaces, CATEGORIES.NAMESPACES) }}
+                    {{ membersLinks(namespaces, CATEGORIES.NAMESPACES) }}
                 {% endblock %}
 
                 {% block symbol-properties %}
