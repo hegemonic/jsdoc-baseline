@@ -22,7 +22,7 @@
         {% endblock %}
 
         {% block nonmethod-properties %}
-            {% include 'includes/properties.swig' with doc %}
+            {% include 'includes/propertytable.swig' with doc %}
         {% endblock %}
 
         {% block nonmethod-examples %}

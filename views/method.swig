@@ -38,7 +38,7 @@
             {% endblock %}
 
             {% block method-properties %}
-                {% include 'includes/properties.swig' with doc %}
+                {% include 'includes/propertytable.swig' with doc %}
             {% endblock %}
 
             {# TODO: why here? why not an include? #}
@@ -57,6 +57,9 @@
                 <dl {{ cssClass('!dl-compact') }}>
                     {% block method-sourcefile %}
                         {% include 'includes/sourcefile.swig' with doc %}
+                    {% endblock %}
+                    {% block method-augments %}
+                        {% include 'includes/lists/augments.swig' with doc %}
                     {% endblock %}
                     {% block method-details %}
                         {% include 'includes/details.swig' with doc %}
