@@ -3,8 +3,8 @@
 {# TODO: make sure this has fine-grained blocks a la method.swig #}
 {# TODO: rename to avoid confusion with includes/ (or move this?) #}
 {% block properties %}
-    <section>
-        {% if properties && properties.length %}
+    {% if properties && properties.length %}
+        <section>
             <h {{ cssClass('property-heading') }}>
                 {{ translate('headings.properties', properties.length) }}
             </h>
@@ -64,6 +64,6 @@
                     {% endblock %}
                 </section>
             {% endfor %}
-        {% endif %}
-    </section>
+        </section>
+    {% endif %}
 {% endblock %}

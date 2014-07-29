@@ -2,10 +2,10 @@
 
 {% block properties %}
     {% if properties && properties.length %}
-        {% set properties = moveChildren(properties) %}
+        {% set props = moveChildren(properties) %}
         {% block properties-content %}
-            <h>{{ translate('headings.properties', properties.length) }}</h>
-            {{ macros.infotable(properties, { isEnum: properties.isEnum }) }}
+            <h>{{ translate('headings.properties', props.length) }}</h>
+            {{ macros.infotable(props, { isEnum: props.isEnum }) }}
         {% endblock %}
     {% endif %}
 {% endblock %}

@@ -1,23 +1,23 @@
 {% extends 'layout.swig' %}
 {% import 'macros.swig' as macros %}
 
-{% macro membersLinks(members, headingKey) %}
-    {% if members && members.length %}
+{% macro membersLinks(items, headingKey) %}
+    {% if items && items.length %}
         {% block symbol-members-links %}
             <section>
                 {% block symbol-members-links-heading %}
-                    <h>{{ translate('headings.' + headingKey, members.length) }}</h>
+                    <h>{{ translate('headings.' + headingKey, items.length) }}</h>
                 {% endblock %}
 
                 {% block symbol-members-links-content %}
                     <section>
-                        {% for member in members %}
-                            <h>{{ link(member.longname, member.name)|safe }}</h>
+                        {% for item in items %}
+                            <h>{{ link(item.longname, item.name)|safe }}</h>
                             {% if member.summary %}
-                                <p>{% include 'includes/summary.swig' with member %}</p>
+                                <p>{% include 'includes/summary.swig' with item %}</p>
                             {% endif %}
                             {% block symbol-members-links-source %}
-                                {{ macros.sourcefile(member) }}
+                                {{ macros.sourcefile(item) }}
                             {% endblock %}
                         {% endfor %}
                     </section>
@@ -27,30 +27,30 @@
     {% endif %}
 {% endmacro %}
 
-{% macro membersDetail(members, headingKey) %}
-    {% if members && members.length %}
+{% macro membersDetail(items, headingKey) %}
+    {% if items && items.length %}
         {% block symbol-members-detail %}
             <section>
                 {% block symbol-members-detail-heading %}
-                    <h>{{ translate('headings.' + headingKey, members.length) }}</h>
+                    <h>{{ translate('headings.' + headingKey, items.length) }}</h>
                 {% endblock %}
 
                 {% block symbol-members-detail-content %}
                     <section>
-                        {% for member in members %}
+                        {% for item in items %}
                             {#
                                 TODO: confusing to use 'method.swig' for typedefs/events;
                                 also, this logic belongs elsewhere
                             #}
                             {%
-                                if containsFunctionType(member.type) || member.kind === 'event' ||
-                                    member.kind === 'function'
+                                if containsFunctionType(item.type) || item.kind === 'event' ||
+                                    item.kind === 'function'
                             %}
-                                {% set context = { doc: member } %}
+                                {% set context = { doc: item } %}
                                 {% include 'method.swig' with context %}
                             {% else %}
                                 {# TODO: working? #}
-                                {% set context = { properties: member } %}
+                                {% set context = { properties: item } %}
                                 {% include 'properties.swig' with context %}
                             {% endif %}
                         {% endfor %}
@@ -70,26 +70,24 @@
             {%- block symbol-header -%}
                 <header {{ cssClass('!page-header') }}>
                     {%- block symbol-header-heading -%}
-                        <div>
-                            {%- spaceless %}
-                                <h>
-                                    {% block symbol-header-ancestors %}
-                                        {% if doc.ancestors && doc.ancestors.length %}
-                                            {# TODO: make <small> tag configurable #}
-                                            <small {{ cssClass('symbol-ancestors') }}>
-                                                {{ ancestorLinks(doc) }}
-                                            </small>
-                                        {% endif %}
-                                    {% endblock %}
-                                    {% block symbol-header-name %}
-                                        {{ doc.name }}
-                                    {% endblock %}
-                                    {% block symbol-header-variation %}
-                                        {# By default, the variation is not displayed. #}
-                                    {% endblock %}
-                                </h>
-                            {% endspaceless -%}
-                        </div>
+                        {%- spaceless %}
+                            <h>
+                                {% block symbol-header-ancestors %}
+                                    {% if doc.ancestors && doc.ancestors.length %}
+                                        {# TODO: make <small> tag configurable #}
+                                        <small {{ cssClass('symbol-ancestors') }}>
+                                            {{ ancestorLinks(doc) }}
+                                        </small>
+                                    {% endif %}
+                                {% endblock %}
+                                {% block symbol-header-name %}
+                                    {{ doc.name }}
+                                {% endblock %}
+                                {% block symbol-header-variation %}
+                                    {# By default, the variation is not displayed. #}
+                                {% endblock %}
+                            </h>
+                        {% endspaceless -%}
                     {%- endblock -%}
 
                     {%- block symbol-header-classdesc -%}
@@ -119,8 +117,26 @@
             {%- endblock -%}
 
             {%- block symbol -%}
-                {%- block symbol-overview %}
-                    <section id="overview">
+                {% set symbolClasses = members[CATEGORIES.CLASSES] %}
+                {% set symbolNamespaces = members[CATEGORIES.NAMESPACES] %}
+                {% set symbolProperties = members[CATEGORIES.PROPERTIES] %}
+                {% set symbolMethods = members[CATEGORIES.FUNCTIONS] %}
+                {% set symbolTypedefs = members[CATEGORIES.TYPEDEFS] %}
+                {% set symbolEvents = members[CATEGORIES.EVENTS] %}
+
+                {# Summary lists of all members #}
+                {% block symbol-summary %}
+                    {% include 'includes/components/summary-blocks.swig' %}
+                {% endblock %}
+
+                {#
+                    The entry point to the symbol documented here. Can be one of:
+                    1. A class
+                    2. The only symbol exported by a module (which might be a class)
+
+                #}
+                {%- block symbol-entrypoint %}
+                    <section id="entrypoint">
                         {#
                             If a module exports only one symbol, document the symbol here, since
                             it's not a member of anything else.
@@ -142,34 +158,50 @@
                     </section>
                 {% endblock %}
 
+
                 {% block symbol-classes %}
-                    {% set classes = members[CATEGORIES.CLASSES] %}
-                    {{ membersLinks(classes, CATEGORIES.CLASSES) }}
+                    {% set context = {
+                        symbolItems: symbolClasses,
+                        headingKey: CATEGORIES.CLASSES
+                    } %}
+                    {% include 'includes/members-links.swig' with context %}
                 {% endblock %}
 
                 {% block symbol-namespaces %}
-                    {% set namespaces = members[CATEGORIES.NAMESPACES] %}
-                    {{ membersLinks(namespaces, CATEGORIES.NAMESPACES) }}
+                    {% set context = {
+                        symbolItems: symbolNamespaces,
+                        headingKey: CATEGORIES.NAMESPACES
+                    } %}
+                    {% include 'includes/members-links.swig' with context %}
                 {% endblock %}
 
                 {% block symbol-properties %}
-                    {% set context = { properties: members[CATEGORIES.MEMBERS] } %}
+                    {% set context = { properties: symbolProperties } %}
                     {% include 'properties.swig' with context %}
                 {% endblock %}
 
                 {% block symbol-methods %}
-                    {% set methods = members[CATEGORIES.FUNCTIONS] %}
-                    {{ membersDetail(methods, CATEGORIES.FUNCTIONS) }}
+                    {% set context = {
+                        symbolItems: symbolMethods,
+                        headingKey: CATEGORIES.FUNCTIONS
+                    } %}
+                    {% include 'includes/members-detail.swig' with context %}
                 {% endblock %}
 
                 {% block symbol-typedefs %}
-                    {% set typedefs = members[CATEGORIES.TYPEDEFS] %}
-                    {{ membersDetail(typedefs, CATEGORIES.TYPEDEFS) }}
+                    {% set context = {
+                        symbolItems: symbolTypedefs,
+                        headingKey: CATEGORIES.TYPEDEFS
+                    } %}
+                    {% include 'includes/members-detail.swig' with context %}
                 {% endblock %}
 
                 {% block symbol-events %}
-                    {% set events = members[CATEGORIES.EVENTS] %}
-                    {{ membersDetail(events, CATEGORIES.EVENTS) }}
+                    {% set context = {
+                        symbolItems: symbolEvents,
+                        headingKey: CATEGORIES.EVENTS
+                    } %}
+                    {% include 'includes/members-detail.swig' with context %}
                 {% endblock %}
             {% endblock %}
         </section>

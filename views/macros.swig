@@ -71,7 +71,8 @@
 
 {% macro signature(doclet) -%}
     {%- spaceless %}
-    {% if doclet.kind !== 'event' %}
+    {% if needsSignature(doclet) %}
+        {# TODO: replace <span> tags w/Swig tag that's rendered only when there are 1+ CSS classes #}
         <span {{ cssClass('signature') }}>
             <span {{ cssClass('signature-params') }}>{{ formatParams(doclet.params || []) }}</span>
             {#

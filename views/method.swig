@@ -17,10 +17,6 @@
 
     {% block method-content %}
         <section>
-            {% block method-summary %}
-                {% include 'includes/summary.swig' with doc %}
-            {% endblock %}
-
             {% block method-description %}
                 {% include 'includes/description.swig' with doc %}
             {% endblock %}
