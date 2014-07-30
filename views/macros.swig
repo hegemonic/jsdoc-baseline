@@ -32,10 +32,16 @@
 {% macro types(doclet) -%}
     {%- spaceless %}
 
+    {# TODO: offer multiple formats, with a config option #}
+    {#
     {% if doclet.type && doclet.type.names && doclet.type.names.length %}
         <span {{ cssClass('type-names') }}>{{ linklist(doclet.type.names) }}</span>
     {% endif %}
+    #}
 
+    {% if doclet.type && doclet.type.parsedType %}
+        <span {{ cssClass('type-names') }}>{{ describeType(doclet.type.parsedType)|safe }}</span>
+    {% endif %}
     {% endspaceless -%}
 {%- endmacro %}
 
@@ -175,6 +181,9 @@
 {% endmacro %}
 
 {% macro inforow(item, options) %}
+{% if item.type && item.type.parsedType %}
+    {% set typeDescription = describeType(item.type.parsedType, { format: 'extended' }) %}
+{% endif %}
 {% block infotable-row %}
 <tr>
     {% block item-name -%}
@@ -194,8 +203,16 @@
     {% block item-types -%}
         {%- spaceless %}
         <td {{ cssClass('details-table-types') }}>
+            {# TODO: offer multiple formats, with a config option #}
+            {#
             {% if item.type && item.type.names %}
                 {{ typelist(item.type.names) }}
+            {% else %}
+                {{ translate('tables.body.unknownType') }}
+            {% endif %}
+            #}
+            {% if typeDescription %}
+                <p>{{ typeDescription.description|safe }}</p>
             {% else %}
                 {{ translate('tables.body.unknownType') }}
             {% endif %}
@@ -219,18 +236,29 @@
     {% block item-description %}
         <td {{ cssClass('details-table-description') }}>
             {{ item.description|markdown }}
+            {# TODO: offer multiple formats, with a config option #}
+            {#
             {% block item-nullable %}
                 {% if item.nullable === true %}
-                    {# TODO: formatting #}
                     <p>{{ translate('tables.body.nullable.long') }}</p>
                 {% elif item.nullable === false %}
-                    {# TODO: formatting #}
                     <p>{{ translate('tables.body.nonNullable.long') }}</p>
                 {% endif %}
             {% endblock %}
+            #}
+            {% block item-modifiers %}
+                {% if typeDescription %}
+                    {% if typeDescription.modifiers.nullable %}
+                        <p>{{ typeDescription.modifiers.nullable }}</p>
+                    {% endif %}
+                    {% if typeDescription.modifiers.repeatable %}
+                        <p>{{ typeDescription.modifiers.repeatable }}</p>
+                    {% endif %}
+                {% endif %}
+            {% endblock %}
+
             {% block item-defaultvalue %}
                 {% if item.defaultvalue && !options.isEnum %}
-                    {# TODO: formatting #}
                     <p>{{ translate('tables.body.defaultValue', { value: item.defaultvalue }) }}</p>
                 {% endif %}
             {% endblock %}
