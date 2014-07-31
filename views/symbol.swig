@@ -116,7 +116,7 @@
                 </header>
             {%- endblock -%}
 
-            {%- block symbol -%}
+            {%- block symbol-members -%}
                 {% set symbolClasses = members[CATEGORIES.CLASSES] %}
                 {% set symbolNamespaces = members[CATEGORIES.NAMESPACES] %}
                 {% set symbolProperties = members[CATEGORIES.PROPERTIES] %}
@@ -157,7 +157,6 @@
                         {% endif %}
                     </section>
                 {% endblock %}
-
 
                 {% block symbol-classes %}
                     {% set context = {
