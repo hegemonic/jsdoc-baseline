@@ -1,4 +1,4 @@
-{% macro linklist(items, joiner, open, close) -%}
+{% macro linkList(items, joiner, open, close) -%}
     {%- spaceless %}
 
     {% set links = [] %}
@@ -35,7 +35,7 @@
     {# TODO: offer multiple formats, with a config option #}
     {#
     {% if doclet.type && doclet.type.names && doclet.type.names.length %}
-        <span {{ cssClass('type-names') }}>{{ linklist(doclet.type.names) }}</span>
+        <span {{ cssClass('type-names') }}>{{ linkList(doclet.type.names) }}</span>
     {% endif %}
     #}
 
@@ -45,7 +45,7 @@
     {% endspaceless -%}
 {%- endmacro %}
 
-{% macro nameprefix(kind) -%}
+{% macro namePrefix(kind) -%}
     {%- spaceless %}
         {% if kind === 'class' %}
             {{ 'new ' }}
@@ -54,7 +54,7 @@
 {%- endmacro %}
 
 {# TODO: can we remove this? #}
-{% macro sourcefile(doc) %}
+{% macro sourceFile(doc) %}
     {% if config('outputSourceFiles') && doc.meta && doc.meta.filename && doc.meta.lineno %}
         <dl {{ cssClass('!dl-compact') }}>
             {% set context = { doc: doc } %}
@@ -63,7 +63,7 @@
     {% endif %}
 {% endmacro %}
 
-{% macro returntypes(returns) -%}
+{% macro returnTypes(returns) -%}
     {%- spaceless %}
     {% set types = [] %}
     {% for returned in returns %}
@@ -71,7 +71,7 @@
             {% set types = types.concat(returned.type.names) %}
         {% endif %}
     {% endfor %}
-    {{ linklist(types) }}
+    {{ linkList(types) }}
     {% endspaceless -%}
 {%- endmacro %}
 
@@ -88,14 +88,14 @@
             #}
             {% if doclet.kind !== 'class' && doclet.returns && doclet.returns.length %}
                 &nbsp;&rarr;
-                <span {{ cssClass('signature-returns') }}>{{ returntypes(doclet.returns) }}</span>
+                <span {{ cssClass('signature-returns') }}>{{ returnTypes(doclet.returns) }}</span>
             {% endif %}
         </span>
     {% endif %}
     {% endspaceless -%}
 {%- endmacro %}
 
-{% macro maybelink(item, needsLink) %}
+{% macro maybeLink(item, needsLink) %}
     {% spaceless %}
     {% if needsLink %}
         {{ link(item)|markdownLinks }}
@@ -105,7 +105,7 @@
     {% endspaceless -%}
 {%- endmacro %}
 
-{% macro listitems(items, options) %}
+{% macro listItems(items, options) %}
     {% set options = options || {} %}
     {% if !Array.isArray(items) %}
         {% set items = [items] %}
@@ -115,27 +115,13 @@
         <dd>&nbsp;</dd>
     {% else %}
         {% for item in items %}
-            <dd>{{ maybelink(item, options.needsLink)|resolveLinks }}</dd>
+            <dd>{{ maybeLink(item, options.needsLink)|resolveLinks }}</dd>
         {% endfor %}
     {% endif %}
 {% endmacro %}
 
-{% macro minilist(data, category, listTitle, options) %}
-    {% set options = options || {} %}
-    {% if options.addWrapper %}
-        <dl {{ cssClass(category, 'list-wrapper') }}>
-    {% endif %}
-    {% if listTitle %}
-        <dt>{{ listTitle }}</dt>
-    {% endif %}
-    {{ listitems(data, options) }}
-    {% if options.addWrapper %}
-        </dl>
-    {% endif %}
-{% endmacro %}
-
 {# TODO: fix whitespace #}
-{% macro typelist(names) -%}
+{% macro typeList(names) -%}
 {%- spaceless %}
     {% for name in names %}
         {% if !loop.first %}
@@ -153,7 +139,7 @@
 {%- endmacro %}
 
 {# TODO: move to an include? rename classes? #}
-{% macro infotable(data, options) %}
+{% macro infoTable(data, options) %}
 {% block infotable %}
     {% set options = options || {} %}
     <table {{ cssClass('!jsdoc-details-table') }}>
@@ -172,7 +158,7 @@
         {% block infotable-body %}
         <tbody>
             {% for item in data %}
-                {{ inforow(item, options) }}
+                {{ infoRow(item, options) }}
             {% endfor %}
         </tbody>
         {% endblock %}
@@ -180,7 +166,7 @@
 {% endblock %}
 {% endmacro %}
 
-{% macro inforow(item, options) %}
+{% macro infoRow(item, options) %}
 {% if item.type && item.type.parsedType %}
     {% set typeDescription = describeType(item.type.parsedType, { format: 'extended' }) %}
 {% endif %}
@@ -206,7 +192,7 @@
             {# TODO: offer multiple formats, with a config option #}
             {#
             {% if item.type && item.type.names %}
-                {{ typelist(item.type.names) }}
+                {{ typeList(item.type.names) }}
             {% else %}
                 {{ translate('tables.body.unknownType') }}
             {% endif %}
@@ -269,7 +255,7 @@
 {% block item-children %}
     {% if item.children %}
         {% for child in item.children %}
-            {{ inforow(child) }}
+            {{ infoRow(child) }}
         {% endfor %}
     {% endif %}
 {% endblock %}

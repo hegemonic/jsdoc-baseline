@@ -1,10 +1,10 @@
 {% import '../../macros.swig' as macros %}
 
 {% block augments %}
-	{% if augments && augments.length %}
-		{% block augments-content %}
+    {% if augments && augments.length %}
+        {% block augments-content %}
             <dt>{{ translate('headings.augments') }}</dt>
-            {{ macros.listitems(augments, { needsLink: true }) }}
+            {{ macros.listItems(augments, { needsLink: true }) }}
         {% endblock %}
-	{% endif %}
+    {% endif %}
 {% endblock %}

@@ -12,7 +12,7 @@
                 {% endfor %}
                 {% if descriptions.length %}
                     <dt>{{ translate('headings.returns') }}</dt>
-                    {{ macros.listitems(descriptions) }}
+                    {{ macros.listItems(descriptions) }}
                 {% endif %}
             {% endblock %}
         {% endif %}

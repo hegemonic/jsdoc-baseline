@@ -4,7 +4,7 @@
     {% if deprecated %}
         {% block deprecated-content %}
             <dt>{{ translate('headings.deprecated') }}</dt>
-            {{ macros.listitems(deprecated) }}
+            {{ macros.listItems(deprecated) }}
         {% endblock %}
     {% endif %}
 {% endblock %}

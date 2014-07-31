@@ -32,7 +32,7 @@
 
                             {% block property-properties %}
                                 {% if property.properties %}
-                                    {{ macros.infotable(property.properties, {
+                                    {{ macros.infoTable(property.properties, {
                                         hideOptional: true,
                                         isEnum: property.isEnum
                                     }) }}

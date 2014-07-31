@@ -6,7 +6,7 @@
         {%- spaceless %}
             {% autoescape false %}
                 {# TODO: do we even set doc.attribs anymore?? should be badges, right? #}
-                {{ doc.attribs }}{{ macros.nameprefix(doc.kind) }}{{ doc.name }}
+                {{ doc.attribs }}{{ macros.namePrefix(doc.kind) }}{{ doc.name }}
                 {% if needsSignature(doc) %}
                     {{ macros.signature(doc) }}
                 {% endif %}

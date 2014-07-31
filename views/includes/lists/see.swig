@@ -4,7 +4,7 @@
     {% if see && see.length %}
         {% block see-content %}
             <dt>{{ translate('headings.see') }}</dt>
-            {{ macros.listitems(see, { needsLink: true }) }}
+            {{ macros.listItems(see, { needsLink: true }) }}
         {% endblock %}
     {% endif %}
 {% endblock %}

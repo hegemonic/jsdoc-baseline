@@ -5,7 +5,7 @@
         {% set doc.params = moveChildren(doc.params) %}
         {% block params-content %}
             <h>{{ translate('headings.parameters', doc.params.length) }}</h>
-            {{ macros.infotable(doc.params) }}
+            {{ macros.infoTable(doc.params) }}
         {% endblock %}
     {% endif %}
 {% endblock %}

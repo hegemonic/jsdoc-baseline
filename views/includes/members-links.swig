@@ -17,7 +17,7 @@
                                 <p>{% include 'includes/summary.swig' with item %}</p>
                             {% endif %}
                             {% block symbol-members-links-source %}
-                                {{ macros.sourcefile(item) }}
+                                {{ macros.sourceFile(item) }}
                             {% endblock %}
                         {% endfor %}
                     </section>

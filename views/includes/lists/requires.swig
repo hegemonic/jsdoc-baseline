@@ -4,7 +4,7 @@
     {% if requires && requires.length %}
         {% block requires-content %}
             <dt>{{ translate('headings.requires') }}</dt>
-            {{ macros.listitems(requires, { needsLink: true }) }}
+            {{ macros.listItems(requires, { needsLink: true }) }}
         {% endblock %}
     {% endif %}
 {% endblock %}
