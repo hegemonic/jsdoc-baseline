@@ -1,4 +1,7 @@
 {% block details %}
+    {% block details-version %}
+        {% include 'lists/version.swig' %}
+    {% endblock %}
     {% block details-since %}
         {% include 'lists/since.swig' %}
     {% endblock %}

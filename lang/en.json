@@ -35,7 +35,8 @@
     "todo": "To do",
     "tutorials": "Tutorial |||| Tutorials",
     "type": "Type",
-    "typedefs": "Abstract type ||| Abstract types"
+    "typedefs": "Abstract type ||| Abstract types",
+    "version": "Version"
   },
   "pageTitle": "%{category}: %{title}",
   "tables": {
