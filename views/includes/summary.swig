@@ -1,7 +1,7 @@
 {% block summary %}
     {% if summary %}
         {% block summary-content %}
-            {{ summary|markdown }}
+            {{ summary|resolveLinks|markdown }}
         {% endblock %}
     {% endif %}
 {% endblock %}

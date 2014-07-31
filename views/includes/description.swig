@@ -1,7 +1,7 @@
 {% block description %}
     {% if description %}
         {% block description-content %}
-            {{ description|markdown }}
+            {{ description|resolveLinks|markdown }}
         {% endblock %}
     {% endif %}
 {% endblock %}

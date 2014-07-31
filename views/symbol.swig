@@ -93,7 +93,7 @@
                     {%- block symbol-header-classdesc -%}
                         {%- if doc.classdesc %}
                             <div {{ cssClass('!symbol-classdesc') }}>
-                                {{ doc.classdesc|markdown }}
+                                {{ doc.classdesc|resolveLinks|markdown }}
                             </div>
                         {% endif -%}
                     {%- endblock -%}

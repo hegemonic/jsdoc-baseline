@@ -115,7 +115,7 @@
         <dd>&nbsp;</dd>
     {% else %}
         {% for item in items %}
-            <dd>{{ maybelink(item, options.needsLink) }}</dd>
+            <dd>{{ maybelink(item, options.needsLink)|resolveLinks }}</dd>
         {% endfor %}
     {% endif %}
 {% endmacro %}
@@ -235,7 +235,7 @@
     {%- endblock %}
     {% block item-description %}
         <td {{ cssClass('details-table-description') }}>
-            {{ item.description|markdown }}
+            {{ item.description|resolveLinks|markdown }}
             {# TODO: offer multiple formats, with a config option #}
             {#
             {% block item-nullable %}
