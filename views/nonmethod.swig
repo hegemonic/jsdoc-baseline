@@ -1,18 +1,18 @@
 {% block nonmethod %}
     {% block nonmethod-heading -%}
+        {# TODO: can we make the heading a single include for methods and non-methods? #}
+        {# TODO: do we need to separate methods and non-methods at all?? #}
         <h id="{{ doc.id }}">
-            {%- spaceless %}
-                {% autoescape false %}
-                    {# TODO: do we even set doc.attribs anymore?? should be badges, right? #}
-                    {{ doc.attribs }}{{ macros.namePrefix(doc.kind) }}{{ doc.name }}
-                    {% if needsSignature(doc) %}
-                        {{ macros.signature(doc) }}
-                    {% elif doc.type && doc.type.names %}
-                        {# TODO: make <small> tag configurable #}
-                        <small {{ cssClass('symbol-type') }}> {{ macros.types(doc) }}</small>
-                    {% endif %}
-                {% endautoescape %}
-            {% endspaceless -%}
+            {% autoescape false %}
+                {# TODO: do we even set doc.attribs anymore?? should be badges, right? #}
+                {{ doc.attribs }}{{ macros.namePrefix(doc.kind) }}{{ doc.name }}
+                {% if needsSignature(doc) %}
+                    {{ macros.signature(doc) }}
+                {% elif doc.type && doc.type.names %}
+                    {# TODO: make <small> tag configurable #}
+                    <small {{ cssClass('symbol-type') }}> {{ macros.types(doc) }}</small>
+                {% endif %}
+            {% endautoescape %}
         </h>
     {%- endblock %}
 

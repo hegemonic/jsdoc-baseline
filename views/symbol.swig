@@ -1,66 +1,6 @@
 {% extends 'layout.swig' %}
 {% import 'macros.swig' as macros %}
 
-{% macro membersLinks(items, headingKey) %}
-    {% if items && items.length %}
-        {% block symbol-members-links %}
-            <section>
-                {% block symbol-members-links-heading %}
-                    <h>{{ translate('headings.' + headingKey, items.length) }}</h>
-                {% endblock %}
-
-                {% block symbol-members-links-content %}
-                    <section>
-                        {% for item in items %}
-                            <h>{{ link(item.longname, item.name)|safe }}</h>
-                            {% if member.summary %}
-                                <p>{% include 'includes/summary.swig' with item %}</p>
-                            {% endif %}
-                            {% block symbol-members-links-source %}
-                                {{ macros.sourceFile(item) }}
-                            {% endblock %}
-                        {% endfor %}
-                    </section>
-                {% endblock %}
-            </section>
-        {% endblock %}
-    {% endif %}
-{% endmacro %}
-
-{% macro membersDetail(items, headingKey) %}
-    {% if items && items.length %}
-        {% block symbol-members-detail %}
-            <section>
-                {% block symbol-members-detail-heading %}
-                    <h>{{ translate('headings.' + headingKey, items.length) }}</h>
-                {% endblock %}
-
-                {% block symbol-members-detail-content %}
-                    <section>
-                        {% for item in items %}
-                            {#
-                                TODO: confusing to use 'method.swig' for typedefs/events;
-                                also, this logic belongs elsewhere
-                            #}
-                            {%
-                                if containsFunctionType(item.type) || item.kind === 'event' ||
-                                    item.kind === 'function'
-                            %}
-                                {% set context = { doc: item } %}
-                                {% include 'method.swig' with context %}
-                            {% else %}
-                                {# TODO: working? #}
-                                {% set context = { properties: item } %}
-                                {% include 'properties.swig' with context %}
-                            {% endif %}
-                        {% endfor %}
-                    </section>
-                {% endblock %}
-            </section>
-        {% endblock %}
-    {% endif %}
-{% endmacro %}
-
 {% block banner %}{% endblock %}
 
 {% block main-content %}
@@ -175,8 +115,11 @@
                 {% endblock %}
 
                 {% block symbol-properties %}
-                    {% set context = { properties: symbolProperties } %}
-                    {% include 'properties.swig' with context %}
+                    {% set context = {
+                        symbolItems: symbolProperties,
+                        headingKey: CATEGORIES.PROPERTIES
+                    } %}
+                    {% include 'includes/members-detail.swig' with context %}
                 {% endblock %}
 
                 {% block symbol-methods %}

@@ -20,9 +20,8 @@
                                 {% set context = { doc: item } %}
                                 {% include '../method.swig' with context %}
                             {% else %}
-                                {# TODO: working? #}
-                                {% set context = { properties: item } %}
-                                {% include '../properties.swig' with context %}
+                                {% set context = { doc: item } %}
+                                {% include '../nonmethod.swig' with context %}
                             {% endif %}
                         {% endfor %}
                     </section>
