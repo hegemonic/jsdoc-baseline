@@ -84,16 +84,12 @@
                         {% if doc.kind === 'module' && doc.exports %}
                             {% for moduleExports in doc.exports %}
                                 {% set context = { doc: moduleExports } %}
-                                {% if moduleExports.kind === 'class' %}
-                                    {% include 'method.swig' with context %}
-                                {% else %}
-                                    {% include 'nonmethod.swig' with context %}
-                                {% endif %}
+                                {% include 'symbol-detail.swig' with context %}
                             {% endfor %}
                         {# Classes also need additional docs, beyond what's in the header. #}
                         {% elif doc.kind === 'class' %}
                             {% set context = { doc: doc } %}
-                            {% include 'method.swig' with context %}
+                            {% include 'symbol-detail.swig' with context %}
                         {% endif %}
                     </section>
                 {% endblock %}

@@ -1,81 +1,72 @@
 {% import 'macros.swig' as macros %}
 
-{% block method %}
-    {% block method-heading -%}
+{% block symbol-detail -%}
+    {%- block symbol-detail-heading -%}
         <h id="{{ doc.id }}">
-        {%- spaceless %}
-            {% autoescape false %}
-                {# TODO: do we even set doc.attribs anymore?? should be badges, right? #}
-                {{ doc.attribs }}{{ macros.namePrefix(doc.kind) }}{{ doc.name }}
-                {% if needsSignature(doc) %}
-                    {{ macros.signature(doc) }}
-                {% endif %}
-            {% endautoescape %}
-        {% endspaceless -%}
+            {%- spaceless %}
+                {% autoescape false %}
+                    {# TODO: do we even set doc.attribs anymore?? should be badges, right? #}
+                    {{ doc.attribs }}{{ macros.namePrefix(doc.kind) }}{{ doc.name }}
+                    {% if needsSignature(doc) %}
+                        {{ macros.signature(doc) }}
+                    {% elif doc.type && doc.type.names %}
+                        {# TODO: make <small> tag configurable #}
+                        <small {{ cssClass('symbol-type') }}>&nbsp;{{ macros.types(doc) }}</small>
+                    {% endif %}
+                {% endautoescape %}
+            {% endspaceless -%}
         </h>
     {%- endblock %}
 
-    {% block method-content %}
+    {% block symbol-detail-content %}
         <section>
-            {% block method-description %}
+            {% block symbol-detail-description %}
                 {% include 'includes/description.swig' with doc %}
             {% endblock %}
 
-            {% block method-examples %}
+            {% block symbol-detail-examples %}
                 {% include 'includes/examples.swig' with doc %}
             {% endblock %}
 
-            {% block method-this %}
+            {% block symbol-detail-this %}
                 {# By default, the value of `this` within a method is not documented. #}
             {% endblock %}
 
-            {% block method-params %}
+            {% block symbol-detail-params %}
                 {% include 'includes/params.swig' with doc %}
             {% endblock %}
 
-            {% block method-properties %}
+            {% block symbol-detail-properties %}
                 {% include 'includes/propertytable.swig' with doc %}
             {% endblock %}
 
-            {# TODO: why here? why not an include? #}
-            {% block method-type %}
-                {% if doc.kind === 'event' && doc.type && doc.type.names %}
-                    <dl {{ cssClass('method-type') }}>
-                        <dt>{{ translate('headings.type') }}</dt>
-                        <dd>
-                            {{ macros.type(doc) }}
-                        </dd>
-                    </dl>
-                {% endif %}
-            {% endblock %}
-
-            {% block method-content-list %}
+            {% block symbol-detail-content-list %}
                 <dl {{ cssClass('!dl-compact') }}>
-                    {% block method-sourcefile %}
+                    {% block symbol-detail-sourcefile %}
                         {% include 'includes/sourcefile.swig' with doc %}
                     {% endblock %}
-                    {% block method-augments %}
+                    {% block symbol-detail-augments %}
                         {% include 'includes/lists/augments.swig' with doc %}
                     {% endblock %}
-                    {% block method-details %}
+                    {% block symbol-detail-details %}
                         {% include 'includes/details.swig' with doc %}
                     {% endblock %}
-                    {% block method-requires %}
+                    {% block symbol-detail-requires %}
                         {% include 'includes/lists/requires.swig' with doc %}
                     {% endblock %}
-                    {% block method-fires %}
+                    {% block symbol-detail-fires %}
                         {% include 'includes/lists/fires.swig' with doc %}
                     {% endblock %}
-                    {% block method-listens %}
+                    {% block symbol-detail-listens %}
                         {% include 'includes/lists/listens.swig' with doc %}
                     {% endblock %}
-                    {% block method-listeners %}
+                    {% block symbol-detail-listeners %}
                         {% include 'includes/lists/listeners.swig' with doc %}
                     {% endblock %}
-                    {% block method-exceptions %}
+                    {% block symbol-detail-exceptions %}
                         {% include 'includes/lists/throws.swig' with doc %}
                     {% endblock %}
-                    {% block method-returns %}
+                    {% block symbol-detail-returns %}
                         {% include 'includes/lists/returns.swig' with doc %}
                     {% endblock %}
                 </dl>
