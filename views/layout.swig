@@ -14,9 +14,9 @@
             {% endblock %}
             {% block css %}
                 {# TODO: https://github.com/typekit/webfontloader #}
+                <link rel="stylesheet" href="http://brick.a.ssl.fastly.net/Karla:400,400i,700,700i" type="text/css">
+                <link rel="stylesheet" href="http://brick.a.ssl.fastly.net/Noto+Serif:400,400i,700,700i" type="text/css">
                 <link rel="stylesheet" href="http://brick.a.ssl.fastly.net/Inconsolata:500" type="text/css">
-                <link rel="stylesheet" href="http://brick.a.ssl.fastly.net/Roboto:400,400i,700,700i" type="text/css">
-                <link rel="stylesheet" href="http://brick.a.ssl.fastly.net/Noto+Sans:400,400i,700,700i" type="text/css">
                 {# TODO: replace with relativePath tag #}
                 <link href="css/baseline.css" rel="stylesheet">
             {% endblock %}
