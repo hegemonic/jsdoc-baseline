@@ -8,7 +8,8 @@
             {% endblock %}
             {% block title %}
                 <title>
-                    {% include 'includes/pagetitle.swig' %}
+                    {% set context = { pageCategory: pageCategory, pageTitle: pageTitle } %}
+                    {% include 'includes/pagetitle.swig' with context only %}
                 </title>
             {% endblock %}
             {% block css %}
@@ -26,7 +27,7 @@
         <body onload="prettyPrint()">
             {% block body-navbar %}
                 {% set context = {package: package} %}
-                {% include 'includes/navbar.swig' with context %}
+                {% include 'includes/navbar.swig' with context only %}
             {% endblock %}
 
             {% block body-container %}

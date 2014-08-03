@@ -17,7 +17,8 @@
 
             {% set columnGroups = summaryItems|group(itemsPerColumn, COLUMN_COUNT) %}
             {% for columnGroup in columnGroups %}
-                {% include 'summarycolumn.swig' %}
+                {% set context = { columnGroup: columnGroup } %}
+                {% include 'summarycolumn.swig' with context only %}
             {% endfor %}
         </div>
     </div>

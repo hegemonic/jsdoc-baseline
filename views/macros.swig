@@ -58,7 +58,7 @@
     {% if config('outputSourceFiles') && doc.meta && doc.meta.filename && doc.meta.lineno %}
         <dl {{ cssClass('!dl-compact') }}>
             {% set context = { doc: doc } %}
-            {% include 'includes/sourcefile.swig' with context %}
+            {% include 'includes/sourcefile.swig' with context only %}
         </dl>
     {% endif %}
 {% endmacro %}

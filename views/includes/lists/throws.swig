@@ -10,7 +10,7 @@
                     {% if exception.type && exception.type.names %}
                         {{ macros.typeList(exception.type.names, 'exception') }}
                     {% endif %}
-                    {% include '../description.swig' with exception %}
+                    {% include '../description.swig' with exception only %}
                 </dd>
             {% endfor %}
         </dl>

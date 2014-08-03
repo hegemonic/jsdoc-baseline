@@ -16,20 +16,21 @@
 </h>
 
 <section>
-    {% include 'includes/description.swig' with doc %}
-    {% include 'includes/examples.swig' with doc %}
-    {% include 'includes/params.swig' with doc %}
-    {% include 'includes/propertytable.swig' with doc %}
+    {% set context = { doc: doc } %}
+    {% include 'includes/description.swig' with doc only %}
+    {% include 'includes/examples.swig' with doc only %}
+    {% include 'includes/params.swig' with doc only %}
+    {% include 'includes/propertytable.swig' with doc only %}
 
     <dl {{ cssClass('!dl-compact') }}>
-        {% include 'includes/sourcefile.swig' with doc %}
-        {% include 'includes/lists/augments.swig' with doc %}
-        {% include 'includes/details.swig' with doc %}
-        {% include 'includes/lists/requires.swig' with doc %}
-        {% include 'includes/lists/fires.swig' with doc %}
-        {% include 'includes/lists/listens.swig' with doc %}
-        {% include 'includes/lists/listeners.swig' with doc %}
-        {% include 'includes/lists/throws.swig' with doc %}
-        {% include 'includes/lists/returns.swig' with doc %}
+        {% include 'includes/sourcefile.swig' with context only %}
+        {% include 'includes/lists/augments.swig' with doc only %}
+        {% include 'includes/details.swig' with doc only %}
+        {% include 'includes/lists/requires.swig' with doc only %}
+        {% include 'includes/lists/fires.swig' with doc only %}
+        {% include 'includes/lists/listens.swig' with doc only %}
+        {% include 'includes/lists/listeners.swig' with doc only %}
+        {% include 'includes/lists/throws.swig' with doc only %}
+        {% include 'includes/lists/returns.swig' with doc only %}
     </dl>
 </section>

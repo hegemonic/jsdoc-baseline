@@ -4,7 +4,7 @@
         <section>
             {% for item in symbolItems %}
                 {% set context = { doc: item } %}
-                {% include '../symbol-detail.swig' with context %}
+                {% include '../symbol-detail.swig' with context only %}
             {% endfor %}
         </section>
     </section>

@@ -9,7 +9,8 @@
         <section>
             {{ resetHeadingLevel() }}
             {% block package-title %}
-                {% include 'includes/packagetitle.swig' %}
+                {% set context = { package: package } %}
+                {% include 'includes/packagetitle.swig' with context only %}
             {% endblock %}
 
             {# TODO default to a list of modules/classes/namespaces/events/etc. #}

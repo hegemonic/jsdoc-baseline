@@ -7,13 +7,14 @@
     {% for doc in docs %}
         <section>
             {{ resetHeadingLevel() }}
-            {% include 'includes/symbolheader.swig' %}
+            {% set context = { doc: doc } %}
+            {% include 'includes/symbolheader.swig' with context only %}
 
             {%- block symbol-members -%}
                 {# Summary lists of all members #}
                 {% block symbol-summary %}
                     {% set context = { members: members } %}
-                    {% include 'includes/components/summaryblocks.swig' with context %}
+                    {% include 'includes/components/summaryblocks.swig' with context only %}
                 {% endblock %}
 
                 {#
@@ -31,12 +32,12 @@
                         {% if doc.kind === 'module' && doc.exports %}
                             {% for moduleExports in doc.exports %}
                                 {% set context = { doc: moduleExports } %}
-                                {% include 'symbol-detail.swig' with context %}
+                                {% include 'symbol-detail.swig' with context only %}
                             {% endfor %}
                         {# Classes also need additional docs, beyond what's in the header. #}
                         {% elif doc.kind === 'class' %}
                             {% set context = { doc: doc } %}
-                            {% include 'symbol-detail.swig' with context %}
+                            {% include 'symbol-detail.swig' with context only %}
                         {% endif %}
                     </section>
                 {% endblock %}
@@ -46,7 +47,7 @@
                         symbolItems: members[CATEGORIES.CLASSES],
                         headingKey: CATEGORIES.CLASSES
                     } %}
-                    {% include 'includes/members-links.swig' with context %}
+                    {% include 'includes/members-links.swig' with context only %}
                 {% endblock %}
 
                 {% block symbol-namespaces %}
@@ -54,7 +55,7 @@
                         symbolItems: members[CATEGORIES.NAMESPACES],
                         headingKey: CATEGORIES.NAMESPACES
                     } %}
-                    {% include 'includes/members-links.swig' with context %}
+                    {% include 'includes/members-links.swig' with context only %}
                 {% endblock %}
 
                 {% block symbol-properties %}
@@ -62,7 +63,7 @@
                         symbolItems: members[CATEGORIES.PROPERTIES],
                         headingKey: CATEGORIES.PROPERTIES
                     } %}
-                    {% include 'includes/members-detail.swig' with context %}
+                    {% include 'includes/members-detail.swig' with context only %}
                 {% endblock %}
 
                 {% block symbol-methods %}
@@ -70,7 +71,7 @@
                         symbolItems: members[CATEGORIES.FUNCTIONS],
                         headingKey: CATEGORIES.FUNCTIONS
                     } %}
-                    {% include 'includes/members-detail.swig' with context %}
+                    {% include 'includes/members-detail.swig' with context only %}
                 {% endblock %}
 
                 {% block symbol-typedefs %}
@@ -78,7 +79,7 @@
                         symbolItems: members[CATEGORIES.TYPEDEFS],
                         headingKey: CATEGORIES.TYPEDEFS
                     } %}
-                    {% include 'includes/members-detail.swig' with context %}
+                    {% include 'includes/members-detail.swig' with context only %}
                 {% endblock %}
 
                 {% block symbol-events %}
@@ -86,7 +87,7 @@
                         symbolItems: members[CATEGORIES.EVENTS],
                         headingKey: CATEGORIES.EVENTS
                     } %}
-                    {% include 'includes/members-detail.swig' with context %}
+                    {% include 'includes/members-detail.swig' with context only %}
                 {% endblock %}
             {% endblock %}
         </section>

@@ -17,7 +17,7 @@
                 </dt>
                 {% if columnGroupItem.summary %}
                     {% set context = { summary: columnGroupItem.summary } %}
-                    <dd>{% include '../summary.swig' with context %}</dd>
+                    <dd>{% include '../summary.swig' with context only %}</dd>
                 {% endif %}
             {% endfor %}
         </dl>

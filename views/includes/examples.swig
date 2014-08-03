@@ -6,7 +6,7 @@
         </h>
         {% for example in examples %}
             {% set context = { example: example } %}
-            {% include 'example.swig' with context %}
+            {% include 'example.swig' with context only %}
         {% endfor %}
     {% endif %}
 {% endspaceless -%}

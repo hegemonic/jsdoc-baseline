@@ -17,11 +17,13 @@
 
     {%- if doc.kind !== 'class' -%}
         <div {{ cssClass('!symbol-description') }}>
-            {%- include 'description.swig' with doc -%}
+            {% set context = { description: doc.description } %}
+            {%- include 'description.swig' with context only -%}
         </div>
     {%- endif -%}
 
     <dl {{ cssClass('!dl-compact') }}>
-        {% include 'sourcefile.swig' with doc %}
+        {% set context = { doc: doc } %}
+        {% include 'sourcefile.swig' with context only %}
     </dl>
 </header>
