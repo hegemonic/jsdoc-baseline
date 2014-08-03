@@ -6,20 +6,17 @@
 
 {% block main-content %}
     {% if package || readme %}
-        <section>
-            {{ resetHeadingLevel() }}
-            {% block package-title %}
-                {% set context = { package: package } %}
-                {% include 'includes/packagetitle.swig' with context only %}
-            {% endblock %}
+        {% block package-title %}
+            {% set context = { package: package } %}
+            {% include 'includes/packagetitle.swig' with context only %}
+        {% endblock %}
 
-            {# TODO default to a list of modules/classes/namespaces/events/etc. #}
-            {# TODO show module descs depending on the config #}
-            {% block readme %}
-                {% if readme %}
-                    <article>{{ readme }}</article>
-                {% endif %}
-            {% endblock %}
-        </section>
+        {# TODO default to a list of modules/classes/namespaces/events/etc. #}
+        {# TODO show module descs depending on the config #}
+        {% block readme %}
+            {% if readme %}
+                <article>{{ readme }}</article>
+            {% endif %}
+        {% endblock %}
     {% endif %}
 {% endblock %}
