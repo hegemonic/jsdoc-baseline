@@ -3,14 +3,14 @@
 {% block main-content %}
     {% block source %}
         <section>
-            {% resetheadinglevel %}
+            {{ resetHeadingLevel() }}
             {% block source-heading %}
                 <header {{ cssClass('!page-header') }}>
                     <h {{ cssClass('page-title') }}>{{ pageTitle }}</h>
                 </header>
             {% endblock %}
 
-            {% block source-content %}
+            {% block source-content -%}
                 <article>
                     {%- spaceless %}
                         <pre {{ cssClass('!prettyprint', '!linenums', 'source') }}><code>
@@ -18,7 +18,7 @@
                         </code></pre>
                     {% endspaceless -%}
                 </article>
-            {% endblock %}
+            {%- endblock %}
         </section>
     {% endblock %}
 {% endblock %}

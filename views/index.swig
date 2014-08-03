@@ -7,13 +7,9 @@
 {% block main-content %}
     {% if package || readme %}
         <section>
-            {% resetheadinglevel %}
+            {{ resetHeadingLevel() }}
             {% block package-title %}
-                {% if package %}
-                    <header {{ cssClass('!page-header') }}>
-                        <h {{ cssClass('page-title') }}>{{ package.name }} {{ package.version }}</h>
-                    </header>
-                {% endif %}
+                {% include 'includes/packagetitle.swig' %}
             {% endblock %}
 
             {# TODO default to a list of modules/classes/namespaces/events/etc. #}

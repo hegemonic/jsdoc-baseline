@@ -1,11 +1,7 @@
 {% import '../macros.swig' as macros %}
 
-{% block properties %}
-    {% if properties && properties.length %}
-        {% set props = moveChildren(properties) %}
-        {% block properties-content %}
-            <h>{{ translate('headings.properties', props.length) }}</h>
-            {{ macros.infoTable(props, { isEnum: props.isEnum }) }}
-        {% endblock %}
-    {% endif %}
-{% endblock %}
+{% if properties && properties.length %}
+    {% set props = moveChildren(properties) %}
+    <h>{{ translate('headings.properties', props.length) }}</h>
+    {{ macros.infoTable(props, { isEnum: props.isEnum }) }}
+{% endif %}

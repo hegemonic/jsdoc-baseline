@@ -140,40 +140,33 @@
 
 {# TODO: move to an include? rename classes? #}
 {% macro infoTable(data, options) %}
-{% block infotable %}
-    {% set options = options || {} %}
-    <table {{ cssClass('!jsdoc-details-table') }}>
-        {% block infotable-head %}
-        <thead>
-            <tr>
-                <th>{{ translate('tables.header.name') }}</th>
-                <th>{{ translate('tables.header.type') }}</th>
-                {% if !options.hideOptional %}
-                    <th>{{ translate('tables.header.optional') }}</th>
-                {% endif %}
-                <th>{{ translate('tables.header.description') }}</th>
-            </tr>
-        </thead>
-        {% endblock %}
-        {% block infotable-body %}
-        <tbody>
-            {% for item in data %}
-                {{ infoRow(item, options) }}
-            {% endfor %}
-        </tbody>
-        {% endblock %}
-    </table>
-{% endblock %}
+{% set options = options || {} %}
+<table {{ cssClass('!jsdoc-details-table') }}>
+    <thead>
+        <tr>
+            <th>{{ translate('tables.header.name') }}</th>
+            <th>{{ translate('tables.header.type') }}</th>
+            {% if !options.hideOptional %}
+                <th>{{ translate('tables.header.optional') }}</th>
+            {% endif %}
+            <th>{{ translate('tables.header.description') }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in data %}
+            {{ infoRow(item, options) }}
+        {% endfor %}
+    </tbody>
+</table>
 {% endmacro %}
 
+{# TODO: break this down a bit #}
 {% macro infoRow(item, options) %}
 {% if item.type && item.type.parsedType %}
     {% set typeDescription = describeType(item.type.parsedType, { format: 'extended' }) %}
-{% endif %}
-{% block infotable-row %}
+{% endif -%}
 <tr>
-    {% block item-name -%}
-        {%- spaceless %}
+    {%- spaceless %}
         <td {{ cssClass('details-table-name') }}>
             {% if item.variable -%}
                 &hellip;
@@ -184,10 +177,6 @@
                 &#8212;
             {% endif %}
         </td>
-        {% endspaceless %}
-    {% endblock %}
-    {% block item-types -%}
-        {%- spaceless %}
         <td {{ cssClass('details-table-types') }}>
             {# TODO: offer multiple formats, with a config option #}
             {#
@@ -203,60 +192,44 @@
                 {{ translate('tables.body.unknownType') }}
             {% endif %}
         </td>
-        {% endspaceless %}
-    {% endblock %}
-    {% block item-optional -%}
-        {%- spaceless %}
-            {% if !options.hideOptional %}
-                <td {{ cssClass('details-table-optional') }}>
-                    {% if item.optional %}
-                        {# TODO: improve #}
-                        {{ translate('tables.body.isOptional') }}
-                    {% else %}
-                        {{ translate('tables.body.isRequired') }}
-                    {% endif %}
-                </td>
+        {% if !options.hideOptional %}
+            <td {{ cssClass('details-table-optional') }}>
+                {% if item.optional %}
+                    {# TODO: improve #}
+                    {{ translate('tables.body.isOptional') }}
+                {% else %}
+                    {{ translate('tables.body.isRequired') }}
+                {% endif %}
+            </td>
+        {% endif %}
+    {% endspaceless -%}
+    <td {{ cssClass('details-table-description') }}>
+        {{ item.description|resolveLinks|markdown }}
+        {# TODO: offer multiple formats, with a config option #}
+        {#
+        {% if item.nullable === true %}
+            <p>{{ translate('tables.body.nullable.long') }}</p>
+        {% elif item.nullable === false %}
+            <p>{{ translate('tables.body.nonNullable.long') }}</p>
+        {% endif %}
+        #}
+        {% if typeDescription %}
+            {% if typeDescription.modifiers.nullable %}
+                <p>{{ typeDescription.modifiers.nullable }}</p>
             {% endif %}
-        {% endspaceless -%}
-    {%- endblock %}
-    {% block item-description %}
-        <td {{ cssClass('details-table-description') }}>
-            {{ item.description|resolveLinks|markdown }}
-            {# TODO: offer multiple formats, with a config option #}
-            {#
-            {% block item-nullable %}
-                {% if item.nullable === true %}
-                    <p>{{ translate('tables.body.nullable.long') }}</p>
-                {% elif item.nullable === false %}
-                    <p>{{ translate('tables.body.nonNullable.long') }}</p>
-                {% endif %}
-            {% endblock %}
-            #}
-            {% block item-modifiers %}
-                {% if typeDescription %}
-                    {% if typeDescription.modifiers.nullable %}
-                        <p>{{ typeDescription.modifiers.nullable }}</p>
-                    {% endif %}
-                    {% if typeDescription.modifiers.repeatable %}
-                        <p>{{ typeDescription.modifiers.repeatable }}</p>
-                    {% endif %}
-                {% endif %}
-            {% endblock %}
+            {% if typeDescription.modifiers.repeatable %}
+                <p>{{ typeDescription.modifiers.repeatable }}</p>
+            {% endif %}
+        {% endif %}
 
-            {% block item-defaultvalue %}
-                {% if item.defaultvalue && !options.isEnum %}
-                    <p>{{ translate('tables.body.defaultValue', { value: item.defaultvalue }) }}</p>
-                {% endif %}
-            {% endblock %}
-        </td>
-    {% endblock %}
+        {% if item.defaultvalue && !options.isEnum %}
+            <p>{{ translate('tables.body.defaultValue', { value: item.defaultvalue }) }}</p>
+        {% endif %}
+    </td>
 </tr>
-{% endblock %}
-{% block item-children %}
-    {% if item.children %}
-        {% for child in item.children %}
-            {{ infoRow(child) }}
-        {% endfor %}
-    {% endif %}
-{% endblock %}
+{% if item.children %}
+    {% for child in item.children %}
+        {{ infoRow(child) }}
+    {% endfor %}
+{% endif %}
 {% endmacro %}

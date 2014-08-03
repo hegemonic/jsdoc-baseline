@@ -1,38 +1,12 @@
-{% block details %}
-    {% block details-version %}
-        {% include 'lists/version.swig' %}
-    {% endblock %}
-    {% block details-since %}
-        {% include 'lists/since.swig' %}
-    {% endblock %}
-    {% block details-inherited %}
-        {% include 'lists/inherited.swig' %}
-    {% endblock %}
-    {% block details-mixes %}
-        {% include 'lists/mixes.swig' %}
-    {% endblock %}
-    {% block details-deprecated %}
-        {% include 'lists/deprecated.swig' %}
-    {% endblock %}
-    {% block details-author %}
-        {% include 'lists/author.swig' %}
-    {% endblock %}
-    {% block details-copyright %}
-        {% include 'lists/copyright.swig' %}
-    {% endblock %}
-    {% block details-license %}
-        {% include 'lists/license.swig' %}
-    {% endblock %}
-    {% block details-defaultvalue %}
-        {% include 'lists/defaultvalue.swig' %}
-    {% endblock %}
-    {% block details-tutorials %}
-        {% include 'lists/tutorials.swig' %}
-    {% endblock %}
-    {% block details-see %}
-        {% include 'lists/see.swig' %}
-    {% endblock %}
-    {% block details-todo %}
-        {% include 'lists/todo.swig' %}
-    {% endblock %}
-{% endblock %}
+{% include 'lists/version.swig' %}
+{% include 'lists/since.swig' %}
+{% include 'lists/inherited.swig' %}
+{% include 'lists/mixes.swig' %}
+{% include 'lists/deprecated.swig' %}
+{% include 'lists/author.swig' %}
+{% include 'lists/copyright.swig' %}
+{% include 'lists/license.swig' %}
+{% include 'lists/defaultvalue.swig' %}
+{% include 'lists/tutorials.swig' %}
+{% include 'lists/see.swig' %}
+{% include 'lists/todo.swig' %}

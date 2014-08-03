@@ -1,18 +1,11 @@
-{% block members-detail %}
-    {% if symbolItems && symbolItems.length %}
+{% if symbolItems && symbolItems.length %}
+    <section>
+        <h>{{ translate('headings.' + headingKey, symbolItems.length) }}</h>
         <section>
-            {% block members-detail-heading %}
-                <h>{{ translate('headings.' + headingKey, symbolItems.length) }}</h>
-            {% endblock %}
-
-            {% block members-detail-content %}
-                <section>
-                    {% for item in symbolItems %}
-                        {% set context = { doc: item } %}
-                        {% include '../symbol-detail.swig' with context %}
-                    {% endfor %}
-                </section>
-            {% endblock %}
+            {% for item in symbolItems %}
+                {% set context = { doc: item } %}
+                {% include '../symbol-detail.swig' with context %}
+            {% endfor %}
         </section>
-    {% endif %}
-{% endblock %}
+    </section>
+{% endif %}
