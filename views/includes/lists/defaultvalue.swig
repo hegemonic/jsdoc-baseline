@@ -1,8 +1,12 @@
 {% import '../../macros.swig' as macros %}
 
 {% if defaultvalue %}
-    {# TODO: incorporate changes from https://github.com/jsdoc3/jsdoc/commit/70109a29 and
-        https://github.com/jsdoc3/jsdoc/commit/9af5ea42 #}
     <dt>{{ translate('headings.defaultValue') }}</dt>
-    {{ macros.listItems(defaultvalue) }}
+    {# use syntax highlighting for object/array values #}
+    {% if defaultvaluetype === 'object' || defaultvaluetype === 'array' %}
+        {% set context = { code: defaultvalue } %}
+        <dd>{% include '../prettyprint.swig' with context only %}</dd>
+    {% else %}
+        {{ macros.listItems(defaultvalue) }}
+    {% endif %}
 {% endif %}
