@@ -3,14 +3,14 @@
         <div id="jsdoc-navbar-content" {{ cssClass('jsdoc-navbar-content') }}>
             {% spaceless %}
                 {% if package %}
-                    {# TODO: fix href #}
-                    <a id="jsdoc-navbar-package-name"
-                    {{ cssClass('!jsdoc-navbar-package-name') }} href="#">
-                        {{ package.name || '' }}
-                        {% if package.name && package.version %}
-                            {{ ' ' + package.version }}
-                        {% endif %}
-                    </a>
+                    {% set headingText = package.name || '' %}
+                    {% if package.name && package.version %}
+                        {% set headingText = headingText + ' ' + package.version %}
+                    {% endif %}
+                    {# TODO: make this configurable, perhaps by adding a `linkHref` helper and
+                    building the link that way #}
+                    {% set headingClass = 'jsdoc-navbar-package-name' %}
+                    {{ link('index', headingText, headingClass)|safe }}
                 {% endif %}
                 {#
                     TODO:
