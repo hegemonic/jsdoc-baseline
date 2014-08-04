@@ -6,6 +6,7 @@
 {% block main-content %}
     {% block symbol-overview %}
         {% set context = {
+            category: pageCategory,
             docs: docs,
             members: members
         } %}

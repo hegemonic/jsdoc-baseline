@@ -1,6 +1,13 @@
 {% if config('components.summary') %}
     <section id="summary">
-        {# TODO: add constructor summary after issue #50 is fixed #}
+        {# either constructors (for a class) or symbols exported by the module (for a module) #}
+        {% if headingDocs %}
+            {% set context = {
+                summaryItems: headingDocs,
+                summaryHeadingKey: headingKey
+            } %}
+            {% include 'summaryblock.swig' with context only %}
+        {% endif %}
 
         {% set context = {
             summaryItems: members[CATEGORIES.CLASSES],
