@@ -5,7 +5,10 @@
 
 {% block main-content %}
     {% block symbol-overview %}
-        {% set context = { docs: docs } %}
+        {% set context = {
+            docs: docs,
+            members: members
+        } %}
         {% include 'symboloverview.swig' with context only %}
     {% endblock %}
 
