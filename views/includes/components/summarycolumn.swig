@@ -6,11 +6,7 @@
             {% for columnGroupItem in columnGroup %}
                 <dt>
                     {% spaceless %}
-                        {{ link(columnGroupItem.id, columnGroupItem.name)|safe }}
-                        {#
-                            TODO: make the signature optional? that would create
-                            some confusion for overloaded methods...
-                        #}
+                        {{ link(columnGroupItem.longname, columnGroupItem.name)|safe }}
                         {# TODO: make the signature part of the link #}
                         {{ macros.signature(columnGroupItem)|safe|striptags }}
                     {% endspaceless %}
