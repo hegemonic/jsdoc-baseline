@@ -4,7 +4,7 @@
 
         {% set context = {
             summaryItems: members[CATEGORIES.CLASSES],
-            summaryHeadingKey: 'childrenHeadings.' + CATEGORIES.CLASSES
+            summaryHeadingKey: 'childHeadings.' + CATEGORIES.CLASSES
         } %}
         {% include 'summaryblock.swig' with context only %}
 
