@@ -15,10 +15,13 @@
                         {{ macros.signature(columnGroupItem)|safe|striptags }}
                     {% endspaceless %}
                 </dt>
-                {% if columnGroupItem.summary %}
-                    {% set context = { summary: columnGroupItem.summary } %}
-                    <dd>{% include '../summary.swig' with context only %}</dd>
-                {% endif %}
+                {# Always include <dd> tag, which is required for validity #}
+                <dd>
+                    {% if columnGroupItem.summary %}
+                        {% set context = { summary: columnGroupItem.summary } %}
+                        {% include '../summary.swig' with context only %}
+                    {% endif %}
+                </dd>
             {% endfor %}
         </dl>
     {% endif %}
