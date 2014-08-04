@@ -4,6 +4,7 @@
         <head>
             {% block meta %}
                 <meta name="generator" content="JSDoc {{ jsdocVersion() }}">
+                <meta charset="{{ config('encoding') }}">
                 {# TODO: anything else to include by default? Maybe viewport scale? #}
             {% endblock %}
             {% block title %}
