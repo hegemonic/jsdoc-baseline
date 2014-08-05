@@ -11,12 +11,16 @@
             {% include 'includes/packagetitle.swig' with context only %}
         {% endblock %}
 
-        {# TODO default to a list of modules/classes/namespaces/events/etc. #}
-        {# TODO show module descs depending on the config #}
         {% block readme %}
             {% if readme %}
                 <article>{{ readme }}</article>
             {% endif %}
+        {% endblock %}
+
+        {# TODO: make this configurable, with multiple options #}
+        {% block symbol-index %}
+            {% set context = { docs: docs } %}
+            {% include 'includes/components/symbolindex.swig' with context only %}
         {% endblock %}
     {% endif %}
 {% endblock %}
