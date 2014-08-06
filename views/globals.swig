@@ -2,9 +2,12 @@
 
 {% block main-content %}
     <h {{ cssClass('page-title') }}>{{ translate('headings.globals') }}</h>
-    <section>
-        {% block symbol-members %}
-            {% parent %}
-        {% endblock %}
-    </section>
+    {% set context = { members: members } %}
+
+    {# Summary lists of all members #}
+    {% include 'includes/components/summaryblocks.swig' with context only %}
+
+    {% block symbol-content %}
+        {% include 'includes/symbolcontent.swig' with context only %}
+    {% endblock %}
 {% endblock %}
