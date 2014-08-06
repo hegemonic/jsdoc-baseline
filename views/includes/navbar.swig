@@ -3,7 +3,7 @@
         <div id="jsdoc-navbar-content" {{ cssClass('jsdoc-navbar-content') }}>
             {% spaceless %}
                 {% if package %}
-                    {% set headingText = package.name || '' %}
+                    {% set headingText = package.name || translate('brandDefault') %}
                     {% if package.name && package.version %}
                         {% set headingText = headingText + ' ' + package.version %}
                     {% endif %}

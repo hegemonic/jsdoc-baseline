@@ -29,6 +29,7 @@
     "y": "Y",
     "z": "Z"
   },
+  "brandDefault": "Home",
   "childHeadings": {
     "classes": "Child class |||| Child classes"
   },
