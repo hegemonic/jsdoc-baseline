@@ -5,9 +5,6 @@ node_modules
 # bower-managed files
 bower_components
 
-# Static files (excluded temporarily)
-static/
-
 # Development files
 coverage/
 
