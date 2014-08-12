@@ -23,7 +23,13 @@
     {%- endif -%}
 
     <dl {{ cssClass('!dl-compact') }}>
-        {% set context = { doc: doc } %}
+        {% set context = {
+            doc: doc,
+            implementations: doc.implementations,
+            implements: doc.implements
+        } %}
         {% include 'sourcefile.swig' with context only %}
+        {% include 'lists/implements.swig' with context only %}
+        {% include 'lists/implementations.swig' with context only %}
     </dl>
 </header>
