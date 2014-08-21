@@ -62,7 +62,7 @@ must contain the path to your Baseline configuration file.
 4. Run JSDoc as shown above, using the `--configure` (or `-c`) option to tell JSDoc where to find
 your `conf.json` file:
 
-    jsdoc --configure <path/to/conf.json> --template <path/to/baseline> <path/to/js-files>
+        jsdoc --configure <path/to/conf.json> --template <path/to/baseline> <path/to/js-files>
 
 **Note**: Future versions of Baseline will provide additional configuration settings, including
 settings for overriding and modifying portions of the template.
