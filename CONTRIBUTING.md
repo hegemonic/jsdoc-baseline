@@ -1,5 +1,8 @@
 Thanks for your interest in contributing to Baseline! If you'd like to send a pull request, here's
-how to do it:
+how to do it.
+
+**Note**: Baseline is still being developed, and the code is changing quickly. Please submit a bug
+report or feature request before you spend time on a pull request. Thanks!
 
 
 # Complete the Contributor License Agreement
