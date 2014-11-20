@@ -51,6 +51,7 @@
     "events": "Event |||| Events",
     "examples": "Example |||| Examples",
     "exports": "Exports",
+    "externals": "External |||| Externals",
     "fires": "Fires",
     "functions": "Method |||| Methods",
     "globals": "Global |||| Globals",
