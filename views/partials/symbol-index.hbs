@@ -1,7 +1,7 @@
 <div {{~cssClass '!symbol-index'}}>
     <div {{~cssClass '!symbol-index-content'}}>
         <section>
-            {{#continued}}
+            {{#continuedBlock}}
                 {{!-- {{debug "docs: " ../docs}} --}}
                 {{#balancedGroup @root.docs}}
                     {{#eachContinuedGroup}}
@@ -15,18 +15,18 @@
                                 {{#withOnly doclets=@sectionDoclets}}
                                     {{#embed 'symbol-index-section'}}{{/embed}}
                                 {{/withOnly}}
-                                {{#ifContinued}}
+                                {{#if (isContinued)}}
                                     <p {{~cssClass '!symbol-index-continued'}}>
                                         <a href="#{{continuedIdNext}}">
                                             {{~translateContinued~}}
                                         </a>
                                     </p>
-                                {{/ifContinued}}
+                                {{/if}}
                             {{/eachContinuedGroupSection}}
                         </div>
                     {{/eachContinuedGroup}}
                 {{/balancedGroup}}
-            {{/continued}}
+            {{/continuedBlock}}
         </section>
     </div>
 </div>

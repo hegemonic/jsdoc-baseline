@@ -1,10 +1,10 @@
 {{#if defaultvalue}}
     <dt>{{translateHeading 'defaultValue'}}</dt>
     <dd>
-        {{#ifHighlightedType defaultvaluetype}}
+        {{#if (shouldHighlight defaultvaluetype)}}
             <pre {{~cssClass "!prettyprint"}}><code>{{defaultvalue}}</code></pre>
         {{else}}
             {{defaultValue}}
-        {{/ifHighlightedType}}
+        {{/if}}
     </dd>
 {{/if}}
