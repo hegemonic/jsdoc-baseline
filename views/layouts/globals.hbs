@@ -1,7 +1,5 @@
 {{#extend 'symbol'}}
-    {{#content 'body-main-content'}}
-        {{#content 'body-main-symbol-overview'}}
-            <h {{~cssClass 'page-title'}}>{{translateHeading 'globals'}}</h>
-        {{/content}}
+    {{#content 'body-main-symbol-overview' mode='prepend'}}
+        <h {{~cssClass 'page-title'}}>{{pageTitle}}</h>
     {{/content}}
 {{/extend}}
