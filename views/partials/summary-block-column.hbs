@@ -1,7 +1,7 @@
 <div {{~cssClass '!summary-column'}}>
-    {{#any this}}
+    {{#any summaryGroup}}
         <dl {{~cssClass '!dl-summary-callout'}}>
-            {{#each this}}
+            {{#each summaryGroup}}
                 <dt>{{linkWithSignature this}}</dt>
                 {{!-- Always include <dd> tag, which is required for validity --}}
                 <dd>
