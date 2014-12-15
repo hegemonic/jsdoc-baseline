@@ -1,0 +1,10 @@
+{{#withOnly plucked=(pluck returns 'description')}}
+    {{#any plucked}}
+        <dt>{{translateHeading 'returns' returns}}</dt>
+        {{#each plucked}}
+            {{#withOnly item=this}}
+                <dd>{{#markdown}}{{resolveLinks item}}{{/markdown}}</dd>
+            {{/withOnly}}
+        {{/each}}
+    {{/any}}
+{{/withOnly}}

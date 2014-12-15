@@ -1,0 +1,14 @@
+{{#extend 'layout'}}
+    {{#content 'body-main-content'}}
+        {{#block 'body-main-source-heading'}}
+            <header {{~cssClass '!page-header'}}>
+                <h {{~cssClass 'page-title'}}>{{translatePageTitle pageTitle 'sources'}}</h>
+            </header>
+        {{/block}}
+        {{#block 'body-main-source-content'}}
+            <article>
+                <pre {{~cssClass '!prettyprint' '!linenums' 'source'}}><code>{{docs}}</code></pre>
+            </article>
+        {{/block}}
+    {{/content}}
+{{/extend}}

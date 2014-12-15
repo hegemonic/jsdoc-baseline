@@ -1,0 +1,7 @@
+{{#if (config 'outputSourceFiles')}}
+    {{#all this.meta this.meta.filename this.meta.lineno}}
+        <dl {{~cssClass '!dl-compact'}}>
+            {{#embed 'source-file'}}{{/embed}}
+        </dl>
+    {{/all}}
+{{/if}}

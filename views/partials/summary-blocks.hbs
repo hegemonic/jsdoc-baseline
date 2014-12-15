@@ -1,0 +1,49 @@
+{{#if (config 'components.summary')}}
+    {{!-- TODO: register this ID with a helper so we don't repeat it --}}
+    <section id="summary">
+        {{!--
+            Either constructors (for a class) or symbols exported by the module (for a module)
+        --}}
+        {{#block 'summary-classes-exports'}}
+            {{#withOnly items=headingDocs headingKey=headingKey}}
+                {{#embed 'summary-block'}}{{/embed}}
+            {{/withOnly}}
+        {{/block}}
+
+        {{#block 'summary-child-classes'}}
+            {{#withOnly items=members.classes headingKey='childClasses'}}
+                {{#embed 'summary-block'}}{{/embed}}
+            {{/withOnly}}
+        {{/block}}
+
+        {{#block 'summary-namespaces'}}
+            {{#withOnly items=members.namespaces headingKey='namespaces'}}
+                {{#embed 'summary-block'}}{{/embed}}
+            {{/withOnly}}
+        {{/block}}
+
+        {{#block 'summary-properties'}}
+            {{#withOnly items=members.properties headingKey='properties'}}
+                {{#embed 'summary-block'}}{{/embed}}
+            {{/withOnly}}
+        {{/block}}
+
+        {{#block 'summary-functions'}}
+            {{#withOnly items=members.functions headingKey='functions'}}
+                {{#embed 'summary-block'}}{{/embed}}
+            {{/withOnly}}
+        {{/block}}
+
+        {{#block 'summary-typedefs'}}
+            {{#withOnly items=members.typedefs headingKey='typedefs'}}
+                {{#embed 'summary-block'}}{{/embed}}
+            {{/withOnly}}
+        {{/block}}
+
+        {{#block 'summary-events'}}
+            {{#withOnly items=members.events headingKey='events'}}
+                {{#embed 'summary-block'}}{{/embed}}
+            {{/withOnly}}
+        {{/block}}
+    </section>
+{{/if}}

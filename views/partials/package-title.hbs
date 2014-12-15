@@ -1,0 +1,7 @@
+{{#if package}}
+    <header {{~cssClass '!page-header'}}>
+        <h {{~cssClass 'page-title'}}>
+            {{package.name}}{{#if package.version}} {{package.version}}{{/if}}
+        </h>
+    </header>
+{{/if}}

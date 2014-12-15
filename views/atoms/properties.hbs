@@ -1,0 +1,7 @@
+{{#any properties}}
+    {{moveChildren this 'properties'}}
+    <h>{{translateHeading 'properties' properties}}</h>
+    {{#withOnly values=properties}}
+        {{#embed 'details-table'}}{{/embed}}
+    {{/withOnly}}
+{{/any}}

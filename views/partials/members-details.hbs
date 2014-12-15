@@ -1,0 +1,8 @@
+{{#any items}}
+    <h>{{translateHeading headingKey items}}</h>
+    <section>
+        {{#each items}}
+            {{#embed 'symbol-detail'}}{{/embed}}
+        {{/each}}
+    </section>
+{{/any}}

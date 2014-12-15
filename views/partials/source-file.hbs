@@ -1,0 +1,8 @@
+{{!-- TODO: rethink the way this works; see if we can get rid of it --}}
+{{#if (config 'outputSourceFiles')}}
+    {{#all meta meta.filename meta.lineno}}
+        {{!-- TODO: or "inherited from" or "mixed in from"? --}}
+        <dt>{{translate 'headings.definedIn'}}</dt>
+        <dd>{{linkToLine meta}}</dd>
+    {{/all}}
+{{/if}}

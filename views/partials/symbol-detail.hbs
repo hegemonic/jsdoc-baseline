@@ -1,0 +1,28 @@
+{{!-- TODO: fetch the ID; stop attaching it to the doclet --}}
+{{!--
+    TODO: removed "attribs" from the start of the heading; looks like we no longer set doc.attribs.
+    need to restore that info, perhaps as badges instead of prefix text
+--}}
+<h id="{{id}}">
+    {{~#embed 'constructor-prefix'}}{{/embed~}}
+    {{~name~}}
+    {{~#embed 'signature'}}{{/embed~}}
+</h>
+<section>
+    {{#embed 'description'}}{{/embed}}
+    {{#embed 'examples'}}{{/embed}}
+    {{#embed 'params'}}{{/embed}}
+    {{#embed 'properties'}}{{/embed}}
+
+    <dl {{~cssClass '!dl-compact'}}>
+        {{#embed 'source-file'}}{{/embed}}
+        {{#embed 'augments'}}{{/embed}}
+        {{#embed 'details'}}{{/embed}}
+        {{#embed 'requires'}}{{/embed}}
+        {{#embed 'fires'}}{{/embed}}
+        {{#embed 'listens'}}{{/embed}}
+        {{#embed 'listeners'}}{{/embed}}
+        {{#embed 'throws'}}{{/embed}}
+        {{#embed 'returns'}}{{/embed}}
+    </dl>
+</section>

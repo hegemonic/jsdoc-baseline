@@ -1,0 +1,13 @@
+<dl {{~cssClass '!symbol-index-list'}}>
+    {{#each doclets}}
+        <dt {{~cssClass '!symbol-index-name'}}>
+            {{linkLongnameWithSignature this '!symbol-index-name'}}
+        </dt>
+        {{!-- Always include <dd> tag, which is required for validity --}}
+        <dd>
+            {{#if summary}}
+                {{#embed 'summary'}}{{/embed}}
+            {{/if}}
+        </dd>
+    {{/each}}
+</dl>

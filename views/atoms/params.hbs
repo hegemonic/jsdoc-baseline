@@ -1,0 +1,7 @@
+{{#any params}}
+    {{moveChildren this 'params'}}
+    <h>{{translateHeading 'parameters' params}}</h>
+    {{#withOnly values=params}}
+        {{#embed 'details-table'}}{{/embed}}
+    {{/withOnly}}
+{{/any}}

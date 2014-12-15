@@ -1,0 +1,32 @@
+<div {{~cssClass '!symbol-index'}}>
+    <div {{~cssClass '!symbol-index-content'}}>
+        <section>
+            {{#continued}}
+                {{!-- {{debug "docs: " ../docs}} --}}
+                {{#balancedGroup @root.docs}}
+                    {{#eachContinuedGroup}}
+                        <div {{~cssClass '!symbol-index-column'}}>
+                            {{#eachContinuedGroupSection}}
+                                {{!--
+                                    @headingText and @sectionDoclets are available within an
+                                    {{#eachContinueGroupSection}} block
+                                --}}
+                                <h id="{{continuedId}}">{{@headingText}}</h>
+                                {{#withOnly doclets=@sectionDoclets}}
+                                    {{#embed 'symbol-index-section'}}{{/embed}}
+                                {{/withOnly}}
+                                {{#ifContinued}}
+                                    <p {{~cssClass '!symbol-index-continued'}}>
+                                        <a href="#{{continuedIdNext}}">
+                                            {{~translateContinued~}}
+                                        </a>
+                                    </p>
+                                {{/ifContinued}}
+                            {{/eachContinuedGroupSection}}
+                        </div>
+                    {{/eachContinuedGroup}}
+                {{/balancedGroup}}
+            {{/continued}}
+        </section>
+    </div>
+</div>

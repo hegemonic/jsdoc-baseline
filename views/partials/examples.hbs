@@ -1,0 +1,9 @@
+{{#any examples}}
+    {{!-- TODO: maybe make this more subtle, a la the Bootstrap docs --}}
+    <h {{~cssClass 'examples'}}>
+        {{translate 'headings.examples' examples}}
+    </h>
+    {{#each examples}}
+        {{#embed 'example'}}{{/embed}}
+    {{/each}}
+{{/any}}

@@ -1,0 +1,10 @@
+{{#any items}}
+    <h>{{translateHeading headingKey items}}</h>
+    <section id='members-links'>
+        {{#each items}}
+            <h>{{link longname name}}</h>
+            {{#embed 'summary'}}{{/embed}}
+            {{sourceFile}}
+        {{/each}}
+    </section>
+{{/any}}

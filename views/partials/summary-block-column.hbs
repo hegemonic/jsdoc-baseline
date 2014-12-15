@@ -1,0 +1,15 @@
+<div {{~cssClass '!summary-column'}}>
+    {{#any this}}
+        <dl {{~cssClass '!dl-summary-callout'}}>
+            {{#each this}}
+                <dt>{{linkWithSignature this}}</dt>
+                {{!-- Always include <dd> tag, which is required for validity --}}
+                <dd>
+                    {{#if summary}}
+                        {{#embed 'summary'}}{{/embed}}
+                    {{/if}}
+                </dd>
+            {{/each}}
+        </dl>
+    {{/any}}
+</div>

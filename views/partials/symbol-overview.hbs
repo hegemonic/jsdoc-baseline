@@ -1,0 +1,37 @@
+{{#each docs}}
+    {{#if @first}}
+        {{#embed 'symbol-header'}}{{/embed}}
+        {{#embed 'summary-blocks'}}{{/embed}}
+
+        <section>
+            {{!-- heading that indicates what we're about to list --}}
+            {{#is pageCategory 'classes'}}
+                <h>{{translateHeading 'constructors' docs}}</h>
+            {{else}}
+                {{#any exports}}
+                    <h>{{translateHeading 'exports' docs}}</h>
+                {{/any}}
+            {{/is}}
+    {{/if}}
+
+    {{!--
+        If a module exports only one symbol, document the symbol in the overview, since it's not a
+        member of anything else.
+    --}}
+    {{#is kind 'module'}}
+        {{#if exports}}
+            {{#each exports}}
+                {{#embed 'symbol-detail'}}{{/embed}}
+            {{/each}}
+        {{/if}}
+    {{else}}
+        {{!-- Classes also need additional information in the overview. --}}
+        {{#is kind 'class'}}
+            {{#embed 'symbol-detail'}}{{/embed}}
+        {{/is}}
+    {{/is}}
+
+    {{#if @last}}
+        </section>
+    {{/if}}
+{{/each}}

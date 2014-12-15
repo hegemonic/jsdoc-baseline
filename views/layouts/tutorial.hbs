@@ -1,0 +1,20 @@
+{{#extend 'layout'}}
+    {{#content 'body-banner'}}{{/content}}
+    {{#content 'body-main-content'}}
+        {{#block 'body-tutorial-header'}}
+            {{#any children}}
+                <ul>
+                    {{#each children}}
+                        <li>{{tutorialLink this.name}}</li>
+                    {{/each}}
+                </ul>
+            {{/any}}
+            <h>{{header}}</h>
+        {{/block}}
+        {{#block 'body-tutorial-content'}}
+            <article>
+                {{content}}
+            </article>
+        {{/block}}
+    {{/content}}
+{{/extend}}

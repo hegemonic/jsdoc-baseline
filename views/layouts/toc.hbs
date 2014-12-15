@@ -1,0 +1,15 @@
+(function($) {
+  // TODO: make the node ID configurable
+  var treeNode = $('#jsdoc-toc-nav');
+
+  // initialize the tree
+  treeNode.tree({
+    autoEscape: false,
+    data: {{json tocData}},
+    saveState: true,
+    useContextMenu: false
+  });
+
+  // add event handlers
+  // TODO
+})(jQuery);

@@ -1,0 +1,6 @@
+{{#any author}}
+    <dt>{{translateHeading 'authors' author}}</dt>
+    {{#each author}}
+        <dd>{{resolveAuthorLinks this}}</dd>
+    {{/each}}
+{{/any}}

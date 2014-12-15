@@ -1,0 +1,14 @@
+{{#any items}}
+    <div {{~cssClass '!summary-callout'}}>
+        {{#if headingKey}}
+            <h {{~cssClass '!summary-callout-heading'}}>{{translate headingKey items}}</h>
+        {{/if}}
+        <div {{~cssClass '!summary-content'}}>
+            {{#balancedGroup items columns=3}}
+                {{#each groups}}
+                    {{#embed 'summary-block-column'}}{{/embed}}
+                {{/each}}
+            {{/balancedGroup}}
+        </div>
+    </div>
+{{/any}}

@@ -1,0 +1,6 @@
+{{#any tutorials}}
+    <dt>{{translateHeading 'tutorials' tutorials}}</dt>
+    {{#each tutorials}}
+        <dd>{{linkToTutorial this}}</dd>
+    {{/each}}
+{{/any}}

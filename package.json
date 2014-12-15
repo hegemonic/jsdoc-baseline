@@ -28,17 +28,21 @@
   "homepage": "https://github.com/hegemonic/baseline",
   "dependencies": {
     "escape-string-regexp": "~1.0.1",
+    "handlebars": "~2.0.0",
+    "handlebars-layouts": "~1.0.0",
     "js-beautify": "~1.5.1",
     "moment": "~2.7.0",
     "node-polyglot": "~0.4.1",
-    "swig": "~1.4.0",
+    "spdx-license-list": "~1.1.0",
     "underscore-contrib": "~0.3.0"
   },
   "devDependencies": {
+    "eslint": "~0.10.2",
     "expectations": "~0.2.5",
     "gulp": "~3.8.5",
     "gulp-csso": "~0.2.9",
-    "gulp-eslint": "~0.1.8",
+    "gulp-eslint": "~0.2.0",
+    "gulp-handlebars": "~3.0.1",
     "gulp-istanbul": "~0.2.1",
     "gulp-istanbul-enforcer": "~1.0.3",
     "gulp-less": "~1.3.1",

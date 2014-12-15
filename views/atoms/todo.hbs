@@ -1,0 +1,6 @@
+{{#any todo}}
+    <dt>{{translateHeading 'todo' todo}}</dt>
+    {{#each todo}}
+        <dd>{{resolveLinks this}}</dd>
+    {{/each}}
+{{/any}}

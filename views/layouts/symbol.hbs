@@ -1,0 +1,11 @@
+{{#extend 'layout'}}
+    {{#content 'body-banner'}}{{/content}}
+    {{#content 'body-main-content'}}
+        {{#block 'body-main-symbol-overview'}}
+            {{#embed 'symbol-overview'}}{{/embed}}
+        {{/block}}
+        {{#block 'body-main-symbol-content'}}
+            {{#embed 'symbol-content'}}{{/embed}}
+        {{/block}}
+    {{/content}}
+{{/extend}}

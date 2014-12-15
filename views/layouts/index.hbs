@@ -1,0 +1,16 @@
+{{#extend 'layout'}}
+    {{#content 'body-banner-content'}}
+        {{!-- TODO --}}
+    {{/content}}
+    {{#content 'body-main-content'}}
+        {{#block 'body-package-title'}}
+            {{#embed 'package-title'}}{{/embed}}
+        {{/block}}
+        {{#block 'body-readme'}}
+            {{#embed 'readme'}}{{/embed}}
+        {{/block}}
+        {{#block 'body-symbol-index'}}
+            {{#embed 'symbol-index'}}{{/embed}}
+        {{/block}}
+    {{/content}}
+{{/extend}}

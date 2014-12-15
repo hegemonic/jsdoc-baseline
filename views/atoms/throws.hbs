@@ -1,0 +1,16 @@
+{{!--
+    TODO: may need to incorporate changes from https://github.com/jsdoc3/jsdoc/commit/74ad8efe
+--}}
+{{#any exceptions}}
+    <dt>{{translateHeading 'throws' exceptions}}</dt>
+    {{#each exceptions}}
+        <dd>
+            {{#all type type.names}}
+                {{#any type.names}}
+                    {{describeType (typeUnion type.names)}}
+                {{/any}}
+            {{/all}}
+            {{#embed 'description'}}{{/embed}}
+        </dd>
+    {{/each}}
+{{/any}}

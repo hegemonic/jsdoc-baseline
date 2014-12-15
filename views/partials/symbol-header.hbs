@@ -1,0 +1,31 @@
+<header {{~cssClass '!page-header'}}>
+    {{#block 'symbol-header-heading'}}
+        <h>
+            {{~#any ancestors~}}
+                {{!-- TODO: make <small> tag configurable --}}
+                <small {{~cssClass 'symbol-ancestors'}}>{{ancestorLinks this}}</small>
+            {{~/any}}{{name~}}
+        </h>
+    {{~/block}}
+    {{#block 'symbol-header-classdesc'}}
+        {{#if classdesc}}
+            <div {{~cssClass '!symbol-classdesc'}}>
+                {{#markdown}}{{resolveLinks classdesc}}{{/markdown}}
+            </div>
+        {{/if}}
+    {{/block}}
+    {{#block 'symbol-header-description'}}
+        {{#isnt kind 'class'}}
+            <div {{~cssClass '!symbol-description'}}>
+                {{#embed 'description'}}{{/embed}}
+            </div>
+        {{/isnt}}
+    {{/block}}
+    {{#block 'symbol-header-details'}}
+        <dl {{~cssClass '!dl-compact'}}>
+            {{#embed 'source-file'}}{{/embed}}
+            {{#embed 'implements'}}{{/embed}}
+            {{#embed 'implementations'}}{{/embed}}
+        </dl>
+    {{/block}}
+</header>

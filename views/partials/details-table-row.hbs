@@ -1,0 +1,28 @@
+<tr>
+    {{#block 'details-table-name'}}
+        <td {{~cssClass 'details-table-name'}}>
+            <p>{{#if name}}{{name}}{{else}}{{translate 'tables.notApplicable'}}{{/if}}</p>
+        </td>
+    {{/block}}
+    {{#block 'details-table-types'}}
+        <td {{~cssClass 'details-table-types'}}>
+            <p>{{describeType type.parsedType 'extended'}}</p>
+        </td>
+    {{/block}}
+    {{#block 'details-table-optional'}}
+        {{!-- TODO: make it possible to collapse this column, and do so by default --}}
+        <td {{~cssClass 'details-table-optional'}}>
+            {{#if optional}}
+                <p>{{translate 'tables.body.isOptional'}}</p>
+            {{ else }}
+                <p>{{translate 'tables.body.isRequired'}}</p>
+            {{/if}}
+        </td>
+    {{/block}}
+    {{#block 'details-table-description'}}
+        <td {{~cssClass 'details-table-description'}}>
+            {{#markdown}}{{resolveLinks description}}{{/markdown}}
+            <p>{{modifierText this}}</p>
+        </td>
+    {{/block}}
+</tr>
