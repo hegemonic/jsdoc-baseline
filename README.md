@@ -16,12 +16,12 @@ and other text that are added by the template. **Note:** Customization options a
 preview version. More options will be available soon.
 + **Easy to navigate.** An expandable table of contents helps users find what they're looking for.
 Also, a summary at the top of each page shows users what's documented on that page.
-+ **Modern template syntax.** Baseline uses [Swig][swig], a powerful JavaScript template engine, to
-define the template layout. Swig makes it possible to define new filters and tags that you can use
-in your customizations to Baseline.
++ **Modern template syntax.** Baseline uses [Handlebars][handlebars], a powerful JavaScript template
+engine, to define the template layout. Handlebars makes it possible to define new tags and helpers
+that you can use in your customizations to Baseline.
 
 [jsdoc]: https://github.com/jsdoc3/jsdoc
-[swig]: http://paularmstrong.github.io/swig/
+[handlebars]: http://handlebarsjs.com/
 
 
 ## Installing Baseline
@@ -30,7 +30,7 @@ in your customizations to Baseline.
 
     **Note**: Baseline currently requires the latest version of JSDoc from the master branch on
     GitHub. In addition, Baseline does not currently support JSDoc running on Mozilla Rhino; use
-    Node.js instead. Rhino support will be available soon.
+    Node.js instead. Rhino support will be available in the future.
 
     To install JSDoc globally (may require `sudo`):
 
