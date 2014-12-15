@@ -1,6 +1,8 @@
-{{#first docs}}
-    {{#embed 'symbol-header'}}{{/embed}}
-{{/first}}
+{{#any docs}}
+    {{#first docs}}
+        {{#embed 'symbol-header'}}{{/embed}}
+    {{/first}}
+{{/any}}
 
 {{#embed 'summary-blocks'}}{{/embed}}
 
