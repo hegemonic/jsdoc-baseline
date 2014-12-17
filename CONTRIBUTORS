@@ -1,0 +1,24 @@
+# This is the official list of people who have agreed to one of Baseline's CLAs
+# and can contribute patches.
+
+# The AUTHORS file lists the copyright holders; this file lists people.
+# For example, Google employees are listed here but not in AUTHORS, because
+# Google holds the copyright to their contributions.
+
+# Names should be added to this file only after verifying that the individual
+# or the individual's organization has agreed to the appropriate
+# Contributor License Agreement:
+#
+# - Individual: https://developers.google.com/open-source/cla/individual
+# - Corporate: https://developers.google.com/open-source/cla/corporate
+
+# When adding a contributor's name to this file, the copyright owner's name
+# should be added to the AUTHORS file as well.
+
+# Names should be added to this file as:
+# Name <email address>
+
+# All names should be in alphabetical order.
+
+Alexandrine Boissière <theasta@gmail.com>
+Jeff Williams <jefesaurus@google.com>
