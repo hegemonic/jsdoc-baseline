@@ -30,8 +30,8 @@
     "escape-string-regexp": "~1.0.1",
     "handlebars": "~2.0.0",
     "handlebars-layouts": "~1.0.0",
+    "intl": "~0.1.4",
     "js-beautify": "~1.5.1",
-    "moment": "~2.7.0",
     "node-polyglot": "~0.4.1",
     "spdx-license-list": "~1.1.0",
     "underscore-contrib": "~0.3.0"
