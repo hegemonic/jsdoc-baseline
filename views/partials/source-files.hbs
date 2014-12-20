@@ -1,5 +1,5 @@
 {{#if (config 'outputSourceFiles')}}
-    {{#all this.meta this.meta.filename this.meta.lineno}}
+    {{#all meta meta.filename meta.lineno}}
         <dl {{~cssClass '!dl-compact'}}>
             {{#embed 'source-file'}}{{/embed}}
         </dl>
