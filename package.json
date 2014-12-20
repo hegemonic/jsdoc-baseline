@@ -1,6 +1,6 @@
 {
   "name": "jsdoc-baseline",
-  "version": "0.0.1",
+  "version": "0.0.1-dev",
   "description": "A basic template for JSDoc 3.",
   "main": "publish.js",
   "scripts": {
@@ -31,8 +31,9 @@
     "handlebars": "~2.0.0",
     "handlebars-layouts": "~1.0.0",
     "intl": "~0.1.4",
+    "intl-messageformat": "~1.0.2",
     "js-beautify": "~1.5.1",
-    "node-polyglot": "~0.4.1",
+    "js-yaml": "~3.2.4",
     "spdx-license-list": "~1.1.0",
     "underscore-contrib": "~0.3.0"
   },
