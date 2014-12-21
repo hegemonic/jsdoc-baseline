@@ -8,15 +8,16 @@
 
 {{#each docs}}
     {{#if @first}}
-        <section>
-            {{!-- heading that indicates what we're about to list --}}
-            {{#is pageCategory 'classes'}}
+        {{!-- heading that indicates what we're about to list --}}
+        {{#is pageCategory 'classes'}}
+            <section>
                 <h>{{translateHeading 'constructors' docs}}</h>
-            {{else}}
-                {{#any exports}}
+        {{else}}
+            {{#any exports}}
+                <section>
                     <h>{{translateHeading 'exports' docs}}</h>
-                {{/any}}
-            {{/is}}
+            {{/any}}
+        {{/is}}
     {{/if}}
 
     {{!--
@@ -39,6 +40,12 @@
     {{/is}}
 
     {{#if @last}}
-        </section>
+        {{#is pageCategory 'classes'}}
+            </section>
+        {{else}}
+            {{#any exports}}
+                </section>
+            {{/any}}
+        {{/is}}
     {{/if}}
 {{/each}}
