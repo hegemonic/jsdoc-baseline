@@ -34,7 +34,9 @@
     {{else}}
         {{!-- Classes also need additional information in the overview. --}}
         {{#is kind 'class'}}
-            {{#embed 'symbol-detail'}}{{/embed}}
+            <section>
+                {{#embed 'symbol-detail'}}{{/embed}}
+            </section>
         {{/is}}
     {{/is}}
 
