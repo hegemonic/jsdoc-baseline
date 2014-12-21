@@ -137,6 +137,14 @@ linkToLine: |
         =1 {{filepath}}
         other {{filepath}:{lineno}}}
 pageTitle: '{category}: {title}'
+params:
+    all: '({params})'
+    joiner: |
+        {items, plural,
+            =0 {{param}}
+            other {, {param}}}
+    optional: '[{param}]'
+    repeatable: '...{param}'
 returnTypesSeparator: '&nbsp;&rarr; '
 tables:
     body:
