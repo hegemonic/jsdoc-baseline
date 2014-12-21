@@ -4,6 +4,8 @@
         {{translate 'headings.examples' examples}}
     </h>
     {{#each examples}}
-        {{#embed 'example'}}{{/embed}}
+        {{#with (example this)}}
+            {{#embed 'example'}}{{/embed}}
+        {{/with}}
     {{/each}}
 {{/any}}

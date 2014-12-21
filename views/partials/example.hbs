@@ -1,10 +1,8 @@
 {{!-- TODO: improve appearance --}}
 <div {{~cssClass 'example'}}>
-    {{#if example.caption}}
+    {{#if caption}}
         {{!-- TODO: better markup for this --}}
-        <p {{~cssClass 'example-caption'}}>{{example.caption}}</p>
+        <p {{~cssClass 'example-caption'}}>{{caption}}</p>
     {{/if}}
-    {{#with example}}
-        <pre {{~cssClass '!prettyprint'}}><code>{{code}}</code></pre>
-    {{/with}}
+    <pre {{~cssClass '!prettyprint'}}><code>{{code}}</code></pre>
 </div>
