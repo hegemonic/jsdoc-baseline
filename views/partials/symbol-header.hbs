@@ -1,11 +1,7 @@
 <header {{~cssClass '!page-header'}}>
     {{#block 'symbol-header-heading'}}
-        <h>
-            {{~#any ancestors~}}
-                {{!-- TODO: make <small> tag configurable --}}
-                <small {{~cssClass 'symbol-ancestors'}}>{{ancestorLinks this}}</small>
-            {{~/any}}{{name~}}
-        </h>
+        <h>{{#isnt longname memberof}}<small>{{ancestors longname}}</small>{{/isnt~}}
+            {{~name}}</h>
     {{~/block}}
     {{#block 'symbol-header-classdesc'}}
         {{#if classdesc}}
