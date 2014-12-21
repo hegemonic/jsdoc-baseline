@@ -26,16 +26,20 @@
     {{#is kind 'module'}}
         {{#if exports}}
             {{#each exports}}
-                <section>
-                    {{#embed 'symbol-detail'}}{{/embed}}
-                </section>
+                {{#withOnly symbol=this}}
+                    <section>
+                        {{#embed 'symbol-detail'}}{{/embed}}
+                    </section>
+                {{/withOnly}}
             {{/each}}
         {{/if}}
     {{else}}
         {{!-- Classes also need additional information in the overview. --}}
         {{#is kind 'class'}}
             <section>
-                {{#embed 'symbol-detail'}}{{/embed}}
+                {{#withOnly symbol=this}}
+                    {{#embed 'symbol-detail'}}{{/embed}}
+                {{/withOnly}}
             </section>
         {{/is}}
     {{/is}}

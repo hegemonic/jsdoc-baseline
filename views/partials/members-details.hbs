@@ -2,7 +2,9 @@
     <h>{{translateHeading headingKey items}}</h>
     <section>
         {{#each items}}
-            {{#embed 'symbol-detail'}}{{/embed}}
+            {{#withOnly symbol=this}}
+                {{#embed 'symbol-detail'}}{{/embed}}
+            {{/withOnly}}
         {{/each}}
     </section>
 {{/any}}
