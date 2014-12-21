@@ -1,6 +1,6 @@
 {{#any see}}
     <dt>{{translateHeading 'see' see}}</dt>
     {{#each see}}
-        <dd>{{link this}}</dd>
+        <dd>{{link (see this ../longname)}}</dd>
     {{/each}}
 {{/any}}
