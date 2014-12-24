@@ -6,7 +6,11 @@
     {{/block}}
     {{#block 'details-table-types'}}
         <td {{~cssClass 'details-table-types'}}>
-            <p>{{describeType type.parsedType 'extended'}}</p>
+            {{#all type type.parsedType}}
+                <p>{{describeType type.parsedType 'extended'}}</p>
+            {{else}}
+                <p>&nbsp;</p>
+            {{/all}}
         </td>
     {{/block}}
     {{#block 'details-table-optional'}}
@@ -14,15 +18,19 @@
         <td {{~cssClass 'details-table-optional'}}>
             {{#if optional}}
                 <p>{{translate 'tables.body.isOptional'}}</p>
-            {{ else }}
+            {{else}}
                 <p>{{translate 'tables.body.isRequired'}}</p>
             {{/if}}
         </td>
     {{/block}}
     {{#block 'details-table-description'}}
         <td {{~cssClass 'details-table-description'}}>
-            {{#markdown}}{{resolveLinks description}}{{/markdown}}
-            <p>{{modifierText this}}</p>
+            {{#if description}}
+                {{#markdown}}{{resolveLinks description}}{{/markdown}}
+                {{#if (hasModifiers this)}}
+                    <p>{{modifierText this}}</p>
+                {{/if}}
+            {{/if}}
         </td>
     {{/block}}
 </tr>
