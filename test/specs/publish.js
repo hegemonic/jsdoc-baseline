@@ -4,10 +4,10 @@
 'use strict';
 
 require('expectations');
-require('./helpers/').setup();
+require('../helpers/').setup();
 
 describe('publish', function() {
-    var publish = require('../publish');
+    var publish = require('../../publish');
 
     it('exports a "publish" function', function() {
         expect(publish.publish).toBeDefined();
