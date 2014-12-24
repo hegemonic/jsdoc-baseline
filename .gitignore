@@ -8,5 +8,8 @@ bower_components
 # Development files
 coverage/
 
+# Precompiled templates
+views/index.js
+
 # Dotfile detritus
 .DS_Store

@@ -27,6 +27,7 @@ exports.createTempDirectory = function createTempDirectory(dirPath) {
 };
 
 // Resets global variables used by JSDoc to the default values for tests.
+// TODO: this is also used in the gulpfile, so find another place for it
 exports.resetJsdocGlobals = function resetJsdocGlobals() {
     global.env = {
         conf: {
