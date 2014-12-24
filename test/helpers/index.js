@@ -4,26 +4,18 @@
 
 var path = require('path');
 
-var template;
-
 // Provides a template-rendering function that can be shared across modules.
 exports.render = function() {
-    var Template;
-
     exports.setup();
 
-    if (!template) {
-        Template = require('../../lib/template');
-        template = new Template('.').init();
-    }
-
-    return template.render.apply(template, arguments);
+    return exports.template.render.apply(exports.template, arguments);
 };
 
 // Resets global variables used by JSDoc to the default values for tests.
-exports.resetJsdocGlobals = function() {
+function resetJsdocGlobals() {
     global.env = {
         conf: {
+            tags: {},
             templates: {
                 cleverLinks: false,
                 monospaceLinks: false
@@ -41,7 +33,17 @@ exports.resetJsdocGlobals = function() {
             template: path.resolve(__dirname, '../..')
         }
     };
-};
+}
 
-// Sets up the runtime environment so that JSDoc can work properly.
-exports.setup = exports.resetJsdocGlobals;
+// Sets up the runtime environment so that JSDoc can work properly. Called automatically when this
+// module is loaded.
+exports.setup = resetJsdocGlobals;
+
+exports.template = (function() {
+    var Template;
+
+    exports.setup();
+    Template = require('../../lib/template');
+
+    return new Template('.').init();
+})();
