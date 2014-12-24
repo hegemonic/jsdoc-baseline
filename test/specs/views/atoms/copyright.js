@@ -2,8 +2,6 @@
 
 var helpers = require('../../../helpers');
 
-helpers.addMatchers();
-
 describe('copyright atom', function() {
     it('should generate nothing if there is no copyright owner', function() {
         var text = helpers.render('copyright', {});
@@ -16,7 +14,7 @@ describe('copyright atom', function() {
             copyright: 'John Doe'
         });
 
-        expect(text).toContainString('<dd>John Doe</dd>');
+        expect(text).toContain('<dd>John Doe</dd>');
     });
 
     it('should link to the copyright owner when appropriate', function() {
@@ -24,6 +22,6 @@ describe('copyright atom', function() {
             copyright: 'http://example.org'
         });
 
-        expect(text).toContainString('<a href="http://example.org">http://example.org</a>');
+        expect(text).toContain('<a href="http://example.org">http://example.org</a>');
     });
 });
