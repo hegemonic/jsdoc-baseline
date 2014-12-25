@@ -4,14 +4,12 @@
 
 var path = require('path');
 
-// Provides a template-rendering function that can be shared across modules.
+// Render a Handlebars view.
 exports.render = function() {
-    exports.setup();
-
     return exports.template.render.apply(exports.template, arguments);
 };
 
-// Resets global variables used by JSDoc to the default values for tests.
+// Reset global variables used by JSDoc to the default values for tests.
 function resetJsdocGlobals() {
     global.env = {
         conf: {
@@ -35,10 +33,10 @@ function resetJsdocGlobals() {
     };
 }
 
-// Sets up the runtime environment so that JSDoc can work properly. Called automatically when this
-// module is loaded.
+// Set up the runtime environment so that JSDoc can work properly.
 exports.setup = resetJsdocGlobals;
 
+// Shared template object.
 exports.template = (function() {
     var Template;
 
