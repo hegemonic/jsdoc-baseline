@@ -2,7 +2,9 @@
 
 describe('lib/helpers/expression', function() {
     var expression;
+    var handlebars = require('handlebars');
     var helpers = require('../../../helpers');
+    var templateHelper = require('jsdoc/util/templateHelper');
 
     helpers.setup();
     expression = require('../../../../lib/helpers/expression');
@@ -151,8 +153,28 @@ describe('lib/helpers/expression', function() {
             // TODO
         });
 
-        xdescribe('linkToLine', function() {
+        xdescribe('linkLongnameWithSignature', function() {
             // TODO
+        });
+
+        describe('linkToLine', function() {
+            // TODO: more tests
+
+            it('should ignore the context object', function() {
+                var fakeDocletMeta = {
+                    lineno: 70,
+                    shortpath: 'glitch.js'
+                };
+                var link;
+
+                templateHelper.registerLink('glitch.js', 'glitch.js.html');
+                link = instance.linkToLine(fakeDocletMeta, {});
+
+                expect(link instanceof handlebars.SafeString).toBe(true);
+                expect(link.toString()).toBe(
+                    '<a href="glitch.js.html#source-line-70">glitch.<wbr>js:70</a>'
+                );
+            });
         });
 
         xdescribe('linkToTutorial', function() {
@@ -160,10 +182,6 @@ describe('lib/helpers/expression', function() {
         });
 
         xdescribe('linkWithSignature', function() {
-            // TODO
-        });
-
-        xdescribe('linkLongnameWithSignature', function() {
             // TODO
         });
 
