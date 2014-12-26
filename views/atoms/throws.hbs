@@ -5,12 +5,12 @@
     <dt>{{translateHeading 'throws' exceptions}}</dt>
     {{#each exceptions}}
         <dd>
-            {{#all type type.names}}
-                {{#any type.names}}
-                    {{describeType (typeUnion type.names)}}
-                {{/any}}
-            {{/all}}
-            {{#embed 'description'}}{{/embed}}
+            {{~#markdown~}}
+                {{~#all type type.parsedType~}}
+                    <code>{{describeType type.parsedType}}</code>&nbsp;
+                {{~/all~}}
+                {{~resolveLinks description~}}
+            {{~/markdown~}}
         </dd>
     {{/each}}
 {{/any}}
