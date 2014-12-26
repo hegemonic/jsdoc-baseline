@@ -55,6 +55,7 @@
     "gulp-wrap": "~0.5.0",
     "jsdoc": "~3.3.0-alpha9",
     "requizzle": "~0.2.0",
+    "simple-mock": "~0.2.6",
     "temp": "~0.8.0",
     "vinyl-map": "~1.0.1"
   }
