@@ -1,10 +1,13 @@
-{{#withOnly plucked=(pluck returns 'description')}}
-    {{#any plucked}}
-        <dt>{{translateHeading 'returns' returns}}</dt>
-        {{#each plucked}}
-            {{#withOnly item=this}}
-                <dd>{{#markdown}}{{resolveLinks item}}{{/markdown}}</dd>
-            {{/withOnly}}
-        {{/each}}
-    {{/any}}
-{{/withOnly}}
+{{#any returns}}
+    <dt>{{translateHeading 'returns' returns}}</dt>
+    {{#each returns}}
+        <dd>
+            {{~#markdown~}}
+                {{~#all type type.parsedType~}}
+                    <code>{{describeType type.parsedType}}</code>&nbsp;
+                {{~/all~}}
+                {{~resolveLinks description~}}
+            {{~/markdown~}}
+        </dd>
+    {{/each}}
+{{/any}}

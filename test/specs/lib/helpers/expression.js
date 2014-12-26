@@ -245,10 +245,6 @@ describe('lib/helpers/expression', function() {
             // TODO
         });
 
-        xdescribe('typeNames', function() {
-            // TODO
-        });
-
         xdescribe('typeUnion', function() {
             // TODO
         });
