@@ -1,11 +1,13 @@
 {{#any examples}}
-    {{!-- TODO: maybe make this more subtle, a la the Bootstrap docs --}}
-    <h {{~cssClass 'examples'}}>
-        {{translate 'headings.examples' examples}}
-    </h>
-    {{#each examples}}
-        {{#with (example this)}}
-            {{#embed 'example'}}{{/embed}}
-        {{/with}}
-    {{/each}}
+    <section>
+        {{!-- TODO: maybe make this more subtle, a la the Bootstrap docs --}}
+        <h {{~cssClass 'examples'}}>
+            {{translate 'headings.examples' examples}}
+        </h>
+        {{#each examples}}
+            {{#with (example this)}}
+                {{#embed 'example'}}{{/embed}}
+            {{/with}}
+        {{/each}}
+    </section>
 {{/any}}

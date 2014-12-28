@@ -9,23 +9,21 @@
         {{~#embed 'signature'}}{{/embed~}}
     {{/with}}
 </h>
-<section>
-    {{#with symbol}}
-        {{#embed 'description'}}{{/embed}}
-        {{#embed 'examples'}}{{/embed}}
-        {{#embed 'params'}}{{/embed}}
-        {{#embed 'properties'}}{{/embed}}
+{{#with symbol}}
+    {{#embed 'description'}}{{/embed}}
+    {{#embed 'examples'}}{{/embed}}
+    {{#embed 'params'}}{{/embed}}
+    {{#embed 'properties'}}{{/embed}}
 
-        <dl {{~cssClass '!dl-compact'}}>
-            {{#embed 'source-file'}}{{/embed}}
-            {{#embed 'augments'}}{{/embed}}
-            {{#embed 'details'}}{{/embed}}
-            {{#embed 'requires'}}{{/embed}}
-            {{#embed 'fires'}}{{/embed}}
-            {{#embed 'listens'}}{{/embed}}
-            {{#embed 'listeners'}}{{/embed}}
-            {{#embed 'throws'}}{{/embed}}
-            {{#embed 'returns'}}{{/embed}}
-        </dl>
-    {{/with}}
-</section>
+    <dl {{~cssClass '!dl-compact'}}>
+        {{#embed 'source-file'}}{{/embed}}
+        {{#embed 'augments'}}{{/embed}}
+        {{#embed 'details'}}{{/embed}}
+        {{#embed 'requires'}}{{/embed}}
+        {{#embed 'fires'}}{{/embed}}
+        {{#embed 'listens'}}{{/embed}}
+        {{#embed 'listeners'}}{{/embed}}
+        {{#embed 'throws'}}{{/embed}}
+        {{#embed 'returns'}}{{/embed}}
+    </dl>
+{{/with}}
