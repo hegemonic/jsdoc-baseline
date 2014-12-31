@@ -1,9 +1,7 @@
 <nav id="jsdoc-navbar" role="navigation" {{~cssClass '!jsdoc-navbar'}}>
     <div id="jsdoc-navbar-container" {{~cssClass 'jsdoc-navbar-container'}}>
         <div id="jsdoc-navbar-content" {{~cssClass 'jsdoc-navbar-content'}}>
-            {{#if package}}
-                {{packageLink package 'jsdoc-navbar-package-name'}}
-            {{/if}}
+            {{packageLink package 'jsdoc-navbar-package-name'}}
             {{!--
                 TODO:
                 - search
