@@ -3,6 +3,9 @@
         <h>{{#isnt longname memberof}}<small>{{ancestors longname}}</small>{{/isnt~}}
             {{~name}}</h>
     {{~/block}}
+    {{#block 'symbol-header-source'~}}
+        {{~#embed 'source-file'}}{{/embed~}}
+    {{~/block}}
     {{#block 'symbol-header-classdesc'}}
         {{#if classdesc}}
             <div {{~cssClass '!symbol-classdesc'}}>
@@ -19,7 +22,6 @@
     {{/block}}
     {{#block 'symbol-header-details'}}
         <dl {{~cssClass '!dl-compact'}}>
-            {{#embed 'source-file'}}{{/embed}}
             {{#embed 'implements'}}{{/embed}}
             {{#embed 'implementations'}}{{/embed}}
             {{#embed 'mixes'}}{{/embed}}

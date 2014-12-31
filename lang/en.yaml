@@ -54,7 +54,6 @@ headings:
     continued: '{text} <small>(continued)</small>'
     copyright: 'Copyright'
     defaultValue: 'Default value'
-    definedIn: 'Defined in'
     deprecated: 'Deprecated'
     events: |
         {items, plural,
@@ -146,6 +145,7 @@ params:
     optional: '[{param}]'
     repeatable: '...{param}'
 returnTypesSeparator: '&nbsp;&rarr; '
+source: 'Source:'
 tables:
     body:
         isOptional: 'Yes'

@@ -10,13 +10,13 @@
     {{/with}}
 </h>
 {{#with symbol}}
+    {{#embed 'source-file'}}{{/embed}}
     {{#embed 'description'}}{{/embed}}
     {{#embed 'examples'}}{{/embed}}
     {{#embed 'params'}}{{/embed}}
     {{#embed 'properties'}}{{/embed}}
 
     <dl {{~cssClass '!dl-compact'}}>
-        {{#embed 'source-file'}}{{/embed}}
         {{#embed 'augments'}}{{/embed}}
         {{#embed 'details'}}{{/embed}}
         {{#embed 'requires'}}{{/embed}}
