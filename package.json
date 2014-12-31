@@ -53,7 +53,7 @@
     "gulp-mocha": "~0.5.1",
     "gulp-uglify": "~0.3.1",
     "gulp-wrap": "~0.5.0",
-    "jsdoc": "~3.3.0-alpha9",
+    "jsdoc": "https://github.com/jsdoc3/jsdoc/tarball/master",
     "requizzle": "~0.2.0",
     "simple-mock": "~0.2.6",
     "temp": "~0.8.0",
