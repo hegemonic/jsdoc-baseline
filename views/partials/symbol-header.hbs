@@ -1,7 +1,7 @@
 <header {{~cssClass '!page-header'}}>
     {{#block 'symbol-header-heading'}}
         <h>{{#isnt longname memberof}}<small>{{ancestors longname}}</small>{{/isnt~}}
-            {{~name}}</h>
+            <span {{~cssClass '!symbol-name'}}>{{name}}</span></h>
     {{~/block}}
     {{#block 'symbol-header-source'~}}
         {{~#embed 'source-file'}}{{/embed~}}

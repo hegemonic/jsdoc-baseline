@@ -3,13 +3,12 @@
     + Constructors
     + Methods with no explicit return type
 --}}
-{{!-- TODO: only render the <span> tags if there are relevant CSS classes --}}
 {{~#if (needsSignature this)~}}
-    <span {{~cssClass 'signature'}}><span {{~cssClass 'signature-params'}}>{{formatParams params}}</span>
+    <span {{~cssClass '!signature'}}><span {{~cssClass '!signature-params'}}>{{formatParams params}}</span>
         {{~#isnt kind 'class'~}}
             {{~#any returns~}}
                 {{~translate 'returnTypesSeparator'~}}
-                <span {{~cssClass 'signature-returns'}}> {{describeType (returnTypes returns)~}}</span>
+                <span {{~cssClass '!signature-returns'}}> {{describeType (returnTypes returns)~}}</span>
             {{~/any~}}
         {{~/isnt~}}
     </span>

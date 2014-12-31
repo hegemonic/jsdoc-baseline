@@ -5,7 +5,7 @@
 <h id="{{id symbol}}">
     {{#with symbol}}
         {{~#embed 'constructor-prefix'}}{{/embed~}}
-        {{~name~}}
+        <span {{~cssClass '!symbol-name'}}>{{name}}</span>
         {{~#embed 'signature'}}{{/embed~}}
     {{/with}}
 </h>
