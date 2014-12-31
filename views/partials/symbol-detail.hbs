@@ -10,7 +10,9 @@
     {{/with}}
 </h>
 {{#with symbol}}
-    {{#embed 'source-file'}}{{/embed}}
+    {{#unless (config 'sourceFiles.singleLink')}}
+        {{#embed 'source-file'}}{{/embed}}
+    {{/unless}}
     {{#embed 'description'}}{{/embed}}
     {{#embed 'examples'}}{{/embed}}
     {{#embed 'params'}}{{/embed}}
