@@ -1,17 +1,17 @@
 (function($) {
-  // TODO: make the node ID configurable
-  var treeNode = $('#jsdoc-toc-nav');
+    // TODO: make the node ID configurable
+    var treeNode = $('#jsdoc-toc-nav');
 
-  // initialize the tree
-  treeNode.tree({
-    autoEscape: false,
-    closedIcon: '&#x21e2;',
-    data: {{json tocData}},
-    openedIcon: ' &#x21e3;',
-    saveState: true,
-    useContextMenu: false
-  });
+    // initialize the tree
+    treeNode.tree({
+        autoEscape: false,
+        closedIcon: '&#x21e2;',
+        data: {{json tocData}},
+        openedIcon: ' &#x21e3;',
+        saveState: true,
+        useContextMenu: false
+    });
 
-  // add event handlers
-  // TODO
+    // add event handlers
+    // TODO
 })(jQuery);
