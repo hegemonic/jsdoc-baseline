@@ -3,11 +3,12 @@
     need to restore that info, perhaps as badges instead of prefix text
 --}}
 <h id="{{id symbol}}">
-    {{#with symbol}}
+    {{~#embed 'symbol-labels'}}{{/embed~}}
+    {{~#with symbol~}}
         {{~#embed 'constructor-prefix'}}{{/embed~}}
         <span {{~cssClass '!symbol-name'}}>{{name}}</span>
         {{~#embed 'signature'}}{{/embed~}}
-    {{/with}}
+    {{~/with~}}
 </h>
 {{#with symbol}}
     {{#unless (config 'sourceFiles.singleLink')}}

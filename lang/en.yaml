@@ -131,6 +131,15 @@ headings:
             =1 {Abstract type}
             other {Abstract types}}
     version: 'Version'
+labels:
+    constant: 'constant'
+    inner: 'inner'
+    private: 'private'
+    protected: 'protected'
+    public: 'public'
+    readonly: 'read-only'
+    static: 'static'
+    virtual: 'abstract'
 linkToLine: |
     {items, plural,
         =1 {{filepath}}

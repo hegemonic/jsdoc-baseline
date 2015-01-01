@@ -145,6 +145,10 @@ describe('lib/helpers/expression', function() {
             // TODO
         });
 
+        xdescribe('labels', function() {
+            // TODO
+        });
+
         xdescribe('licenseLink', function() {
             // TODO
         });

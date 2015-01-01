@@ -1,6 +1,10 @@
 <header {{~cssClass '!page-header'}}>
     {{#block 'symbol-header-heading'}}
-        <h>{{#isnt longname memberof}}<small>{{ancestors longname}}</small>{{/isnt~}}
+        <h>
+            {{~#withOnly symbol=this~}}
+                {{~#embed 'symbol-labels'}}{{/embed~}}
+            {{/withOnly~}}
+            {{~#isnt longname memberof}}<small>{{ancestors longname}}</small>{{/isnt~}}
             <span {{~cssClass '!symbol-name'}}>{{name}}</span></h>
     {{~/block}}
     {{#block 'symbol-header-source'~}}

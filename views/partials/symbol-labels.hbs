@@ -1,0 +1,10 @@
+{{~#withOnly allLabels=(labels symbol)~}}
+    {{~#any allLabels~}}
+        <div {{~cssClass '!symbol-detail-labels'}}>
+            {{~#each allLabels~}}
+                <span {{~cssClass '!label' class}}>{{text}}</span>
+                {{~#unless @last}}&nbsp;{{/unless~}}
+            {{~/each~}}
+        </div>
+    {{~/any~}}
+{{~/withOnly~}}
