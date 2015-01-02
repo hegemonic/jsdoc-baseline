@@ -13,7 +13,9 @@ exports.render = function() {
 function resetJsdocGlobals() {
     global.env = {
         conf: {
-            tags: {},
+            tags: {
+                dictionaries: ['jsdoc']
+            },
             templates: {
                 cleverLinks: false,
                 monospaceLinks: false
@@ -29,6 +31,9 @@ function resetJsdocGlobals() {
             destination: './out/',
             // path to the JSDoc template
             template: path.resolve(__dirname, '../..')
+        },
+        version: {
+            number: '1.2.3.4'
         }
     };
 }

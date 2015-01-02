@@ -27,7 +27,7 @@ expect.addAssertion('toBeBoolean', toBeBoolean);
 
 expect.addAssertion('toBeFalse', function() {
     if (this.value !== false) {
-        return this.assertions.fail('to be false.')
+        return this.assertions.fail('to be false.');
     }
 
     this.assertions.pass();
@@ -43,6 +43,26 @@ function toBeFunction() {
 
 expect.addAssertion('toBeAFunction', toBeFunction);
 expect.addAssertion('toBeFunction', toBeFunction);
+
+function toBeInstanceOf(klass) {
+    var actualClassName = this.value.constructor ? this.value.constructor.name : undefined;
+    var expectedClassName;
+
+    if (typeof klass === 'string') {
+        expectedClassName = klass;
+    } else {
+        expectedClassName = klass.name;
+    }
+
+    if (actualClassName !== expectedClassName) {
+        return this.assertions.fail('to be an instance of ' + expectedClassName + '.');
+    }
+
+    this.assertions.pass();
+}
+
+expect.addAssertion('toBeAnInstanceOf', toBeInstanceOf);
+expect.addAssertion('toBeInstanceOf', toBeInstanceOf);
 
 function toBeNumber() {
     if (typeof this.value !== 'number') {

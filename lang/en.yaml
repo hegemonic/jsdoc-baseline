@@ -172,6 +172,8 @@ returnTypesSeparator: '&nbsp;&rarr; '
 source: 'Source:'
 tables:
     body:
+        defaultValue: 'Defaults to {valueString}.'
+        defaultValueString: '<code>{value}</code>'
         isOptional: 'Yes'
         isRequired: '&nbsp;'
         nonNullable:
