@@ -26,7 +26,7 @@ function Spy(obj, key) {
         argsForCall: {
             enumerable: true,
             get: function() {
-                return this._mock.calls.map(function(call) {
+                return mock.calls.map(function(call) {
                     return call.args;
                 });
             }
@@ -34,7 +34,7 @@ function Spy(obj, key) {
         calls: {
             enumerable: true,
             get: function() {
-                return this._mock.calls;
+                return mock.calls;
             }
         },
         isSpy: {
@@ -44,7 +44,7 @@ function Spy(obj, key) {
         mostRecentCall: {
             enumerable: true,
             get: function() {
-                return this._mock.lastCall;
+                return mock.lastCall;
             }
         }
     });
@@ -98,12 +98,13 @@ expect.addAssertion('toHaveBeenCalled', function() {
 expect.addAssertion('toHaveBeenCalledWith', function() {
     var args = [].slice.call(arguments);
     var call;
+    var mock = this.value;
     var wasCalledWith = true;
 
-    checkMock(this.value);
+    checkMock(mock);
 
-    for (var i = 0, ii = this.value.calls.length; i < ii; i++) {
-        call = this.value.calls[i];
+    for (var i = 0, ii = mock.calls.length; i < ii; i++) {
+        call = mock.calls[i];
 
         // did we get the right number of arguments?
         if (call.args.length === args.length) {
@@ -124,8 +125,8 @@ expect.addAssertion('toHaveBeenCalledWith', function() {
     }
 
     if (!wasCalledWith) {
-        return this.assertions.fail(util.format('to have been called with %j, ' +
-            'but actual calls were: %j', args, this.value.argsForCall));
+        return this.assertions.fail(util.format(' to have been called with %j, ' +
+            'but actual calls were: %j', args, mock.argsForCall));
     }
 
     return this.assertions.pass();
