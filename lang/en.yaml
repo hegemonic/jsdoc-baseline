@@ -131,6 +131,21 @@ headings:
             =1 {Abstract type}
             other {Abstract types}}
     version: 'Version'
+kinds:
+    class: 'class'
+    constant: 'constant'
+    event: 'event'
+    external: 'external'
+    file: 'file'
+    function: 'function'
+    interface: 'interface'
+    member: 'member'
+    mixin: 'mixin'
+    module: 'module'
+    namespace: 'namespace'
+    package: 'package'
+    param: 'param'
+    typedef: 'abstract type'
 labels:
     constant: 'constant'
     inner: 'inner'

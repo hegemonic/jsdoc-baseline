@@ -1,9 +1,12 @@
 {{!--
-    TODO: removed "attribs" from the start of the heading; looks like we no longer set doc.attribs.
-    need to restore that info, perhaps as badges instead of prefix text
+    Note that we omit the labels for classes and modules, since these labels would duplicate the
+    labels for the page's main heading.
 --}}
 <h id="{{id symbol}}">
-    {{~#embed 'symbol-labels'}}{{/embed~}}
+    {{~#contains 'class' 'module' value=symbol.kind~}}
+    {{~else~}}
+        {{~#embed 'symbol-labels'}}{{/embed~}}
+    {{~/contains~}}
     {{~#with symbol~}}
         {{~#embed 'constructor-prefix'}}{{/embed~}}
         <span {{~cssClass '!symbol-name'}}>{{name}}</span>

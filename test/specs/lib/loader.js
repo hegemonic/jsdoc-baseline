@@ -1,7 +1,5 @@
 'use strict';
 
-require('expectations');
-
 describe('lib/loader', function() {
     var loader = require('../../../lib/loader');
 

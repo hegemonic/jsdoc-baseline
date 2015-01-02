@@ -3,7 +3,6 @@
 
 'use strict';
 
-require('expectations');
 require('../helpers/').setup();
 
 describe('publish', function() {
