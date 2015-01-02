@@ -15,7 +15,7 @@
 {{~else~}}
     {{~#if type~}}
         {{~#any type.names~}}
-            <small {{~cssClass 'symbol-type'~}}>
+            <small {{~cssClass '!property-type' 'symbol-type'~}}>
                 &nbsp;{{~describeType (typeUnion type.names)~}}
             </small>
         {{~/any~}}
