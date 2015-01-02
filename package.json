@@ -56,7 +56,6 @@
     "jsdoc": "https://github.com/jsdoc3/jsdoc/tarball/master",
     "requizzle": "~0.2.0",
     "simple-mock": "~0.2.6",
-    "temp": "~0.8.0",
     "vinyl-map": "~1.0.1"
   }
 }
