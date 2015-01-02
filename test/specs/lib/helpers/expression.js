@@ -22,16 +22,74 @@ describe('lib/helpers/expression', function() {
     describe('helpers', function() {
         var instance = expression(helpers.template);
 
-        xdescribe('_decrementHeading', function() {
-            // TODO
+        describe('_decrementHeading', function() {
+            beforeEach(function() {
+                while (instance._headingLevel() > 1) {
+                    instance._decrementHeading();
+                }
+            });
+
+            it('should reduce the heading level by 1', function() {
+                var newLevel;
+                var oldLevel;
+
+                instance._incrementHeading();
+                oldLevel = instance._headingLevel();
+
+                instance._decrementHeading();
+                newLevel = instance._headingLevel();
+
+                expect(oldLevel - newLevel).toBe(1);
+            });
+
+            it('should not reduce the heading level below 1', function() {
+                var newLevel;
+                var oldLevel = instance._headingLevel();
+
+                instance._decrementHeading();
+                newLevel = instance._headingLevel();
+
+                expect(oldLevel).toBe(1);
+                expect(newLevel).toBe(1);
+            });
         });
 
-        xdescribe('_headingLevel', function() {
-            // TODO
+        describe('_headingLevel', function() {
+            it('should return a positive number', function() {
+                var level = instance._headingLevel();
+
+                expect(level).toBeNumber();
+                expect(level).toBeGreaterThan(0);
+            });
         });
 
-        xdescribe('_incrementHeading', function() {
-            // TODO
+        describe('_incrementHeading', function() {
+            function decrement() {
+                while (instance._headingLevel() > 1) {
+                    instance._decrementHeading();
+                }
+            }
+
+            beforeEach(decrement);
+            afterEach(decrement);
+
+            it('should increase the heading level by 1', function() {
+                var newLevel;
+                var oldLevel = instance._headingLevel();
+
+                instance._incrementHeading();
+                newLevel = instance._headingLevel();
+
+                expect(newLevel - oldLevel).toBe(1);
+            });
+
+            it('should not increase the heading level above 6', function() {
+                for (var i = 0, l = 10; i < l; i++) {
+                    instance._incrementHeading();
+                }
+
+                expect(instance._headingLevel()).toBe(6);
+            });
         });
 
         xdescribe('ancestors', function() {
@@ -54,8 +112,19 @@ describe('lib/helpers/expression', function() {
             // TODO
         });
 
-        xdescribe('debug', function() {
-            // TODO
+        describe('debug', function() {
+            it('should log the JSON-stringified arguments at level DEBUG', function() {
+                var logger = require('jsdoc/util/logger');
+
+                spyOn(logger, 'debug');
+
+                instance.debug('foo', {
+                    bar: 'baz'
+                }, { /* fake options object */ });
+
+                expect(logger.debug).toHaveBeenCalled();
+                expect(logger.debug).toHaveBeenCalledWith('foo {"bar":"baz"}');
+            });
         });
 
         describe('describeType', function() {
@@ -102,16 +171,39 @@ describe('lib/helpers/expression', function() {
             });
         });
 
-        xdescribe('example', function() {
-            // TODO
+        describe('example', function() {
+            it('should work when the example does not have a caption', function() {
+                var example = instance.example('Some example text');
+
+                expect(example.caption).toBeUndefined();
+                expect(example.code).toBe('Some example text');
+            });
+
+            it('should work when the example has a caption', function() {
+                var example = instance.example('<caption>Caption here</caption> Some example text');
+
+                expect(example.caption).toBe('Caption here');
+                expect(example.code).toBe('Some example text');
+            });
         });
 
         xdescribe('formatParams', function() {
             // TODO
         });
 
-        xdescribe('generatedBy', function() {
-            // TODO
+        describe('generatedBy', function() {
+            it('should include the JSDoc version number', function() {
+                var generatedBy = instance.generatedBy();
+
+                expect(generatedBy).toBeInstanceOf(SafeString);
+                expect(generatedBy.toString()).toContain(global.env.version.number);
+            });
+
+            it('should include the date', function() {
+                var generatedBy = instance.generatedBy();
+
+                expect(generatedBy.toString()).toContain(new Date(Date.now()).getFullYear());
+            });
         });
 
         xdescribe('group', function() {
@@ -190,8 +282,30 @@ describe('lib/helpers/expression', function() {
             });
         });
 
-        xdescribe('keys', function() {
-            // TODO
+        describe('keys', function() {
+            it('should throw an error if the argument is not an object', function() {
+                function shouldThrow() {
+                    return instance.keys('hello');
+                }
+
+                expect(shouldThrow).toThrow();
+            });
+
+            it('should return the object\'s keys as an array', function() {
+                var keys = instance.keys({
+                    foo: true,
+                    bar: '1',
+                    baz: null
+                });
+
+                expect(keys).toBeArray();
+                expect(keys.length).toBe(3);
+
+                keys.sort();
+                expect(keys[0]).toBe('bar');
+                expect(keys[1]).toBe('baz');
+                expect(keys[2]).toBe('foo');
+            });
         });
 
         xdescribe('labels', function() {
@@ -304,8 +418,57 @@ describe('lib/helpers/expression', function() {
             // TODO
         });
 
-        xdescribe('needsSignature', function() {
-            // TODO
+        describe('needsSignature', function() {
+            it('should say that classes need a signature', function() {
+                var fakeDoclet = {
+                    kind: 'class'
+                };
+
+                expect(instance.needsSignature(fakeDoclet)).toBe(true);
+            });
+
+            it('should say that functions need a signature', function() {
+                var fakeDoclet = {
+                    kind: 'function'
+                };
+
+                expect(instance.needsSignature(fakeDoclet)).toBe(true);
+            });
+
+            it('should say that typedefs need a signature if they contain a function', function() {
+                var fakeDoclet = {
+                    kind: 'typedef',
+                    type: {
+                        names: [
+                            'function'
+                        ]
+                    }
+                };
+
+                expect(instance.needsSignature(fakeDoclet)).toBe(true);
+            });
+
+            it('should say that typedefs do not need a signature if they do not contain a function',
+                function() {
+                var fakeDoclet = {
+                    kind: 'typedef',
+                    type: {
+                        names: [
+                            'Object'
+                        ]
+                    }
+                };
+
+                expect(instance.needsSignature(fakeDoclet)).toBe(false);
+            });
+
+            it('should say that other types do not need a signature', function() {
+                var fakeDoclet = {
+                    kind: 'member'
+                };
+
+                expect(instance.needsSignature(fakeDoclet)).toBe(false);
+            });
         });
 
         xdescribe('packageLink', function() {
@@ -316,8 +479,23 @@ describe('lib/helpers/expression', function() {
             // TODO
         });
 
-        xdescribe('pluck', function() {
-            // TODO
+        describe('pluck', function() {
+            it('should return an array of the specified property\'s values', function() {
+                var objs = [
+                    {
+                        foo: true
+                    },
+                    {
+                        foo: 7
+                    }
+                ];
+                var plucked = instance.pluck(objs, 'foo');
+
+                expect(plucked).toBeArray();
+                expect(plucked.length).toBe(2);
+                expect(plucked[0]).toBe(true);
+                expect(plucked[1]).toBe(7);
+            });
         });
 
         xdescribe('resolveAuthorLinks', function() {
@@ -336,10 +514,6 @@ describe('lib/helpers/expression', function() {
             // TODO
         });
 
-        xdescribe('setRootProperty', function() {
-            // TODO
-        });
-
         xdescribe('shouldHighlight', function() {
             // TODO
         });
@@ -352,8 +526,13 @@ describe('lib/helpers/expression', function() {
             // TODO
         });
 
-        xdescribe('translatePageTitle', function() {
-            // TODO
+        describe('translatePageTitle', function() {
+            it('should include the specified text in the generated title', function() {
+                var title = instance.translatePageTitle('Foo bar', 'classes');
+
+                expect(title).toBeInstanceOf(SafeString);
+                expect(title.toString()).toContain('Foo bar');
+            });
         });
 
         xdescribe('typeUnion', function() {
