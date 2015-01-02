@@ -5,5 +5,7 @@
 'use strict';
 
 before(function() {
+    require('expectations');
+    require('../helpers/matchers');
     require('../helpers/mocks');
 });
