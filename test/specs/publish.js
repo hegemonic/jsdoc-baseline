@@ -1,6 +1,3 @@
-/*global describe, expect, it, xit */
-/*eslint max-nested-callbacks: 0 */
-
 'use strict';
 
 require('../helpers/').setup();
@@ -13,7 +10,7 @@ describe('publish', function() {
         expect(typeof publish.publish).toBe('function');
     });
 
-    it('publish', function() {
+    describe('publish', function() {
         xit('creates the output directory', function() {
             // TODO
         });
