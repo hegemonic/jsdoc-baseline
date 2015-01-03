@@ -70,7 +70,7 @@ settings for overriding and modifying portions of the template.
 
 ## Legal stuff
 
-Copyright (c) 2014 Google Inc. Licensed under the Apache License, Version 2.0.
+Copyright 2014-2015 Google Inc. Licensed under the Apache License, Version 2.0.
 
 See [LICENSE.md][license] for more information.
 
