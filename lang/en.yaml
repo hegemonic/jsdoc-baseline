@@ -192,4 +192,4 @@ tables:
         name: 'Name'
         optional: 'Optional'
         type: 'Type'
-    notApplicable: '&8212;'
+    notApplicable: '&#8212;'
