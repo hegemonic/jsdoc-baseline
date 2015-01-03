@@ -7,12 +7,14 @@ describe('lib/publishjob', function() {
     var Template = require('../../../lib/template');
 
     beforeEach(function() {
-        var template = new Template('.');
+        var template = new Template('.').init();
 
-        fs.patch();
+        // must create the instance before patching `fs` so the template resources can be loaded
         instance = new PublishJob(template, {
             destination: '/path/to/destination'
         });
+
+        fs.patch();
     });
 
     afterEach(function() {
@@ -20,6 +22,8 @@ describe('lib/publishjob', function() {
     });
 
     it('should be a constructor', function() {
+        fs.unpatch();
+
         expect(PublishJob).toBeFunction();
         expect(new PublishJob(new Template('.'), {})).toBeInstanceOf(PublishJob);
     });
