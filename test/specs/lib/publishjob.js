@@ -1,13 +1,15 @@
 'use strict';
 
 describe('lib/publishjob', function() {
+    var config = require('../../../lib/config');
     var instance;
     var fs = new (require('fake-fs'))();
     var PublishJob = require('../../../lib/publishjob');
     var Template = require('../../../lib/template');
+    var template;
 
     beforeEach(function() {
-        var template = new Template('.').init();
+        template = new Template(config.loadConfig('', '.')).init();
 
         // must create the instance before patching `fs` so the template resources can be loaded
         instance = new PublishJob(template, {
@@ -25,7 +27,7 @@ describe('lib/publishjob', function() {
         fs.unpatch();
 
         expect(PublishJob).toBeFunction();
-        expect(new PublishJob(new Template('.'), {})).toBeInstanceOf(PublishJob);
+        expect(new PublishJob(template, {})).toBeInstanceOf(PublishJob);
     });
 
     xdescribe('copyStaticFiles', function() {

@@ -1,16 +1,17 @@
 'use strict';
 
 describe('lib/template', function() {
+    var config = require('../../../lib/config');
     var instance;
     var Template = require('../../../lib/template');
 
     beforeEach(function() {
-        instance = new Template('.');
+        instance = new Template(config.loadConfig('', '.'));
     });
 
     it('should be a constructor', function() {
         expect(Template).toBeFunction();
-        expect(new Template('', '')).toBeInstanceOf(Template);
+        expect(new Template(config.loadConfig('', '.'))).toBeInstanceOf(Template);
     });
 
     xdescribe('init', function() {
