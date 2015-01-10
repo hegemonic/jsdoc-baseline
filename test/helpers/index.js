@@ -43,10 +43,11 @@ exports.setup = resetJsdocGlobals;
 
 // Shared template object.
 exports.template = (function() {
-    var conf = require('../../lib/config').load('', '.');
+    var conf;
     var Template;
 
     exports.setup();
+    conf = require('../../lib/config').loadSync('', '.').get();
     Template = require('../../lib/template');
 
     return new Template(conf).init();

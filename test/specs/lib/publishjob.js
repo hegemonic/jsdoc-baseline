@@ -9,7 +9,7 @@ describe('lib/publishjob', function() {
     var template;
 
     beforeEach(function() {
-        template = new Template(config.load('', '.')).init();
+        template = new Template(config.loadSync('', '.').get()).init();
 
         // must create the instance before patching `fs` so the template resources can be loaded
         instance = new PublishJob(template, {

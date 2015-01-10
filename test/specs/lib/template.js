@@ -6,12 +6,12 @@ describe('lib/template', function() {
     var Template = require('../../../lib/template');
 
     beforeEach(function() {
-        instance = new Template(config.loadConfig('', '.'));
+        instance = new Template(config.loadSync('', '.').get());
     });
 
     it('should be a constructor', function() {
         expect(Template).toBeFunction();
-        expect(new Template(config.load('', '.'))).toBeInstanceOf(Template);
+        expect(new Template(config.loadSync('', '.').get())).toBeInstanceOf(Template);
     });
 
     xdescribe('init', function() {
