@@ -2,10 +2,10 @@
 
 describe('lib/helpers/block', function() {
     var block;
-    var helpers = require('../../../helpers');
+    var helpers = require('../../../../helpers');
 
     helpers.setup();
-    block = require('../../../../lib/helpers/block');
+    block = require('../../../../../lib/helpers/block');
 
     it('should export a function', function() {
         expect(block).toBeFunction();

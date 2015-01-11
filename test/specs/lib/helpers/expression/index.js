@@ -3,12 +3,12 @@
 describe('lib/helpers/expression', function() {
     var expression;
     var handlebars = require('handlebars');
-    var helpers = require('../../../helpers');
+    var helpers = require('../../../../helpers');
     var SafeString = handlebars.SafeString;
     var templateHelper = require('jsdoc/util/templateHelper');
 
     helpers.setup();
-    expression = require('../../../../lib/helpers/expression');
+    expression = require('../../../../../lib/helpers/expression');
 
     it('should export a function', function() {
         expect(typeof expression).toBe('function');
