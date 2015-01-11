@@ -2,7 +2,9 @@
 
 describe('lib/publishjob', function() {
     var config = require('../../../lib/config');
+    /*eslint-disable no-unused-vars */
     var instance;
+    /*eslint-enable no-unused-vars */
     var fs = new (require('fake-fs'))();
     var PublishJob = require('../../../lib/publishjob');
     var Template = require('../../../lib/template');

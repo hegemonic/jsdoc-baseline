@@ -2,7 +2,9 @@
 
 describe('lib/template', function() {
     var config = require('../../../lib/config');
+    /*eslint-disable no-unused-vars */
     var instance;
+    /*eslint-enable no-unused-vars */
     var Template = require('../../../lib/template');
 
     beforeEach(function() {
