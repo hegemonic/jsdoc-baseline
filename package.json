@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/hegemonic/baseline",
   "dependencies": {
+    "deep-extend": "~0.3.2",
     "escape-string-regexp": "~1.0.1",
     "handlebars": "~2.0.0",
     "handlebars-layouts": "~1.0.0",
