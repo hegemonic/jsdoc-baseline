@@ -3,6 +3,7 @@
 describe('lib/filefinder', function() {
     var fileFinder = require('../../../lib/filefinder');
     var finder;
+    var path = require('jsdoc/path');
 
     var fixturePaths = [
         'test/fixtures/filefinder/pathA',
@@ -89,9 +90,24 @@ describe('lib/filefinder', function() {
 
             expect(currentFinder).not.toBe(defaultFinder);
         });
+
+        it('should not retrieve a fake finder from higher up the prototype chain', function() {
+            expect(fileFinder.get('constructor')).not.toBe({}.constructor);
+        });
     });
 
     describe('FileFinder', function() {
+        // mostly covered by tests for other functions
+        describe('findFileSync', function() {
+            it('should throw an error if the file is not found', function() {
+                function findFakeFile() {
+                    return finder.findFileSync(path.resolve(__dirname, './fake'));
+                }
+
+                expect(findFakeFile).toThrow();
+            });
+        });
+
         describe('readFileSync', function() {
             it('should return the first instance of the file that it finds', function() {
                 function read() {
