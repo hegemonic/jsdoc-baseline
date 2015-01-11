@@ -98,6 +98,25 @@ describe('lib/filefinder', function() {
 
     describe('FileFinder', function() {
         // mostly covered by tests for other functions
+        describe('findAllFilesSync', function() {
+            it('should return an array with all occurrences of a file', function() {
+                var files = finder.findAllFilesSync('./asset1.txt');
+
+                expect(files).toBeArray();
+                expect(files.length).toBe(2);
+                expect(files[0]).not.toBe(files[1]);
+            });
+
+            it('should throw an error if the file is not found', function() {
+                function findFakeFile() {
+                    return finder.findAllFilesSync(path.resolve(__dirname, './fake'));
+                }
+
+                expect(findFakeFile).toThrow();
+            });
+        });
+
+        // mostly covered by tests for other functions
         describe('findFileSync', function() {
             it('should throw an error if the file is not found', function() {
                 function findFakeFile() {
