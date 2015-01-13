@@ -31,6 +31,12 @@
                     <p>{{modifierText this}}</p>
                 {{/if}}
             {{/if}}
+            {{#if ../children}}
+                <p>{{translate 'tables.body.eachValueHasProperties' name=name}}</p>
+                {{#withOnly values=../children}}
+                    {{#embed 'details-table'}}{{/embed}}
+                {{/withOnly}}
+            {{/if}}
         </td>
     {{/block}}
 </tr>

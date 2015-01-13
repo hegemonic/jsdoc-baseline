@@ -2,6 +2,7 @@
 
 describe('lib/helpers/expression', function() {
     var expression;
+    var _ = require('underscore-contrib');
     var handlebars = require('handlebars');
     var helpers = require('../../../../helpers');
     var SafeString = handlebars.SafeString;
@@ -20,7 +21,9 @@ describe('lib/helpers/expression', function() {
     });
 
     describe('helpers', function() {
-        var instance = expression(helpers.template);
+        // TODO: use a dummy template instance that pulls L10N strings from fixtures/
+        var template = helpers.template;
+        var instance = expression(template);
 
         describe('_decrementHeading', function() {
             beforeEach(function() {
@@ -414,10 +417,6 @@ describe('lib/helpers/expression', function() {
             });
         });
 
-        xdescribe('moveChildren', function() {
-            // TODO
-        });
-
         describe('needsSignature', function() {
             it('should say that classes need a signature', function() {
                 var fakeDoclet = {
@@ -498,6 +497,150 @@ describe('lib/helpers/expression', function() {
             });
         });
 
+        describe('reparentItems', function() {
+            var tablesConfig = _.getPath(template.config, 'tables');
+
+            beforeEach(function() {
+                template.config.tables = {
+                    nestedPropertyTables: true
+                };
+            });
+
+            afterEach(function() {
+                template.config.tables = tablesConfig;
+            });
+
+            it('should reparent child properties', function() {
+                var fakeDoclet = {
+                    params: [
+                        {
+                            name: 'foo'
+                        },
+                        {
+                            name: 'foo.bar'
+                        }
+                    ]
+                };
+                var reparented = instance.reparentItems(fakeDoclet, 'params');
+
+                expect(reparented).toEqual([
+                    {
+                        name: 'foo',
+                        children: [
+                            {
+                                name: 'bar'
+                            }
+                        ]
+                    }
+                ]);
+            });
+
+            it('should not reparent child properties if the config setting is false', function() {
+                var fakeDoclet = {
+                    params: [
+                        {
+                            name: 'foo'
+                        },
+                        {
+                            name: 'foo.bar'
+                        }
+                    ]
+                };
+                var notReparented;
+
+                template.config.tables = {
+                    nestedPropertyTables: false
+                };
+                notReparented = instance.reparentItems(fakeDoclet, 'params');
+
+                expect(notReparented).toEqual(fakeDoclet.params);
+            });
+
+            it('should reparent properties of arrays', function() {
+                var fakeDoclet = {
+                    params: [
+                        {
+                            name: 'foo'
+                        },
+                        {
+                            name: 'foo[].bar'
+                        }
+                    ]
+                };
+                var reparented = instance.reparentItems(fakeDoclet, 'params');
+
+                expect(reparented).toEqual([
+                    {
+                        name: 'foo',
+                        children: [
+                            {
+                                name: 'bar'
+                            }
+                        ]
+                    }
+                ]);
+            });
+
+            it('should reparent properties of nested arrays', function() {
+                var fakeDoclet = {
+                    params: [
+                        {
+                            name: 'foo'
+                        },
+                        {
+                            name: 'foo[][].bar'
+                        }
+                    ]
+                };
+                var reparented = instance.reparentItems(fakeDoclet, 'params');
+
+                expect(reparented).toEqual([
+                    {
+                        name: 'foo',
+                        children: [
+                            {
+                                name: 'bar'
+                            }
+                        ]
+                    }
+                ]);
+            });
+
+            it('should not reparent non-child properties', function() {
+                var fakeDoclet = {
+                    params: [
+                        {
+                            name: 'foo'
+                        },
+                        {
+                            name: 'bar'
+                        }
+                    ]
+                };
+                var reparented = instance.reparentItems(fakeDoclet, 'params');
+
+                expect(reparented).toEqual(fakeDoclet.params);
+            });
+
+            it('should handle null properties', function() {
+                var fakeDoclet = {
+                    params: [
+                        {
+                            name: 'foo'
+                        },
+                        null
+                    ]
+                };
+                var reparented = instance.reparentItems(fakeDoclet, 'params');
+
+                expect(reparented).toEqual([
+                    {
+                        name: 'foo'
+                    }
+                ]);
+            });
+        });
+
         xdescribe('resolveAuthorLinks', function() {
             // TODO
         });
@@ -518,8 +661,47 @@ describe('lib/helpers/expression', function() {
             // TODO
         });
 
-        xdescribe('translate', function() {
-            // TODO
+        describe('translate', function() {
+            it('should map keys to strings', function() {
+                var description = instance.translate('tables.header.description', null, {});
+
+                expect(description).toBeInstanceOf(SafeString);
+                expect(description.toString()).toBe('Description');
+            });
+
+            it('should pluralize strings based on the length of an array', function() {
+                var singular = instance.translate('headings.classes', [0], {});
+                var plural = instance.translate('headings.classes', [0, 1], {});
+
+                expect(singular.toString()).toBe('Class');
+                expect(plural.toString()).toBe('Classes');
+            });
+
+            it('should use the singular form if the argument is not an array', function() {
+                var singular = instance.translate('headings.classes', 17, {});
+
+                expect(singular.toString()).toBe('Class');
+            });
+
+            it('should pass hash data through to the L10N string', function() {
+                var paramText = instance.translate('params.all', null, {
+                    hash: {
+                        params: 'foo'
+                    }
+                });
+
+                expect(paramText.toString()).toBe('(foo)');
+            });
+
+            it('should be able to pluralize text when hash data is present', function() {
+                var plural = instance.translate('headings.classes', [0, 1], {
+                    hash: {
+                        foo: 'bar'
+                    }
+                });
+
+                expect(plural.toString()).toBe('Classes');
+            });
         });
 
         xdescribe('translateHeading', function() {

@@ -1,9 +1,8 @@
 {{#any params}}
-    {{moveChildren this 'params'}}
     <section>
         <h>{{translateHeading 'parameters' params}}</h>
-            {{#withOnly values=params}}
-                {{#embed 'details-table'}}{{/embed}}
-            {{/withOnly}}
+        {{#withOnly values=(reparentItems this 'params')}}
+            {{#embed 'details-table'}}{{/embed}}
+        {{/withOnly}}
     </section>
 {{/any}}

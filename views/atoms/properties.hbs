@@ -1,9 +1,7 @@
 {{#any properties}}
-    {{moveChildren this 'properties'}}
     <section>
         <h>{{translateHeading 'properties' properties}}</h>
-
-        {{#withOnly values=properties}}
+        {{#withOnly values=(reparentItems this 'properties')}}
             {{#embed 'details-table'}}{{/embed}}
         {{/withOnly}}
     </section>

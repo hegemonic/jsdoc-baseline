@@ -17,11 +17,6 @@
         <tbody>
             {{#each values}}
                 {{#embed 'details-table-row'}}{{/embed}}
-                {{#if children}}
-                    {{#each children}}
-                        {{#embed 'details-table-row'}}{{/embed}}
-                    {{/each}}
-                {{/if}}
             {{/each}}
         </tbody>
     {{/block}}
