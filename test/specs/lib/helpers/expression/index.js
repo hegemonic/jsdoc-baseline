@@ -103,14 +103,6 @@ describe('lib/helpers/expression', function() {
             // TODO
         });
 
-        xdescribe('continuedId', function() {
-            // TODO
-        });
-
-        xdescribe('continuedIdNext', function() {
-            // TODO
-        });
-
         xdescribe('cssClass', function() {
             // TODO
         });
@@ -262,10 +254,6 @@ describe('lib/helpers/expression', function() {
         });
 
         xdescribe('id', function() {
-            // TODO
-        });
-
-        xdescribe('isContinued', function() {
             // TODO
         });
 

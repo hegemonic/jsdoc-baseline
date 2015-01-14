@@ -88,10 +88,6 @@ describe('lib/helpers/block', function() {
             });
         });
 
-        xdescribe('balancedGroup', function() {
-            // TODO
-        });
-
         describe('blockHelperMissing', function() {
             it('should throw an error when called', function() {
                 function callMissing() {
@@ -146,39 +142,7 @@ describe('lib/helpers/block', function() {
             });
         });
 
-        describe('continuedBlock', function() {
-            // don't test for all the properties that are created--we have other tests to validate
-            // their values
-            it('should create a data object when none exists', function() {
-                var options = makeOptions({}, function(thisObj, opts) {
-                    return opts;
-                });
-                var result = instance.continuedBlock(options);
-
-                expect(result.data).toBeObject();
-            });
-
-            it('should work with an existing data object', function() {
-                var options = makeOptions({}, function(thisObj, opts) {
-                    return opts;
-                });
-                var result;
-
-                options.data = {
-                    foo: 'bar'
-                };
-                result = instance.continuedBlock(options);
-
-                expect(result.data).toBeObject();
-                expect(result.data.foo).toBe('bar');
-            });
-        });
-
-        xdescribe('eachContinuedGroup', function() {
-            // TODO
-        });
-
-        xdescribe('eachContinuedGroupSection', function() {
+        xdescribe('eachIndexGroup', function() {
             // TODO
         });
 
@@ -249,10 +213,6 @@ describe('lib/helpers/block', function() {
         });
 
         xdescribe('markdownLinks', function() {
-            // TODO
-        });
-
-        xdescribe('translateContinued', function() {
             // TODO
         });
 

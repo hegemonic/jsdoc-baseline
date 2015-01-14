@@ -28,7 +28,6 @@ alphaList:
     y: 'Y'
     z: 'Z'
 brandDefault: 'Home'
-continued: '{text} (continued)&nbsp;&rarr;'
 constructor:
     prefix: 'new&nbsp;'
 # TODO: use built-in date formatter
