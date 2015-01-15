@@ -1,5 +1,8 @@
 {{#extend 'symbol'}}
+    {{#content 'title'}}
+        <title>{{{pageTitle}}}</title>
+    {{/content}}
     {{#content 'body-main-symbol-overview' mode='prepend'}}
-        <h {{~cssClass 'page-title'}}>{{pageTitle}}</h>
+        <h {{~cssClass 'page-title'}}>{{pageHeading}}</h>
     {{/content}}
 {{/extend}}

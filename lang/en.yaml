@@ -158,7 +158,9 @@ linkToLine: |
     {items, plural,
         =1 {{filepath}}
         other {{filepath}:{lineno}}}
-pageTitle: '{category}: {title}'
+pageTitle: '{prefix}{category}: {title}'
+pageTitleNoCategory: '{prefix}{title}'
+pageTitlePrefix: '{name} {version} &raquo; '
 params:
     all: '({params})'
     joiner: |

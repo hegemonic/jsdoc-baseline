@@ -697,18 +697,20 @@ describe('lib/helpers/expression', function() {
         });
 
         describe('translatePageTitle', function() {
-            it('should return the specified text when there is no category', function() {
-                var title = instance.translatePageTitle('Foo bar');
-
-                expect(title).toBeInstanceOf(SafeString);
-                expect(title.toString()).toBe('Foo bar');
-            });
-
             it('should include the specified text in the generated title', function() {
-                var title = instance.translatePageTitle('Foo bar', 'classes');
+                var title = instance.translatePageTitle('Baz', 'Foo bar', 'classes');
 
                 expect(title).toBeInstanceOf(SafeString);
                 expect(title.toString()).toContain('Foo bar');
+                expect(title.toString()).toContain('Baz');
+            });
+
+            it('should work when no category is provided', function() {
+                var title = instance.translatePageTitle('Baz', 'Foo bar');
+
+                expect(title).toBeInstanceOf(SafeString);
+                expect(title.toString()).toContain('Foo bar');
+                expect(title.toString()).toContain('Baz');
             });
         });
 
