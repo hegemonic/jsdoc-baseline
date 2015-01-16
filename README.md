@@ -1,5 +1,7 @@
 # Baseline
 
+[![Build Status](https://img.shields.io/travis/hegemonic/jsdoc-baseline.svg)](http://travis-ci.org/hegemonic/jsdoc-baseline)
+
 An extensible template for [JSDoc 3](https://github.com/jsdoc3/jsdoc).
 
 **This is a preview version of the Baseline template.** Baseline is still under active development.
