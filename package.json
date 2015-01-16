@@ -4,7 +4,7 @@
   "description": "A basic template for JSDoc 3.",
   "main": "publish.js",
   "scripts": {
-    "test": "gulp test"
+    "test": "gulp mocha"
   },
   "repository": {
     "type": "git",
