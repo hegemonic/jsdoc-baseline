@@ -103,8 +103,80 @@ describe('lib/helpers/expression', function() {
             // TODO
         });
 
-        xdescribe('cssClass', function() {
-            // TODO
+        describe('cssClass', function() {
+            var cssClasses = helpers.template.cssClasses;
+            var cssClassPrefix = helpers.template.config.cssClassPrefix;
+
+            afterEach(function() {
+                helpers.template.cssClasses = cssClasses;
+                helpers.template.config.cssClassPrefix = cssClassPrefix;
+            });
+
+            it('should format the class string correctly', function() {
+                var classes = instance.cssClass('!foo', {});
+
+                expect(classes).toBeInstanceOf(SafeString);
+                expect(classes.toString()).toBe(' class="foo"');
+            });
+
+            it('should keep classes prefixed with ! by default, and strip the !', function() {
+                var classes = instance.cssClass('!foo', {});
+
+                expect(classes).toBeInstanceOf(SafeString);
+                expect(classes.toString()).toContain('"foo"');
+            });
+
+            it('should let users change the prefix for classes that it keeps', function() {
+                var classes;
+
+                helpers.template.config.cssClassPrefix = '?';
+                classes = instance.cssClass('?foo', {});
+
+                expect(classes).toBeInstanceOf(SafeString);
+                expect(classes.toString()).toContain('"foo"');
+            });
+
+            it('should accept multiple classes', function() {
+                var classes = instance.cssClass('!foo', '!bar', {});
+
+                expect(classes).toBeInstanceOf(SafeString);
+                expect(classes.toString()).toContain('"foo bar"');
+            });
+
+            it('should preserve user-specified classes', function() {
+                var classes;
+
+                helpers.template.cssClasses = {
+                    foo: true
+                };
+                classes = instance.cssClass('foo', {});
+
+                expect(classes).toBeInstanceOf(SafeString);
+                expect(classes.toString()).toContain('"foo"');
+            });
+
+            it('should not preserve non-user-specific classes', function() {
+                var classes = instance.cssClass('foo', {});
+
+                expect(classes).toBe('');
+            });
+
+            it('should not preserve classes that the user explicitly does not want', function() {
+                var classes;
+
+                helpers.template.cssClasses = {
+                    foo: false
+                };
+                classes = instance.cssClass('foo', {});
+
+                expect(classes).toBe('');
+            });
+
+            it('should not preserve classes whose names match inherited properties', function() {
+                var classes = instance.cssClass('prototype', {});
+
+                expect(classes).toBe('');
+            });
         });
 
         describe('debug', function() {
