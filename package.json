@@ -39,7 +39,7 @@
     "underscore-contrib": "~0.3.0"
   },
   "devDependencies": {
-    "eslint": "~0.10.2",
+    "eslint": "~0.11.0",
     "expectations": "~0.2.5",
     "fake-fs": "~0.5.0",
     "gulp": "~3.8.5",
