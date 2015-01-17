@@ -2,7 +2,11 @@
 
 describe('lib/helpers/block', function() {
     var block;
+    var handlebars = require('handlebars');
     var helpers = require('../../../../helpers');
+
+    var SafeString = handlebars.SafeString;
+    var template = helpers.template;
 
     function makeOptions(hash, fn, inverse) {
         return {
@@ -24,11 +28,11 @@ describe('lib/helpers/block', function() {
     });
 
     it('should return an object', function() {
-        expect(block()).toBeObject();
+        expect(block(template)).toBeObject();
     });
 
     describe('helpers', function() {
-        var instance = block();
+        var instance = block(template);
 
         function testBlockHelper(helper, args, hash) {
             var result;
@@ -208,12 +212,108 @@ describe('lib/helpers/block', function() {
             });
         });
 
-        xdescribe('markdown', function() {
-            // TODO
+        describe('markdown', function() {
+            var options = makeOptions({}, function() {
+                return '**foo**';
+            });
+            var useMarkdown = !!template.config.markdown;
+
+            afterEach(function() {
+                template.config.markdown = useMarkdown;
+            });
+
+            it('should use a Markdown parser by default', function() {
+                var text = instance.markdown(options);
+
+                expect(text).toBeInstanceOf(SafeString);
+                expect(text.toString()).toBe('<p><strong>foo</strong></p>');
+            });
+
+            it('should not use a Markdown parser when the user disables Markdown', function() {
+                var text;
+                var tempInstance;
+
+                template.config.markdown = false;
+                tempInstance = block(template);
+                text = tempInstance.markdown(options);
+
+                expect(text).toBeInstanceOf(SafeString);
+                expect(text.toString()).toBe('<p>**foo**</p>');
+            });
+
+            it('should automatically expand standalone <p> tags into proper markup when Markdown ' +
+                'is disabled', function() {
+                var text;
+                var tempInstance;
+                var tempOptions = makeOptions({}, function() {
+                    return 'foo<p>bar<p>baz';
+                });
+
+                template.config.markdown = false;
+                tempInstance = block(template);
+                text = tempInstance.markdown(tempOptions);
+
+                expect(text).toBeInstanceOf(SafeString);
+                expect(text.toString()).toBe('<p>foo</p><p>bar</p><p>baz</p>');
+            });
+
+            it('should not wrap text in an extra <p> tag when Markdown is disabled', function() {
+                var text;
+                var tempInstance;
+                var tempOptions = makeOptions({}, function() {
+                    return '<p>**foo**</p>';
+                });
+
+                template.config.markdown = false;
+                tempInstance = block(template);
+                text = tempInstance.markdown(tempOptions);
+
+                expect(text).toBeInstanceOf(SafeString);
+                expect(text.toString()).toBe('<p>**foo**</p>');
+            });
         });
 
-        xdescribe('markdownLinks', function() {
-            // TODO
+        describe('markdownLinks', function() {
+            var options = makeOptions({}, function() {
+                return '[Mr. Macintosh]' +
+                    '(http://www.folklore.org/StoryView.py?story=Mister_Macintosh.txt)';
+            });
+            var useMarkdown = !!template.config.markdown;
+
+            afterEach(function() {
+                template.config.markdown = useMarkdown;
+            });
+
+            it('should convert Markdown links to HTML links by default', function() {
+                var text = instance.markdownLinks(options);
+
+                expect(text).toBeInstanceOf(SafeString);
+                expect(text.toString()).toBe('<p><a href="http://www.folklore.org/StoryView.py?' +
+                    'story=Mister_Macintosh.txt">Mr. Macintosh</a></p>');
+            });
+
+            it('should not convert Markdown text with no links', function() {
+                var tempOptions = makeOptions({}, function() {
+                    return '**foo**';
+                });
+                var text = instance.markdownLinks(tempOptions);
+
+                expect(text).toBeInstanceOf(SafeString);
+                expect(text.toString()).toBe('<p>**foo**</p>');
+            });
+
+            it('should not convert Markdown links if Markdown is disabled', function() {
+                var text;
+                var tempInstance;
+
+                template.config.markdown = false;
+                tempInstance = block(template);
+                text = tempInstance.markdownLinks(options);
+
+                expect(text).toBeInstanceOf(SafeString);
+                expect(text.toString()).toBe('<p>[Mr. Macintosh]' +
+                    '(http://www.folklore.org/StoryView.py?story=Mister_Macintosh.txt)</p>');
+            });
         });
 
         xdescribe('withOnly', function() {
