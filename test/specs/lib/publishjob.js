@@ -34,8 +34,28 @@ describe('lib/publishjob', function() {
         // TODO
     });
 
-    xdescribe('createOutputDirectory', function() {
-        // TODO
+    describe('createOutputDirectory', function() {
+        it('should create the primary output directory if called with no arguments', function() {
+            function stat() {
+                return fs.statSync('/path/to/destination');
+            }
+
+            instance.createOutputDirectory();
+
+            expect(stat).not.toThrow();
+            expect(stat().isDirectory()).toBe(true);
+        });
+
+        it('should resolve paths relative to the primary output directory', function() {
+            function stat() {
+                return fs.statSync('/path/to/destination/subdir');
+            }
+
+            instance.createOutputDirectory('subdir');
+
+            expect(stat).not.toThrow();
+            expect(stat().isDirectory()).toBe(true);
+        });
     });
 
     xdescribe('generate', function() {
