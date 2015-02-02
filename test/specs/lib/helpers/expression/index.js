@@ -595,6 +595,45 @@ describe('lib/helpers/expression', function() {
                 ]);
             });
 
+            it('should reparent child properties when multiple parameters have properties', function() {
+                var fakeDoclet = {
+                    params: [
+                        {
+                            name: 'foo'
+                        },
+                        {
+                            name: 'foo.bar'
+                        },
+                        {
+                            name: 'baz'
+                        },
+                        {
+                            name: 'baz.qux'
+                        }
+                    ]
+                };
+                var reparented = instance.reparentItems(fakeDoclet, 'params');
+
+                expect(reparented).toEqual([
+                    {
+                        name: 'foo',
+                        children: [
+                            {
+                                name: 'bar'
+                            }
+                        ]
+                    },
+                    {
+                        name: 'baz',
+                        children: [
+                            {
+                                name: 'qux'
+                            }
+                        ]
+                    }
+                ]);
+            });
+
             it('should not reparent child properties if the config setting is false', function() {
                 var fakeDoclet = {
                     params: [
