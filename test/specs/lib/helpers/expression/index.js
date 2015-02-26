@@ -278,18 +278,18 @@ describe('lib/helpers/expression', function() {
         });
 
         describe('hasModifiers', function() {
-            it('should treat the "defaultValue" property as a modifier for non-enums', function() {
+            it('should treat the "defaultvalue" property as a modifier for non-enums', function() {
                 var fakeDoclet = {
-                    defaultValue: 'foo'
+                    defaultvalue: 'foo'
                 };
                 var hasModifiers = instance.hasModifiers(fakeDoclet);
 
                 expect(hasModifiers).toBe(true);
             });
 
-            it('should not treat the "defaultValue" property as a modifier for enums', function() {
+            it('should not treat the "defaultvalue" property as a modifier for enums', function() {
                 var fakeDoclet = {
-                    defaultValue: 'foo',
+                    defaultvalue: 'foo',
                     isEnum: true
                 };
                 var hasModifiers = instance.hasModifiers(fakeDoclet);
@@ -456,7 +456,7 @@ describe('lib/helpers/expression', function() {
             it('should return text if the doclet has a default value and is not an enum',
                 function() {
                 var fakeDoclet = {
-                    defaultValue: '1'
+                    defaultvalue: '1'
                 };
                 var text = instance.modifierText(fakeDoclet);
 
@@ -467,7 +467,7 @@ describe('lib/helpers/expression', function() {
             it('should not return text if the doclet has a default value and is an enum',
                 function() {
                 var fakeDoclet = {
-                    defaultValue: '1',
+                    defaultvalue: '1',
                     isEnum: true
                 };
                 var text = instance.modifierText(fakeDoclet);

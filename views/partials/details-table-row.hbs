@@ -27,9 +27,9 @@
         <td {{~cssClass 'details-table-description'}}>
             {{#if description}}
                 {{#markdown}}{{resolveLinks description}}{{/markdown}}
-                {{#if (hasModifiers this)}}
-                    <p>{{modifierText this}}</p>
-                {{/if}}
+            {{/if}}
+            {{#if (hasModifiers this)}}
+                <p>{{modifierText this}}</p>
             {{/if}}
             {{#if ../children}}
                 <p>{{translate 'tables.body.eachValueHasProperties' name=name}}</p>
