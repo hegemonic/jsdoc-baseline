@@ -385,8 +385,50 @@ describe('lib/helpers/expression', function() {
             });
         });
 
-        xdescribe('link', function() {
-            // TODO
+        describe('link', function() {
+            it('should not blow up if only one parameter is provided', function() {
+                function makeLink() {
+                    return instance.link('foo');
+                }
+
+                expect(makeLink).not.toThrow();
+            });
+
+            it('should not blow up if only two parameters are provided', function() {
+                function makeLink() {
+                    return instance.link('foo', 'bar');
+                }
+
+                expect(makeLink).not.toThrow();
+            });
+
+            it('should not blow up if only three parameters are provided', function() {
+                function makeLink() {
+                    return instance.link('foo', 'bar', 'baz');
+                }
+
+                expect(makeLink).not.toThrow();
+            });
+
+            it('should not blow up when a non-string value is passed in', function() {
+                function makeLink() {
+                    return instance.link(true);
+                }
+
+                expect(makeLink).not.toThrow();
+                expect(makeLink()).toBeInstanceOf(SafeString);
+                expect(makeLink().toString()).toBe('');
+            });
+
+            it('should include the requested link text, link class, and fragment ID', function() {
+                var link;
+
+                templateHelper.registerLink('linkExpressionHelper', 'foo.html');
+                link = instance.link('linkExpressionHelper', 'helpful!', 'classy', 'bar');
+
+                expect(link).toBeInstanceOf(SafeString);
+                expect(link.toString()).toBe('<a href="foo.html#bar" class="classy">helpful!</a>');
+            });
         });
 
         xdescribe('linkLongnameWithSignature', function() {
