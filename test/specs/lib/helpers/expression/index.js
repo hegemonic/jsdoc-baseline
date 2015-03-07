@@ -790,8 +790,16 @@ describe('lib/helpers/expression', function() {
             // TODO
         });
 
-        xdescribe('returnTypes', function() {
-            // TODO
+        describe('returnTypes', function() {
+            // TODO: more tests
+
+            it('should not crash on null input', function() {
+                function nullInput() {
+                    return instance.returnTypes(null);
+                }
+
+                expect(nullInput).not.toThrow();
+            });
         });
 
         xdescribe('see', function() {
