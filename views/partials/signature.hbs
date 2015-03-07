@@ -6,10 +6,10 @@
 {{~#if (needsSignature this)~}}
     <span {{~cssClass '!signature'}}><span {{~cssClass '!signature-params'}}>{{formatParams params}}</span>
         {{~#isnt kind 'class'~}}
-            {{~#any returns~}}
+            {{~#if (returnTypes returns)~}}
                 {{~translate 'returnTypesSeparator'~}}
                 <span {{~cssClass '!signature-returns'}}> {{describeType (returnTypes returns)~}}</span>
-            {{~/any~}}
+            {{~/if~}}
         {{~/isnt~}}
     </span>
 {{~else~}}
