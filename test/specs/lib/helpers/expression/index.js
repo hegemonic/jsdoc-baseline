@@ -255,7 +255,9 @@ describe('lib/helpers/expression', function() {
         });
 
         xdescribe('formatParams', function() {
-            // TODO
+            // TODO: tests
+            // TODO: confirm that we respect the user's L10N file if there are no params, rather
+            // than always returning `()`
         });
 
         describe('generatedBy', function() {
