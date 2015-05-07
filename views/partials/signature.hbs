@@ -14,10 +14,8 @@
     </span>
 {{~else~}}
     {{~#if type~}}
-        {{~#any type.names~}}
-            <small {{~cssClass '!property-type' 'symbol-type'~}}>
-                &nbsp;{{~describeType (typeUnion type.names)~}}
-            </small>
-        {{~/any~}}
+        <small {{~cssClass '!property-type' 'symbol-type'~}}>
+            &nbsp;{{~describeType type.parsedType~}}
+        </small>
     {{~/if~}}
 {{~/if~}}

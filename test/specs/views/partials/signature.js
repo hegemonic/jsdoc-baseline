@@ -41,4 +41,22 @@ describe('signature partial', function() {
 
         expect(text).not.toContain(returnTypesSeparator);
     });
+
+    it('should show complete type information for properties', function() {
+        var catharsis = require('catharsis');
+
+        var fakeDoclet = {
+            kind: 'member',
+            name: 'foo',
+            type: {
+                names: [
+                    'function'
+                ],
+                parsedType: catharsis.parse('?function(!string)')
+            }
+        };
+        var text = helpers.render('signature', fakeDoclet);
+
+        expect(text).toContain('nullable function(non-null string)');
+    });
 });
