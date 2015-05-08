@@ -252,6 +252,15 @@ describe('lib/helpers/expression', function() {
                 expect(example.caption).toBe('Caption here');
                 expect(example.code).toBe('Some example text');
             });
+
+            it('should work when there is a newline before the caption and multiple newlines ' +
+                'after the caption', function() {
+                var example = instance.example('\n<caption>Caption here</caption>\nExample text\n' +
+                    'More example text');
+
+                expect(example.caption).toBe('Caption here');
+                expect(example.code).toBe('Example text\nMore example text');
+            });
         });
 
         xdescribe('formatParams', function() {
