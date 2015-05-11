@@ -68,6 +68,15 @@ describe('lib/config', function() {
             expect(conf).toBe(config);
         });
 
+        it('should work if the config object is embedded in the JSDoc config file', function() {
+            global.env.conf.templates.baseline = {
+                beautify: !config.defaultConfig.beautify
+            };
+            config.loadSync();
+
+            expect(config.get('beautify')).toBe(!config.defaultConfig.beautify);
+        });
+
         it('should use the correct default paths', function() {
             global.env.conf.templates.baseline = path.resolve(__dirname,
                 '../../fixtures/config.json');
