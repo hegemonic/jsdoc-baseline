@@ -104,12 +104,12 @@ describe('lib/helpers/expression', function() {
         });
 
         describe('cssClass', function() {
-            var cssClasses = helpers.template.cssClasses;
-            var cssClassPrefix = helpers.template.config.cssClassPrefix;
+            var cssClasses = template.cssClasses;
+            var cssClassPrefix = template.config.cssClassPrefix;
 
             afterEach(function() {
-                helpers.template.cssClasses = cssClasses;
-                helpers.template.config.cssClassPrefix = cssClassPrefix;
+                template.cssClasses = cssClasses;
+                template.config.cssClassPrefix = cssClassPrefix;
             });
 
             it('should format the class string correctly', function() {
@@ -129,7 +129,7 @@ describe('lib/helpers/expression', function() {
             it('should let users change the prefix for classes that it keeps', function() {
                 var classes;
 
-                helpers.template.config.cssClassPrefix = '?';
+                template.config.cssClassPrefix = '?';
                 classes = instance.cssClass('?foo', {});
 
                 expect(classes).toBeInstanceOf(SafeString);
@@ -146,7 +146,7 @@ describe('lib/helpers/expression', function() {
             it('should preserve user-specified classes', function() {
                 var classes;
 
-                helpers.template.cssClasses = {
+                template.cssClasses = {
                     foo: true
                 };
                 classes = instance.cssClass('foo', {});
@@ -164,7 +164,7 @@ describe('lib/helpers/expression', function() {
             it('should not preserve classes that the user explicitly does not want', function() {
                 var classes;
 
-                helpers.template.cssClasses = {
+                template.cssClasses = {
                     foo: false
                 };
                 classes = instance.cssClass('foo', {});
