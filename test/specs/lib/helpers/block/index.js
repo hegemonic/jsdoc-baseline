@@ -316,8 +316,17 @@ describe('lib/helpers/block', function() {
             });
         });
 
-        xdescribe('withOnly', function() {
-            // TODO
+        describe('withOnly', function() {
+            it('should create a context with the options hash values as properties', function() {
+                var options = makeOptions({
+                    test: 'foo'
+                }, function(ctx) {
+                    return ctx.test;
+                });
+                var text = instance.withOnly(options);
+
+                expect(text).toBe('foo');
+            });
         });
     });
 });
