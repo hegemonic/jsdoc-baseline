@@ -95,8 +95,58 @@ describe('lib/helpers/expression', function() {
             });
         });
 
-        xdescribe('ancestors', function() {
-            // TODO
+        describe('ancestors', function() {
+            var fakeLinks = [
+                {
+                    longname: 'module:foo',
+                    url: 'module-foo.html'
+                },
+                {
+                    longname: 'module:foo/bar',
+                    url: 'module-foo_bar.html'
+                },
+                {
+                    longname: 'module:foo/bar.Baz',
+                    url: 'module-foo_bar.Baz.html'
+                },
+                {
+                    longname: 'module:foo/bar.Baz#qux',
+                    url: 'module-foo_bar.Baz.html#qux'
+                }
+            ];
+
+            fakeLinks.forEach(function(fakeLink) {
+                templateHelper.registerLink(fakeLink.longname, fakeLink.url);
+            });
+
+            it('should link to ancestors when no CSS class is specified', function() {
+                var ancestors = instance.ancestors('module:foo/bar.Baz#qux');
+
+                expect(ancestors).toBeInstanceOf(SafeString);
+                expect(ancestors.toString()).toBe([
+                    '<a href="module-foo_bar.html">foo/<wbr>bar</a>',
+                    '.<wbr>',
+                    '<a href="module-foo_bar.Baz.html">Baz</a>',
+                    '#<wbr>'
+                ].join(''));
+            });
+
+            it('should link to ancestors when a CSS class is specified', function() {
+                var ancestors = instance.ancestors('module:foo/bar.Baz', 'frozzle');
+
+                expect(ancestors).toBeInstanceOf(SafeString);
+                expect(ancestors.toString()).toBe([
+                    '<a href="module-foo_bar.html" class="frozzle">foo/<wbr>bar</a>',
+                    '.<wbr>'
+                ].join(''));
+            });
+
+            it('should return an empty string when there are no ancestors', function() {
+                var ancestors = instance.ancestors('module:foo/bar');
+
+                expect(ancestors).toBeInstanceOf(SafeString);
+                expect(ancestors.toString()).toBe('');
+            });
         });
 
         xdescribe('config', function() {
