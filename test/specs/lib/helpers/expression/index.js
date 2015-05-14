@@ -334,8 +334,90 @@ describe('lib/helpers/expression', function() {
             });
         });
 
-        xdescribe('group', function() {
-            // TODO
+        describe('group', function() {
+            var items = [
+                'apple',
+                'banana',
+                'carrot',
+                'durian',
+                'eggplant',
+                'fava bean',
+                'grape',
+                'horseradish'
+            ];
+
+            it('should group the items into the specified number of groups', function() {
+                var grouped = instance.group(items, 2);
+
+                expect(grouped).toEqual([
+                    [
+                        'apple',
+                        'banana',
+                        'carrot',
+                        'durian'
+                    ],
+                    [
+                        'eggplant',
+                        'fava bean',
+                        'grape',
+                        'horseradish'
+                    ]
+                ]);
+            });
+
+            it('should work if the number of items per group is not specified', function() {
+                var grouped = instance.group(items);
+
+                expect(grouped).toEqual([
+                    [
+                        'apple',
+                        'banana',
+                        'carrot'
+                    ],
+                    [
+                        'durian',
+                        'eggplant',
+                        'fava bean'
+                    ],
+                    [
+                        'grape',
+                        'horseradish'
+                    ]
+                ]);
+            });
+
+            it('should work if the number of groups exceeds the number of items', function() {
+                var grouped = instance.group(items, 10);
+
+                expect(grouped).toEqual([
+                    [
+                        'apple'
+                    ],
+                    [
+                        'banana'
+                    ],
+                    [
+                        'carrot'
+                    ],
+                    [
+                        'durian'
+                    ],
+                    [
+                        'eggplant'
+                    ],
+                    [
+                        'fava bean'
+                    ],
+                    [
+                        'grape'
+                    ],
+                    [
+                        'horseradish'
+                    ],
+                    [],
+                    []
+                ]);
+            });
         });
 
         describe('hasModifiers', function() {
@@ -497,21 +579,41 @@ describe('lib/helpers/expression', function() {
         });
 
         describe('linkToLine', function() {
-            // TODO: more tests
+            var fakeDocletMeta = {
+                lineno: 70,
+                shortpath: 'glitch.js'
+            };
 
-            it('should ignore the context object', function() {
-                var fakeDocletMeta = {
-                    lineno: 70,
-                    shortpath: 'glitch.js'
-                };
-                var link;
+            templateHelper.registerLink('glitch.js', 'glitch.js.html');
 
-                templateHelper.registerLink('glitch.js', 'glitch.js.html');
-                link = instance.linkToLine(fakeDocletMeta, {});
+            it('should work when a CSS class is specified', function() {
+                var link = instance.linkToLine(fakeDocletMeta, 'foo');
+
+                expect(link).toBeInstanceOf(SafeString);
+                expect(link.toString()).toBe(
+                    '<a href="glitch.js.html#source-line-70" class="foo">glitch.<wbr>js:70</a>'
+                );
+            });
+
+            it('should work when no CSS class is specified', function() {
+                var link = instance.linkToLine(fakeDocletMeta);
 
                 expect(link).toBeInstanceOf(SafeString);
                 expect(link.toString()).toBe(
                     '<a href="glitch.js.html#source-line-70">glitch.<wbr>js:70</a>'
+                );
+            });
+
+            it('should not do anything with the line number if the code is on line 1', function() {
+                var meta = {
+                    lineno: 1,
+                    shortpath: 'glitch.js'
+                };
+                var link = instance.linkToLine(meta);
+
+                expect(link).toBeInstanceOf(SafeString);
+                expect(link.toString()).toBe(
+                    '<a href="glitch.js.html">glitch.<wbr>js</a>'
                 );
             });
         });
