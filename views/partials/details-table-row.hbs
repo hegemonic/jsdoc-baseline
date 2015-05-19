@@ -28,8 +28,8 @@
             {{#if description}}
                 {{#markdown}}{{resolveLinks description}}{{/markdown}}
             {{/if}}
-            {{#if (hasModifiers this)}}
-                <p>{{modifierText this}}</p>
+            {{#if (hasModifiers this isEnum)}}
+                <p>{{modifierText this isEnum}}</p>
             {{/if}}
             {{#if ../children}}
                 <p>{{translate 'tables.body.eachValueHasProperties' name=name}}</p>

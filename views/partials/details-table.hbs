@@ -16,7 +16,7 @@
     {{#block 'details-table-body'}}
         <tbody>
             {{#each values}}
-                {{#embed 'details-table-row'}}{{/embed}}
+                {{#embed 'details-table-row' isEnum=../isEnum}}{{/embed}}
             {{/each}}
         </tbody>
     {{/block}}

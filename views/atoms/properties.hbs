@@ -1,7 +1,7 @@
 {{#any properties}}
     <section>
         <h>{{translateHeading 'properties' properties}}</h>
-        {{#withOnly values=(reparentItems this 'properties')}}
+        {{#withOnly values=(reparentItems this 'properties') isEnum=isEnum}}
             {{#embed 'details-table'}}{{/embed}}
         {{/withOnly}}
     </section>

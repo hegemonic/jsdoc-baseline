@@ -244,6 +244,20 @@ describe('lib/helpers/expression', function() {
             });
         });
 
+        describe('defined', function() {
+            it('should report that a truthy value is defined', function() {
+                expect(instance.defined(1)).toBeTrue();
+            });
+
+            it('should report that a falsy value is defined', function() {
+                expect(instance.defined(0)).toBeTrue();
+            });
+
+            it('should report that an undefined value is undefined', function() {
+                expect(instance.defined()).toBeFalse();
+            });
+        });
+
         describe('describeType', function() {
             var catharsis = require('catharsis');
 
@@ -425,17 +439,16 @@ describe('lib/helpers/expression', function() {
                 var fakeDoclet = {
                     defaultvalue: 'foo'
                 };
-                var hasModifiers = instance.hasModifiers(fakeDoclet);
+                var hasModifiers = instance.hasModifiers(fakeDoclet, false);
 
                 expect(hasModifiers).toBe(true);
             });
 
             it('should not treat the "defaultvalue" property as a modifier for enums', function() {
                 var fakeDoclet = {
-                    defaultvalue: 'foo',
-                    isEnum: true
+                    defaultvalue: 'foo'
                 };
-                var hasModifiers = instance.hasModifiers(fakeDoclet);
+                var hasModifiers = instance.hasModifiers(fakeDoclet, true);
 
                 expect(hasModifiers).toBe(false);
             });
@@ -444,7 +457,7 @@ describe('lib/helpers/expression', function() {
                 var fakeDoclet = {
                     nullable: true
                 };
-                var hasModifiers = instance.hasModifiers(fakeDoclet);
+                var hasModifiers = instance.hasModifiers(fakeDoclet, false);
 
                 expect(hasModifiers).toBe(true);
             });
@@ -453,7 +466,7 @@ describe('lib/helpers/expression', function() {
                 var fakeDoclet = {
                     optional: true
                 };
-                var hasModifiers = instance.hasModifiers(fakeDoclet);
+                var hasModifiers = instance.hasModifiers(fakeDoclet, false);
 
                 expect(hasModifiers).toBe(false);
             });
@@ -462,7 +475,7 @@ describe('lib/helpers/expression', function() {
                 var fakeDoclet = {
                     variable: true
                 };
-                var hasModifiers = instance.hasModifiers(fakeDoclet);
+                var hasModifiers = instance.hasModifiers(fakeDoclet, false);
 
                 expect(hasModifiers).toBe(true);
             });
@@ -631,7 +644,7 @@ describe('lib/helpers/expression', function() {
                 var fakeDoclet = {
                     nullable: true
                 };
-                var text = instance.modifierText(fakeDoclet);
+                var text = instance.modifierText(fakeDoclet, false);
 
                 expect(text).toBeInstanceOf(SafeString);
                 expect(text.toString()).not.toBe('');
@@ -641,7 +654,7 @@ describe('lib/helpers/expression', function() {
                 var fakeDoclet = {
                     nullable: false
                 };
-                var text = instance.modifierText(fakeDoclet);
+                var text = instance.modifierText(fakeDoclet, false);
 
                 expect(text).toBeInstanceOf(SafeString);
                 expect(text.toString()).not.toBe('');
@@ -652,10 +665,20 @@ describe('lib/helpers/expression', function() {
                 var fakeDoclet = {
                     variable: true
                 };
-                var text = instance.modifierText(fakeDoclet);
+                var text = instance.modifierText(fakeDoclet, false);
 
                 expect(text).toBeInstanceOf(SafeString);
                 expect(text.toString()).not.toBe('');
+            });
+
+            it('should return text if the doclet has a falsy default value', function() {
+                var fakeDoclet = {
+                    defaultvalue: 0
+                };
+                var text = instance.modifierText(fakeDoclet, false);
+
+                expect(text).toBeInstanceOf(SafeString);
+                expect(text.toString()).toContain('0');
             });
 
             it('should return text if the doclet has a default value and is not an enum',
@@ -663,19 +686,18 @@ describe('lib/helpers/expression', function() {
                 var fakeDoclet = {
                     defaultvalue: '1'
                 };
-                var text = instance.modifierText(fakeDoclet);
+                var text = instance.modifierText(fakeDoclet, false);
 
                 expect(text).toBeInstanceOf(SafeString);
-                expect(text.toString()).not.toBe('');
+                expect(text.toString()).toContain('1');
             });
 
             it('should not return text if the doclet has a default value and is an enum',
                 function() {
                 var fakeDoclet = {
-                    defaultvalue: '1',
-                    isEnum: true
+                    defaultvalue: '1'
                 };
-                var text = instance.modifierText(fakeDoclet);
+                var text = instance.modifierText(fakeDoclet, true);
 
                 expect(text).toBeInstanceOf(SafeString);
                 expect(text.toString()).toBe('');
