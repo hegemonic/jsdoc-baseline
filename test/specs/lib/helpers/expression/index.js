@@ -1063,5 +1063,37 @@ describe('lib/helpers/expression', function() {
         xdescribe('typeUnion', function() {
             // TODO
         });
+
+        describe('where', function() {
+            it('should return items whose properties match the specified values', function() {
+                var items = [
+                    {
+                        foo: 'maybe',
+                        bar: 'yes'
+                    },
+                    {
+                        bar: 'yes'
+                    },
+                    {
+                        bar: 'nope'
+                    }
+                ];
+                var filtered = instance.where(items, {
+                    hash: {
+                        bar: 'yes'
+                    }
+                });
+
+                expect(filtered).toEqual([
+                    {
+                        foo: 'maybe',
+                        bar: 'yes'
+                    },
+                    {
+                        bar: 'yes'
+                    }
+                ]);
+            });
+        });
     });
 });
