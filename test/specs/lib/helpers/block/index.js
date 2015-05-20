@@ -144,6 +144,14 @@ describe('lib/helpers/block', function() {
 
                 expect(result).toBeTrue();
             });
+
+            it('should flatten nested arrays', function() {
+                var result = testBlockHelper('contains', ['foo', ['bar', 'baz']], {
+                    value: 'baz'
+                });
+
+                expect(result).toBeTrue();
+            });
         });
 
         xdescribe('eachIndexGroup', function() {
