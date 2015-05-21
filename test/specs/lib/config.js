@@ -154,6 +154,21 @@ describe('lib/config', function() {
             expect(readJson().foo).toBe('bar');
             expect(logger.fatal).not.toHaveBeenCalled();
         });
+
+        it('should log a fatal error if there is an exception', function() {
+            function readJson() {
+                return config.readJsonSync(path.resolve(__dirname, 'no-such-file.json'));
+            }
+
+            expect(readJson).not.toThrow();
+            expect(logger.fatal).toHaveBeenCalled();
+        });
+
+        it('should return nothing if no path is specified', function() {
+            var result = config.readJsonSync();
+
+            expect(result).toBeUndefined();
+        });
     });
 
     describe('reset', function() {
