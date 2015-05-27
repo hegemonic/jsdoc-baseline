@@ -149,6 +149,22 @@ describe('lib/helpers/expression', function() {
             });
         });
 
+        describe('basename', function() {
+            it('should return the basename of the specified path', function() {
+                var filepath = instance.basename('/foo/bar/baz.html');
+
+                expect(filepath).toBeInstanceOf(SafeString);
+                expect(filepath.toString()).toBe('baz.html');
+            });
+
+            it('should remove the extension if one is specified', function() {
+                var filepath = instance.basename('/foo/bar/baz.html', '.html');
+
+                expect(filepath).toBeInstanceOf(SafeString);
+                expect(filepath.toString()).toBe('baz');
+            });
+        });
+
         xdescribe('config', function() {
             // TODO
         });
@@ -1062,6 +1078,25 @@ describe('lib/helpers/expression', function() {
 
         xdescribe('typeUnion', function() {
             // TODO
+        });
+
+        describe('url', function() {
+            it('should return the URL for the specified longname', function() {
+                var url;
+
+                templateHelper.registerLink('urlExpressionHelper', 'urlexpressionhelper.html');
+                url = instance.url('urlExpressionHelper');
+
+                expect(url).toBeInstanceOf(SafeString);
+                expect(url.toString()).toBe('urlexpressionhelper.html');
+            });
+
+            it('should return an empty string if the specified longname is unknown', function() {
+                var url = instance.url('not-a-real-longname');
+
+                expect(url).toBeInstanceOf(SafeString);
+                expect(url.toString()).toBe('');
+            });
         });
 
         describe('where', function() {
