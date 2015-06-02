@@ -24,6 +24,11 @@
             </div>
         {{/isnt}}
     {{/block}}
+    {{#block 'symbol-header-examples'}}
+        {{#isnt kind 'class'}}
+            {{#embed 'examples'}}{{/embed}}
+        {{/isnt}}
+    {{/block}}
     {{#block 'symbol-header-details'}}
         <dl {{~cssClass '!dl-compact'}}>
             {{#embed 'implements'}}{{/embed}}
