@@ -2,7 +2,7 @@
     {{#eachIndexGroup allLongnamesTree}}
         <section>
             <div {{~cssClass '!symbol-index-content'}}>
-                <h id="{{@longname}}">{{@longname}}</h>
+                <h id="{{@groupName}}">{{@groupName}}</h>
                 <div {{~cssClass '!symbol-index-section'}}>
                     {{#each (group this 3)}}
                         {{#withOnly doclets=this}}
