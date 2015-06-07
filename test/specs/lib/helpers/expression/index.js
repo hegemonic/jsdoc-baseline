@@ -981,6 +981,45 @@ describe('lib/helpers/expression', function() {
                     }
                 ]);
             });
+
+            it('should preserve the parsed type of child properties', function() {
+                var fakeDoclet = {
+                    params: [
+                        {
+                            name: 'foo'
+                        },
+                        {
+                            name: 'foo.bar',
+                            type: {}
+                        }
+                    ]
+                };
+                var reparented;
+
+                // JSDoc adds the parsed type as a non-enumerable property, so we do too
+                Object.defineProperty(fakeDoclet.params[1].type, 'parsedType', {
+                    value: {
+                        type: 'NameExpression'
+                    }
+                });
+                reparented = instance.reparentItems(fakeDoclet, 'params');
+
+                expect(reparented).toEqual([
+                    {
+                        name: 'foo',
+                        children: [
+                            {
+                                name: 'bar',
+                                type: {
+                                    parsedType: {
+                                        type: 'NameExpression'
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]);
+            });
         });
 
         xdescribe('resolveAuthorLinks', function() {
