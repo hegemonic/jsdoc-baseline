@@ -1,4 +1,4 @@
-{{#any properties}}
+{{#any (filterProperties properties)}}
     <section>
         <h>{{translateHeading 'properties' properties}}</h>
         {{#withOnly values=(reparentItems this 'properties') isEnum=isEnum}}

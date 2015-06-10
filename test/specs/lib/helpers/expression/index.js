@@ -343,6 +343,10 @@ describe('lib/helpers/expression', function() {
             });
         });
 
+        xdescribe('filterProperties', function() {
+            // TODO: tests
+        });
+
         xdescribe('formatParams', function() {
             // TODO: tests
             // TODO: confirm that we respect the user's L10N file if there are no params, rather
@@ -1019,6 +1023,10 @@ describe('lib/helpers/expression', function() {
                         ]
                     }
                 ]);
+            });
+
+            xit('should ignore child properties when appropriate', function() {
+                // TODO: check whether it ignores properties with ignore === true
             });
         });
 
