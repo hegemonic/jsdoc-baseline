@@ -2,7 +2,24 @@
 
 'use strict';
 
+var deepExtend = require('deep-extend');
 var path = require('path');
+
+// Create a new, fully initialized Template object with the specified configuration settings.
+exports.createTemplate = function(config) {
+    var defaultConfig;
+    var Template;
+
+    config = config || {};
+
+    exports.setup();
+    defaultConfig = require('../../lib/config').loadSync('', '.').get();
+    Template = require('../../lib/template');
+
+    config = deepExtend({}, defaultConfig, config);
+
+    return new Template(config).init();
+};
 
 // Render a Handlebars view.
 exports.render = function() {
@@ -43,12 +60,5 @@ exports.setup = resetJsdocGlobals;
 
 // Shared template object.
 exports.template = (function() {
-    var conf;
-    var Template;
-
-    exports.setup();
-    conf = require('../../lib/config').loadSync('', '.').get();
-    Template = require('../../lib/template');
-
-    return new Template(conf).init();
+    return exports.createTemplate();
 })();

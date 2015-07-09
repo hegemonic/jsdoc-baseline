@@ -64,17 +64,19 @@
                 </div>
             {{/block}}
             {{#block 'body-footer'}}
-                <footer id="jsdoc-footer" {{~cssClass '!jsdoc-footer'}}>
-                    {{#block 'body-footer-container'}}
-                        <div id="jsdoc-footer-container">
-                            {{#block 'body-footer-content'}}
-                                <p>
-                                  {{generatedBy}}
-                                </p>
-                            {{/block}}
-                        </div>
-                    {{/block}}
-                </footer>
+                {{#if (config 'components.footer')}}
+                    <footer id="jsdoc-footer" {{~cssClass '!jsdoc-footer'}}>
+                        {{#block 'body-footer-container'}}
+                            <div id="jsdoc-footer-container">
+                                {{#block 'body-footer-content'}}
+                                    <p>
+                                      {{generatedBy}}
+                                    </p>
+                                {{/block}}
+                            </div>
+                        {{/block}}
+                    </footer>
+                {{/if}}
             {{/block}}
             {{#block 'body-scripts'}}
                 {{!-- TODO: combine JS for JSDoc-only files --}}
