@@ -2,9 +2,9 @@
     {{#content 'body-banner'}}{{/content}}
     {{#content 'body-main-content'}}
         {{#block 'body-tutorial-header'}}
-            {{#any children}}
+            {{#any tutorialChildren}}
                 <ul>
-                    {{#each children}}
+                    {{#each tutorialChildren}}
                         <li>{{tutorialLink this.name}}</li>
                     {{/each}}
                 </ul>
@@ -13,7 +13,7 @@
         {{/block}}
         {{#block 'body-tutorial-content'}}
             <article>
-                {{content}}
+                {{#markdown}}{{tutorialContent}}{{/markdown}}
             </article>
         {{/block}}
     {{/content}}
