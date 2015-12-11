@@ -1,4 +1,4 @@
-/*global before */
+/* global before */
 // Use this file to set before/after/beforeEach/afterEach hooks that will be applied to all
 // test suites.
 
