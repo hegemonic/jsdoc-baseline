@@ -3,6 +3,7 @@
 describe('lib/helpers/expression', function() {
     var expression;
     var _ = require('underscore-contrib');
+    var env = require('jsdoc/env');
     var handlebars = require('handlebars');
     var helpers = require('../../../../helpers');
     var SafeString = handlebars.SafeString;
@@ -358,7 +359,7 @@ describe('lib/helpers/expression', function() {
                 var generatedBy = instance.generatedBy();
 
                 expect(generatedBy).toBeInstanceOf(SafeString);
-                expect(generatedBy.toString()).toContain(global.env.version.number);
+                expect(generatedBy.toString()).toContain(env.version.number);
             });
 
             it('should include the date', function() {

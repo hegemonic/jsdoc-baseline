@@ -2,15 +2,16 @@
 
 describe('lib/config', function() {
     var config = require('../../../lib/config');
+    var env = require('jsdoc/env');
     var logger = require('jsdoc/util/logger');
     var path = require('jsdoc/path');
 
-    var baselineConfigPath = global.env.conf.templates.baseline;
-    var templatePath = global.env.opts.template;
+    var baselineConfigPath = env.conf.templates.baseline;
+    var templatePath = env.opts.template;
 
     afterEach(function() {
-        global.env.conf.templates.baseline = baselineConfigPath;
-        global.env.opts.template = templatePath;
+        env.conf.templates.baseline = baselineConfigPath;
+        env.opts.template = templatePath;
 
         config.reset();
     });
@@ -49,7 +50,7 @@ describe('lib/config', function() {
 
     describe('get', function() {
         it('should return the specified key', function() {
-            global.env.conf.templates.baseline = path.resolve(__dirname,
+            env.conf.templates.baseline = path.resolve(__dirname,
                 '../../fixtures/config.json');
             config.loadSync();
 
@@ -69,7 +70,7 @@ describe('lib/config', function() {
         });
 
         it('should work if the config object is embedded in the JSDoc config file', function() {
-            global.env.conf.templates.baseline = {
+            env.conf.templates.baseline = {
                 beautify: !config.defaultConfig.beautify
             };
             config.loadSync();
@@ -78,9 +79,9 @@ describe('lib/config', function() {
         });
 
         it('should use the correct default paths', function() {
-            global.env.conf.templates.baseline = path.resolve(__dirname,
+            env.conf.templates.baseline = path.resolve(__dirname,
                 '../../fixtures/config.json');
-            global.env.opts.template = '/foo/bar/baz';
+            env.opts.template = '/foo/bar/baz';
 
             config.loadSync();
 
@@ -101,7 +102,7 @@ describe('lib/config', function() {
         it('should set default values even if the config file is missing', function() {
             spyOn(logger, 'fatal');
 
-            global.env.conf.templates.baseline = path.resolve(__dirname, '/not/a/real/path');
+            env.conf.templates.baseline = path.resolve(__dirname, '/not/a/real/path');
 
             config.loadSync();
 
@@ -112,7 +113,7 @@ describe('lib/config', function() {
         it('should work with JSON files that contain comments', function() {
             spyOn(logger, 'fatal');
 
-            global.env.conf.templates.baseline = path.resolve(__dirname,
+            env.conf.templates.baseline = path.resolve(__dirname,
                 '../../fixtures/comments.json');
 
             config.loadSync();
@@ -122,7 +123,7 @@ describe('lib/config', function() {
         });
 
         it('should get the L10N filename from the locale', function() {
-            global.env.conf.templates.baseline = path.resolve(__dirname,
+            env.conf.templates.baseline = path.resolve(__dirname,
                 '../../fixtures/config.json');
 
             config.loadSync();
@@ -131,7 +132,7 @@ describe('lib/config', function() {
         });
 
         it('should use the L10N filename from the config file, if specified there', function() {
-            global.env.conf.templates.baseline = path.resolve(__dirname,
+            env.conf.templates.baseline = path.resolve(__dirname,
                 '../../fixtures/config-l10nfile.json');
 
             config.loadSync();
