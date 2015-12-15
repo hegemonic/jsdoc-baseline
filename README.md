@@ -30,17 +30,15 @@ that you can use in your customizations to Baseline.
 
 1. Install [JSDoc](https://github.com/jsdoc3/jsdoc).
 
-    **Note**: Baseline currently requires the latest version of JSDoc from the master branch on
-    GitHub. In addition, Baseline does not currently support JSDoc running on Mozilla Rhino; use
-    Node.js instead. Rhino support will be available in the future.
+    **Note**: Baseline currently requires JSDoc 3.4.0 or later.
 
     To install JSDoc globally (may require `sudo`):
 
-        npm install -g https://github.com/jsdoc3/jsdoc/tarball/master
+        npm install -g jsdoc
 
     To add JSDoc to your Node.js project as a development dependency:
 
-        npm install --save-dev https://github.com/jsdoc3/jsdoc/tarball/master
+        npm install --save-dev jsdoc
 
 2. Add the Baseline template to your Node.js project as a development dependency:
 
