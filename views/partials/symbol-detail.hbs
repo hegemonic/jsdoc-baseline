@@ -2,11 +2,11 @@
     Note that we omit the labels for classes and modules, since these labels would duplicate the
     labels for the page's main heading.
 --}}
+{{~#contains 'class' 'module' value=symbol.kind~}}
+{{~else~}}
+    {{~#embed 'symbol-labels'}}{{/embed~}}
+{{~/contains~}}
 <h id="{{id symbol}}">
-    {{~#contains 'class' 'module' value=symbol.kind~}}
-    {{~else~}}
-        {{~#embed 'symbol-labels'}}{{/embed~}}
-    {{~/contains~}}
     {{~#with symbol~}}
         {{~#embed 'constructor-prefix'}}{{/embed~}}
         <span {{~cssClass '!symbol-name'}}>{{name}}</span>
