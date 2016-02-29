@@ -1,7 +1,7 @@
 <tr>
     {{#block 'details-table-name'}}
         <td {{~cssClass 'details-table-name'}}>
-            <p>{{#if name}}{{name}}{{else}}{{translate 'tables.notApplicable'}}{{/if}}</p>
+            <p>{{#if name}}{{{name}}}{{else}}{{translate 'tables.notApplicable'}}{{/if}}</p>
         </td>
     {{/block}}
     {{#block 'details-table-types'}}
