@@ -18,10 +18,22 @@
         {{/if}}
     {{/block}}
     {{#block 'symbol-header-description'}}
+        {{!--
+            We don't put a description here for classes, or for namespaces that are also
+            functions.
+        --}}
         {{#isnt kind 'class'}}
-            <div {{~cssClass '!symbol-description'}}>
-                {{#embed 'description'}}{{/embed}}
-            </div>
+            {{#is kind 'namespace'}}
+                {{#unless (needsSignature this)}}
+                    <div {{~cssClass '!symbol-description'}}>
+                        {{#embed 'description'}}{{/embed}}
+                    </div>
+                {{/unless}}
+            {{else}}
+                <div {{~cssClass '!symbol-description'}}>
+                    {{#embed 'description'}}{{/embed}}
+                </div>
+            {{/is}}
         {{/isnt}}
     {{/block}}
     {{#block 'symbol-header-examples'}}
