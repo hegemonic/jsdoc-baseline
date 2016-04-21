@@ -1,8 +1,8 @@
 {{!--
-    Note that we omit the labels for classes and modules, since these labels would duplicate the
-    labels for the page's main heading.
+    Note that we omit the labels for classes, modules, and namespaces, since these labels would
+    duplicate the labels for the page's main heading.
 --}}
-{{~#contains 'class' 'module' value=symbol.kind~}}
+{{~#contains 'class' 'module' 'namespace' value=symbol.kind~}}
 {{~else~}}
     {{~#embed 'symbol-labels'}}{{/embed~}}
 {{~/contains~}}

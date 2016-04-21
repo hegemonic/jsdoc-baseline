@@ -33,15 +33,22 @@
                 {{/withOnly}}
             {{/each}}
         {{/if}}
-    {{else}}
-        {{!-- Classes also need additional information in the overview. --}}
-        {{#is kind 'class'}}
+    {{!-- Classes also need additional information in the overview. --}}
+    {{else is kind 'class'}}
+        <section>
+            {{#withOnly symbol=this}}
+                {{#embed 'symbol-detail'}}{{/embed}}
+            {{/withOnly}}
+        </section>
+    {{!-- Namespaces that are functions also need additional information in the overview. --}}
+    {{else is kind 'namespace'}}
+        {{#if (needsSignature this)}}
             <section>
                 {{#withOnly symbol=this}}
                     {{#embed 'symbol-detail'}}{{/embed}}
                 {{/withOnly}}
             </section>
-        {{/is}}
+        {{/if}}
     {{/is}}
 
     {{#if @last}}
