@@ -5,6 +5,12 @@
         {{/withOnly}}
     {{/block}}
 
+    {{#block 'symbol-content-interfaces'}}
+        {{#withOnly items=members.interfaces headingKey='interfaces'}}
+            {{#embed 'members-links'}}{{/embed}}
+        {{/withOnly}}
+    {{/block}}
+
     {{#block 'symbol-content-namespaces'}}
         {{#withOnly items=members.namespaces headingKey='namespaces'}}
             {{#embed 'members-links'}}{{/embed}}

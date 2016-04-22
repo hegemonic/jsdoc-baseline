@@ -42,6 +42,10 @@ headings:
         {items, plural,
             =1 {Child class}
             other {Child classes}}
+    childInterfaces: |
+        {items, plural,
+            =1 {Child interface}
+            other {Child interfaces}}
     classes: |
         {items, plural,
             =1 {Class}

@@ -16,6 +16,12 @@
             {{/withOnly}}
         {{/block}}
 
+        {{#block 'summary-child-interfaces'}}
+            {{#withOnly items=members.interfaces headingKey='childInterfaces'}}
+                {{#embed 'summary-block'}}{{/embed}}
+            {{/withOnly}}
+        {{/block}}
+
         {{#block 'summary-namespaces'}}
             {{#withOnly items=members.namespaces headingKey='namespaces'}}
                 {{#embed 'summary-block'}}{{/embed}}
