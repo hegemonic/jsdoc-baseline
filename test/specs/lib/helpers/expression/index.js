@@ -805,6 +805,60 @@ describe('lib/helpers/expression', function() {
             });
         });
 
+        describe('query', function() {
+            var originalQuery;
+
+            beforeEach(function() {
+                originalQuery = env.opts.query;
+            });
+
+            afterEach(function() {
+                env.opts.query = originalQuery;
+            });
+
+            it('should work if no query parameters were specified', function() {
+                delete env.opts.query;
+
+                var text = instance.query('foo');
+
+                expect(text).toBeInstanceOf(SafeString);
+                expect(text.toString()).toBe('');
+            });
+
+            it('should retrieve an empty string if the specified parameter is missing', function() {
+                env.opts.query = {
+                    foo: 'bar'
+                };
+
+                var text = instance.query('baz');
+
+                expect(text).toBeInstanceOf(SafeString);
+                expect(text.toString()).toBe('');
+            });
+
+            it('should retrieve truthy values from env.opts.query', function() {
+                env.opts.query = {
+                    foo: 'bar'
+                };
+
+                var text = instance.query('foo');
+
+                expect(text).toBeInstanceOf(SafeString);
+                expect(text.toString()).toBe('bar');
+            });
+
+            it('should retrieve falsy values from env.opts.query', function() {
+                env.opts.query = {
+                    foo: 0
+                };
+
+                var text = instance.query('foo');
+
+                expect(text).toBeInstanceOf(SafeString);
+                expect(text.toString()).toBe('0');
+            });
+        });
+
         describe('reparentItems', function() {
             var tablesConfig = _.getPath(template.config, 'tables');
 
