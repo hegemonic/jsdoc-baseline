@@ -150,6 +150,7 @@ kinds:
     param: 'param'
     typedef: 'abstract type'
 labels:
+    async: 'async'
     constant: 'constant'
     inner: 'inner'
     private: 'private'
