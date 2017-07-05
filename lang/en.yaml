@@ -152,6 +152,7 @@ kinds:
 labels:
     async: 'async'
     constant: 'constant'
+    generator: 'generator'
     inner: 'inner'
     private: 'private'
     protected: 'protected'
