@@ -504,6 +504,10 @@ describe('lib/helpers/expression', function() {
 
         xdescribe('id', function() {
             // TODO
+
+            xit('should not crash if nothing is passed in', function() {
+                // TODO
+            });
         });
 
         describe('jsdocVersion', function() {

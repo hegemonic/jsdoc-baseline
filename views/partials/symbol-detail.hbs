@@ -2,34 +2,37 @@
     Note that we omit the labels for classes, modules, and namespaces, since these labels would
     duplicate the labels for the page's main heading.
 --}}
-{{~#contains 'class' 'module' 'namespace' value=symbol.kind~}}
-{{~else~}}
-    {{~#embed 'symbol-labels'}}{{/embed~}}
-{{~/contains~}}
-<h id="{{id symbol}}">
-    {{~#with symbol~}}
-        {{~#embed 'constructor-prefix'}}{{/embed~}}
-        <span {{~cssClass '!symbol-name'}}>{{name}}</span>
-        {{~#embed 'signature'}}{{/embed~}}
-    {{~/with~}}
-</h>
+{{~#if symbol.kind~}}
+    {{~#contains 'class' 'module' 'namespace' value=symbol.kind~}}
+    {{~else~}}
+        {{~#embed 'symbol-labels'}}{{/embed~}}
+    {{~/contains~}}
+{{~/if~}}
+{{~#unless symbol.hideconstructor~}}
+    <h id="{{id symbol}}">
+        {{~#with symbol~}}
+            {{~#embed 'constructor-prefix'}}{{/embed~}}
+            <span {{~cssClass '!symbol-name'}}>{{name}}</span>
+            {{~#embed 'signature'}}{{/embed~}}
+        {{~/with~}}
+    </h>
+{{~/unless}}
 {{#with symbol}}
     {{#unless (config 'sourceFiles.singleLink')}}
-        {{#embed 'source-file'}}{{/embed}}
+        {{#unless hideconstructor}}
+            {{#embed 'source-file'}}{{/embed}}
+        {{/unless}}
     {{/unless}}
-    {{#embed 'description'}}{{/embed}}
-    {{#embed 'examples'}}{{/embed}}
-    {{#embed 'params'}}{{/embed}}
-    {{#embed 'properties'}}{{/embed}}
+    {{#unless hideconstructor}}
+        {{#embed 'description'}}{{/embed}}
+        {{#embed 'examples'}}{{/embed}}
+        {{#embed 'params'}}{{/embed}}
+        {{#embed 'properties'}}{{/embed}}
+    {{/unless}}
 
-    <dl {{~cssClass '!dl-compact'}}>
-        {{#embed 'augments'}}{{/embed}}
-        {{#embed 'details'}}{{/embed}}
-        {{#embed 'requires'}}{{/embed}}
-        {{#embed 'fires'}}{{/embed}}
-        {{#embed 'listens'}}{{/embed}}
-        {{#embed 'listeners'}}{{/embed}}
-        {{#embed 'throws'}}{{/embed}}
-        {{#embed 'returns'}}{{/embed}}
-    </dl>
+    {{#unless hideconstructor}}
+        <dl {{~cssClass '!dl-compact'}}>
+            {{#embed 'details'}}{{/embed}}
+        </dl>
+    {{/unless}}
 {{/with}}

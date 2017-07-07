@@ -3,6 +3,11 @@
     <section id="summary">
         {{!--
             Either constructors (for a class) or symbols exported by the module (for a module)
+
+            TODO:
+            + this doesn't appear to be showing up in the generated docs
+            + if all the constructors are tagged with `hideconstructor`, we should hide this
+              section
         --}}
         {{#block 'summary-classes-exports'}}
             {{#withOnly items=headingDocs headingKey=headingKey}}

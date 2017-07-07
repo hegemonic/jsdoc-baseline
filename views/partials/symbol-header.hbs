@@ -48,4 +48,15 @@
             {{#embed 'mixes'}}{{/embed}}
         </dl>
     {{/block}}
+    {{#block 'symbol-header-class-details'}}
+        {{!--
+            For classes where we're not displaying the constructor, we show the details here, above the
+            summary blocks.
+        --}}
+        {{#if hideconstructor}}
+            <dl {{~cssClass '!dl-compact'}}>
+                {{#embed 'details'}}{{/embed}}
+            </dl>
+        {{/if}}
+    {{/block}}
 </header>
