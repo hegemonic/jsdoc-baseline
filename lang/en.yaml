@@ -154,6 +154,7 @@ labels:
     constant: 'constant'
     generator: 'generator'
     inner: 'inner'
+    package: 'package'
     private: 'private'
     protected: 'protected'
     public: 'public'
