@@ -224,7 +224,7 @@ describe('lib/helpers/block', function() {
             var options = makeOptions({}, function() {
                 return '**foo**';
             });
-            var useMarkdown = !!template.config.markdown;
+            var useMarkdown = Boolean(template.config.markdown);
 
             afterEach(function() {
                 template.config.markdown = useMarkdown;
@@ -286,7 +286,7 @@ describe('lib/helpers/block', function() {
                 return '[Mr. Macintosh]' +
                     '(http://www.folklore.org/StoryView.py?story=Mister_Macintosh.txt)';
             });
-            var useMarkdown = !!template.config.markdown;
+            var useMarkdown = Boolean(template.config.markdown);
 
             afterEach(function() {
                 template.config.markdown = useMarkdown;

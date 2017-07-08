@@ -50,6 +50,6 @@ describe('publish', function() {
         xit('does not generate output files for doclets that do not get their own output file',
             function() {
             // TODO
-        });
+            });
     });
 });

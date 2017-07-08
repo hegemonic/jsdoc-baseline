@@ -18,6 +18,7 @@ describe('lib/helpers/expression', function() {
 
     it('should return an object', function() {
         var instance = expression(helpers.template);
+
         expect(typeof instance).toBe('object');
     });
 
@@ -687,14 +688,14 @@ describe('lib/helpers/expression', function() {
 
             it('should return text if the doclet has a "variable" property set to true',
                 function() {
-                var fakeDoclet = {
-                    variable: true
-                };
-                var text = instance.modifierText(fakeDoclet, false);
+                    var fakeDoclet = {
+                        variable: true
+                    };
+                    var text = instance.modifierText(fakeDoclet, false);
 
-                expect(text).toBeInstanceOf(SafeString);
-                expect(text.toString()).not.toBe('');
-            });
+                    expect(text).toBeInstanceOf(SafeString);
+                    expect(text.toString()).not.toBe('');
+                });
 
             it('should return text if the doclet has a falsy default value', function() {
                 var fakeDoclet = {
@@ -708,25 +709,25 @@ describe('lib/helpers/expression', function() {
 
             it('should return text if the doclet has a default value and is not an enum',
                 function() {
-                var fakeDoclet = {
-                    defaultvalue: '1'
-                };
-                var text = instance.modifierText(fakeDoclet, false);
+                    var fakeDoclet = {
+                        defaultvalue: '1'
+                    };
+                    var text = instance.modifierText(fakeDoclet, false);
 
-                expect(text).toBeInstanceOf(SafeString);
-                expect(text.toString()).toContain('1');
-            });
+                    expect(text).toBeInstanceOf(SafeString);
+                    expect(text.toString()).toContain('1');
+                });
 
             it('should not return text if the doclet has a default value and is an enum',
                 function() {
-                var fakeDoclet = {
-                    defaultvalue: '1'
-                };
-                var text = instance.modifierText(fakeDoclet, true);
+                    var fakeDoclet = {
+                        defaultvalue: '1'
+                    };
+                    var text = instance.modifierText(fakeDoclet, true);
 
-                expect(text).toBeInstanceOf(SafeString);
-                expect(text.toString()).toBe('');
-            });
+                    expect(text).toBeInstanceOf(SafeString);
+                    expect(text.toString()).toBe('');
+                });
         });
 
         describe('needsSignature', function() {
@@ -761,17 +762,17 @@ describe('lib/helpers/expression', function() {
 
             it('should say that typedefs do not need a signature if they do not contain a function',
                 function() {
-                var fakeDoclet = {
-                    kind: 'typedef',
-                    type: {
-                        names: [
-                            'Object'
-                        ]
-                    }
-                };
+                    var fakeDoclet = {
+                        kind: 'typedef',
+                        type: {
+                            names: [
+                                'Object'
+                            ]
+                        }
+                    };
 
-                expect(instance.needsSignature(fakeDoclet)).toBe(false);
-            });
+                    expect(instance.needsSignature(fakeDoclet)).toBe(false);
+                });
 
             it('should say that other types do not need a signature', function() {
                 var fakeDoclet = {

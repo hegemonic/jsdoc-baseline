@@ -68,13 +68,13 @@ describe('lib/filefinder', function() {
 
         it('should not recreate the finder if two functionally identical arrays are passed in',
             function() {
-            var arrayA = [fixturePaths[0]];
-            var arrayB = [fixturePaths[0]];
-            var defaultFinder = fileFinder.get('default', arrayA);
-            var currentFinder = fileFinder.get('default', arrayB);
+                var arrayA = [fixturePaths[0]];
+                var arrayB = [fixturePaths[0]];
+                var defaultFinder = fileFinder.get('default', arrayA);
+                var currentFinder = fileFinder.get('default', arrayB);
 
-            expect(currentFinder).toBe(defaultFinder);
-        });
+                expect(currentFinder).toBe(defaultFinder);
+            });
 
         it('should recreate the finder if an array of a different length is provided', function() {
             var defaultFinder = fileFinder.get('default', [fixturePaths[0]]);
