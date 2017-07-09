@@ -1179,6 +1179,25 @@ describe('lib/helpers/expression', function() {
                     name: 'number'
                 });
             });
+
+            it('should work if `doclet.returns` is passed in directly', function() {
+                var fakeReturns = [
+                    {
+                        type: {
+                            names: [
+                                'string'
+                            ]
+                        },
+                        description: 'A string.'
+                    }
+                ];
+                var parsedType = instance.returnTypes(fakeReturns);
+
+                expect(parsedType).toEqual({
+                    type: 'NameExpression',
+                    name: 'string'
+                });
+            });
         });
 
         xdescribe('see', function() {
