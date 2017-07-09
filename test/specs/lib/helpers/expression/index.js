@@ -1099,14 +1099,85 @@ describe('lib/helpers/expression', function() {
         });
 
         describe('returnTypes', function() {
-            // TODO: more tests
-
             it('should not crash on null input', function() {
                 function nullInput() {
                     return instance.returnTypes(null);
                 }
 
                 expect(nullInput).not.toThrow();
+            });
+
+            it('should find values in the `returns` property', function() {
+                var fakeDoclet = {
+                    returns: [
+                        {
+                            type: {
+                                names: [
+                                    'string'
+                                ]
+                            },
+                            description: 'A string.'
+                        }
+                    ]
+                };
+                var parsedType = instance.returnTypes(fakeDoclet);
+
+                expect(parsedType).toEqual({
+                    type: 'NameExpression',
+                    name: 'string'
+                });
+            });
+
+            it('should find values in the `yields` property', function() {
+                var fakeDoclet = {
+                    yields: [
+                        {
+                            type: {
+                                names: [
+                                    'number'
+                                ]
+                            },
+                            description: 'A number.'
+                        }
+                    ]
+                };
+                var parsedType = instance.returnTypes(fakeDoclet);
+
+                expect(parsedType).toEqual({
+                    type: 'NameExpression',
+                    name: 'number'
+                });
+            });
+
+            it('should prefer `yields` over `returns`', function() {
+                var fakeDoclet = {
+                    returns: [
+                        {
+                            type: {
+                                names: [
+                                    'string'
+                                ]
+                            },
+                            description: 'A string.'
+                        }
+                    ],
+                    yields: [
+                        {
+                            type: {
+                                names: [
+                                    'number'
+                                ]
+                            },
+                            description: 'A number.'
+                        }
+                    ]
+                };
+                var parsedType = instance.returnTypes(fakeDoclet);
+
+                expect(parsedType).toEqual({
+                    type: 'NameExpression',
+                    name: 'number'
+                });
             });
         });
 

@@ -134,6 +134,7 @@ headings:
             =1 {Abstract type}
             other {Abstract types}}
     version: 'Version'
+    yields: 'Yields'
 kinds:
     class: 'class'
     constant: 'constant'
