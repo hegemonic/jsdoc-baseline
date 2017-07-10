@@ -30,7 +30,7 @@ that you can use in your customizations to Baseline.
 
 1. Install [JSDoc](https://github.com/jsdoc3/jsdoc).
 
-    **Note**: Baseline currently requires JSDoc 3.4.0 or later.
+    **Note**: Baseline currently requires JSDoc 3.4.3 or later.
 
     To install JSDoc globally (may require `sudo`):
 
