@@ -40,6 +40,15 @@
                 {{#embed 'symbol-detail'}}{{/embed}}
             {{/withOnly}}
         </section>
+    {{!-- Externals also need additional information in the overview. --}}
+    {{else is kind 'external'}}
+        <section>
+            {{#with this}}
+                <dl {{~cssClass '!dl-compact'}}>
+                    {{#embed 'details'}}{{/embed}}
+                </dl>
+            {{/with}}
+        </section>
     {{!-- Namespaces that are functions also need additional information in the overview. --}}
     {{else is kind 'namespace'}}
         {{#if (needsSignature this)}}
