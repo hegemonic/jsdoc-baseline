@@ -1085,6 +1085,25 @@ describe('lib/helpers/expression', function() {
                 ]);
             });
 
+            it('should not crash when parameters have weird names like `{Object)`', function() {
+                function reparent() {
+                    var fakeDoclet = {
+                        params: [
+                            {
+                                name: '{Object)'
+                            },
+                            {
+                                name: '{Object)'
+                            }
+                        ]
+                    };
+
+                    instance.reparentItems(fakeDoclet, 'params');
+                }
+
+                expect(reparent).not.toThrow();
+            });
+
             xit('should ignore child properties when appropriate', function() {
                 // TODO: check whether it ignores properties with ignore === true
             });
