@@ -31,9 +31,9 @@
             {{#if (hasModifiers this isEnum)}}
                 <p>{{modifierText this isEnum}}</p>
             {{/if}}
-            {{#if ../children}}
+            {{#if children}}
                 <p>{{translate 'tables.body.eachValueHasProperties' name=name}}</p>
-                {{#withOnly values=../children}}
+                {{#withOnly values=children}}
                     {{#embed 'details-table'}}{{/embed}}
                 {{/withOnly}}
             {{/if}}
