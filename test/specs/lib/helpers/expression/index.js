@@ -1,6 +1,5 @@
 describe('lib/helpers/expression', () => {
     let expression;
-    const _ = require('underscore-contrib');
     const env = require('jsdoc/env');
     const handlebars = require('handlebars');
     const helpers = require('../../../../helpers');
@@ -863,7 +862,7 @@ describe('lib/helpers/expression', () => {
         });
 
         describe('reparentItems', () => {
-            const tablesConfig = _.getPath(template.config, 'tables');
+            const tablesConfig = template.config.tables;
 
             beforeEach(() => {
                 template.config.tables = {
