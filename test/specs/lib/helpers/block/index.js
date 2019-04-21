@@ -1,99 +1,93 @@
-'use strict';
+describe('lib/helpers/block', () => {
+    let block;
+    const handlebars = require('handlebars');
+    const helpers = require('../../../../helpers');
 
-describe('lib/helpers/block', function() {
-    var block;
-    var handlebars = require('handlebars');
-    var helpers = require('../../../../helpers');
-
-    var SafeString = handlebars.SafeString;
-    var template = helpers.template;
+    const SafeString = handlebars.SafeString;
+    const template = helpers.template;
 
     function makeOptions(hash, fn, inverse) {
         return {
-            fn: fn || function() {
-                return true;
-            },
+            fn: fn || (() => true),
             hash: hash || {},
-            inverse: inverse || function() {
-                return false;
-            }
+            inverse: inverse || (() => false)
         };
     }
 
     helpers.setup();
     block = require('../../../../../lib/helpers/block');
 
-    it('should export a function', function() {
+    it('should export a function', () => {
         expect(block).toBeFunction();
     });
 
-    it('should return an object', function() {
+    it('should return an object', () => {
         expect(block(template)).toBeObject();
     });
 
-    describe('helpers', function() {
-        var instance = block(template);
+    describe('helpers', () => {
+        const instance = block(template);
 
         function testBlockHelper(helper, args, hash) {
-            var result;
-            var options = makeOptions(hash);
+            let result;
+            const options = makeOptions(hash);
 
             args = args || [];
             args.push(options);
 
-            result = instance[helper].apply(instance, args);
+            result = instance[helper](...args);
 
             return result;
         }
 
-        describe('all', function() {
-            it('should use the inverse condition for an empty list of items', function() {
-                var result = testBlockHelper('all', [], {});
+        describe('all', () => {
+            it('should use the inverse condition for an empty list of items', () => {
+                const result = testBlockHelper('all', [], {});
 
                 expect(result).toBeFalse();
             });
 
-            it('should use the normal condition for a list of truthy items', function() {
-                var result = testBlockHelper('all', [true, 7], {});
+            it('should use the normal condition for a list of truthy items', () => {
+                const result = testBlockHelper('all', [true, 7], {});
 
                 expect(result).toBeTrue();
             });
 
-            it('should use the inverse condition for a list that contains a falsy item', function() {
-                var result = testBlockHelper('all', [true, ''], {});
+            it('should use the inverse condition for a list that contains a falsy item', () => {
+                const result = testBlockHelper('all', [true, ''], {});
 
                 expect(result).toBeFalse();
             });
         });
 
-        describe('any', function() {
-            it('should use the inverse condition for an empty list of items', function() {
-                var result = testBlockHelper('any', [[]], {});
+        describe('any', () => {
+            it('should use the inverse condition for an empty list of items', () => {
+                const result = testBlockHelper('any', [[]], {});
 
                 expect(result).toBeFalse();
             });
 
-            it('should use the normal condition for a list of truthy items', function() {
-                var result = testBlockHelper('any', [[true, 7]], {});
+            it('should use the normal condition for a list of truthy items', () => {
+                const result = testBlockHelper('any', [[true, 7]], {});
 
                 expect(result).toBeTrue();
             });
 
-            it('should use the normal condition for a list with truthy and falsy items', function() {
-                var result = testBlockHelper('any', [[true, '']], {});
+            it('should use the normal condition for a list with truthy and falsy items', () => {
+                const result = testBlockHelper('any', [[true, '']], {});
 
                 expect(result).toBeTrue();
             });
 
-            it('should use the normal condition for a list of falsy items', function() {
-                var result = testBlockHelper('any', [[false, '']], {});
+            it('should use the normal condition for a list of falsy items', () => {
+                const result = testBlockHelper('any', [[false, '']], {});
 
                 expect(result).toBeTrue();
             });
         });
 
-        describe('blockHelperMissing', function() {
-            it('should throw an error when called', function() {
+        describe('blockHelperMissing', () => {
+            it('should throw an error when called', () => {
                 function callMissing() {
                     return instance.blockHelperMissing({});
                 }
@@ -101,7 +95,7 @@ describe('lib/helpers/block', function() {
                 expect(callMissing).toThrow();
             });
 
-            it('should include the missing block name in the error message', function() {
+            it('should include the missing block name in the error message', () => {
                 try {
                     instance.blockHelperMissing({name: 'foo'});
                 } catch (e) {
@@ -110,8 +104,8 @@ describe('lib/helpers/block', function() {
             });
         });
 
-        describe('contains', function() {
-            it('should throw an error if called without a value to search for', function() {
+        describe('contains', () => {
+            it('should throw an error if called without a value to search for', () => {
                 function callWithoutValue() {
                     return instance.contains({
                         hash: {}
@@ -121,32 +115,32 @@ describe('lib/helpers/block', function() {
                 expect(callWithoutValue).toThrow();
             });
 
-            it('should say that an empty list of search terms does not contain the value', function() {
-                var result = testBlockHelper('contains', [], {
+            it('should say that an empty list of search terms does not contain the value', () => {
+                const result = testBlockHelper('contains', [], {
                     value: 'foo'
                 });
 
                 expect(result).toBeFalse();
             });
 
-            it('should say that a list of search terms with no match does not contain the value', function() {
-                var result = testBlockHelper('contains', ['bar', 'baz'], {
+            it('should say that a list of search terms with no match does not contain the value', () => {
+                const result = testBlockHelper('contains', ['bar', 'baz'], {
                     value: 'foo'
                 });
 
                 expect(result).toBeFalse();
             });
 
-            it('should be able to find the value within the search terms', function() {
-                var result = testBlockHelper('contains', ['foo', 'bar'], {
+            it('should be able to find the value within the search terms', () => {
+                const result = testBlockHelper('contains', ['foo', 'bar'], {
                     value: 'foo'
                 });
 
                 expect(result).toBeTrue();
             });
 
-            it('should flatten nested arrays', function() {
-                var result = testBlockHelper('contains', ['foo', ['bar', 'baz']], {
+            it('should flatten nested arrays', () => {
+                const result = testBlockHelper('contains', ['foo', ['bar', 'baz']], {
                     value: 'baz'
                 });
 
@@ -154,92 +148,86 @@ describe('lib/helpers/block', function() {
             });
         });
 
-        xdescribe('eachIndexGroup', function() {
+        xdescribe('eachIndexGroup', () => {
             // TODO
         });
 
-        describe('first', function() {
-            it('should use the first item from the list as the thisObj', function() {
-                var options = makeOptions({}, function(thisObj) {
-                    return thisObj;
-                });
-                var result = instance.first(['foo', 'bar'], options);
+        describe('first', () => {
+            it('should use the first item from the list as the thisObj', () => {
+                const options = makeOptions({}, thisObj => thisObj);
+                const result = instance.first(['foo', 'bar'], options);
 
                 expect(result).toBe('foo');
             });
         });
 
-        describe('is', function() {
-            it('should use the normal condition if the items are identical', function() {
-                var obj1 = {};
-                var obj2 = obj1;
-                var options = makeOptions();
-                var result = instance.is(obj1, obj2, options);
+        describe('is', () => {
+            it('should use the normal condition if the items are identical', () => {
+                const obj1 = {};
+                const obj2 = obj1;
+                const options = makeOptions();
+                const result = instance.is(obj1, obj2, options);
 
                 expect(result).toBeTrue();
             });
 
-            it('should use the inverse condition if the items are not identical', function() {
-                var obj1 = {};
-                var obj2 = {};
-                var options = makeOptions();
-                var result = instance.is(obj1, obj2, options);
+            it('should use the inverse condition if the items are not identical', () => {
+                const obj1 = {};
+                const obj2 = {};
+                const options = makeOptions();
+                const result = instance.is(obj1, obj2, options);
 
                 expect(result).toBeFalse();
             });
         });
 
-        describe('isnt', function() {
-            it('should use the normal condition if the items are not identical', function() {
-                var obj1 = {};
-                var obj2 = {};
-                var options = makeOptions();
-                var result = instance.isnt(obj1, obj2, options);
+        describe('isnt', () => {
+            it('should use the normal condition if the items are not identical', () => {
+                const obj1 = {};
+                const obj2 = {};
+                const options = makeOptions();
+                const result = instance.isnt(obj1, obj2, options);
 
                 expect(result).toBeTrue();
             });
 
-            it('should use the inverse condition if the items are identical', function() {
-                var obj1 = {};
-                var obj2 = obj1;
-                var options = makeOptions();
-                var result = instance.isnt(obj1, obj2, options);
+            it('should use the inverse condition if the items are identical', () => {
+                const obj1 = {};
+                const obj2 = obj1;
+                const options = makeOptions();
+                const result = instance.isnt(obj1, obj2, options);
 
                 expect(result).toBeFalse();
             });
         });
 
-        describe('last', function() {
-            it('should use the last item from the list as the thisObj', function() {
-                var options = makeOptions({}, function(thisObj) {
-                    return thisObj;
-                });
-                var result = instance.last(['foo', 'bar'], options);
+        describe('last', () => {
+            it('should use the last item from the list as the thisObj', () => {
+                const options = makeOptions({}, thisObj => thisObj);
+                const result = instance.last(['foo', 'bar'], options);
 
                 expect(result).toBe('bar');
             });
         });
 
-        describe('markdown', function() {
-            var options = makeOptions({}, function() {
-                return '**foo**';
-            });
-            var useMarkdown = Boolean(template.config.markdown);
+        describe('markdown', () => {
+            const options = makeOptions({}, () => '**foo**');
+            const useMarkdown = Boolean(template.config.markdown);
 
-            afterEach(function() {
+            afterEach(() => {
                 template.config.markdown = useMarkdown;
             });
 
-            it('should use a Markdown parser by default', function() {
-                var text = instance.markdown(options);
+            it('should use a Markdown parser by default', () => {
+                const text = instance.markdown(options);
 
                 expect(text).toBeInstanceOf(SafeString);
                 expect(text.toString()).toBe('<p><strong>foo</strong></p>');
             });
 
-            it('should not use a Markdown parser when the user disables Markdown', function() {
-                var text;
-                var tempInstance;
+            it('should not use a Markdown parser when the user disables Markdown', () => {
+                let text;
+                let tempInstance;
 
                 template.config.markdown = false;
                 tempInstance = block(template);
@@ -250,12 +238,10 @@ describe('lib/helpers/block', function() {
             });
 
             it('should automatically expand standalone <p> tags into proper markup when Markdown ' +
-                'is disabled', function() {
-                var text;
-                var tempInstance;
-                var tempOptions = makeOptions({}, function() {
-                    return 'foo<p>bar<p>baz';
-                });
+                'is disabled', () => {
+                let text;
+                let tempInstance;
+                const tempOptions = makeOptions({}, () => 'foo<p>bar<p>baz');
 
                 template.config.markdown = false;
                 tempInstance = block(template);
@@ -265,12 +251,10 @@ describe('lib/helpers/block', function() {
                 expect(text.toString()).toBe('<p>foo</p><p>bar</p><p>baz</p>');
             });
 
-            it('should not wrap text in an extra <p> tag when Markdown is disabled', function() {
-                var text;
-                var tempInstance;
-                var tempOptions = makeOptions({}, function() {
-                    return '<p>**foo**</p>';
-                });
+            it('should not wrap text in an extra <p> tag when Markdown is disabled', () => {
+                let text;
+                let tempInstance;
+                const tempOptions = makeOptions({}, () => '<p>**foo**</p>');
 
                 template.config.markdown = false;
                 tempInstance = block(template);
@@ -281,38 +265,34 @@ describe('lib/helpers/block', function() {
             });
         });
 
-        describe('markdownLinks', function() {
-            var options = makeOptions({}, function() {
-                return '[Mr. Macintosh]' +
-                    '(http://www.folklore.org/StoryView.py?story=Mister_Macintosh.txt)';
-            });
-            var useMarkdown = Boolean(template.config.markdown);
+        describe('markdownLinks', () => {
+            const options = makeOptions({}, () => '[Mr. Macintosh]' +
+                '(http://www.folklore.org/StoryView.py?story=Mister_Macintosh.txt)');
+            const useMarkdown = Boolean(template.config.markdown);
 
-            afterEach(function() {
+            afterEach(() => {
                 template.config.markdown = useMarkdown;
             });
 
-            it('should convert Markdown links to HTML links by default', function() {
-                var text = instance.markdownLinks(options);
+            it('should convert Markdown links to HTML links by default', () => {
+                const text = instance.markdownLinks(options);
 
                 expect(text).toBeInstanceOf(SafeString);
                 expect(text.toString()).toBe('<p><a href="http://www.folklore.org/StoryView.py?' +
                     'story=Mister_Macintosh.txt">Mr. Macintosh</a></p>');
             });
 
-            it('should not convert Markdown text with no links', function() {
-                var tempOptions = makeOptions({}, function() {
-                    return '**foo**';
-                });
-                var text = instance.markdownLinks(tempOptions);
+            it('should not convert Markdown text with no links', () => {
+                const tempOptions = makeOptions({}, () => '**foo**');
+                const text = instance.markdownLinks(tempOptions);
 
                 expect(text).toBeInstanceOf(SafeString);
                 expect(text.toString()).toBe('<p>**foo**</p>');
             });
 
-            it('should not convert Markdown links if Markdown is disabled', function() {
-                var text;
-                var tempInstance;
+            it('should not convert Markdown links if Markdown is disabled', () => {
+                let text;
+                let tempInstance;
 
                 template.config.markdown = false;
                 tempInstance = block(template);
@@ -324,14 +304,12 @@ describe('lib/helpers/block', function() {
             });
         });
 
-        describe('withOnly', function() {
-            it('should create a context with the options hash values as properties', function() {
-                var options = makeOptions({
+        describe('withOnly', () => {
+            it('should create a context with the options hash values as properties', () => {
+                const options = makeOptions({
                     test: 'foo'
-                }, function(ctx) {
-                    return ctx.test;
-                });
-                var text = instance.withOnly(options);
+                }, ({test}) => test);
+                const text = instance.withOnly(options);
 
                 expect(text).toBe('foo');
             });

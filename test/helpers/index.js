@@ -1,19 +1,19 @@
 // Helper functions for testing the Baseline template.
 
-'use strict';
-
-var deepExtend = require('deep-extend');
-var path = require('path');
+const deepExtend = require('deep-extend');
+const path = require('path');
 
 // Create a new, fully initialized Template object with the specified configuration settings.
-exports.createTemplate = function(config) {
-    var defaultConfig;
-    var Template;
+exports.createTemplate = config => {
+    let defaultConfig;
+    let Template;
 
     config = config || {};
 
     exports.setup();
-    defaultConfig = require('../../lib/config').loadSync('', '.').get();
+    defaultConfig = require('../../lib/config')
+        .loadSync('', '.')
+        .get();
     Template = require('../../lib/template');
 
     config = deepExtend({}, defaultConfig, config);
@@ -22,13 +22,11 @@ exports.createTemplate = function(config) {
 };
 
 // Render a Handlebars view.
-exports.render = function() {
-    return exports.template.render.apply(exports.template, arguments);
-};
+exports.render = (...args) => exports.template.render(...args);
 
 // Reset environment variables used by JSDoc to the default values for tests.
 function resetJsdocEnv() {
-    var env = require('jsdoc/env');
+    const env = require('jsdoc/env');
 
     env.conf = {
         tags: {
@@ -59,6 +57,4 @@ function resetJsdocEnv() {
 exports.setup = resetJsdocEnv;
 
 // Shared template object.
-exports.template = (function() {
-    return exports.createTemplate();
-})();
+exports.template = (() => exports.createTemplate())();

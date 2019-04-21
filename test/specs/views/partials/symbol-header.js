@@ -1,21 +1,19 @@
-'use strict';
+const helpers = require('../../../helpers');
 
-var helpers = require('../../../helpers');
-
-describe('symbol header partial', function() {
+describe('symbol header partial', () => {
     // TODO: more tests
 
-    describe('class details', function() {
-        xit('should not show details for a normal class', function() {
+    describe('class details', () => {
+        xit('should not show details for a normal class', () => {
             // TODO
         });
 
-        it('should show details for hidden constructors', function() {
-            var fakeDoclet = {
+        it('should show details for hidden constructors', () => {
+            const fakeDoclet = {
                 copyright: 'Foo',
                 hideconstructor: true
             };
-            var text = helpers.render('symbol-header', fakeDoclet);
+            const text = helpers.render('symbol-header', fakeDoclet);
 
             expect(text).toContain('Foo');
         });

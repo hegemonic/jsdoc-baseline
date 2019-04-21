@@ -1,30 +1,28 @@
-'use strict';
-
-describe('lib/template', function() {
-    var config = require('../../../lib/config');
+describe('lib/template', () => {
+    const config = require('../../../lib/config');
     /* eslint-disable no-unused-vars */
-    var instance;
+    let instance;
     /* eslint-enable no-unused-vars */
-    var Template = require('../../../lib/template');
+    const Template = require('../../../lib/template');
 
-    beforeEach(function() {
+    beforeEach(() => {
         instance = new Template(config.loadSync('', '.').get());
     });
 
-    it('should be a constructor', function() {
+    it('should be a constructor', () => {
         expect(Template).toBeFunction();
         expect(new Template(config.loadSync('', '.').get())).toBeInstanceOf(Template);
     });
 
-    xdescribe('init', function() {
+    xdescribe('init', () => {
         // TODO
     });
 
-    xdescribe('render', function() {
+    xdescribe('render', () => {
         // TODO
     });
 
-    xdescribe('translate', function() {
+    xdescribe('translate', () => {
         // TODO
     });
 });
