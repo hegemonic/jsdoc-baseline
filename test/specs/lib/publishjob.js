@@ -1,14 +1,12 @@
-'use strict';
+describe('lib/publishjob', () => {
+    const config = require('../../../lib/config');
+    let instance;
+    const fs = new (require('fake-fs'))();
+    const PublishJob = require('../../../lib/publishjob');
+    const Template = require('../../../lib/template');
+    let template;
 
-describe('lib/publishjob', function() {
-    var config = require('../../../lib/config');
-    var instance;
-    var fs = new (require('fake-fs'))();
-    var PublishJob = require('../../../lib/publishjob');
-    var Template = require('../../../lib/template');
-    var template;
-
-    beforeEach(function() {
+    beforeEach(() => {
         template = new Template(config.loadSync('', '.').get()).init();
 
         // must create the instance before patching `fs` so the template resources can be loaded
@@ -19,23 +17,23 @@ describe('lib/publishjob', function() {
         fs.patch();
     });
 
-    afterEach(function() {
+    afterEach(() => {
         fs.unpatch();
     });
 
-    it('should be a constructor', function() {
+    it('should be a constructor', () => {
         fs.unpatch();
 
         expect(PublishJob).toBeFunction();
         expect(new PublishJob(template, {})).toBeInstanceOf(PublishJob);
     });
 
-    xdescribe('copyStaticFiles', function() {
+    xdescribe('copyStaticFiles', () => {
         // TODO
     });
 
-    describe('createOutputDirectory', function() {
-        it('should create the primary output directory if called with no arguments', function() {
+    describe('createOutputDirectory', () => {
+        it('should create the primary output directory if called with no arguments', () => {
             function stat() {
                 return fs.statSync('/path/to/destination');
             }
@@ -46,7 +44,7 @@ describe('lib/publishjob', function() {
             expect(stat().isDirectory()).toBe(true);
         });
 
-        it('should resolve paths relative to the primary output directory', function() {
+        it('should resolve paths relative to the primary output directory', () => {
             function stat() {
                 return fs.statSync('/path/to/destination/subdir');
             }
@@ -58,87 +56,87 @@ describe('lib/publishjob', function() {
         });
     });
 
-    xdescribe('generate', function() {
+    xdescribe('generate', () => {
         // TODO
     });
 
-    xdescribe('generateByLongname', function() {
+    xdescribe('generateByLongname', () => {
         // TODO
     });
 
-    xdescribe('generateGlobals', function() {
+    xdescribe('generateGlobals', () => {
         // TODO
     });
 
-    xdescribe('generateIndex', function() {
+    xdescribe('generateIndex', () => {
         // TODO
     });
 
-    xdescribe('generateSourceFiles', function() {
+    xdescribe('generateSourceFiles', () => {
         // TODO
     });
 
-    xdescribe('generateTocData', function() {
+    xdescribe('generateTocData', () => {
         // TODO
     });
 
-    xdescribe('generateTutorials', function() {
+    xdescribe('generateTutorials', () => {
         // TODO
     });
 
-    xdescribe('render', function() {
+    xdescribe('render', () => {
         // TODO
     });
 
-    describe('setAllLongnamesTree', function() {
-        it('should set allLongnamesTree to the specified value', function() {
-            var fakeTree = {};
+    describe('setAllLongnamesTree', () => {
+        it('should set allLongnamesTree to the specified value', () => {
+            const fakeTree = {};
 
             instance.setAllLongnamesTree(fakeTree);
 
             expect(instance.allLongnamesTree).toBe(fakeTree);
         });
 
-        it('should return the instance', function() {
-            var result = instance.setAllLongnamesTree({});
+        it('should return the instance', () => {
+            const result = instance.setAllLongnamesTree({});
 
             expect(result).toBe(instance);
         });
     });
 
-    describe('setNavTree', function() {
-        it('should set navTree to the specified value', function() {
-            var fakeTree = {};
+    describe('setNavTree', () => {
+        it('should set navTree to the specified value', () => {
+            const fakeTree = {};
 
             instance.setNavTree(fakeTree);
 
             expect(instance.navTree).toBe(fakeTree);
         });
 
-        it('should return the instance', function() {
-            var result = instance.setNavTree({});
+        it('should return the instance', () => {
+            const result = instance.setNavTree({});
 
             expect(result).toBe(instance);
         });
     });
 
-    describe('setPackage', function() {
-        it('should set the package to the specified value', function() {
-            var fakeDoclet = {};
+    describe('setPackage', () => {
+        it('should set the package to the specified value', () => {
+            const fakeDoclet = {};
 
             instance.setPackage(fakeDoclet);
 
             expect(instance.package).toBe(fakeDoclet);
         });
 
-        it('should return the instance', function() {
-            var result = instance.setPackage({});
+        it('should return the instance', () => {
+            const result = instance.setPackage({});
 
             expect(result).toBe(instance);
         });
 
-        it('should set the page title prefix based on the package data', function() {
-            var fakeDoclet = {
+        it('should set the page title prefix based on the package data', () => {
+            const fakeDoclet = {
                 name: 'foo',
                 version: '0.0.1'
             };
@@ -148,8 +146,8 @@ describe('lib/publishjob', function() {
             expect(instance.pageTitlePrefix).toContain('foo 0.0.1');
         });
 
-        it('should work when the package does not have a version', function() {
-            var fakeDoclet = {
+        it('should work when the package does not have a version', () => {
+            const fakeDoclet = {
                 name: 'foo'
             };
 
@@ -158,7 +156,7 @@ describe('lib/publishjob', function() {
             expect(instance.pageTitlePrefix).toContain('foo');
         });
 
-        it('should not throw when the argument is undefined', function() {
+        it('should not throw when the argument is undefined', () => {
             function setEmptyPackage() {
                 instance.setPackage();
             }

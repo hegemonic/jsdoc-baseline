@@ -1,55 +1,53 @@
-'use strict';
+describe('lib/config', () => {
+    const config = require('../../../lib/config');
+    const env = require('jsdoc/env');
+    const logger = require('jsdoc/util/logger');
+    const path = require('jsdoc/path');
 
-describe('lib/config', function() {
-    var config = require('../../../lib/config');
-    var env = require('jsdoc/env');
-    var logger = require('jsdoc/util/logger');
-    var path = require('jsdoc/path');
+    const baselineConfigPath = env.conf.templates.baseline;
+    const templatePath = env.opts.template;
 
-    var baselineConfigPath = env.conf.templates.baseline;
-    var templatePath = env.opts.template;
-
-    afterEach(function() {
+    afterEach(() => {
         env.conf.templates.baseline = baselineConfigPath;
         env.opts.template = templatePath;
 
         config.reset();
     });
 
-    it('should be an object', function() {
+    it('should be an object', () => {
         expect(config).toBeObject();
     });
 
-    it('should export a "defaultConfig" object', function() {
+    it('should export a "defaultConfig" object', () => {
         expect(config.defaultConfig).toBeObject();
     });
 
-    it('should export a "get" method', function() {
+    it('should export a "get" method', () => {
         expect(config.get).toBeFunction();
     });
 
-    it('should export a "loadSync" method', function() {
+    it('should export a "loadSync" method', () => {
         expect(config.loadSync).toBeFunction();
     });
 
-    it('should export a "protectedConfig" object', function() {
+    it('should export a "protectedConfig" object', () => {
         expect(config.protectedConfig).toBeObject();
     });
 
-    it('should export a "readJsonSync" method', function() {
+    it('should export a "readJsonSync" method', () => {
         expect(config.readJsonSync).toBeFunction();
     });
 
-    it('should export a "reset" method', function() {
+    it('should export a "reset" method', () => {
         expect(config.reset).toBeFunction();
     });
 
-    it('should export a "set" method', function() {
+    it('should export a "set" method', () => {
         expect(config.set).toBeFunction();
     });
 
-    describe('get', function() {
-        it('should return the specified key', function() {
+    describe('get', () => {
+        it('should return the specified key', () => {
             env.conf.templates.baseline = path.resolve(__dirname,
                 '../../fixtures/config.json');
             config.loadSync();
@@ -57,19 +55,19 @@ describe('lib/config', function() {
             expect(config.get('foo')).toBe('bar');
         });
 
-        it('should return all config values if no key is specified', function() {
+        it('should return all config values if no key is specified', () => {
             expect(config.loadSync().get()).toBeObject();
         });
     });
 
-    describe('loadSync', function() {
-        it('should return the "config" module object', function() {
-            var conf = config.loadSync();
+    describe('loadSync', () => {
+        it('should return the "config" module object', () => {
+            const conf = config.loadSync();
 
             expect(conf).toBe(config);
         });
 
-        it('should work if the config object is embedded in the JSDoc config file', function() {
+        it('should work if the config object is embedded in the JSDoc config file', () => {
             env.conf.templates.baseline = {
                 beautify: !config.defaultConfig.beautify
             };
@@ -78,7 +76,7 @@ describe('lib/config', function() {
             expect(config.get('beautify')).toBe(!config.defaultConfig.beautify);
         });
 
-        it('should use the correct default paths', function() {
+        it('should use the correct default paths', () => {
             env.conf.templates.baseline = path.resolve(__dirname,
                 '../../fixtures/config.json');
             env.opts.template = '/foo/bar/baz';
@@ -89,9 +87,9 @@ describe('lib/config', function() {
             expect(config.get('templatePath')).toBe('/foo/bar/baz');
         });
 
-        it('should accept the template-config and template paths as parameters', function() {
-            var baselineTemplatePath = '/foo/bar/baz';
-            var confPath = path.resolve(__dirname, '../../fixtures/config.json');
+        it('should accept the template-config and template paths as parameters', () => {
+            const baselineTemplatePath = '/foo/bar/baz';
+            const confPath = path.resolve(__dirname, '../../fixtures/config.json');
 
             config.loadSync(confPath, baselineTemplatePath);
 
@@ -99,7 +97,7 @@ describe('lib/config', function() {
             expect(config.get('templatePath')).toBe('/foo/bar/baz');
         });
 
-        it('should set default values even if the config file is missing', function() {
+        it('should set default values even if the config file is missing', () => {
             spyOn(logger, 'fatal');
 
             env.conf.templates.baseline = path.resolve(__dirname, '/not/a/real/path');
@@ -110,7 +108,7 @@ describe('lib/config', function() {
             expect(Object.keys(config.get()).length).not.toBe(0);
         });
 
-        it('should work with JSON files that contain comments', function() {
+        it('should work with JSON files that contain comments', () => {
             spyOn(logger, 'fatal');
 
             env.conf.templates.baseline = path.resolve(__dirname,
@@ -122,7 +120,7 @@ describe('lib/config', function() {
             expect(config.get('foo')).toBe('bar');
         });
 
-        it('should get the L10N filename from the locale', function() {
+        it('should get the L10N filename from the locale', () => {
             env.conf.templates.baseline = path.resolve(__dirname,
                 '../../fixtures/config.json');
 
@@ -131,7 +129,7 @@ describe('lib/config', function() {
             expect(config.get('l10nFile')).toBe('en.yaml');
         });
 
-        it('should use the L10N filename from the config file, if specified there', function() {
+        it('should use the L10N filename from the config file, if specified there', () => {
             env.conf.templates.baseline = path.resolve(__dirname,
                 '../../fixtures/config-l10nfile.json');
 
@@ -141,12 +139,12 @@ describe('lib/config', function() {
         });
     });
 
-    describe('readJsonSync', function() {
-        beforeEach(function() {
+    describe('readJsonSync', () => {
+        beforeEach(() => {
             spyOn(logger, 'fatal');
         });
 
-        it('should be able to read a JSON file with comments', function() {
+        it('should be able to read a JSON file with comments', () => {
             function readJson() {
                 return config.readJsonSync(path.resolve(__dirname, '../../fixtures/comments.json'));
             }
@@ -156,7 +154,7 @@ describe('lib/config', function() {
             expect(logger.fatal).not.toHaveBeenCalled();
         });
 
-        it('should log a fatal error if there is an exception', function() {
+        it('should log a fatal error if there is an exception', () => {
             function readJson() {
                 return config.readJsonSync(path.resolve(__dirname, 'no-such-file.json'));
             }
@@ -165,15 +163,15 @@ describe('lib/config', function() {
             expect(logger.fatal).toHaveBeenCalled();
         });
 
-        it('should return nothing if no path is specified', function() {
-            var result = config.readJsonSync();
+        it('should return nothing if no path is specified', () => {
+            const result = config.readJsonSync();
 
             expect(result).toBeUndefined();
         });
     });
 
-    describe('reset', function() {
-        it('should reset all config values', function() {
+    describe('reset', () => {
+        it('should reset all config values', () => {
             config.set('a', 'b');
             config.reset();
 
@@ -181,8 +179,8 @@ describe('lib/config', function() {
         });
     });
 
-    describe('set', function() {
-        it('should not throw before calling "loadSync"', function() {
+    describe('set', () => {
+        it('should not throw before calling "loadSync"', () => {
             function updateConfig() {
                 config.set('a', 'b');
             }
@@ -190,7 +188,7 @@ describe('lib/config', function() {
             expect(updateConfig).not.toThrow();
         });
 
-        it('should not throw after calling "loadSync"', function() {
+        it('should not throw after calling "loadSync"', () => {
             function updateConfig() {
                 config.set('a', 'b');
             }
@@ -200,16 +198,16 @@ describe('lib/config', function() {
             expect(updateConfig).not.toThrow();
         });
 
-        it('should return the "config" module object', function() {
-            var conf = config.set('a', 'b');
+        it('should return the "config" module object', () => {
+            const conf = config.set('a', 'b');
 
             expect(conf).toBe(config);
         });
 
-        it('should merge values into protected arrays, rather than replacing them', function() {
+        it('should merge values into protected arrays, rather than replacing them', () => {
             // test with an arbitrary protected config value
-            var key = Object.keys(config.protectedConfig)[0];
-            var value;
+            const key = Object.keys(config.protectedConfig)[0];
+            let value;
 
             config.set(key, '/foo/bar/baz');
             value = config.get(key);
@@ -219,10 +217,10 @@ describe('lib/config', function() {
             expect(value[0]).toBe('/foo/bar/baz');
         });
 
-        it('should merge array values into protected arrays', function() {
+        it('should merge array values into protected arrays', () => {
             // test with an arbitrary protected config value
-            var key = Object.keys(config.protectedConfig)[0];
-            var value;
+            const key = Object.keys(config.protectedConfig)[0];
+            let value;
 
             config.set(key, ['/foo/bar/baz']);
             value = config.get(key);
@@ -232,10 +230,10 @@ describe('lib/config', function() {
             expect(value[0]).toBe('/foo/bar/baz');
         });
 
-        it('should replace unprotected values', function() {
+        it('should replace unprotected values', () => {
             // test with an arbitrary unprotected config value
-            var key = Object.keys(config.defaultConfig)[0];
-            var value;
+            const key = Object.keys(config.defaultConfig)[0];
+            let value;
 
             config.set(key, '/foo/bar/baz');
             value = config.get(key);

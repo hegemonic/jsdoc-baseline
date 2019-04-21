@@ -1,12 +1,10 @@
-'use strict';
+const helpers = require('../../../helpers');
 
-var helpers = require('../../../helpers');
-
-describe('signature partial', function() {
+describe('signature partial', () => {
     // TODO: more tests
 
-    it('should include the return type for functions if one is supplied', function() {
-        var fakeDoclet = {
+    it('should include the return type for functions if one is supplied', () => {
+        const fakeDoclet = {
             kind: 'function',
             name: 'foo',
             returns: [
@@ -19,15 +17,15 @@ describe('signature partial', function() {
                 }
             ]
         };
-        var returnTypesSeparator = helpers.template.translate('returnTypesSeparator');
-        var text = helpers.render('signature', fakeDoclet);
+        const returnTypesSeparator = helpers.template.translate('returnTypesSeparator');
+        const text = helpers.render('signature', fakeDoclet);
 
         expect(text).toContain(returnTypesSeparator);
         expect(text).toContain('string');
     });
 
-    it('should not show the return-type separator if there is no return type', function() {
-        var fakeDoclet = {
+    it('should not show the return-type separator if there is no return type', () => {
+        const fakeDoclet = {
             kind: 'function',
             name: 'foo',
             returns: [
@@ -36,16 +34,16 @@ describe('signature partial', function() {
                 }
             ]
         };
-        var returnTypesSeparator = helpers.template.translate('returnTypesSeparator');
-        var text = helpers.render('signature', fakeDoclet);
+        const returnTypesSeparator = helpers.template.translate('returnTypesSeparator');
+        const text = helpers.render('signature', fakeDoclet);
 
         expect(text).not.toContain(returnTypesSeparator);
     });
 
-    it('should show complete type information for properties', function() {
-        var catharsis = require('catharsis');
+    it('should show complete type information for properties', () => {
+        const catharsis = require('catharsis');
 
-        var fakeDoclet = {
+        const fakeDoclet = {
             kind: 'member',
             name: 'foo',
             type: {
@@ -55,7 +53,7 @@ describe('signature partial', function() {
                 parsedType: catharsis.parse('?function(!string)')
             }
         };
-        var text = helpers.render('signature', fakeDoclet);
+        const text = helpers.render('signature', fakeDoclet);
 
         expect(text).toContain('nullable function(non-null string)');
     });

@@ -1,13 +1,11 @@
-'use strict';
+const helpers = require('../../../helpers');
 
-var helpers = require('../../../helpers');
-
-describe('tutorial layout', function() {
+describe('tutorial layout', () => {
     // TODO: more tests
 
-    describe('content', function() {
-        it('should render the tutorial content as Markdown', function() {
-            var text = helpers.render('tutorial', {
+    describe('content', () => {
+        it('should render the tutorial content as Markdown', () => {
+            const text = helpers.render('tutorial', {
                 tutorialContent: '## Test'
             });
 

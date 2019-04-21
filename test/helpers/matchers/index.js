@@ -1,9 +1,7 @@
-'use strict';
-
 // Load the global `expect` shim
 require('expectations');
 
-
+/* eslint-disable consistent-return,no-invalid-this */
 
 expect.addAssertion('toBeArray', function() {
     if (!Array.isArray(this.value)) {
@@ -38,8 +36,8 @@ expect.addAssertion('toBeFunction', function() {
 });
 
 expect.addAssertion('toBeInstanceOf', function(klass) {
-    var actualClassName = this.value.constructor ? this.value.constructor.name : undefined;
-    var expectedClassName;
+    const actualClassName = this.value.constructor ? this.value.constructor.name : undefined;
+    let expectedClassName;
 
     if (typeof klass === 'string') {
         expectedClassName = klass;
@@ -48,7 +46,7 @@ expect.addAssertion('toBeInstanceOf', function(klass) {
     }
 
     if (actualClassName !== expectedClassName) {
-        return this.assertions.fail('to be an instance of ' + expectedClassName + '.');
+        return this.assertions.fail(`to be an instance of ${expectedClassName}.`);
     }
 
     this.assertions.pass();
@@ -86,3 +84,5 @@ expect.addAssertion('toBeTrue', function() {
 
     this.assertions.pass();
 });
+
+/* eslint-enable consistent-return,no-invalid-this */

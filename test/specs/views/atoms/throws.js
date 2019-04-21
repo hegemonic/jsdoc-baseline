@@ -1,55 +1,53 @@
-'use strict';
+const helpers = require('../../../helpers');
 
-var helpers = require('../../../helpers');
-
-describe('throws atom', function() {
-    it('should generate nothing if the doclet has no "exceptions" items', function() {
-        var text = helpers.render('throws', {});
+describe('throws atom', () => {
+    it('should generate nothing if the doclet has no "exceptions" items', () => {
+        const text = helpers.render('throws', {});
 
         expect(text).toBe('');
     });
 
-    it('should include the description, if present', function() {
-        var doclet = {
+    it('should include the description, if present', () => {
+        const doclet = {
             exceptions: [
                 {
                     description: 'foo bar baz'
                 }
             ]
         };
-        var text = helpers.render('throws', doclet);
+        const text = helpers.render('throws', doclet);
 
         expect(text).toContain('foo bar baz');
     });
 
-    it('should describe the exception type, if specified', function() {
-        var parsedType = {
+    it('should describe the exception type, if specified', () => {
+        const parsedType = {
             type: 'NameExpression',
             name: 'TypeError'
         };
-        var doclet = {
+        const doclet = {
             exceptions: [
                 {
                     type: {
-                        parsedType: parsedType
+                        parsedType
                     }
                 }
             ]
         };
-        var text = helpers.render('throws', doclet);
+        const text = helpers.render('throws', doclet);
 
         expect(text).toContain('<code>TypeError</code>');
     });
 
-    it('should not include an empty <code> tag if the exception type is not specified', function() {
-        var doclet = {
+    it('should not include an empty <code> tag if the exception type is not specified', () => {
+        const doclet = {
             exceptions: [
                 {
                     description: 'foo'
                 }
             ]
         };
-        var text = helpers.render('throws', doclet);
+        const text = helpers.render('throws', doclet);
 
         expect(text).not.toContain('<code>');
     });

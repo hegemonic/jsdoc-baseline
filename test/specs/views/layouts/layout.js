@@ -1,24 +1,22 @@
-'use strict';
+const helpers = require('../../../helpers');
 
-var helpers = require('../../../helpers');
-
-describe('main layout', function() {
+describe('main layout', () => {
     // TODO: more tests
 
-    describe('footer', function() {
-        it('should include a footer by default', function() {
-            var text = helpers.render('layout', {});
+    describe('footer', () => {
+        it('should include a footer by default', () => {
+            const text = helpers.render('layout', {});
 
             expect(text).toContain('<footer');
         });
 
-        it('should omit the footer when necessary', function() {
-            var template = helpers.createTemplate({
+        it('should omit the footer when necessary', () => {
+            const template = helpers.createTemplate({
                 components: {
                     footer: false
                 }
             });
-            var text = template.render('layout', {});
+            const text = template.render('layout', {});
 
             expect(text).not.toContain('<footer');
         });

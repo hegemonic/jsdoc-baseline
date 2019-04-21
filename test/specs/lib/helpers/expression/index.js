@@ -1,42 +1,40 @@
-'use strict';
-
-describe('lib/helpers/expression', function() {
-    var expression;
-    var _ = require('underscore-contrib');
-    var env = require('jsdoc/env');
-    var handlebars = require('handlebars');
-    var helpers = require('../../../../helpers');
-    var SafeString = handlebars.SafeString;
-    var templateHelper = require('jsdoc/util/templateHelper');
+describe('lib/helpers/expression', () => {
+    let expression;
+    const _ = require('underscore-contrib');
+    const env = require('jsdoc/env');
+    const handlebars = require('handlebars');
+    const helpers = require('../../../../helpers');
+    const SafeString = handlebars.SafeString;
+    const templateHelper = require('jsdoc/util/templateHelper');
 
     helpers.setup();
     expression = require('../../../../../lib/helpers/expression');
 
-    it('should export a function', function() {
+    it('should export a function', () => {
         expect(typeof expression).toBe('function');
     });
 
-    it('should return an object', function() {
-        var instance = expression(helpers.template);
+    it('should return an object', () => {
+        const instance = expression(helpers.template);
 
         expect(typeof instance).toBe('object');
     });
 
-    describe('helpers', function() {
+    describe('helpers', () => {
         // TODO: use a dummy template instance that pulls L10N strings from fixtures/
-        var template = helpers.template;
-        var instance = expression(template);
+        const template = helpers.template;
+        const instance = expression(template);
 
-        describe('_decrementHeading', function() {
-            beforeEach(function() {
+        describe('_decrementHeading', () => {
+            beforeEach(() => {
                 while (instance._headingLevel() > 1) {
                     instance._decrementHeading();
                 }
             });
 
-            it('should reduce the heading level by 1', function() {
-                var newLevel;
-                var oldLevel;
+            it('should reduce the heading level by 1', () => {
+                let newLevel;
+                let oldLevel;
 
                 instance._incrementHeading();
                 oldLevel = instance._headingLevel();
@@ -47,9 +45,9 @@ describe('lib/helpers/expression', function() {
                 expect(oldLevel - newLevel).toBe(1);
             });
 
-            it('should not reduce the heading level below 1', function() {
-                var newLevel;
-                var oldLevel = instance._headingLevel();
+            it('should not reduce the heading level below 1', () => {
+                let newLevel;
+                const oldLevel = instance._headingLevel();
 
                 instance._decrementHeading();
                 newLevel = instance._headingLevel();
@@ -59,16 +57,16 @@ describe('lib/helpers/expression', function() {
             });
         });
 
-        describe('_headingLevel', function() {
-            it('should return a positive number', function() {
-                var level = instance._headingLevel();
+        describe('_headingLevel', () => {
+            it('should return a positive number', () => {
+                const level = instance._headingLevel();
 
                 expect(level).toBeNumber();
                 expect(level).toBeGreaterThan(0);
             });
         });
 
-        describe('_incrementHeading', function() {
+        describe('_incrementHeading', () => {
             function decrement() {
                 while (instance._headingLevel() > 1) {
                     instance._decrementHeading();
@@ -78,9 +76,9 @@ describe('lib/helpers/expression', function() {
             beforeEach(decrement);
             afterEach(decrement);
 
-            it('should increase the heading level by 1', function() {
-                var newLevel;
-                var oldLevel = instance._headingLevel();
+            it('should increase the heading level by 1', () => {
+                let newLevel;
+                const oldLevel = instance._headingLevel();
 
                 instance._incrementHeading();
                 newLevel = instance._headingLevel();
@@ -88,8 +86,8 @@ describe('lib/helpers/expression', function() {
                 expect(newLevel - oldLevel).toBe(1);
             });
 
-            it('should not increase the heading level above 6', function() {
-                for (var i = 0, l = 10; i < l; i++) {
+            it('should not increase the heading level above 6', () => {
+                for (let i = 0, l = 10; i < l; i++) {
                     instance._incrementHeading();
                 }
 
@@ -97,8 +95,8 @@ describe('lib/helpers/expression', function() {
             });
         });
 
-        describe('ancestors', function() {
-            var fakeLinks = [
+        describe('ancestors', () => {
+            const fakeLinks = [
                 {
                     longname: 'module:foo',
                     url: 'module-foo.html'
@@ -117,12 +115,12 @@ describe('lib/helpers/expression', function() {
                 }
             ];
 
-            fakeLinks.forEach(function(fakeLink) {
-                templateHelper.registerLink(fakeLink.longname, fakeLink.url);
+            fakeLinks.forEach(({longname, url}) => {
+                templateHelper.registerLink(longname, url);
             });
 
-            it('should link to ancestors when no CSS class is specified', function() {
-                var ancestors = instance.ancestors('module:foo/bar.Baz#qux');
+            it('should link to ancestors when no CSS class is specified', () => {
+                const ancestors = instance.ancestors('module:foo/bar.Baz#qux');
 
                 expect(ancestors).toBeInstanceOf(SafeString);
                 expect(ancestors.toString()).toBe([
@@ -133,8 +131,8 @@ describe('lib/helpers/expression', function() {
                 ].join(''));
             });
 
-            it('should link to ancestors when a CSS class is specified', function() {
-                var ancestors = instance.ancestors('module:foo/bar.Baz', 'frozzle');
+            it('should link to ancestors when a CSS class is specified', () => {
+                const ancestors = instance.ancestors('module:foo/bar.Baz', 'frozzle');
 
                 expect(ancestors).toBeInstanceOf(SafeString);
                 expect(ancestors.toString()).toBe([
@@ -143,59 +141,59 @@ describe('lib/helpers/expression', function() {
                 ].join(''));
             });
 
-            it('should return an empty string when there are no ancestors', function() {
-                var ancestors = instance.ancestors('module:foo/bar');
+            it('should return an empty string when there are no ancestors', () => {
+                const ancestors = instance.ancestors('module:foo/bar');
 
                 expect(ancestors).toBeInstanceOf(SafeString);
                 expect(ancestors.toString()).toBe('');
             });
         });
 
-        describe('basename', function() {
-            it('should return the basename of the specified path', function() {
-                var filepath = instance.basename('/foo/bar/baz.html');
+        describe('basename', () => {
+            it('should return the basename of the specified path', () => {
+                const filepath = instance.basename('/foo/bar/baz.html');
 
                 expect(filepath).toBeInstanceOf(SafeString);
                 expect(filepath.toString()).toBe('baz.html');
             });
 
-            it('should remove the extension if one is specified', function() {
-                var filepath = instance.basename('/foo/bar/baz.html', '.html');
+            it('should remove the extension if one is specified', () => {
+                const filepath = instance.basename('/foo/bar/baz.html', '.html');
 
                 expect(filepath).toBeInstanceOf(SafeString);
                 expect(filepath.toString()).toBe('baz');
             });
         });
 
-        xdescribe('config', function() {
+        xdescribe('config', () => {
             // TODO
         });
 
-        describe('cssClass', function() {
-            var cssClasses = template.cssClasses;
-            var cssClassPrefix = template.config.cssClassPrefix;
+        describe('cssClass', () => {
+            const cssClasses = template.cssClasses;
+            const cssClassPrefix = template.config.cssClassPrefix;
 
-            afterEach(function() {
+            afterEach(() => {
                 template.cssClasses = cssClasses;
                 template.config.cssClassPrefix = cssClassPrefix;
             });
 
-            it('should format the class string correctly', function() {
-                var classes = instance.cssClass('!foo', {});
+            it('should format the class string correctly', () => {
+                const classes = instance.cssClass('!foo', {});
 
                 expect(classes).toBeInstanceOf(SafeString);
                 expect(classes.toString()).toBe(' class="foo"');
             });
 
-            it('should keep classes prefixed with ! by default, and strip the !', function() {
-                var classes = instance.cssClass('!foo', {});
+            it('should keep classes prefixed with ! by default, and strip the !', () => {
+                const classes = instance.cssClass('!foo', {});
 
                 expect(classes).toBeInstanceOf(SafeString);
                 expect(classes.toString()).toContain('"foo"');
             });
 
-            it('should let users change the prefix for classes that it keeps', function() {
-                var classes;
+            it('should let users change the prefix for classes that it keeps', () => {
+                let classes;
 
                 template.config.cssClassPrefix = '?';
                 classes = instance.cssClass('?foo', {});
@@ -204,15 +202,15 @@ describe('lib/helpers/expression', function() {
                 expect(classes.toString()).toContain('"foo"');
             });
 
-            it('should accept multiple classes', function() {
-                var classes = instance.cssClass('!foo', '!bar', {});
+            it('should accept multiple classes', () => {
+                const classes = instance.cssClass('!foo', '!bar', {});
 
                 expect(classes).toBeInstanceOf(SafeString);
                 expect(classes.toString()).toContain('"foo bar"');
             });
 
-            it('should preserve user-specified classes', function() {
-                var classes;
+            it('should preserve user-specified classes', () => {
+                let classes;
 
                 template.cssClasses = {
                     foo: true
@@ -223,14 +221,14 @@ describe('lib/helpers/expression', function() {
                 expect(classes.toString()).toContain('"foo"');
             });
 
-            it('should not preserve non-user-specific classes', function() {
-                var classes = instance.cssClass('foo', {});
+            it('should not preserve non-user-specific classes', () => {
+                const classes = instance.cssClass('foo', {});
 
                 expect(classes).toBe('');
             });
 
-            it('should not preserve classes that the user explicitly does not want', function() {
-                var classes;
+            it('should not preserve classes that the user explicitly does not want', () => {
+                let classes;
 
                 template.cssClasses = {
                     foo: false
@@ -240,16 +238,16 @@ describe('lib/helpers/expression', function() {
                 expect(classes).toBe('');
             });
 
-            it('should not preserve classes whose names match inherited properties', function() {
-                var classes = instance.cssClass('prototype', {});
+            it('should not preserve classes whose names match inherited properties', () => {
+                const classes = instance.cssClass('prototype', {});
 
                 expect(classes).toBe('');
             });
         });
 
-        describe('debug', function() {
-            it('should log the JSON-stringified arguments at level DEBUG', function() {
-                var logger = require('jsdoc/util/logger');
+        describe('debug', () => {
+            it('should log the JSON-stringified arguments at level DEBUG', () => {
+                const logger = require('jsdoc/util/logger');
 
                 spyOn(logger, 'debug');
 
@@ -262,33 +260,33 @@ describe('lib/helpers/expression', function() {
             });
         });
 
-        describe('defined', function() {
-            it('should report that a truthy value is defined', function() {
+        describe('defined', () => {
+            it('should report that a truthy value is defined', () => {
                 expect(instance.defined(1)).toBeTrue();
             });
 
-            it('should report that a falsy value is defined', function() {
+            it('should report that a falsy value is defined', () => {
                 expect(instance.defined(0)).toBeTrue();
             });
 
-            it('should report that an undefined value is undefined', function() {
+            it('should report that an undefined value is undefined', () => {
                 expect(instance.defined()).toBeFalse();
             });
         });
 
-        describe('describeType', function() {
-            var catharsis = require('catharsis');
+        describe('describeType', () => {
+            const catharsis = require('catharsis');
 
-            var parsedType = catharsis.parse('!string');
+            const parsedType = catharsis.parse('!string');
 
-            it('should use "unknown type" if no type is provided', function() {
-                var description = instance.describeType(undefined);
+            it('should use "unknown type" if no type is provided', () => {
+                const description = instance.describeType(undefined);
 
                 expect(description).toBeInstanceOf(SafeString);
                 expect(description.toString()).toBe('unknown');
             });
 
-            it('should throw if the requested format is not available', function() {
+            it('should throw if the requested format is not available', () => {
                 function shouldThrow() {
                     return instance.describeType(parsedType, 'marshmallow');
                 }
@@ -296,23 +294,23 @@ describe('lib/helpers/expression', function() {
                 expect(shouldThrow).toThrow();
             });
 
-            it('should return the simple description by default', function() {
-                var description = instance.describeType(parsedType);
+            it('should return the simple description by default', () => {
+                const description = instance.describeType(parsedType);
 
                 expect(description).toBeInstanceOf(SafeString);
                 expect(description.toString()).toBe('non-null string');
             });
 
             it('should return the extended format\'s description by default when the format is ' +
-                '"extended"', function() {
-                var description = instance.describeType(parsedType, 'extended');
+                '"extended"', () => {
+                const description = instance.describeType(parsedType, 'extended');
 
                 expect(description).toBeInstanceOf(SafeString);
                 expect(description.toString()).toBe('string');
             });
 
-            it('should return the requested property when the format is "extended"', function() {
-                var description = instance.describeType(parsedType, 'extended',
+            it('should return the requested property when the format is "extended"', () => {
+                const description = instance.describeType(parsedType, 'extended',
                     'modifiers.nullable');
 
                 expect(description).toBeInstanceOf(SafeString);
@@ -320,24 +318,24 @@ describe('lib/helpers/expression', function() {
             });
         });
 
-        describe('example', function() {
-            it('should work when the example does not have a caption', function() {
-                var example = instance.example('Some example text');
+        describe('example', () => {
+            it('should work when the example does not have a caption', () => {
+                const example = instance.example('Some example text');
 
                 expect(example.caption).toBeUndefined();
                 expect(example.code).toBe('Some example text');
             });
 
-            it('should work when the example has a caption', function() {
-                var example = instance.example('<caption>Caption here</caption> Some example text');
+            it('should work when the example has a caption', () => {
+                const example = instance.example('<caption>Caption here</caption> Some example text');
 
                 expect(example.caption).toBe('Caption here');
                 expect(example.code).toBe('Some example text');
             });
 
             it('should work when there is a newline before the caption and multiple newlines ' +
-                'after the caption', function() {
-                var example = instance.example('\n<caption>Caption here</caption>\nExample text\n' +
+                'after the caption', () => {
+                const example = instance.example('\n<caption>Caption here</caption>\nExample text\n' +
                     'More example text');
 
                 expect(example.caption).toBe('Caption here');
@@ -345,33 +343,33 @@ describe('lib/helpers/expression', function() {
             });
         });
 
-        xdescribe('filterProperties', function() {
+        xdescribe('filterProperties', () => {
             // TODO: tests
         });
 
-        xdescribe('formatParams', function() {
+        xdescribe('formatParams', () => {
             // TODO: tests
             // TODO: confirm that we respect the user's L10N file if there are no params, rather
             // than always returning `()`
         });
 
-        describe('generatedBy', function() {
-            it('should include the JSDoc version number', function() {
-                var generatedBy = instance.generatedBy();
+        describe('generatedBy', () => {
+            it('should include the JSDoc version number', () => {
+                const generatedBy = instance.generatedBy();
 
                 expect(generatedBy).toBeInstanceOf(SafeString);
                 expect(generatedBy.toString()).toContain(env.version.number);
             });
 
-            it('should include the date', function() {
-                var generatedBy = instance.generatedBy();
+            it('should include the date', () => {
+                const generatedBy = instance.generatedBy();
 
                 expect(generatedBy.toString()).toContain(new Date(Date.now()).getFullYear());
             });
         });
 
-        describe('group', function() {
-            var items = [
+        describe('group', () => {
+            const items = [
                 'apple',
                 'banana',
                 'carrot',
@@ -382,8 +380,8 @@ describe('lib/helpers/expression', function() {
                 'horseradish'
             ];
 
-            it('should group the items into the specified number of groups', function() {
-                var grouped = instance.group(items, 2);
+            it('should group the items into the specified number of groups', () => {
+                const grouped = instance.group(items, 2);
 
                 expect(grouped).toEqual([
                     [
@@ -401,8 +399,8 @@ describe('lib/helpers/expression', function() {
                 ]);
             });
 
-            it('should work if the number of items per group is not specified', function() {
-                var grouped = instance.group(items);
+            it('should work if the number of items per group is not specified', () => {
+                const grouped = instance.group(items);
 
                 expect(grouped).toEqual([
                     [
@@ -422,8 +420,8 @@ describe('lib/helpers/expression', function() {
                 ]);
             });
 
-            it('should work if the number of groups exceeds the number of items', function() {
-                var grouped = instance.group(items, 10);
+            it('should work if the number of groups exceeds the number of items', () => {
+                const grouped = instance.group(items, 10);
 
                 expect(grouped).toEqual([
                     [
@@ -456,79 +454,79 @@ describe('lib/helpers/expression', function() {
             });
         });
 
-        describe('hasModifiers', function() {
-            it('should treat the "defaultvalue" property as a modifier for non-enums', function() {
-                var fakeDoclet = {
+        describe('hasModifiers', () => {
+            it('should treat the "defaultvalue" property as a modifier for non-enums', () => {
+                const fakeDoclet = {
                     defaultvalue: 'foo'
                 };
-                var hasModifiers = instance.hasModifiers(fakeDoclet, false);
+                const hasModifiers = instance.hasModifiers(fakeDoclet, false);
 
                 expect(hasModifiers).toBe(true);
             });
 
-            it('should not treat the "defaultvalue" property as a modifier for enums', function() {
-                var fakeDoclet = {
+            it('should not treat the "defaultvalue" property as a modifier for enums', () => {
+                const fakeDoclet = {
                     defaultvalue: 'foo'
                 };
-                var hasModifiers = instance.hasModifiers(fakeDoclet, true);
+                const hasModifiers = instance.hasModifiers(fakeDoclet, true);
 
                 expect(hasModifiers).toBe(false);
             });
 
-            it('should treat the "nullable" property as a modifier', function() {
-                var fakeDoclet = {
+            it('should treat the "nullable" property as a modifier', () => {
+                const fakeDoclet = {
                     nullable: true
                 };
-                var hasModifiers = instance.hasModifiers(fakeDoclet, false);
+                const hasModifiers = instance.hasModifiers(fakeDoclet, false);
 
                 expect(hasModifiers).toBe(true);
             });
 
-            it('should not treat the "optional" property as a modifier', function() {
-                var fakeDoclet = {
+            it('should not treat the "optional" property as a modifier', () => {
+                const fakeDoclet = {
                     optional: true
                 };
-                var hasModifiers = instance.hasModifiers(fakeDoclet, false);
+                const hasModifiers = instance.hasModifiers(fakeDoclet, false);
 
                 expect(hasModifiers).toBe(false);
             });
 
-            it('should treat the "variable" (repeatable) property as a modifier', function() {
-                var fakeDoclet = {
+            it('should treat the "variable" (repeatable) property as a modifier', () => {
+                const fakeDoclet = {
                     variable: true
                 };
-                var hasModifiers = instance.hasModifiers(fakeDoclet, false);
+                const hasModifiers = instance.hasModifiers(fakeDoclet, false);
 
                 expect(hasModifiers).toBe(true);
             });
         });
 
-        xdescribe('id', function() {
+        xdescribe('id', () => {
             // TODO
 
-            xit('should not crash if nothing is passed in', function() {
+            xit('should not crash if nothing is passed in', () => {
                 // TODO
             });
         });
 
-        describe('jsdocVersion', function() {
-            it('should return the version number as a string', function() {
+        describe('jsdocVersion', () => {
+            it('should return the version number as a string', () => {
                 // look for the fake version number set by the test helpers
                 expect(instance.jsdocVersion()).toBe('1.2.3.4');
             });
         });
 
-        describe('json', function() {
-            it('should JSON-stringify its argument', function() {
-                var stringified = instance.json({foo: 'bar'});
+        describe('json', () => {
+            it('should JSON-stringify its argument', () => {
+                const stringified = instance.json({foo: 'bar'});
 
                 expect(stringified).toBeInstanceOf(SafeString);
                 expect(stringified.toString()).toBe('{"foo":"bar"}');
             });
         });
 
-        describe('keys', function() {
-            it('should throw an error if the argument is not an object', function() {
+        describe('keys', () => {
+            it('should throw an error if the argument is not an object', () => {
                 function shouldThrow() {
                     return instance.keys('hello');
                 }
@@ -536,8 +534,8 @@ describe('lib/helpers/expression', function() {
                 expect(shouldThrow).toThrow();
             });
 
-            it('should return the object\'s keys as an array', function() {
-                var keys = instance.keys({
+            it('should return the object\'s keys as an array', () => {
+                const keys = instance.keys({
                     foo: true,
                     bar: '1',
                     baz: null
@@ -553,22 +551,22 @@ describe('lib/helpers/expression', function() {
             });
         });
 
-        xdescribe('labels', function() {
+        xdescribe('labels', () => {
             // TODO
         });
 
-        describe('licenseLink', function() {
-            it('should return a URL if a valid license ID is specified', function() {
+        describe('licenseLink', () => {
+            it('should return a URL if a valid license ID is specified', () => {
                 expect(instance.licenseLink('MIT')).toContain('http://');
             });
 
-            it('should return the license ID if no link is found', function() {
+            it('should return the license ID if no link is found', () => {
                 expect(instance.licenseLink('fuzzy-bunny')).toBe('fuzzy-bunny');
             });
         });
 
-        describe('link', function() {
-            it('should not blow up if only one parameter is provided', function() {
+        describe('link', () => {
+            it('should not blow up if only one parameter is provided', () => {
                 function makeLink() {
                     return instance.link('foo');
                 }
@@ -576,7 +574,7 @@ describe('lib/helpers/expression', function() {
                 expect(makeLink).not.toThrow();
             });
 
-            it('should not blow up if only two parameters are provided', function() {
+            it('should not blow up if only two parameters are provided', () => {
                 function makeLink() {
                     return instance.link('foo', 'bar');
                 }
@@ -584,7 +582,7 @@ describe('lib/helpers/expression', function() {
                 expect(makeLink).not.toThrow();
             });
 
-            it('should not blow up if only three parameters are provided', function() {
+            it('should not blow up if only three parameters are provided', () => {
                 function makeLink() {
                     return instance.link('foo', 'bar', 'baz');
                 }
@@ -592,7 +590,7 @@ describe('lib/helpers/expression', function() {
                 expect(makeLink).not.toThrow();
             });
 
-            it('should not blow up when a non-string value is passed in', function() {
+            it('should not blow up when a non-string value is passed in', () => {
                 function makeLink() {
                     return instance.link(true);
                 }
@@ -602,8 +600,8 @@ describe('lib/helpers/expression', function() {
                 expect(makeLink().toString()).toBe('');
             });
 
-            it('should include the requested link text, link class, and fragment ID', function() {
-                var link;
+            it('should include the requested link text, link class, and fragment ID', () => {
+                let link;
 
                 templateHelper.registerLink('linkExpressionHelper', 'foo.html');
                 link = instance.link('linkExpressionHelper', 'helpful!', 'classy', 'bar');
@@ -613,20 +611,20 @@ describe('lib/helpers/expression', function() {
             });
         });
 
-        xdescribe('linkLongnameWithSignature', function() {
+        xdescribe('linkLongnameWithSignature', () => {
             // TODO
         });
 
-        describe('linkToLine', function() {
-            var fakeDocletMeta = {
+        describe('linkToLine', () => {
+            const fakeDocletMeta = {
                 lineno: 70,
                 shortpath: 'glitch.js'
             };
 
             templateHelper.registerLink('glitch.js', 'glitch.js.html');
 
-            it('should work when a CSS class is specified', function() {
-                var link = instance.linkToLine(fakeDocletMeta, 'foo');
+            it('should work when a CSS class is specified', () => {
+                const link = instance.linkToLine(fakeDocletMeta, 'foo');
 
                 expect(link).toBeInstanceOf(SafeString);
                 expect(link.toString()).toBe(
@@ -634,8 +632,8 @@ describe('lib/helpers/expression', function() {
                 );
             });
 
-            it('should work when no CSS class is specified', function() {
-                var link = instance.linkToLine(fakeDocletMeta);
+            it('should work when no CSS class is specified', () => {
+                const link = instance.linkToLine(fakeDocletMeta);
 
                 expect(link).toBeInstanceOf(SafeString);
                 expect(link.toString()).toBe(
@@ -643,12 +641,12 @@ describe('lib/helpers/expression', function() {
                 );
             });
 
-            it('should not do anything with the line number if the code is on line 1', function() {
-                var meta = {
+            it('should not do anything with the line number if the code is on line 1', () => {
+                const meta = {
                     lineno: 1,
                     shortpath: 'glitch.js'
                 };
-                var link = instance.linkToLine(meta);
+                const link = instance.linkToLine(meta);
 
                 expect(link).toBeInstanceOf(SafeString);
                 expect(link.toString()).toBe(
@@ -657,98 +655,98 @@ describe('lib/helpers/expression', function() {
             });
         });
 
-        xdescribe('linkToTutorial', function() {
+        xdescribe('linkToTutorial', () => {
             // TODO
         });
 
-        xdescribe('linkWithSignature', function() {
+        xdescribe('linkWithSignature', () => {
             // TODO
         });
 
-        describe('modifierText', function() {
-            it('should return text if the doclet is nullable', function() {
-                var fakeDoclet = {
+        describe('modifierText', () => {
+            it('should return text if the doclet is nullable', () => {
+                const fakeDoclet = {
                     nullable: true
                 };
-                var text = instance.modifierText(fakeDoclet, false);
+                const text = instance.modifierText(fakeDoclet, false);
 
                 expect(text).toBeInstanceOf(SafeString);
                 expect(text.toString()).not.toBe('');
             });
 
-            it('should return text if the doclet is non-nullable', function() {
-                var fakeDoclet = {
+            it('should return text if the doclet is non-nullable', () => {
+                const fakeDoclet = {
                     nullable: false
                 };
-                var text = instance.modifierText(fakeDoclet, false);
+                const text = instance.modifierText(fakeDoclet, false);
 
                 expect(text).toBeInstanceOf(SafeString);
                 expect(text.toString()).not.toBe('');
             });
 
             it('should return text if the doclet has a "variable" property set to true',
-                function() {
-                    var fakeDoclet = {
+                () => {
+                    const fakeDoclet = {
                         variable: true
                     };
-                    var text = instance.modifierText(fakeDoclet, false);
+                    const text = instance.modifierText(fakeDoclet, false);
 
                     expect(text).toBeInstanceOf(SafeString);
                     expect(text.toString()).not.toBe('');
                 });
 
-            it('should return text if the doclet has a falsy default value', function() {
-                var fakeDoclet = {
+            it('should return text if the doclet has a falsy default value', () => {
+                const fakeDoclet = {
                     defaultvalue: 0
                 };
-                var text = instance.modifierText(fakeDoclet, false);
+                const text = instance.modifierText(fakeDoclet, false);
 
                 expect(text).toBeInstanceOf(SafeString);
                 expect(text.toString()).toContain('0');
             });
 
             it('should return text if the doclet has a default value and is not an enum',
-                function() {
-                    var fakeDoclet = {
+                () => {
+                    const fakeDoclet = {
                         defaultvalue: '1'
                     };
-                    var text = instance.modifierText(fakeDoclet, false);
+                    const text = instance.modifierText(fakeDoclet, false);
 
                     expect(text).toBeInstanceOf(SafeString);
                     expect(text.toString()).toContain('1');
                 });
 
             it('should not return text if the doclet has a default value and is an enum',
-                function() {
-                    var fakeDoclet = {
+                () => {
+                    const fakeDoclet = {
                         defaultvalue: '1'
                     };
-                    var text = instance.modifierText(fakeDoclet, true);
+                    const text = instance.modifierText(fakeDoclet, true);
 
                     expect(text).toBeInstanceOf(SafeString);
                     expect(text.toString()).toBe('');
                 });
         });
 
-        describe('needsSignature', function() {
-            it('should say that classes need a signature', function() {
-                var fakeDoclet = {
+        describe('needsSignature', () => {
+            it('should say that classes need a signature', () => {
+                const fakeDoclet = {
                     kind: 'class'
                 };
 
                 expect(instance.needsSignature(fakeDoclet)).toBe(true);
             });
 
-            it('should say that functions need a signature', function() {
-                var fakeDoclet = {
+            it('should say that functions need a signature', () => {
+                const fakeDoclet = {
                     kind: 'function'
                 };
 
                 expect(instance.needsSignature(fakeDoclet)).toBe(true);
             });
 
-            it('should say that typedefs need a signature if they contain a function', function() {
-                var fakeDoclet = {
+            it('should say that typedefs need a signature if they contain a function', () => {
+                const fakeDoclet = {
                     kind: 'typedef',
                     type: {
                         names: [
@@ -761,8 +759,8 @@ describe('lib/helpers/expression', function() {
             });
 
             it('should say that typedefs do not need a signature if they do not contain a function',
-                function() {
-                    var fakeDoclet = {
+                () => {
+                    const fakeDoclet = {
                         kind: 'typedef',
                         type: {
                             names: [
@@ -774,8 +772,8 @@ describe('lib/helpers/expression', function() {
                     expect(instance.needsSignature(fakeDoclet)).toBe(false);
                 });
 
-            it('should say that other types do not need a signature', function() {
-                var fakeDoclet = {
+            it('should say that other types do not need a signature', () => {
+                const fakeDoclet = {
                     kind: 'member'
                 };
 
@@ -783,17 +781,17 @@ describe('lib/helpers/expression', function() {
             });
         });
 
-        xdescribe('packageLink', function() {
+        xdescribe('packageLink', () => {
             // TODO
         });
 
-        xdescribe('parseType', function() {
+        xdescribe('parseType', () => {
             // TODO
         });
 
-        describe('pluck', function() {
-            it('should return an array of the specified property\'s values', function() {
-                var objs = [
+        describe('pluck', () => {
+            it('should return an array of the specified property\'s values', () => {
+                const objs = [
                     {
                         foo: true
                     },
@@ -801,7 +799,7 @@ describe('lib/helpers/expression', function() {
                         foo: 7
                     }
                 ];
-                var plucked = instance.pluck(objs, 'foo');
+                const plucked = instance.pluck(objs, 'foo');
 
                 expect(plucked).toBeArray();
                 expect(plucked.length).toBe(2);
@@ -810,75 +808,75 @@ describe('lib/helpers/expression', function() {
             });
         });
 
-        describe('query', function() {
-            var originalQuery;
+        describe('query', () => {
+            let originalQuery;
 
-            beforeEach(function() {
+            beforeEach(() => {
                 originalQuery = env.opts.query;
             });
 
-            afterEach(function() {
+            afterEach(() => {
                 env.opts.query = originalQuery;
             });
 
-            it('should work if no query parameters were specified', function() {
+            it('should work if no query parameters were specified', () => {
                 delete env.opts.query;
 
-                var text = instance.query('foo');
+                const text = instance.query('foo');
 
                 expect(text).toBeInstanceOf(SafeString);
                 expect(text.toString()).toBe('');
             });
 
-            it('should retrieve an empty string if the specified parameter is missing', function() {
+            it('should retrieve an empty string if the specified parameter is missing', () => {
                 env.opts.query = {
                     foo: 'bar'
                 };
 
-                var text = instance.query('baz');
+                const text = instance.query('baz');
 
                 expect(text).toBeInstanceOf(SafeString);
                 expect(text.toString()).toBe('');
             });
 
-            it('should retrieve truthy values from env.opts.query', function() {
+            it('should retrieve truthy values from env.opts.query', () => {
                 env.opts.query = {
                     foo: 'bar'
                 };
 
-                var text = instance.query('foo');
+                const text = instance.query('foo');
 
                 expect(text).toBeInstanceOf(SafeString);
                 expect(text.toString()).toBe('bar');
             });
 
-            it('should retrieve falsy values from env.opts.query', function() {
+            it('should retrieve falsy values from env.opts.query', () => {
                 env.opts.query = {
                     foo: 0
                 };
 
-                var text = instance.query('foo');
+                const text = instance.query('foo');
 
                 expect(text).toBeInstanceOf(SafeString);
                 expect(text.toString()).toBe('0');
             });
         });
 
-        describe('reparentItems', function() {
-            var tablesConfig = _.getPath(template.config, 'tables');
+        describe('reparentItems', () => {
+            const tablesConfig = _.getPath(template.config, 'tables');
 
-            beforeEach(function() {
+            beforeEach(() => {
                 template.config.tables = {
                     nestedPropertyTables: true
                 };
             });
 
-            afterEach(function() {
+            afterEach(() => {
                 template.config.tables = tablesConfig;
             });
 
-            it('should reparent child properties', function() {
-                var fakeDoclet = {
+            it('should reparent child properties', () => {
+                const fakeDoclet = {
                     params: [
                         {
                             name: 'foo'
@@ -888,7 +886,7 @@ describe('lib/helpers/expression', function() {
                         }
                     ]
                 };
-                var reparented = instance.reparentItems(fakeDoclet, 'params');
+                const reparented = instance.reparentItems(fakeDoclet, 'params');
 
                 expect(reparented).toEqual([
                     {
@@ -902,8 +900,8 @@ describe('lib/helpers/expression', function() {
                 ]);
             });
 
-            it('should reparent child properties when multiple parameters have properties', function() {
-                var fakeDoclet = {
+            it('should reparent child properties when multiple parameters have properties', () => {
+                const fakeDoclet = {
                     params: [
                         {
                             name: 'foo'
@@ -919,7 +917,7 @@ describe('lib/helpers/expression', function() {
                         }
                     ]
                 };
-                var reparented = instance.reparentItems(fakeDoclet, 'params');
+                const reparented = instance.reparentItems(fakeDoclet, 'params');
 
                 expect(reparented).toEqual([
                     {
@@ -941,8 +939,8 @@ describe('lib/helpers/expression', function() {
                 ]);
             });
 
-            it('should not reparent child properties if the config setting is false', function() {
-                var fakeDoclet = {
+            it('should not reparent child properties if the config setting is false', () => {
+                const fakeDoclet = {
                     params: [
                         {
                             name: 'foo'
@@ -952,7 +950,7 @@ describe('lib/helpers/expression', function() {
                         }
                     ]
                 };
-                var notReparented;
+                let notReparented;
 
                 template.config.tables = {
                     nestedPropertyTables: false
@@ -962,8 +960,8 @@ describe('lib/helpers/expression', function() {
                 expect(notReparented).toEqual(fakeDoclet.params);
             });
 
-            it('should reparent properties of arrays', function() {
-                var fakeDoclet = {
+            it('should reparent properties of arrays', () => {
+                const fakeDoclet = {
                     params: [
                         {
                             name: 'foo'
@@ -973,7 +971,7 @@ describe('lib/helpers/expression', function() {
                         }
                     ]
                 };
-                var reparented = instance.reparentItems(fakeDoclet, 'params');
+                const reparented = instance.reparentItems(fakeDoclet, 'params');
 
                 expect(reparented).toEqual([
                     {
@@ -987,8 +985,8 @@ describe('lib/helpers/expression', function() {
                 ]);
             });
 
-            it('should reparent properties of nested arrays', function() {
-                var fakeDoclet = {
+            it('should reparent properties of nested arrays', () => {
+                const fakeDoclet = {
                     params: [
                         {
                             name: 'foo'
@@ -998,7 +996,7 @@ describe('lib/helpers/expression', function() {
                         }
                     ]
                 };
-                var reparented = instance.reparentItems(fakeDoclet, 'params');
+                const reparented = instance.reparentItems(fakeDoclet, 'params');
 
                 expect(reparented).toEqual([
                     {
@@ -1012,8 +1010,8 @@ describe('lib/helpers/expression', function() {
                 ]);
             });
 
-            it('should not reparent non-child properties', function() {
-                var fakeDoclet = {
+            it('should not reparent non-child properties', () => {
+                const fakeDoclet = {
                     params: [
                         {
                             name: 'foo'
@@ -1023,13 +1021,13 @@ describe('lib/helpers/expression', function() {
                         }
                     ]
                 };
-                var reparented = instance.reparentItems(fakeDoclet, 'params');
+                const reparented = instance.reparentItems(fakeDoclet, 'params');
 
                 expect(reparented).toEqual(fakeDoclet.params);
             });
 
-            it('should handle null properties', function() {
-                var fakeDoclet = {
+            it('should handle null properties', () => {
+                const fakeDoclet = {
                     params: [
                         {
                             name: 'foo'
@@ -1037,7 +1035,7 @@ describe('lib/helpers/expression', function() {
                         null
                     ]
                 };
-                var reparented = instance.reparentItems(fakeDoclet, 'params');
+                const reparented = instance.reparentItems(fakeDoclet, 'params');
 
                 expect(reparented).toEqual([
                     {
@@ -1046,8 +1044,8 @@ describe('lib/helpers/expression', function() {
                 ]);
             });
 
-            it('should preserve the parsed type of child properties', function() {
-                var fakeDoclet = {
+            it('should preserve the parsed type of child properties', () => {
+                const fakeDoclet = {
                     params: [
                         {
                             name: 'foo'
@@ -1058,7 +1056,7 @@ describe('lib/helpers/expression', function() {
                         }
                     ]
                 };
-                var reparented;
+                let reparented;
 
                 // JSDoc adds the parsed type as a non-enumerable property, so we do too
                 Object.defineProperty(fakeDoclet.params[1].type, 'parsedType', {
@@ -1085,9 +1083,9 @@ describe('lib/helpers/expression', function() {
                 ]);
             });
 
-            it('should not crash when parameters have weird names like `{Object)`', function() {
+            it('should not crash when parameters have weird names like `{Object)`', () => {
                 function reparent() {
-                    var fakeDoclet = {
+                    const fakeDoclet = {
                         params: [
                             {
                                 name: '{Object)'
@@ -1104,21 +1102,21 @@ describe('lib/helpers/expression', function() {
                 expect(reparent).not.toThrow();
             });
 
-            xit('should ignore child properties when appropriate', function() {
+            xit('should ignore child properties when appropriate', () => {
                 // TODO: check whether it ignores properties with ignore === true
             });
         });
 
-        xdescribe('resolveAuthorLinks', function() {
+        xdescribe('resolveAuthorLinks', () => {
             // TODO
         });
 
-        xdescribe('resolveLinks', function() {
+        xdescribe('resolveLinks', () => {
             // TODO
         });
 
-        describe('returnTypes', function() {
-            it('should not crash on null input', function() {
+        describe('returnTypes', () => {
+            it('should not crash on null input', () => {
                 function nullInput() {
                     return instance.returnTypes(null);
                 }
@@ -1126,8 +1124,8 @@ describe('lib/helpers/expression', function() {
                 expect(nullInput).not.toThrow();
             });
 
-            it('should find values in the `returns` property', function() {
-                var fakeDoclet = {
+            it('should find values in the `returns` property', () => {
+                const fakeDoclet = {
                     returns: [
                         {
                             type: {
@@ -1139,7 +1137,7 @@ describe('lib/helpers/expression', function() {
                         }
                     ]
                 };
-                var parsedType = instance.returnTypes(fakeDoclet);
+                const parsedType = instance.returnTypes(fakeDoclet);
 
                 expect(parsedType).toEqual({
                     type: 'NameExpression',
@@ -1147,8 +1145,8 @@ describe('lib/helpers/expression', function() {
                 });
             });
 
-            it('should find values in the `yields` property', function() {
-                var fakeDoclet = {
+            it('should find values in the `yields` property', () => {
+                const fakeDoclet = {
                     yields: [
                         {
                             type: {
@@ -1160,7 +1158,7 @@ describe('lib/helpers/expression', function() {
                         }
                     ]
                 };
-                var parsedType = instance.returnTypes(fakeDoclet);
+                const parsedType = instance.returnTypes(fakeDoclet);
 
                 expect(parsedType).toEqual({
                     type: 'NameExpression',
@@ -1168,8 +1166,8 @@ describe('lib/helpers/expression', function() {
                 });
             });
 
-            it('should prefer `yields` over `returns`', function() {
-                var fakeDoclet = {
+            it('should prefer `yields` over `returns`', () => {
+                const fakeDoclet = {
                     returns: [
                         {
                             type: {
@@ -1191,7 +1189,7 @@ describe('lib/helpers/expression', function() {
                         }
                     ]
                 };
-                var parsedType = instance.returnTypes(fakeDoclet);
+                const parsedType = instance.returnTypes(fakeDoclet);
 
                 expect(parsedType).toEqual({
                     type: 'NameExpression',
@@ -1199,8 +1197,8 @@ describe('lib/helpers/expression', function() {
                 });
             });
 
-            it('should work if `doclet.returns` is passed in directly', function() {
-                var fakeReturns = [
+            it('should work if `doclet.returns` is passed in directly', () => {
+                const fakeReturns = [
                     {
                         type: {
                             names: [
@@ -1210,7 +1208,7 @@ describe('lib/helpers/expression', function() {
                         description: 'A string.'
                     }
                 ];
-                var parsedType = instance.returnTypes(fakeReturns);
+                const parsedType = instance.returnTypes(fakeReturns);
 
                 expect(parsedType).toEqual({
                     type: 'NameExpression',
@@ -1219,38 +1217,38 @@ describe('lib/helpers/expression', function() {
             });
         });
 
-        xdescribe('see', function() {
+        xdescribe('see', () => {
             // TODO
         });
 
-        xdescribe('shouldHighlight', function() {
+        xdescribe('shouldHighlight', () => {
             // TODO
         });
 
-        describe('translate', function() {
-            it('should map keys to strings', function() {
-                var description = instance.translate('tables.header.description', null, {});
+        describe('translate', () => {
+            it('should map keys to strings', () => {
+                const description = instance.translate('tables.header.description', null, {});
 
                 expect(description).toBeInstanceOf(SafeString);
                 expect(description.toString()).toBe('Description');
             });
 
-            it('should pluralize strings based on the length of an array', function() {
-                var singular = instance.translate('headings.classes', [0], {});
-                var plural = instance.translate('headings.classes', [0, 1], {});
+            it('should pluralize strings based on the length of an array', () => {
+                const singular = instance.translate('headings.classes', [0], {});
+                const plural = instance.translate('headings.classes', [0, 1], {});
 
                 expect(singular.toString()).toBe('Class');
                 expect(plural.toString()).toBe('Classes');
             });
 
-            it('should use the singular form if the argument is not an array', function() {
-                var singular = instance.translate('headings.classes', 17, {});
+            it('should use the singular form if the argument is not an array', () => {
+                const singular = instance.translate('headings.classes', 17, {});
 
                 expect(singular.toString()).toBe('Class');
             });
 
-            it('should pass hash data through to the L10N string', function() {
-                var paramText = instance.translate('params.all', null, {
+            it('should pass hash data through to the L10N string', () => {
+                const paramText = instance.translate('params.all', null, {
                     hash: {
                         params: 'foo'
                     }
@@ -1259,8 +1257,8 @@ describe('lib/helpers/expression', function() {
                 expect(paramText.toString()).toBe('(foo)');
             });
 
-            it('should be able to pluralize text when hash data is present', function() {
-                var plural = instance.translate('headings.classes', [0, 1], {
+            it('should be able to pluralize text when hash data is present', () => {
+                const plural = instance.translate('headings.classes', [0, 1], {
                     hash: {
                         foo: 'bar'
                     }
@@ -1270,21 +1268,21 @@ describe('lib/helpers/expression', function() {
             });
         });
 
-        xdescribe('translateHeading', function() {
+        xdescribe('translateHeading', () => {
             // TODO
         });
 
-        describe('translatePageTitle', function() {
-            it('should include the specified text in the generated title', function() {
-                var title = instance.translatePageTitle('Baz', 'Foo bar', 'classes');
+        describe('translatePageTitle', () => {
+            it('should include the specified text in the generated title', () => {
+                const title = instance.translatePageTitle('Baz', 'Foo bar', 'classes');
 
                 expect(title).toBeInstanceOf(SafeString);
                 expect(title.toString()).toContain('Foo bar');
                 expect(title.toString()).toContain('Baz');
             });
 
-            it('should work when no category is provided', function() {
-                var title = instance.translatePageTitle('Baz', 'Foo bar');
+            it('should work when no category is provided', () => {
+                const title = instance.translatePageTitle('Baz', 'Foo bar');
 
                 expect(title).toBeInstanceOf(SafeString);
                 expect(title.toString()).toContain('Foo bar');
@@ -1292,13 +1290,13 @@ describe('lib/helpers/expression', function() {
             });
         });
 
-        xdescribe('typeUnion', function() {
+        xdescribe('typeUnion', () => {
             // TODO
         });
 
-        describe('url', function() {
-            it('should return the URL for the specified longname', function() {
-                var url;
+        describe('url', () => {
+            it('should return the URL for the specified longname', () => {
+                let url;
 
                 templateHelper.registerLink('urlExpressionHelper', 'urlexpressionhelper.html');
                 url = instance.url('urlExpressionHelper');
@@ -1307,17 +1305,17 @@ describe('lib/helpers/expression', function() {
                 expect(url.toString()).toBe('urlexpressionhelper.html');
             });
 
-            it('should return an empty string if the specified longname is unknown', function() {
-                var url = instance.url('not-a-real-longname');
+            it('should return an empty string if the specified longname is unknown', () => {
+                const url = instance.url('not-a-real-longname');
 
                 expect(url).toBeInstanceOf(SafeString);
                 expect(url.toString()).toBe('');
             });
         });
 
-        describe('where', function() {
-            it('should return items whose properties match the specified values', function() {
-                var items = [
+        describe('where', () => {
+            it('should return items whose properties match the specified values', () => {
+                const items = [
                     {
                         foo: 'maybe',
                         bar: 'yes'
@@ -1329,7 +1327,7 @@ describe('lib/helpers/expression', function() {
                         bar: 'nope'
                     }
                 ];
-                var filtered = instance.where(items, {
+                const filtered = instance.where(items, {
                     hash: {
                         bar: 'yes'
                     }
