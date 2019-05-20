@@ -1,14 +1,14 @@
 {
   "name": "jsdoc-baseline",
-  "version": "0.0.1-dev",
-  "description": "A basic template for JSDoc 3.",
+  "version": "0.1.0",
+  "description": "A basic template for JSDoc.",
   "main": "publish.js",
   "scripts": {
     "test": "gulp test"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/hegemonic/baseline.git"
+    "url": "git://github.com/hegemonic/jsdoc-baseline.git"
   },
   "keywords": [
     "jsdoc",
@@ -23,9 +23,9 @@
   },
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/hegemonic/baseline/issues"
+    "url": "https://github.com/hegemonic/jsdoc-baseline/issues"
   },
-  "homepage": "https://github.com/hegemonic/baseline",
+  "homepage": "https://github.com/hegemonic/jsdoc-baseline",
   "dependencies": {
     "deep-extend": "^0.6.0",
     "escape-string-regexp": "^2.0.0",
