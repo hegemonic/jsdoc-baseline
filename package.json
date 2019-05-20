@@ -52,5 +52,11 @@
     "jasmine-expect": "^4.0.1",
     "jsdoc": "^3.6.2",
     "requizzle": "^0.2.2"
+  },
+  "peerDependencies": {
+    "jsdoc": "^3.6.2"
+  },
+  "engines": {
+    "node": ">=8.15.0"
   }
 }
