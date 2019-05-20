@@ -2,15 +2,14 @@
 
 [![Build Status](https://img.shields.io/travis/hegemonic/jsdoc-baseline.svg)](http://travis-ci.org/hegemonic/jsdoc-baseline)
 
-An extensible template for [JSDoc 3](https://github.com/jsdoc3/jsdoc).
+An extensible template for [JSDoc][jsdoc].
 
 **This is a preview version of the Baseline template.** Baseline is still under active development.
 Everything in the template is subject to change.
 
-
 ## What is Baseline?
 
-Baseline is a new HTML template for [JSDoc 3][jsdoc]. It offers several benefits:
+Baseline is a new HTML template for [JSDoc][jsdoc]. It offers several benefits:
 
 + **Extensible from the ground up.** You can use extensions to customize your documentation's
 content and appearance without changing Baseline itself. In addition, you can localize the headings
@@ -22,35 +21,28 @@ Also, a summary at the top of each page shows users what's documented on that pa
 engine, to define the template layout. Handlebars makes it possible to define new tags and helpers
 that you can use in your customizations to Baseline.
 
-[jsdoc]: https://github.com/jsdoc3/jsdoc
-[handlebars]: http://handlebarsjs.com/
-
-
 ## Installing Baseline
 
-1. Install [JSDoc](https://github.com/jsdoc3/jsdoc).
+1. Add [JSDoc][jsdoc] to your Node.js project as a development dependency:
 
-    **Note**: Baseline currently requires JSDoc 3.4.3 or later.
-
-    To install JSDoc globally (may require `sudo`):
-
-        npm install -g jsdoc
-
-    To add JSDoc to your Node.js project as a development dependency:
-
-        npm install --save-dev jsdoc
+    ```sh
+    npm install --save-dev jsdoc
+    ```
 
 2. Add the Baseline template to your Node.js project as a development dependency:
 
-        npm install --save-dev https://github.com/hegemonic/baseline/tarball/master
+    ```sh
+    npm install --save-dev https://github.com/hegemonic/baseline/tarball/master
+    ```
 
+## Configuring and using Baseline
 
-## Configuring and Using Baseline
+To use the Baseline template with its default settings, run JSDoc with the `--template` (or `-t`)
+command-line option:
 
-To use the Baseline template with its default settings, simply run JSDoc with the `--template`
-(or `-t`) command-line option:
-
-    jsdoc --template <path/to/baseline> <path/to/js-files>
+```sh
+jsdoc --template <path/to/baseline> <path/to/js-files>
+```
 
 To use the Baseline template with customized settings:
 
@@ -62,16 +54,16 @@ must contain the path to your Baseline configuration file.
 4. Run JSDoc as shown above, using the `--configure` (or `-c`) option to tell JSDoc where to find
 your `conf.json` file:
 
-        jsdoc --configure <path/to/conf.json> --template <path/to/baseline> <path/to/js-files>
-
-**Note**: Future versions of Baseline will provide additional configuration settings, including
-settings for overriding and modifying portions of the template.
-
+```sh
+jsdoc --configure <path/to/conf.json> --template <path/to/baseline> <path/to/js-files>
+```
 
 ## Legal stuff
 
-Copyright 2014-2015 Google Inc. Licensed under the Apache License, Version 2.0.
+Copyright 2014-2019 Google LLC. Licensed under the Apache License, Version 2.0.
 
 See [LICENSE.md][license] for more information.
 
-[license]: LICENSE.md
+[handlebars]: https://handlebarsjs.com/
+[jsdoc]: https://github.com/jsdoc/jsdoc
+[license]: https://github.com/hegemonic/jsdoc-baseline/blob/master/LICENSE.md

@@ -1,76 +1,76 @@
-Thanks for your interest in contributing to Baseline! If you'd like to send a pull request, here's
-how to do it.
+Thanks for your interest in contributing to Baseline! If you'd like to send a
+pull request, here's how to do it.
 
-**Note**: Baseline is still being developed, and the code is changing quickly. Please submit a bug
-report or feature request before you spend time on a pull request. Thanks!
+**Note**: Baseline is still being developed, and the code is changing quickly.
+Please submit a bug report or feature request before you spend time on a pull
+request. Thanks!
 
+## Contributor License Agreement
 
-# Complete the Contributor License Agreement
+Contributions to this project must be accompanied by a Contributor License
+Agreement. You (or your employer) retain the copyright to your contribution;
+this simply gives us permission to use and redistribute your contributions as
+part of the project. Head over to <https://cla.developers.google.com/> to see
+your current agreements on file or to sign a new one.
 
-You'll need to complete Google's Contributor License Agreement (CLA) before your pull request can be
-accepted.
+You generally only need to submit a CLA once, so if you've already submitted one
+(even if it was for a different project), you probably don't need to do it
+again.
 
-+ **If you hold the copyright to your pull request**, complete the [Individual CLA][google-cla].
-+ **If your organization holds the copyright**, complete the
-[Software Grant and Corporate CLA][google-corp-cla].
-
-If you (or your organization) have submitted a CLA to Google in the past, you don't need to submit a
-new CLA.
-
-[google-cla]: https://developers.google.com/open-source/cla/individual
-[google-corp-cla]: https://developers.google.com/open-source/cla/corporate
-
-
-# Fork the repository, and create a new branch
-
-See [GitHub's instructions][fork-repo] if you're not familiar with this process.
-
-[fork-repo]: https://help.github.com/articles/fork-a-repo
-
-
-# Install the required dependencies
+## Install dependencies
 
 To install the required Node.js modules:
 
-    $ npm install -g gulp
-    $ npm install
+```sh
+npm install -g gulp
+npm install
 
 To install Bower and its required components:
 
-    $ npm install -g bower
-    $ bower install
+```sh
+npm install -g bower
+bower install
+```
 
-
-# Make your changes
+## Make your changes
 
 Be sure to add tests and update the existing tests as needed.
 
-**Note**: Don't edit the files in `static/`! Those files are generated automatically.
+**Note**: Don't edit the files in `static/`! Those files are generated
+automatically.
 
-## Editing CSS files
+### CSS files
 
 1. Update the [LESS][less] source files in the `styles/` directory.
-2. Run `gulp css` to generate CSS files or `gulp css-minify` to generate minified CSS files.
+2. Run `gulp css` to generate CSS files or `gulp css-minify` to generate
+minified CSS files.
 
-[less]: http://lesscss.org/
-
-## Editing client-side scripts
+### Client-side scripts
 
 1. Update the source files in the `scripts/` directory.
 2. Run `gulp js` to copy and minify the script files.
 
-
-# Run tests
+## Run tests
 
 Make sure your changes pass the tests:
 
-    $ gulp test
+```sh
+gulp test
+```
 
-You'll get errors if your code is not lint-free, or if the test coverage isn't adequate. Please fix
-all errors before you send a pull request.
+You'll get errors if your code is not lint-free, or if the test coverage isn't
+adequate. Please fix all errors before you send a pull request.
 
+## Code reviews
 
-# Commit and push your changes, then send a pull request
+We use GitHub pull requests for code reviews. Consult [GitHub Help][github-pr]
+for more information on using pull requests.
 
-All pull requests are reviewed as quickly as possible. If you don't hear anything within a week,
-feel free to ask for an update.
+## Community guidelines
+
+This project follows
+[Google's Open Source Community Guidelines](https://opensource.google.com/conduct/).
+
+[fork-repo]: https://help.github.com/articles/fork-a-repo
+[less]: http://lesscss.org/
+[github-pr]: https://help.github.com/articles/about-pull-requests/
