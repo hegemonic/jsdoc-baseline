@@ -1,5 +1,3 @@
-const helpers = require('../../../helpers');
-
 describe('throws atom', () => {
     it('should generate nothing if the doclet has no "exceptions" items', () => {
         const text = helpers.render('throws', {});

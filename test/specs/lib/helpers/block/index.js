@@ -1,7 +1,6 @@
 describe('lib/helpers/block', () => {
     let block;
     const handlebars = require('handlebars');
-    const helpers = require('../../../../helpers');
 
     const SafeString = handlebars.SafeString;
     const template = helpers.template;
@@ -14,7 +13,6 @@ describe('lib/helpers/block', () => {
         };
     }
 
-    helpers.setup();
     block = require('../../../../../lib/helpers/block');
 
     it('should export a function', () => {

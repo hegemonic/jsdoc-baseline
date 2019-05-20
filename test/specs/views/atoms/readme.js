@@ -1,5 +1,3 @@
-const helpers = require('../../../helpers');
-
 describe('readme atom', () => {
     it('should generate nothing if there is no readme', () => {
         const text = helpers.render('readme', {});

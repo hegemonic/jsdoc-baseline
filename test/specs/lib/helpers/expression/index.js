@@ -2,11 +2,9 @@ describe('lib/helpers/expression', () => {
     let expression;
     const env = require('jsdoc/env');
     const handlebars = require('handlebars');
-    const helpers = require('../../../../helpers');
     const SafeString = handlebars.SafeString;
     const templateHelper = require('jsdoc/util/templateHelper');
 
-    helpers.setup();
     expression = require('../../../../../lib/helpers/expression');
 
     it('should export a function', () => {

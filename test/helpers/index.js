@@ -3,27 +3,6 @@
 const deepExtend = require('deep-extend');
 const path = require('path');
 
-// Create a new, fully initialized Template object with the specified configuration settings.
-exports.createTemplate = config => {
-    let defaultConfig;
-    let Template;
-
-    config = config || {};
-
-    exports.setup();
-    defaultConfig = require('../../lib/config')
-        .loadSync('', '.')
-        .get();
-    Template = require('../../lib/template');
-
-    config = deepExtend({}, defaultConfig, config);
-
-    return new Template(config).init();
-};
-
-// Render a Handlebars view.
-exports.render = (...args) => exports.template.render(...args);
-
 // Reset environment variables used by JSDoc to the default values for tests.
 function resetJsdocEnv() {
     const env = require('jsdoc/env');
@@ -53,8 +32,30 @@ function resetJsdocEnv() {
     };
 }
 
-// Set up the runtime environment so that JSDoc can work properly.
-exports.setup = resetJsdocEnv;
+global.helpers = {
+    // Create a new, fully initialized Template object with the specified configuration settings.
+    createTemplate: config => {
+        let defaultConfig;
+        let Template;
 
-// Shared template object.
-exports.template = (() => exports.createTemplate())();
+        config = config || {};
+
+        global.helpers.setup();
+        defaultConfig = require('../../lib/config')
+            .loadSync('', '.')
+            .get();
+        Template = require('../../lib/template');
+
+        config = deepExtend({}, defaultConfig, config);
+
+        return new Template(config).init();
+    },
+
+    // Render a Handlebars view.
+    render: (...args) => global.helpers.template.render(...args),
+
+    // Set up the runtime environment so that JSDoc can work properly.
+    setup: resetJsdocEnv
+};
+
+global.helpers.template = (() => global.helpers.createTemplate())();

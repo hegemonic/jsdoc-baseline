@@ -1,5 +1,3 @@
-const helpers = require('../../../helpers');
-
 describe('signature partial', () => {
     // TODO: more tests
 

@@ -1,5 +1,3 @@
-const helpers = require('../../../helpers');
-
 describe('symbol header partial', () => {
     // TODO: more tests
 

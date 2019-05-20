@@ -1,5 +1,3 @@
-require('../helpers/').setup();
-
 describe('publish', () => {
     const publish = require('../../publish');
 

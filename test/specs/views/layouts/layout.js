@@ -1,5 +1,3 @@
-const helpers = require('../../../helpers');
-
 describe('main layout', () => {
     // TODO: more tests
 

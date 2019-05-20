@@ -1,5 +1,3 @@
-const helpers = require('../../../helpers');
-
 describe('returns atom', () => {
     it('should generate nothing if the doclet has no returns items', () => {
         const text = helpers.render('returns', {});

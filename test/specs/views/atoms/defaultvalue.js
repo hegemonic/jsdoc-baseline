@@ -1,5 +1,3 @@
-const helpers = require('../../../helpers');
-
 describe('defaultvalue atom', () => {
     it('should generate nothing if there is no default value', () => {
         const text = helpers.render('defaultvalue', {});

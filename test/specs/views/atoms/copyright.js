@@ -1,5 +1,3 @@
-const helpers = require('../../../helpers');
-
 describe('copyright atom', () => {
     it('should generate nothing if there is no copyright owner', () => {
         const text = helpers.render('copyright', {});

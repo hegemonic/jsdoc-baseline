@@ -1,5 +1,3 @@
-const helpers = require('../../../helpers');
-
 describe('details-table-row partial', () => {
     // TODO: more tests
 

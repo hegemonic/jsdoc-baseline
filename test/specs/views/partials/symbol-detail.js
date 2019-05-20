@@ -1,5 +1,3 @@
-const helpers = require('../../../helpers');
-
 describe('symbol detail partial', () => {
     describe('labels', () => {
         xit('should show labels when the doclet has the appropriate properties', () => {
