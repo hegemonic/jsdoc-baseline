@@ -3,6 +3,7 @@
 // test suites.
 
 before(() => {
+    require('intl-pluralrules');
     require('expectations');
     require('../helpers/matchers');
     require('../helpers/mocks');
