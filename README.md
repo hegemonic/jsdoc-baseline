@@ -1,6 +1,7 @@
 # Baseline
 
 [![Build Status](https://img.shields.io/travis/hegemonic/jsdoc-baseline.svg)](http://travis-ci.org/hegemonic/jsdoc-baseline)
+[![npm version](https://img.shields.io/npm/v/jsdoc-baseline.svg)](https://www.npmjs.org/package/jsdoc-baseline)
 
 An extensible template for [JSDoc][jsdoc].
 
@@ -32,7 +33,7 @@ that you can use in your customizations to Baseline.
 2. Add the Baseline template to your Node.js project as a development dependency:
 
     ```sh
-    npm install --save-dev https://github.com/hegemonic/baseline/tarball/master
+    npm install --save-dev jsdoc-baseline
     ```
 
 ## Configuring and using Baseline
