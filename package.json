@@ -1,6 +1,6 @@
 {
   "name": "jsdoc-baseline",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A basic template for JSDoc.",
   "main": "publish.js",
   "scripts": {
@@ -31,7 +31,7 @@
     "escape-string-regexp": "^2.0.0",
     "handlebars": "^4.1.2",
     "handlebars-layouts": "^3.1.4",
-    "intl-messageformat": "^3.1.1",
+    "intl-messageformat": "^5.1.0",
     "intl-pluralrules": "^1.0.1",
     "js-beautify": "^1.9.1",
     "js-yaml": "^3.13.1",
@@ -44,7 +44,7 @@
     "fake-fs": "^0.5.0",
     "gulp": "^4.0.0",
     "gulp-csso": "^3.0.1",
-    "gulp-eslint": "^5.0.0",
+    "gulp-eslint": "^6.0.0",
     "gulp-jasmine": "^4.0.0",
     "gulp-less": "^4.0.1",
     "gulp-uglify": "^3.0.2",
