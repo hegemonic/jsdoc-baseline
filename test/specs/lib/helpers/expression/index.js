@@ -1355,6 +1355,14 @@ describe('lib/helpers/expression', () => {
                     }
                 ]);
             });
+
+            it('should not crash on null input', () => {
+                function nullInput() {
+                    return instance.where(null, {});
+                }
+
+                expect(nullInput).not.toThrow();
+            });
         });
     });
 });
