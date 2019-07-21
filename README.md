@@ -1,7 +1,7 @@
 # Baseline
 
 [![Build Status](https://img.shields.io/travis/hegemonic/jsdoc-baseline.svg)](http://travis-ci.org/hegemonic/jsdoc-baseline)
-[![npm version](https://img.shields.io/npm/v/jsdoc-baseline.svg)](https://www.npmjs.org/package/jsdoc-baseline)
+[![npm version](https://img.shields.io/npm/v/jsdoc-baseline.svg)](https://www.npmjs.org/package/jsdoc-baseline) [![Greenkeeper badge](https://badges.greenkeeper.io/hegemonic/jsdoc-baseline.svg)](https://greenkeeper.io/)
 
 An extensible template for [JSDoc][jsdoc].
 
