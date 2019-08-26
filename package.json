@@ -34,7 +34,7 @@
     "handlebars-layouts": "^3.1.4",
     "intl-messageformat": "^5.1.0",
     "intl-pluralrules": "^1.0.3",
-    "js-beautify": "^1.10.1",
+    "js-beautify": "^1.10.2",
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.15",
     "spdx-license-list": "^6.0.0",
