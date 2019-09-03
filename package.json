@@ -30,7 +30,7 @@
     "catharsis": "^0.8.11",
     "deep-extend": "^0.6.0",
     "escape-string-regexp": "^2.0.0",
-    "handlebars": "^4.1.2",
+    "handlebars": "^4.2.0",
     "handlebars-layouts": "^3.1.4",
     "intl-messageformat": "^5.1.0",
     "intl-pluralrules": "^1.0.3",
