@@ -1,10 +1,15 @@
 .editorconfig
-.eslintrc.json
+.eslintignore
+.eslintrc.js
 .gitignore
 .github/
+.renovaterc.json
 .travis.yml
 CHANGES.md
 CODE_OF_CONDUCT.md
 CONTRIBUTING.md
 gulpfile.js
+scripts/
+styles/
 test/
+tmp/

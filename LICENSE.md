@@ -17,7 +17,7 @@ The source code for Baseline is available at:
 https://github.com/hegemonic/baseline/
 
 
-# Bundled Third-Party Software
+# Bundled third-party software
 
 Baseline includes versions of the following third-party software. Each third-party software package
 is provided under its own license.
@@ -71,18 +71,7 @@ Copyright 2005, 2014 [jQuery Foundation](https://jquery.org/) and other contribu
 
 The source code for jQuery is available at: https://github.com/jquery/jquery
 
-## jquery.cookie
 
-jquery.cookie is distributed under the MIT License, which is reproduced above.
+# Other third-party dependencies
 
-Copyright 2014 Klaus Hartl.
-
-The source code for jquery.cookie is available at: https://github.com/carhartl/jquery-cookie/
-
-
-# Other Third-Party Dependencies
-
-Baseline depends upon Bower components and Node.js modules that are published under their own
-licenses. You can find each of these components and modules, including their licenses, in the
-`bower_components/` and `node_modules/` directories. These directories are created when you install
-the components and modules.
+Baseline depends upon Node.js packages that are published under their own licenses.

@@ -2,12 +2,12 @@
 npm-debug.log
 node_modules
 
-# bower-managed files
-bower_components
-
 # Development files
 coverage/
 .vscode/
 
 # Dotfile detritus
 .DS_Store
+
+# Miscellaneous
+tmp/
