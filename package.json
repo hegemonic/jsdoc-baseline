@@ -32,7 +32,7 @@
     "escape-string-regexp": "^2.0.0",
     "handlebars": "^4.2.0",
     "handlebars-layouts": "^3.1.4",
-    "intl-messageformat": "^5.1.0",
+    "intl-messageformat": "^7.2.3",
     "intl-pluralrules": "^1.0.3",
     "js-beautify": "^1.10.2",
     "js-yaml": "^3.13.1",
