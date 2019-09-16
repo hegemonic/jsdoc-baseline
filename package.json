@@ -1,6 +1,6 @@
 {
   "name": "jsdoc-baseline",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A basic template for JSDoc.",
   "main": "publish.js",
   "scripts": {
