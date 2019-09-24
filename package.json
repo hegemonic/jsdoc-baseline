@@ -30,7 +30,7 @@
     "catharsis": "^0.8.11",
     "deep-extend": "^0.6.0",
     "escape-string-regexp": "^2.0.0",
-    "handlebars": "^4.3.0",
+    "handlebars": "^4.3.1",
     "handlebars-layouts": "^3.1.4",
     "js-beautify": "^1.10.2",
     "js-yaml": "^3.13.1",
