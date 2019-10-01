@@ -44,7 +44,7 @@
     "add-matchers": "^0.6.2",
     "bootstrap": "^3.3.7",
     "code-prettify": "^0.1.0",
-    "eslint": "^6.5.0",
+    "eslint": "^6.5.1",
     "fake-fs": "^0.5.0",
     "gulp": "^4.0.2",
     "gulp-csso": "^3.0.1",
