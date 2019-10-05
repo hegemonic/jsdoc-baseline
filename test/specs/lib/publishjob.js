@@ -16,7 +16,8 @@
 describe('lib/publishjob', () => {
     const config = require('../../../lib/config');
     let instance;
-    const fs = new (require('fake-fs'))();
+    const mock = require('mock-fs');
+    const fs = require('fs');
     const PublishJob = require('../../../lib/publishjob');
     const Template = require('../../../lib/template');
     let template;
@@ -29,15 +30,15 @@ describe('lib/publishjob', () => {
             destination: '/path/to/destination'
         });
 
-        fs.patch();
+        mock();
     });
 
     afterEach(() => {
-        fs.unpatch();
+        mock.restore();
     });
 
     it('should be a constructor', () => {
-        fs.unpatch();
+        mock.restore();
 
         expect(PublishJob).toBeFunction();
         expect(new PublishJob(template, {})).toBeInstanceOf(PublishJob);

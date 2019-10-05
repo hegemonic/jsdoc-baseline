@@ -13,6 +13,8 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 */
+const mock = require('mock-fs');
+
 describe('lib/loader', () => {
     const loader = require('../../../lib/loader');
 
@@ -25,21 +27,17 @@ describe('lib/loader', () => {
     });
 
     describe('loadSync', () => {
-        const fs = new (require('fake-fs'))();
-
         function loadString(text) {
-            fs.file('/Users/jdoe/file.txt', text);
+            let result;
 
-            return loader.loadSync('/Users/jdoe/file.txt', 'utf8');
+            mock({
+                '/Users/jdoe/file.txt': text
+            });
+            result = loader.loadSync('/Users/jdoe/file.txt', 'utf8');
+            mock.restore();
+
+            return result;
         }
-
-        beforeEach(() => {
-            fs.patch();
-        });
-
-        afterEach(() => {
-            fs.unpatch();
-        });
 
         it('should read the specified file', () => {
             const text = loadString('hello world');

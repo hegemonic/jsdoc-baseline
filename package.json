@@ -45,7 +45,6 @@
     "bootstrap": "^3.3.7",
     "code-prettify": "^0.1.0",
     "eslint": "^6.5.1",
-    "fake-fs": "^0.5.0",
     "gulp": "^4.0.2",
     "gulp-csso": "^3.0.1",
     "gulp-eslint": "^6.0.0",
@@ -54,8 +53,9 @@
     "gulp-uglify": "^3.0.2",
     "jasmine-console-reporter": "^3.1.0",
     "jasmine-expect": "^4.0.3",
-    "jsdoc": "^3.6.3",
     "jqtree": "^1.4.11",
+    "jsdoc": "^3.6.3",
+    "mock-fs": "^4.10.1",
     "requizzle": "^0.2.3"
   },
   "peerDependencies": {
