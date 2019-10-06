@@ -14,10 +14,10 @@
     limitations under the License.
 */
 describe('lib/publishjob', () => {
-    const config = require('../../../lib/config');
-    let instance;
     const mock = require('mock-fs');
     const fs = require('fs');
+    const config = require('../../../lib/config');
+    let instance;
     const PublishJob = require('../../../lib/publishjob');
     const Template = require('../../../lib/template');
     let template;
@@ -42,10 +42,6 @@ describe('lib/publishjob', () => {
 
         expect(PublishJob).toBeFunction();
         expect(new PublishJob(template, {})).toBeInstanceOf(PublishJob);
-    });
-
-    xdescribe('copyStaticFiles', () => {
-        // TODO
     });
 
     describe('createOutputDirectory', () => {

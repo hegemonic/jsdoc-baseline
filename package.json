@@ -27,9 +27,12 @@
   },
   "homepage": "https://github.com/hegemonic/jsdoc-baseline",
   "dependencies": {
+    "@jsdoc/task-runner": "^0.1.1",
     "catharsis": "^0.8.11",
     "deep-extend": "^0.6.0",
     "escape-string-regexp": "^2.0.0",
+    "fast-glob": "^3.0.4",
+    "fs-extra": "^8.1.0",
     "handlebars": "^4.4.2",
     "handlebars-layouts": "^3.1.4",
     "js-beautify": "^1.10.2",
@@ -40,8 +43,8 @@
     "strip-json-comments": "^3.0.1"
   },
   "devDependencies": {
-    "@jsdoc/eslint-config": "^1.1.0",
-    "add-matchers": "^0.6.2",
+    "@jsdoc/eslint-config": "^1.1.1",
+    "@jsdoc/test-matchers": "^0.1.0",
     "bootstrap": "^3.3.7",
     "code-prettify": "^0.1.0",
     "eslint": "^6.5.1",
@@ -52,7 +55,6 @@
     "gulp-less": "^4.0.1",
     "gulp-uglify": "^3.0.2",
     "jasmine-console-reporter": "^3.1.0",
-    "jasmine-expect": "^4.0.3",
     "jqtree": "^1.4.11",
     "jsdoc": "^3.6.3",
     "mock-fs": "^4.10.1",
