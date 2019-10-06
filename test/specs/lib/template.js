@@ -29,10 +29,6 @@ describe('lib/template', () => {
         expect(new Template(config.loadSync('', '.').get())).toBeInstanceOf(Template);
     });
 
-    xdescribe('init', () => {
-        // TODO
-    });
-
     xdescribe('render', () => {
         // TODO
     });

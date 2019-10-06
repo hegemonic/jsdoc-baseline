@@ -63,7 +63,7 @@ global.helpers = {
 
         config = deepExtend({}, defaultConfig, config);
 
-        return new Template(config).init();
+        return new Template(config);
     },
 
     // Render a Handlebars view.
