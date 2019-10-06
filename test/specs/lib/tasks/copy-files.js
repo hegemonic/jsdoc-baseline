@@ -7,28 +7,28 @@ const path = require('path');
 const ARGUMENT_ERROR = 'ArgumentError';
 const TYPE_ERROR = 'TypeError';
 
-const mockFilesPath = path.join('Users', 'jdoe', 'testdir', 'files');
-const mockObj = {
-    Users: {
-        jdoe: {
-            testdir: {
-                files: {
-                    'foo.txt': 'foo',
-                    foo: {
-                        'bar.txt': 'bar',
-                        bar: {
-                            'baz.txt': 'baz'
+const mockDest = path.join('Users', 'jdoe', 'testdir', 'out');
+const mockSource = path.join('Users', 'jdoe', 'testdir', 'files');
+
+describe('lib/tasks/copy-files', () => {
+    beforeEach(() => {
+        mock({
+            Users: {
+                jdoe: {
+                    testdir: {
+                        files: {
+                            'foo.txt': 'foo',
+                            foo: {
+                                'bar.txt': 'bar',
+                                bar: {
+                                    'baz.txt': 'baz'
+                                }
+                            }
                         }
                     }
                 }
             }
-        }
-    }
-};
-
-describe('lib/tasks/copy-files', () => {
-    beforeEach(() => {
-        mock(mockObj);
+        });
     });
 
     afterEach(() => {
@@ -49,13 +49,12 @@ describe('lib/tasks/copy-files', () => {
     });
 
     it('accepts a `destination`', () => {
-        const destination = 'out';
         const task = new CopyFiles({
             name: 'hasDestination',
-            destination
+            destination: mockDest
         });
 
-        expect(task.destination).toBe(destination);
+        expect(task.destination).toBe(mockDest);
     });
 
     it('does not immediately fail on an invalid `destination`', () => {
@@ -70,7 +69,7 @@ describe('lib/tasks/copy-files', () => {
     });
 
     it('accepts `sourceFiles`', () => {
-        const sourceFiles = new FileInfo(mockFilesPath, 'foo.txt');
+        const sourceFiles = new FileInfo(mockSource, 'foo.txt');
         const task = new CopyFiles({
             name: 'hasSourceFiles',
             sourceFiles
@@ -97,7 +96,7 @@ describe('lib/tasks/copy-files', () => {
                 name: 'badDestination',
                 destination: true,
                 sourceFiles: [
-                    new FileInfo(mockFilesPath, 'foo.txt')
+                    new FileInfo(mockSource, 'foo.txt')
                 ]
             });
 
@@ -113,9 +112,9 @@ describe('lib/tasks/copy-files', () => {
         it('validates the `name` property', async () => {
             let error;
             const task = new CopyFiles({
-                destination: 'out',
+                destination: mockDest,
                 sourceFiles: [
-                    new FileInfo(mockFilesPath, 'foo.txt')
+                    new FileInfo(mockSource, 'foo.txt')
                 ]
             });
 
@@ -132,7 +131,7 @@ describe('lib/tasks/copy-files', () => {
             let error;
             const task = new CopyFiles({
                 name: 'badSourceFiles',
-                destination: 'out',
+                destination: mockDest,
                 sourceFiles: [
                     7
                 ]
@@ -152,7 +151,7 @@ describe('lib/tasks/copy-files', () => {
             const task = new CopyFiles({
                 name: 'noDestination',
                 sourceFiles: [
-                    new FileInfo(mockFilesPath, 'foo.txt')
+                    new FileInfo(mockSource, 'foo.txt')
                 ]
             });
 
@@ -170,28 +169,28 @@ describe('lib/tasks/copy-files', () => {
         it('creates the output directory if necessary', async () => {
             const task = new CopyFiles({
                 name: 'outputDirectoryCreated',
-                destination: 'out',
+                destination: mockDest,
                 sourceFiles: [
-                    new FileInfo(mockFilesPath, 'foo.txt')
+                    new FileInfo(mockSource, 'foo.txt')
                 ]
             });
 
             await task.run();
 
-            expect(await fs.pathExists('out')).toBeTrue();
+            expect(await fs.pathExists(mockDest)).toBeTrue();
         });
 
         it('works if the output directory already exists', async () => {
             let error;
             const task = new CopyFiles({
                 name: 'outputDirectoryExists',
-                destination: 'out',
+                destination: mockDest,
                 sourceFiles: [
-                    new FileInfo(mockFilesPath, 'foo.txt')
+                    new FileInfo(mockSource, 'foo.txt')
                 ]
             });
 
-            await fs.mkdir('out');
+            await fs.mkdir(mockDest);
             try {
                 await task.run();
             } catch (e) {
@@ -205,14 +204,14 @@ describe('lib/tasks/copy-files', () => {
             let fooContents;
             const task = new CopyFiles({
                 name: 'copyOneFile',
-                destination: 'out',
+                destination: mockDest,
                 sourceFiles: [
-                    new FileInfo(mockFilesPath, 'foo.txt')
+                    new FileInfo(mockSource, 'foo.txt')
                 ]
             });
 
             await task.run();
-            fooContents = await fs.readFile('out/foo.txt', 'utf8');
+            fooContents = fs.readFileSync(path.join(mockDest, 'foo.txt'), 'utf8');
 
             expect(fooContents).toBe('foo');
         });
@@ -222,16 +221,16 @@ describe('lib/tasks/copy-files', () => {
             let barContents;
             const task = new CopyFiles({
                 name: 'copyMultipleFiles',
-                destination: 'out',
+                destination: mockDest,
                 sourceFiles: [
-                    new FileInfo(mockFilesPath, 'foo.txt'),
-                    new FileInfo(mockFilesPath, 'foo/bar.txt')
+                    new FileInfo(mockSource, 'foo.txt'),
+                    new FileInfo(mockSource, 'foo/bar.txt')
                 ]
             });
 
             await task.run();
-            fooContents = await fs.readFile('out/foo.txt', 'utf8');
-            barContents = await fs.readFile('out/foo/bar.txt', 'utf8');
+            fooContents = fs.readFileSync(path.join(mockDest, 'foo.txt'), 'utf8');
+            barContents = fs.readFileSync(path.join(mockDest, 'foo', 'bar.txt'), 'utf8');
 
             expect(fooContents).toBe('foo');
             expect(barContents).toBe('bar');
@@ -240,19 +239,19 @@ describe('lib/tasks/copy-files', () => {
         it('replicates the directory layout', async () => {
             const task = new CopyFiles({
                 name: 'copyMultipleFiles',
-                destination: 'out',
+                destination: mockDest,
                 sourceFiles: [
-                    new FileInfo(mockFilesPath, 'foo.txt'),
-                    new FileInfo(mockFilesPath, 'foo/bar.txt'),
-                    new FileInfo(mockFilesPath, 'foo/bar/baz.txt')
+                    new FileInfo(mockSource, 'foo.txt'),
+                    new FileInfo(mockSource, 'foo/bar.txt'),
+                    new FileInfo(mockSource, 'foo/bar/baz.txt')
                 ]
             });
 
             await task.run();
 
-            expect(await fs.pathExists('out/foo.txt')).toBeTrue();
-            expect(await fs.pathExists('out/foo/bar.txt')).toBeTrue();
-            expect(await fs.pathExists('out/foo/bar/baz.txt')).toBeTrue();
+            expect(await fs.pathExists(path.join(mockDest, 'foo.txt'))).toBeTrue();
+            expect(await fs.pathExists(path.join(mockDest, 'foo', 'bar.txt'))).toBeTrue();
+            expect(await fs.pathExists(path.join(mockDest, 'foo', 'bar', 'baz.txt'))).toBeTrue();
         });
     });
 });
