@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const t = require('../../../../lib/tasks/index');
 
 describe('lib/tasks/index', () => {
@@ -5,11 +6,13 @@ describe('lib/tasks/index', () => {
         expect(t).toBeObject();
     });
 
-    describe('CopyFiles', () => {
-        it('is lib/tasks/copy-files', () => {
-            const CopyFiles = require('../../../../lib/tasks/copy-files');
+    for (const key of Object.keys(t)) {
+        const fileName = _.kebabCase(key);
 
-            expect(t.CopyFiles).toBe(CopyFiles);
+        it(`is lib/tasks/${fileName}`, () => {
+            const klass = require(`../../../../lib/tasks/${fileName}`);
+
+            expect(t[key]).toBe(klass);
         });
-    });
+    }
 });
