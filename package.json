@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/hegemonic/jsdoc-baseline",
   "dependencies": {
-    "@jsdoc/task-runner": "^0.1.1",
+    "@jsdoc/task-runner": "^0.1.2",
     "catharsis": "^0.8.11",
     "deep-extend": "^0.6.0",
     "escape-string-regexp": "^2.0.0",
@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@jsdoc/eslint-config": "^1.1.1",
-    "@jsdoc/test-matchers": "^0.1.0",
+    "@jsdoc/test-matchers": "^0.1.1",
     "bootstrap": "^3.3.7",
     "code-prettify": "^0.1.0",
     "eslint": "^6.5.1",

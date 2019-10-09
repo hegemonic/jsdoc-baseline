@@ -45,10 +45,6 @@ describe('lib/config', () => {
         expect(config.loadSync).toBeFunction();
     });
 
-    it('should export a "protectedConfig" object', () => {
-        expect(config.protectedConfig).toBeObject();
-    });
-
     it('should export a "readJsonSync" method', () => {
         expect(config.readJsonSync).toBeFunction();
     });
@@ -217,43 +213,6 @@ describe('lib/config', () => {
             const conf = config.set('a', 'b');
 
             expect(conf).toBe(config);
-        });
-
-        it('should merge values into protected arrays, rather than replacing them', () => {
-            // test with an arbitrary protected config value
-            const key = Object.keys(config.protectedConfig)[0];
-            let value;
-
-            config.set(key, '/foo/bar/baz');
-            value = config.get(key);
-
-            expect(value).toBeArray();
-            expect(value.length).toBeGreaterThan(1);
-            expect(value[0]).toBe('/foo/bar/baz');
-        });
-
-        it('should merge array values into protected arrays', () => {
-            // test with an arbitrary protected config value
-            const key = Object.keys(config.protectedConfig)[0];
-            let value;
-
-            config.set(key, ['/foo/bar/baz']);
-            value = config.get(key);
-
-            expect(value).toBeArray();
-            expect(value.length).toBeGreaterThan(1);
-            expect(value[0]).toBe('/foo/bar/baz');
-        });
-
-        it('should replace unprotected values', () => {
-            // test with an arbitrary unprotected config value
-            const key = Object.keys(config.defaultConfig)[0];
-            let value;
-
-            config.set(key, '/foo/bar/baz');
-            value = config.get(key);
-
-            expect(value).toBe('/foo/bar/baz');
         });
     });
 });
