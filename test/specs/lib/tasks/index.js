@@ -1,12 +1,19 @@
 const _ = require('lodash');
 const t = require('../../../../lib/tasks/index');
 
+const expectedTasks = [
+    'CopyFiles',
+    'CreateTemplate',
+    'GenerateFiles',
+    'GenerateSourceFiles'
+];
+
 describe('lib/tasks/index', () => {
     it('is an object', () => {
         expect(t).toBeObject();
     });
 
-    for (const key of Object.keys(t)) {
+    for (const key of expectedTasks) {
         const fileName = _.kebabCase(key);
 
         it(`is lib/tasks/${fileName}`, () => {
