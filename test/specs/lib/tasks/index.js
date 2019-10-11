@@ -5,6 +5,7 @@ const expectedTasks = [
     'CopyFiles',
     'CreateTemplate',
     'GenerateFiles',
+    'GenerateGlobals',
     'GenerateSourceFiles'
 ];
 

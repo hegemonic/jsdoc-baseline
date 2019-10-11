@@ -76,10 +76,6 @@ describe('lib/publishjob', () => {
         // TODO
     });
 
-    xdescribe('generateGlobals', () => {
-        // TODO
-    });
-
     xdescribe('generateIndex', () => {
         // TODO
     });
