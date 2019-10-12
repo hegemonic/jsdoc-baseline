@@ -39,32 +39,6 @@ describe('lib/tasks/generate-globals', () => {
         }
     ];
     let instance;
-    const notGlobals = [
-        {
-            kind: 'class',
-            longname: 'globalClass',
-            name: 'globalClass',
-            scope: 'global'
-        },
-        {
-            kind: 'constant',
-            longname: 'module:foo.nonGlobalConstant',
-            name: 'nonGlobalConstant',
-            scope: 'static'
-        },
-        {
-            kind: 'member',
-            longname: 'module:foo~nonGlobalMember',
-            name: 'nonGlobalMember',
-            scope: 'inner'
-        },
-        {
-            kind: 'typedef',
-            longname: 'module:foo.Bar#nonGlobalTypedef',
-            name: 'nonGlobalTypedef',
-            scope: 'instance'
-        }
-    ];
     let templateConfig;
 
     // TODO: Update this code when you remove this logic from `publish.js`.
@@ -80,9 +54,9 @@ describe('lib/tasks/generate-globals', () => {
         context = {
             config: conf,
             destination: OUTPUT_DIR,
-            doclets: db({
+            globals: db({
                 config: conf,
-                values: globals.concat(notGlobals)
+                values: globals
             }),
             pageTitlePrefix: '',
             template: new Template(templateConfig),
@@ -105,16 +79,6 @@ describe('lib/tasks/generate-globals', () => {
         expect(factory).not.toThrow();
     });
 
-    describe('findGlobals', () => {
-        it('is a function', () => {
-            expect(instance.findGlobals).toBeFunction();
-        });
-
-        it('returns the globals as an array', () => {
-            expect(instance.findGlobals(context.doclets)).toEqual(globals);
-        });
-    });
-
     describe('run', () => {
         function findOutputFile(start) {
             const files = fs.readdirSync(OUTPUT_DIR);
@@ -129,31 +93,26 @@ describe('lib/tasks/generate-globals', () => {
         }
 
         it('generates nothing if there are no globals', async () => {
-            const task = new GenerateGlobals({ name: 'noGlobals' });
-
-            context.doclets = db({
+            context.globals = db({
                 config: conf,
-                values: notGlobals
+                values: []
             });
 
-            await task.run(context);
+            await instance.run(context);
 
             expect(fs.existsSync(OUTPUT_DIR)).toBeFalse();
         });
 
         it('generates a single file if there are globals', async () => {
-            const task = new GenerateGlobals({ name: 'globals' });
-
-            await task.run(context);
+            await instance.run(context);
 
             expect(fs.readdirSync(OUTPUT_DIR).length).toBe(1);
         });
 
         it('includes all of the globals in the generated file', async () => {
             let file;
-            const task = new GenerateGlobals({ name: 'globals' });
 
-            await task.run(context);
+            await instance.run(context);
             file = fs.readFileSync(path.join(OUTPUT_DIR, findOutputFile('global')), 'utf8');
 
             for (const global of globals) {
@@ -161,27 +120,14 @@ describe('lib/tasks/generate-globals', () => {
             }
         });
 
-        it('omits non-globals from the generated file', async () => {
-            let file;
-            const task = new GenerateGlobals({ name: 'globals' });
-
-            await task.run(context);
-            file = fs.readFileSync(path.join(OUTPUT_DIR, findOutputFile('global')), 'utf8');
-
-            for (const notGlobal of notGlobals) {
-                expect(file).not.toContain(notGlobal.name);
-            }
-        });
-
         describe('title', () => {
             it('is singular when there is one global', async () => {
                 let file;
-                const task = new GenerateGlobals({ name: 'globals' });
 
-                context.doclets = db({
+                context.globals = db({
                     values: [globals[0]]
                 });
-                await task.run(context);
+                await instance.run(context);
                 file = fs.readFileSync(path.join(OUTPUT_DIR, findOutputFile('global')), 'utf8');
 
                 expect(file).toContain('<title>Global</title>');
@@ -189,9 +135,8 @@ describe('lib/tasks/generate-globals', () => {
 
             it('is plural when there are multiple globals', async () => {
                 let file;
-                const task = new GenerateGlobals({ name: 'globals' });
 
-                await task.run(context);
+                await instance.run(context);
                 file = fs.readFileSync(path.join(OUTPUT_DIR, findOutputFile('global')), 'utf8');
 
                 expect(file).toContain('<title>Globals</title>');
@@ -199,10 +144,9 @@ describe('lib/tasks/generate-globals', () => {
 
             it('includes the page title prefix if there is one', async () => {
                 let file;
-                const task = new GenerateGlobals({ name: 'globals' });
 
                 context.pageTitlePrefix = 'Testing: ';
-                await task.run(context);
+                await instance.run(context);
                 file = fs.readFileSync(path.join(OUTPUT_DIR, findOutputFile('global')), 'utf8');
 
                 expect(file).toContain('<title>Testing: Globals</title>');

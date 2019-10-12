@@ -13,6 +13,12 @@ const mockObj = {
     out: {}
 };
 
+function eatPromise(p) {
+    if (p) {
+        p.then(() => null, () => null);
+    }
+}
+
 // Wrapper that provides explicit getters we can spy on.
 class TicketWrapper {
     constructor(ticket) {
@@ -50,6 +56,7 @@ describe('lib/tasks/generate-files', () => {
         let conf;
         let context;
         let fatalSpy;
+        let result;
 
         beforeEach(() => {
             // Suppress logging.
@@ -71,12 +78,14 @@ describe('lib/tasks/generate-files', () => {
         });
 
         afterEach(() => {
+            eatPromise(result);
             mock.restore();
         });
 
         it('returns a promise on success', () => {
             const task = new GenerateFiles({ name: 'returnsPromise' });
-            const result = task.run(context);
+
+            result = task.run(context);
 
             expect(result).toBeInstanceOf(Promise);
         });
@@ -86,7 +95,8 @@ describe('lib/tasks/generate-files', () => {
                 name: 'returnsPromise',
                 tickets: [badTicket]
             });
-            const result = task.run(context);
+
+            result = task.run(context);
 
             expect(result).toBeInstanceOf(Promise);
         });

@@ -80,10 +80,6 @@ describe('lib/publishjob', () => {
         // TODO
     });
 
-    xdescribe('generateTocData', () => {
-        // TODO
-    });
-
     xdescribe('generateTutorials', () => {
         // TODO
     });

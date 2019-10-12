@@ -3,10 +3,11 @@ const t = require('../../../../lib/tasks/index');
 
 const expectedTasks = [
     'CopyFiles',
-    'CreateTemplate',
     'GenerateFiles',
     'GenerateGlobals',
-    'GenerateSourceFiles'
+    'GenerateSourceFiles',
+    'GenerateToc',
+    'SetContext'
 ];
 
 describe('lib/tasks/index', () => {
