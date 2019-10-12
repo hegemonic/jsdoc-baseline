@@ -62,7 +62,7 @@ describe('lib/tasks/generate-globals', () => {
             template: new Template(templateConfig),
             templateConfig
         };
-        instance = new GenerateGlobals({ name: 'generateGlobals '});
+        instance = new GenerateGlobals({ name: 'generateGlobals' });
 
         mock();
     });
@@ -79,19 +79,15 @@ describe('lib/tasks/generate-globals', () => {
         expect(factory).not.toThrow();
     });
 
+    it('accepts a `url` property', () => {
+        const url = 'foo.html';
+
+        instance = new GenerateGlobals({ url });
+
+        expect(instance.url).toBe(url);
+    });
+
     describe('run', () => {
-        function findOutputFile(start) {
-            const files = fs.readdirSync(OUTPUT_DIR);
-
-            for (const file of files) {
-                if (file.startsWith(start)) {
-                    return file;
-                }
-            }
-
-            throw new Error(`No files in ${OUTPUT_DIR} start with ${start}`);
-        }
-
         it('generates nothing if there are no globals', async () => {
             context.globals = db({
                 config: conf,
@@ -109,11 +105,20 @@ describe('lib/tasks/generate-globals', () => {
             expect(fs.readdirSync(OUTPUT_DIR).length).toBe(1);
         });
 
+        it('uses a custom `url` if specified', async () => {
+            const url = 'foo.html';
+
+            instance.url = url;
+            await instance.run(context);
+
+            expect(fs.existsSync(path.join(OUTPUT_DIR, url))).toBeTrue();
+        });
+
         it('includes all of the globals in the generated file', async () => {
             let file;
 
             await instance.run(context);
-            file = fs.readFileSync(path.join(OUTPUT_DIR, findOutputFile('global')), 'utf8');
+            file = fs.readFileSync(path.join(OUTPUT_DIR, 'global.html'), 'utf8');
 
             for (const global of globals) {
                 expect(file).toContain(global.name);
@@ -128,7 +133,7 @@ describe('lib/tasks/generate-globals', () => {
                     values: [globals[0]]
                 });
                 await instance.run(context);
-                file = fs.readFileSync(path.join(OUTPUT_DIR, findOutputFile('global')), 'utf8');
+                file = fs.readFileSync(path.join(OUTPUT_DIR, 'global.html'), 'utf8');
 
                 expect(file).toContain('<title>Global</title>');
             });
@@ -137,7 +142,7 @@ describe('lib/tasks/generate-globals', () => {
                 let file;
 
                 await instance.run(context);
-                file = fs.readFileSync(path.join(OUTPUT_DIR, findOutputFile('global')), 'utf8');
+                file = fs.readFileSync(path.join(OUTPUT_DIR, 'global.html'), 'utf8');
 
                 expect(file).toContain('<title>Globals</title>');
             });
@@ -147,7 +152,7 @@ describe('lib/tasks/generate-globals', () => {
 
                 context.pageTitlePrefix = 'Testing: ';
                 await instance.run(context);
-                file = fs.readFileSync(path.join(OUTPUT_DIR, findOutputFile('global')), 'utf8');
+                file = fs.readFileSync(path.join(OUTPUT_DIR, 'global.html'), 'utf8');
 
                 expect(file).toContain('<title>Testing: Globals</title>');
             });

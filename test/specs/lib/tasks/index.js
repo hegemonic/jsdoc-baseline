@@ -5,6 +5,7 @@ const expectedTasks = [
     'CopyFiles',
     'GenerateFiles',
     'GenerateGlobals',
+    'GenerateIndex',
     'GenerateSourceFiles',
     'GenerateToc',
     'SetContext'
