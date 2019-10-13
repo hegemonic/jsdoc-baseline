@@ -1,6 +1,6 @@
 const mock = require('mock-fs');
 const config = require('../../../../lib/config');
-const db = require('../../../../lib/db');
+const { db } = require('../../../../lib/db');
 const fs = require('fs-extra');
 const GenerateIndex = require('../../../../lib/tasks/generate-index');
 const helper = require('jsdoc/util/templateHelper');
@@ -27,7 +27,6 @@ describe('lib/tasks/generate-index', () => {
     let instance;
     let templateConfig;
 
-    // TODO: Update this code when you remove this logic from `publish.js`.
     helper.registerLink('index', helper.getUniqueFilename('index'));
 
     beforeEach(() => {

@@ -72,10 +72,6 @@ describe('lib/publishjob', () => {
         // TODO
     });
 
-    xdescribe('generateByLongname', () => {
-        // TODO
-    });
-
     xdescribe('generateTutorials', () => {
         // TODO
     });

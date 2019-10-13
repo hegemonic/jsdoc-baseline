@@ -1,6 +1,6 @@
 const mock = require('mock-fs');
 const config = require('../../../../lib/config');
-const db = require('../../../../lib/db');
+const { db } = require('../../../../lib/db');
 const fs = require('fs-extra');
 const GenerateToc = require('../../../../lib/tasks/generate-toc');
 const helper = require('jsdoc/util/templateHelper');

@@ -1,6 +1,6 @@
 const mock = require('mock-fs');
 const config = require('../../../../lib/config');
-const db = require('../../../../lib/db');
+const { db } = require('../../../../lib/db');
 const fs = require('fs-extra');
 const GenerateGlobals = require('../../../../lib/tasks/generate-globals');
 const helper = require('jsdoc/util/templateHelper');
@@ -20,6 +20,12 @@ describe('lib/tasks/generate-globals', () => {
             scope: 'global'
         },
         {
+            kind: 'event',
+            longname: 'globalEvent',
+            name: 'globalEvent',
+            scope: 'global'
+        },
+        {
             kind: 'function',
             longname: 'globalFunction',
             name: 'globalFunction',
@@ -31,6 +37,15 @@ describe('lib/tasks/generate-globals', () => {
             name: 'globalMember',
             scope: 'global'
         },
+        // TODO: Update views to do something with mixins, then uncomment this doclet.
+        /*
+        {
+            kind: 'mixin',
+            longname: 'globalMixin',
+            name: 'globalMixin',
+            scope: 'global'
+        },
+        */
         {
             kind: 'typedef',
             longname: 'globalTypedef',
@@ -41,7 +56,6 @@ describe('lib/tasks/generate-globals', () => {
     let instance;
     let templateConfig;
 
-    // TODO: Update this code when you remove this logic from `publish.js`.
     helper.registerLink('global', helper.getUniqueFilename('global'));
 
     beforeEach(() => {

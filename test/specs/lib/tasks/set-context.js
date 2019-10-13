@@ -1,5 +1,6 @@
 const config = require('../../../../lib/config');
-const db = require('../../../../lib/db');
+const { db } = require('../../../../lib/db');
+const helper = require('jsdoc/util/templateHelper');
 const SetContext = require('../../../../lib/tasks/set-context');
 const Template = require('../../../../lib/template');
 
@@ -84,6 +85,14 @@ describe('lib/tasks/set-context', () => {
             }
 
             expect(error).toBeErrorOfType(TYPE_ERROR);
+        });
+
+        it('registers a link for each doclet', async () => {
+            await instance.run(context);
+
+            for (const doclet of fakeDoclets.value()) {
+                expect(helper.longnameToUrl[doclet.longname]).toBeString();
+            }
         });
 
         describe('properties', () => {

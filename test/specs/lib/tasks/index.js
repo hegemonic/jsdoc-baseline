@@ -3,6 +3,7 @@ const t = require('../../../../lib/tasks/index');
 
 const expectedTasks = [
     'CopyFiles',
+    'GenerateCoreDocs',
     'GenerateFiles',
     'GenerateGlobals',
     'GenerateIndex',
