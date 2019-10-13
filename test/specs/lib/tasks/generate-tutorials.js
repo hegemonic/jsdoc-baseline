@@ -69,16 +69,16 @@ describe('lib/tasks/generate-tutorials', () => {
             mock.restore();
         });
 
-        it('returns a promise on success', () => {
+        it('returns a promise on success', cb => {
             const result = instance.run(context);
 
             expect(result).toBeInstanceOf(Promise);
 
             // Handle the resolved promise.
-            result.then(() => null, () => null);
+            result.then(() => cb(), () => cb());
         });
 
-        it('returns a promise on failure', () => {
+        it('returns a promise on failure', cb => {
             let result;
 
             context.tutorials = 'hi';
@@ -87,7 +87,7 @@ describe('lib/tasks/generate-tutorials', () => {
             expect(result).toBeInstanceOf(Promise);
 
             // Handle the rejected promise.
-            result.then(() => null, () => null);
+            result.then(() => cb(), () => cb());
         });
 
         describe('output', () => {

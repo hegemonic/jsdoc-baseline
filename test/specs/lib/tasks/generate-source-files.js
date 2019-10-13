@@ -52,7 +52,7 @@ describe('lib/tasks/generate-source-files', () => {
             expect(result).toBeInstanceOf(Promise);
 
             // Handle the resolved promise.
-            result.then(() => cb());
+            result.then(() => cb(), () => cb());
         });
 
         it('returns a promise on failure', cb => {
