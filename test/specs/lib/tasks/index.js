@@ -9,6 +9,7 @@ const expectedTasks = [
     'GenerateIndex',
     'GenerateSourceFiles',
     'GenerateToc',
+    'GenerateTutorials',
     'SetContext'
 ];
 
