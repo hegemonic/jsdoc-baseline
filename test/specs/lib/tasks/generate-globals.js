@@ -102,6 +102,27 @@ describe('lib/tasks/generate-globals', () => {
     });
 
     describe('run', () => {
+        it('returns a promise on success', cb => {
+            const result = instance.run(context);
+
+            expect(result).toBeInstanceOf(Promise);
+
+            // Handle the resolved promise.
+            result.then(() => cb(), () => cb());
+        });
+
+        it('returns a promise on failure', cb => {
+            let result;
+
+            context.template = null;
+            result = instance.run(context);
+
+            expect(result).toBeInstanceOf(Promise);
+
+            // Handle the rejected promise.
+            result.then(() => cb(), () => cb());
+        });
+
         it('generates nothing if there are no globals', async () => {
             context.globals = db({
                 config: conf,

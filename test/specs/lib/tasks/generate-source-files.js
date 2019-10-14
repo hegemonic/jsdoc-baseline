@@ -59,9 +59,7 @@ describe('lib/tasks/generate-source-files', () => {
             let result;
             let task;
 
-            context.sourceFiles = {
-                'no-such-file.js': 'no-such-file.js'
-            };
+            context.sourceFiles = null;
 
             task = new GenerateSourceFiles({ name: 'failure' });
             result = task.run(context);

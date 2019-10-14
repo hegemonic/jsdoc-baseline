@@ -46,7 +46,6 @@ describe('lib/tasks/generate-files', () => {
     });
 
     describe('run', () => {
-        let badTicket;
         let conf;
         let context;
         let fatalSpy;
@@ -56,11 +55,6 @@ describe('lib/tasks/generate-files', () => {
             // Suppress logging.
             fatalSpy = spyOn(logger, 'fatal');
 
-            badTicket = new Ticket({
-                data: {},
-                url: 'foo',
-                viewName: 'no-such-view'
-            });
             conf = config.loadSync().get();
             context = {
                 destination: 'out',
@@ -87,11 +81,10 @@ describe('lib/tasks/generate-files', () => {
 
         it('returns a promise on failure', cb => {
             const task = new GenerateFiles({
-                name: 'returnsPromise',
-                tickets: [badTicket]
+                name: 'returnsPromise'
             });
 
-            result = task.run(context);
+            result = task.run();
 
             expect(result).toBeInstanceOf(Promise);
 

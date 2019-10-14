@@ -39,15 +39,6 @@ describe('lib/tasks/copy-files', () => {
         expect(() => new CopyFiles({ name: 'test' })).not.toThrow();
     });
 
-    it('accepts a `name`', () => {
-        const name = 'foo';
-        const task = new CopyFiles({
-            name
-        });
-
-        expect(task.name).toBe(name);
-    });
-
     it('accepts a `destination`', () => {
         const task = new CopyFiles({
             name: 'hasDestination',
@@ -69,7 +60,9 @@ describe('lib/tasks/copy-files', () => {
     });
 
     it('accepts `sourceFiles`', () => {
-        const sourceFiles = new FileInfo(mockSource, 'foo.txt');
+        const sourceFiles = [
+            new FileInfo(mockSource, 'foo.txt')
+        ];
         const task = new CopyFiles({
             name: 'hasSourceFiles',
             sourceFiles
@@ -90,29 +83,39 @@ describe('lib/tasks/copy-files', () => {
     });
 
     describe('run', () => {
+        it('returns a promise on success', cb => {
+            const task = new CopyFiles({
+                name: 'copyFiles',
+                destination: mockDest,
+                sourceFiles: [
+                    new FileInfo(mockSource, 'foo.txt')
+                ]
+            });
+            const result = task.run();
+
+            expect(result).toBeInstanceOf(Promise);
+
+            // Handle the fulfilled promise.
+            result.then(() => cb(), () => cb());
+        });
+
+        it('returns a promise on error', cb => {
+            const task = new CopyFiles({
+                name: 'badCopyFiles'
+            });
+            const result = task.run();
+
+            expect(result).toBeInstanceOf(Promise);
+
+            // Handle the rejected promise.
+            result.then(() => cb(), () => cb());
+        });
+
         it('validates the `destination` property', async () => {
             let error;
             const task = new CopyFiles({
                 name: 'badDestination',
                 destination: true,
-                sourceFiles: [
-                    new FileInfo(mockSource, 'foo.txt')
-                ]
-            });
-
-            try {
-                await task.run();
-            } catch (e) {
-                error = e;
-            }
-
-            expect(error).toBeErrorOfType(ARGUMENT_ERROR);
-        });
-
-        it('validates the `name` property', async () => {
-            let error;
-            const task = new CopyFiles({
-                destination: mockDest,
                 sourceFiles: [
                     new FileInfo(mockSource, 'foo.txt')
                 ]
