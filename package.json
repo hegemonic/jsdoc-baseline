@@ -1,6 +1,6 @@
 {
   "name": "jsdoc-baseline",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A basic template for JSDoc.",
   "main": "publish.js",
   "scripts": {
@@ -30,7 +30,7 @@
     "catharsis": "^0.8.11",
     "deep-extend": "^0.6.0",
     "escape-string-regexp": "^2.0.0",
-    "handlebars": "^4.2.0",
+    "handlebars": "^4.4.3",
     "handlebars-layouts": "^3.1.4",
     "js-beautify": "^1.10.2",
     "js-yaml": "^3.13.1",
@@ -40,11 +40,11 @@
     "strip-json-comments": "^3.0.1"
   },
   "devDependencies": {
-    "@jsdoc/eslint-config": "^1.0.5",
+    "@jsdoc/eslint-config": "^1.1.1",
     "add-matchers": "^0.6.2",
     "bootstrap": "^3.3.7",
     "code-prettify": "^0.1.0",
-    "eslint": "^6.4.0",
+    "eslint": "^6.5.1",
     "fake-fs": "^0.5.0",
     "gulp": "^4.0.2",
     "gulp-csso": "^3.0.1",

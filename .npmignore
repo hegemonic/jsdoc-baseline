@@ -10,6 +10,6 @@ CODE_OF_CONDUCT.md
 CONTRIBUTING.md
 gulpfile.js
 scripts/
-styles/
+styles/**/*.less
 test/
 tmp/
