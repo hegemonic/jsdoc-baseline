@@ -8,19 +8,17 @@ const TYPE_ERROR = 'TypeError';
 
 describe('lib/tasks/set-context', () => {
     let context;
-    const fakeDoclets = db({
-        values: [
-            {
-                kind: 'class',
-                longname: 'Foo'
-            },
-            {
-                kind: 'function',
-                longname: 'bar',
-                scope: 'global'
-            }
-        ]
-    });
+    const fakeDoclets = [
+        {
+            kind: 'class',
+            longname: 'Foo'
+        },
+        {
+            kind: 'function',
+            longname: 'bar',
+            scope: 'global'
+        }
+    ];
     let instance;
 
     beforeEach(() => {
@@ -30,7 +28,7 @@ describe('lib/tasks/set-context', () => {
                     destination: 'out'
                 }
             },
-            doclets: fakeDoclets,
+            doclets: db({ values: fakeDoclets }),
             templateConfig: config.loadSync().get()
         };
         instance = new SetContext({ name: 'setContext' });
@@ -90,7 +88,7 @@ describe('lib/tasks/set-context', () => {
         it('registers a link for each doclet', async () => {
             await instance.run(context);
 
-            for (const doclet of fakeDoclets.value()) {
+            for (const doclet of fakeDoclets) {
                 expect(helper.longnameToUrl[doclet.longname]).toBeString();
             }
         });
@@ -105,6 +103,16 @@ describe('lib/tasks/set-context', () => {
                 ]);
             });
 
+            it('sets `allLongnamesTree` correctly', async () => {
+                await instance.run(context);
+
+                expect(context.allLongnamesTree).toBeObject();
+                expect(context.allLongnamesTree.Foo).toBeObject();
+                expect(context.allLongnamesTree.Foo.doclet).toBeObject();
+                expect(context.allLongnamesTree.bar).toBeObject();
+                expect(context.allLongnamesTree.bar.doclet).toBeObject();
+            });
+
             it('sets `destination` correctly', async () => {
                 await instance.run(context);
 
@@ -112,7 +120,7 @@ describe('lib/tasks/set-context', () => {
             });
 
             it('sets `globals` correctly', async () => {
-                const globals = fakeDoclets.filter(d => d.scope === 'global').value();
+                const globals = fakeDoclets.filter(d => d.scope === 'global');
 
                 await instance.run(context);
 
@@ -132,6 +140,51 @@ describe('lib/tasks/set-context', () => {
                 expect(context.needsOutputFile).toBeObject();
                 expect(context.needsOutputFile.Foo).toBeTrue();
                 expect(context.needsOutputFile.bar).toBeUndefined();
+            });
+
+            it('does not set `package` when there is no package', async () => {
+                await instance.run(context);
+
+                expect(context.package).toBeUndefined();
+            });
+
+            it('sets `package` correctly when there is a package', async () => {
+                const packages = [
+                    {
+                        kind: 'package',
+                        name: 'package:foo',
+                        longname: 'package:foo'
+                    }
+                ];
+
+                context.doclets = db({
+                    values: fakeDoclets.concat(packages)
+                });
+                await instance.run(context);
+
+                expect(context.package).toBe(packages[0]);
+            });
+
+            it('sets `package` to the first package when there are two packages', async () => {
+                const packages = [
+                    {
+                        kind: 'package',
+                        name: 'package:foo',
+                        longname: 'package:foo'
+                    },
+                    {
+                        kind: 'package',
+                        name: 'package:bar',
+                        longname: 'package:bar'
+                    }
+                ];
+
+                context.doclets = db({
+                    values: fakeDoclets.concat(packages)
+                });
+                await instance.run(context);
+
+                expect(context.package).toBe(packages[0]);
             });
 
             it('sets `pageTitlePrefix` correctly when there is no package', async () => {
