@@ -148,6 +148,23 @@ describe('lib/tasks/set-context', () => {
                 expect(context.package).toBeUndefined();
             });
 
+            it('does not set `package` when the package is a placeholder', async () => {
+                const packages = [
+                    {
+                        kind: 'package',
+                        name: 'package:undefined',
+                        longname: 'package:undefined'
+                    }
+                ];
+
+                context.doclets = db({
+                    values: fakeDoclets.concat(packages)
+                });
+                await instance.run(context);
+
+                expect(context.package).toBeUndefined();
+            });
+
             it('sets `package` correctly when there is a package', async () => {
                 const packages = [
                     {
