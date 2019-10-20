@@ -1,109 +1,107 @@
 const mock = require('mock-fs');
-const CopyFiles = require('../../../../lib/tasks/copy-files');
-const FileInfo = require('../../../../lib/file-info');
+const config = require('../../../../lib/config');
 const fs = require('fs-extra');
+const CopyFiles = require('../../../../lib/tasks/copy-files');
 const path = require('path');
+const Ticket = require('../../../../lib/ticket');
 
-const ARGUMENT_ERROR = 'ArgumentError';
+const SOURCE_DIR = 'sourcefiles';
+const OUTPUT_DIR = 'out';
 const TYPE_ERROR = 'TypeError';
 
-const mockDest = path.join('Users', 'jdoe', 'testdir', 'out');
-const mockSource = path.join('Users', 'jdoe', 'testdir', 'files');
+// Wrapper that provides explicit getters we can spy on.
+// TODO: Move to test helper.
+class TicketWrapper {
+    constructor(ticket) {
+        this.ticket = ticket;
+    }
+
+    get data() {
+        return this.ticket.data;
+    }
+
+    get name() {
+        return this.ticket.name;
+    }
+
+    get source() {
+        return this.ticket.source;
+    }
+
+    get url() {
+        return this.ticket.url;
+    }
+
+    get viewName() {
+        return this.ticket.viewName;
+    }
+}
 
 describe('lib/tasks/copy-files', () => {
-    beforeEach(() => {
-        mock({
-            Users: {
-                jdoe: {
-                    testdir: {
-                        files: {
-                            'foo.txt': 'foo',
-                            foo: {
-                                'bar.txt': 'bar',
-                                bar: {
-                                    'baz.txt': 'baz'
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    });
-
-    afterEach(() => {
-        mock.restore();
-    });
-
     it('is a constructor', () => {
-        expect(() => new CopyFiles({ name: 'test' })).not.toThrow();
-    });
-
-    it('accepts a `destination`', () => {
-        const task = new CopyFiles({
-            name: 'hasDestination',
-            destination: mockDest
-        });
-
-        expect(task.destination).toBe(mockDest);
-    });
-
-    it('does not immediately fail on an invalid `destination`', () => {
         function factory() {
-            return new CopyFiles({
-                name: 'badDestination',
-                destination: 7
-            });
+            return new CopyFiles({});
         }
 
         expect(factory).not.toThrow();
     });
 
-    it('accepts `sourceFiles`', () => {
-        const sourceFiles = [
-            new FileInfo(mockSource, 'foo.txt')
+    it('accepts tickets', () => {
+        const tickets = [
+            new Ticket({
+                source: path.join(SOURCE_DIR, 'foo.js'),
+                url: 'foo.js'
+            })
         ];
         const task = new CopyFiles({
-            name: 'hasSourceFiles',
-            sourceFiles
+            name: 'acceptsTickets',
+            tickets
         });
 
-        expect(task.sourceFiles).toBe(sourceFiles);
-    });
-
-    it('does not immediately fail on invalid `sourceFiles`', () => {
-        function factory() {
-            return new CopyFiles({
-                name: 'badSourceFiles',
-                sourceFiles: true
-            });
-        }
-
-        expect(factory).not.toThrow();
+        expect(task.tickets).toBe(tickets);
     });
 
     describe('run', () => {
-        it('returns a promise on success', cb => {
-            const task = new CopyFiles({
-                name: 'copyFiles',
-                destination: mockDest,
-                sourceFiles: [
-                    new FileInfo(mockSource, 'foo.txt')
-                ]
+        let conf;
+        let context;
+        let result;
+
+        beforeEach(() => {
+            conf = config.loadSync().get();
+            context = {
+                destination: OUTPUT_DIR,
+                templateConfig: conf
+            };
+
+            mock({
+                [SOURCE_DIR]: {
+                    'foo.js': 'foo bar baz',
+                    'bar.css': 'bar baz qux'
+                }
             });
-            const result = task.run();
+        });
+
+        afterEach(() => {
+            mock.restore();
+        });
+
+        it('returns a promise on success', cb => {
+            const task = new CopyFiles({ name: 'returnsPromise' });
+
+            result = task.run(context);
 
             expect(result).toBeInstanceOf(Promise);
 
-            // Handle the fulfilled promise.
+            // Handle the resolved promise.
             result.then(() => cb(), () => cb());
         });
 
-        it('returns a promise on error', cb => {
+        it('returns a promise on failure', cb => {
             const task = new CopyFiles({
-                name: 'badCopyFiles'
+                name: 'returnsPromise'
             });
-            const result = task.run();
+
+            result = task.run();
 
             expect(result).toBeInstanceOf(Promise);
 
@@ -111,150 +109,183 @@ describe('lib/tasks/copy-files', () => {
             result.then(() => cb(), () => cb());
         });
 
-        it('validates the `destination` property', async () => {
-            let error;
-            const task = new CopyFiles({
-                name: 'badDestination',
-                destination: true,
-                sourceFiles: [
-                    new FileInfo(mockSource, 'foo.txt')
-                ]
+        describe('tickets', () => {
+            it('works if no tickets are specified', async () => {
+                let error;
+                const task = new CopyFiles({ name: 'noTickets' });
+
+                try {
+                    await task.run(context);
+                } catch (e) {
+                    error = e;
+                }
+
+                expect(error).toBeUndefined();
             });
 
-            try {
-                await task.run();
-            } catch (e) {
-                error = e;
-            }
-
-            expect(error).toBeErrorOfType(ARGUMENT_ERROR);
-        });
-
-        it('validates the `sourceFiles` property', async () => {
-            let error;
-            const task = new CopyFiles({
-                name: 'badSourceFiles',
-                destination: mockDest,
-                sourceFiles: [
-                    7
-                ]
-            });
-
-            try {
-                await task.run();
-            } catch (e) {
-                error = e;
-            }
-
-            expect(error).toBeErrorOfType(ARGUMENT_ERROR);
-        });
-
-        it('fails if you do not provide the destination in any way', async () => {
-            let error;
-            const task = new CopyFiles({
-                name: 'noDestination',
-                sourceFiles: [
-                    new FileInfo(mockSource, 'foo.txt')
-                ]
-            });
-
-            try {
-                await task.run({
-                    config: null
+            it('fails if the tickets are bogus', async () => {
+                let error;
+                const task = new CopyFiles({
+                    name: 'badTickets',
+                    tickets: true
                 });
-            } catch (e) {
-                error = e;
+
+                try {
+                    await task.run(context);
+                } catch (e) {
+                    error = e;
+                }
+
+                expect(error).toBeErrorOfType(TYPE_ERROR);
+            });
+
+            it('processes one ticket', async () => {
+                const tickets = [
+                    new Ticket({
+                        source: path.join(SOURCE_DIR, 'foo.js'),
+                        url: ''
+                    })
+                ];
+                const wrappers = tickets.map(ticket => new TicketWrapper(ticket));
+                const task = new CopyFiles({
+                    name: 'oneTicket',
+                    tickets: wrappers
+                });
+                const spy = spyOnProperty(wrappers[0], 'url').and.callFake(() => ('foo.js'));
+
+                await task.run(context);
+
+                expect(spy).toHaveBeenCalled();
+            });
+
+            it('processes multiple tickets', async () => {
+                const tickets = [
+                    new Ticket({
+                        source: path.join(SOURCE_DIR, 'foo.js'),
+                        url: ''
+                    }),
+                    new Ticket({
+                        source: path.join(SOURCE_DIR, 'bar.css'),
+                        url: ''
+                    })
+                ];
+                const wrappers = tickets.map(ticket => new TicketWrapper(ticket));
+                const task = new CopyFiles({
+                    name: 'twoTickets',
+                    tickets: wrappers
+                });
+                const spies = [
+                    spyOnProperty(wrappers[0], 'url').and.callFake(() => ('foo.js')),
+                    spyOnProperty(wrappers[1], 'url').and.callFake(() => ('bar.css'))
+                ];
+
+                await task.run(context);
+
+                expect(spies[0]).toHaveBeenCalled();
+                expect(spies[1]).toHaveBeenCalled();
+            });
+        });
+
+        describe('output', () => {
+            function stat(ctx, url) {
+                return fs.statSync(path.join(ctx.destination, url));
             }
 
-            expect(error).toBeErrorOfType(TYPE_ERROR);
-        });
+            it('creates the output directory as needed', async () => {
+                const url = path.join('some', 'dir', 'foo.js');
+                const ticket = new Ticket({
+                    source: path.join(SOURCE_DIR, 'foo.js'),
+                    url
+                });
+                const task = new CopyFiles({
+                    name: 'oneTicket',
+                    tickets: [ticket]
+                });
 
-        it('creates the output directory if necessary', async () => {
-            const task = new CopyFiles({
-                name: 'outputDirectoryCreated',
-                destination: mockDest,
-                sourceFiles: [
-                    new FileInfo(mockSource, 'foo.txt')
-                ]
+                await task.run(context);
+
+                expect(() => stat(context, url)).not.toThrow();
             });
 
-            await task.run();
+            it('copies the source to the destination', async () => {
+                let file;
+                const url = 'foo.js';
+                const ticket = new Ticket({
+                    source: path.join(SOURCE_DIR, url),
+                    url
+                });
+                const task = new CopyFiles({
+                    name: 'copyFile',
+                    tickets: [ticket]
+                });
 
-            expect(await fs.pathExists(mockDest)).toBeTrue();
-        });
+                await task.run(context);
+                file = fs.readFileSync(path.join(OUTPUT_DIR, url), 'utf8');
 
-        it('works if the output directory already exists', async () => {
-            let error;
-            const task = new CopyFiles({
-                name: 'outputDirectoryExists',
-                destination: mockDest,
-                sourceFiles: [
-                    new FileInfo(mockSource, 'foo.txt')
-                ]
+                expect(file).toBe('foo bar baz');
             });
 
-            await fs.mkdir(mockDest);
-            try {
-                await task.run();
-            } catch (e) {
-                error = e;
-            }
+            it('saves files for multiple tickets in the right places', async () => {
+                const urls = [
+                    path.join('some', 'dir', 'foo.js'),
+                    path.join('some', 'dir', 'bar.css')
+                ];
+                const tickets = [
+                    new Ticket({
+                        source: path.join(SOURCE_DIR, 'foo.js'),
+                        url: urls[0]
+                    }),
+                    new Ticket({
+                        source: path.join(SOURCE_DIR, 'bar.css'),
+                        url: urls[1]
+                    })
+                ];
+                const task = new CopyFiles({
+                    name: 'twoTickets',
+                    tickets
+                });
 
-            expect(error).toBeUndefined();
-        });
+                await task.run(context);
 
-        it('copies one file', async () => {
-            let fooContents;
-            const task = new CopyFiles({
-                name: 'copyOneFile',
-                destination: mockDest,
-                sourceFiles: [
-                    new FileInfo(mockSource, 'foo.txt')
-                ]
+                expect(() => stat(context, urls[0])).not.toThrow();
+                expect(() => stat(context, urls[1])).not.toThrow();
             });
 
-            await task.run();
-            fooContents = fs.readFileSync(path.join(mockDest, 'foo.txt'), 'utf8');
+            it('works when tickets are passed to the constructor', async () => {
+                let file;
+                const url = 'foo.js';
+                const ticket = new Ticket({
+                    source: path.join(SOURCE_DIR, url),
+                    url
+                });
+                const task = new CopyFiles({
+                    name: 'copyFile',
+                    tickets: [ticket]
+                });
 
-            expect(fooContents).toBe('foo');
-        });
+                await task.run(context);
+                file = fs.readFileSync(path.join(OUTPUT_DIR, url), 'utf8');
 
-        it('copies multiple files', async () => {
-            let fooContents;
-            let barContents;
-            const task = new CopyFiles({
-                name: 'copyMultipleFiles',
-                destination: mockDest,
-                sourceFiles: [
-                    new FileInfo(mockSource, 'foo.txt'),
-                    new FileInfo(mockSource, 'foo/bar.txt')
-                ]
+                expect(file).toBe('foo bar baz');
             });
 
-            await task.run();
-            fooContents = fs.readFileSync(path.join(mockDest, 'foo.txt'), 'utf8');
-            barContents = fs.readFileSync(path.join(mockDest, 'foo', 'bar.txt'), 'utf8');
+            it('works when tickets are added after calling the constructor', async () => {
+                let file;
+                const url = 'foo.js';
+                const ticket = new Ticket({
+                    source: path.join(SOURCE_DIR, url),
+                    url
+                });
+                const task = new CopyFiles({
+                    name: 'copyFile'
+                });
 
-            expect(fooContents).toBe('foo');
-            expect(barContents).toBe('bar');
-        });
+                task.tickets = [ticket];
+                await task.run(context);
+                file = fs.readFileSync(path.join(OUTPUT_DIR, url), 'utf8');
 
-        it('replicates the directory layout', async () => {
-            const task = new CopyFiles({
-                name: 'copyMultipleFiles',
-                destination: mockDest,
-                sourceFiles: [
-                    new FileInfo(mockSource, 'foo.txt'),
-                    new FileInfo(mockSource, 'foo/bar.txt'),
-                    new FileInfo(mockSource, 'foo/bar/baz.txt')
-                ]
+                expect(file).toBe('foo bar baz');
             });
-
-            await task.run();
-
-            expect(await fs.pathExists(path.join(mockDest, 'foo.txt'))).toBeTrue();
-            expect(await fs.pathExists(path.join(mockDest, 'foo', 'bar.txt'))).toBeTrue();
-            expect(await fs.pathExists(path.join(mockDest, 'foo', 'bar', 'baz.txt'))).toBeTrue();
         });
     });
 });

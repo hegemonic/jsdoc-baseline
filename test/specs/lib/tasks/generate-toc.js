@@ -7,6 +7,7 @@ const helper = require('jsdoc/util/templateHelper');
 const path = require('path');
 const Template = require('../../../../lib/template');
 
+const ARGUMENT_ERROR = 'ArgumentError';
 const OUTPUT_DIR = 'out';
 const TYPE_ERROR = 'TypeError';
 
@@ -14,7 +15,10 @@ describe('lib/tasks/generate-toc', () => {
     let instance;
 
     beforeEach(() => {
-        instance = new GenerateToc({ name: 'generateToc' });
+        instance = new GenerateToc({
+            name: 'generateToc',
+            url: 'toc.js'
+        });
     });
 
     it('is a constructor', () => {
@@ -25,21 +29,21 @@ describe('lib/tasks/generate-toc', () => {
         expect(factory).not.toThrow();
     });
 
-    it('has a `url` property by default', () => {
-        expect(instance.url).toBeString();
+    it('has an undefined `url` property by default', () => {
+        expect(new GenerateToc({}).url).toBeUndefined();
     });
 
-    it('accepts new values for `url`', () => {
-        instance.url = 'foo';
-
-        expect(instance.url).toBe('foo');
-    });
-
-    it('accepts a custom `url` property', () => {
+    it('accepts a `url` property', () => {
         instance = new GenerateToc({
             name: 'customUrl',
             url: 'foo'
         });
+
+        expect(instance.url).toBe('foo');
+    });
+
+    it('accepts new values for `url`', () => {
+        instance.url = 'foo';
 
         expect(instance.url).toBe('foo');
     });
@@ -148,7 +152,20 @@ describe('lib/tasks/generate-toc', () => {
             expect(error).toBeErrorOfType(TYPE_ERROR);
         });
 
-        it('saves the output file to the default location', async () => {
+        it('fails if the `url` is missing', async () => {
+            let error;
+
+            instance.url = null;
+            try {
+                await instance.run(context);
+            } catch (e) {
+                error = e;
+            }
+
+            expect(error).toBeErrorOfType(ARGUMENT_ERROR);
+        });
+
+        it('saves the output file to the specified location', async () => {
             const url = instance.url;
             const outputPath = path.join(OUTPUT_DIR, url);
 
@@ -157,7 +174,7 @@ describe('lib/tasks/generate-toc', () => {
             expect(fs.existsSync(outputPath)).toBeTrue();
         });
 
-        it('saves the output file to another location if asked', async () => {
+        it('saves the output file to a subdirectory if asked', async () => {
             const url = instance.url = path.join('scripts', 'foo.js');
             const outputPath = path.join(OUTPUT_DIR, url);
 

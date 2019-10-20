@@ -33,6 +33,13 @@ describe('lib/ticket', () => {
         expect(ticket.name).toBe(name);
     });
 
+    it('accepts a `source` string', () => {
+        const source = 'foo.html';
+        const ticket = new Ticket({ source });
+
+        expect(ticket.source).toBe(source);
+    });
+
     it('accepts a `url` string', () => {
         const url = 'foo.html';
         const ticket = new Ticket({ url });

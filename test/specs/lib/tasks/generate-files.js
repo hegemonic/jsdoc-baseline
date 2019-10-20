@@ -7,13 +7,11 @@ const path = require('path');
 const Template = require('../../../../lib/template');
 const Ticket = require('../../../../lib/ticket');
 
-const ARGUMENT_ERROR = 'ArgumentError';
-
-const mockObj = {
-    out: {}
-};
+const OUTPUT_DIR = 'out';
+const TYPE_ERROR = 'TypeError';
 
 // Wrapper that provides explicit getters we can spy on.
+// TODO: Move to test helper.
 class TicketWrapper {
     constructor(ticket) {
         this.ticket = ticket;
@@ -25,6 +23,10 @@ class TicketWrapper {
 
     get name() {
         return this.ticket.name;
+    }
+
+    get source() {
+        return this.ticket.source;
     }
 
     get url() {
@@ -45,6 +47,22 @@ describe('lib/tasks/generate-files', () => {
         expect(factory).not.toThrow();
     });
 
+    it('accepts tickets', () => {
+        const tickets = [
+            new Ticket({
+                data: {},
+                url: 'foo.html',
+                viewName: 'layout'
+            })
+        ];
+        const task = new GenerateFiles({
+            name: 'acceptsTickets',
+            tickets
+        });
+
+        expect(task.tickets).toBe(tickets);
+    });
+
     describe('run', () => {
         let conf;
         let context;
@@ -57,12 +75,12 @@ describe('lib/tasks/generate-files', () => {
 
             conf = config.loadSync().get();
             context = {
-                destination: 'out',
+                destination: OUTPUT_DIR,
                 templateConfig: conf
             };
 
             context.template = new Template(context.templateConfig);
-            mock(mockObj);
+            mock();
         });
 
         afterEach(() => {
@@ -118,7 +136,7 @@ describe('lib/tasks/generate-files', () => {
                     error = e;
                 }
 
-                expect(error).toBeErrorOfType(ARGUMENT_ERROR);
+                expect(error).toBeErrorOfType(TYPE_ERROR);
             });
 
             it('processes one ticket', async () => {
@@ -171,8 +189,8 @@ describe('lib/tasks/generate-files', () => {
         });
 
         describe('output', () => {
-            function stat(url) {
-                return fs.statSync(path.join(context.destination, url));
+            function stat(ctx, url) {
+                return fs.statSync(path.join(ctx.destination, url));
             }
 
             it('creates the output directory as needed', async () => {
@@ -189,7 +207,7 @@ describe('lib/tasks/generate-files', () => {
 
                 await task.run(context);
 
-                expect(() => stat(url)).not.toThrow();
+                expect(() => stat(context, url)).not.toThrow();
             });
 
             it('saves files for multiple tickets in the right places', async () => {
@@ -216,8 +234,42 @@ describe('lib/tasks/generate-files', () => {
 
                 await task.run(context);
 
-                expect(() => stat(urls[0])).not.toThrow();
-                expect(() => stat(urls[1])).not.toThrow();
+                expect(() => stat(context, urls[0])).not.toThrow();
+                expect(() => stat(context, urls[1])).not.toThrow();
+            });
+
+            it('works when tickets are passed to the constructor', async () => {
+                const url = 'foo.html';
+                const ticket = new Ticket({
+                    data: {},
+                    url,
+                    viewName: 'layout'
+                });
+                const task = new GenerateFiles({
+                    name: 'generateFiles',
+                    tickets: [ticket]
+                });
+
+                await task.run(context);
+
+                expect(() => stat(context, url)).not.toThrow();
+            });
+
+            it('works when tickets are added after calling the constructor', async () => {
+                const url = 'foo.html';
+                const ticket = new Ticket({
+                    data: {},
+                    url,
+                    viewName: 'layout'
+                });
+                const task = new GenerateFiles({
+                    name: 'generateFiles'
+                });
+
+                task.tickets = [ticket];
+                await task.run(context);
+
+                expect(() => stat(context, url)).not.toThrow();
             });
 
             it('beautifies HTML output by default', async () => {
@@ -233,7 +285,7 @@ describe('lib/tasks/generate-files', () => {
                 });
 
                 await task.run(context);
-                file = fs.readFileSync(path.join('out', 'foo.html'), 'utf8');
+                file = fs.readFileSync(path.join(OUTPUT_DIR, 'foo.html'), 'utf8');
 
                 expect(file).not.toMatch(/[ ]{20}/);
             });
@@ -251,7 +303,7 @@ describe('lib/tasks/generate-files', () => {
                 });
 
                 await task.run(context);
-                file = fs.readFileSync(path.join('out', 'foo.nothtml'), 'utf8');
+                file = fs.readFileSync(path.join(OUTPUT_DIR, 'foo.nothtml'), 'utf8');
 
                 expect(file).toMatch(/[ ]{20}/);
             });
@@ -280,7 +332,7 @@ describe('lib/tasks/generate-files', () => {
                 });
 
                 await task.run(context);
-                file = fs.readFileSync(path.join('out', 'foo.html'), 'utf8');
+                file = fs.readFileSync(path.join(OUTPUT_DIR, 'foo.html'), 'utf8');
 
                 expect(file).toMatch(/[ ]{20}/);
             });
@@ -303,7 +355,7 @@ describe('lib/tasks/generate-files', () => {
                 });
 
                 await task.run(context);
-                file = fs.readFileSync(path.join('out', 'foo.html'), 'utf8');
+                file = fs.readFileSync(path.join(OUTPUT_DIR, 'foo.html'), 'utf8');
 
                 expect(file).toContain('Deprecated');
             });

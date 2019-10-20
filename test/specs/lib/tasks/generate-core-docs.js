@@ -158,8 +158,8 @@ describe('lib/tasks/generate-core-docs', () => {
                 let files;
 
                 await instance.run(context);
-                files = fs.readdirSync(OUTPUT_DIR, 'utf8').sort();
-                file = fs.readFileSync(path.join(OUTPUT_DIR, files[0]));
+                files = fs.readdirSync(OUTPUT_DIR, 'utf8').filter(f => f.match(/^foo\.[^B]/));
+                file = fs.readFileSync(path.join(OUTPUT_DIR, files[0]), 'utf8');
 
                 expect(file).toContain('symbol-name');
             });
@@ -170,7 +170,7 @@ describe('lib/tasks/generate-core-docs', () => {
 
                 await instance.run(context);
                 files = fs.readdirSync(OUTPUT_DIR, 'utf8').filter(f => f.match(/^foo\.[^B]/));
-                file = fs.readFileSync(path.join(OUTPUT_DIR, files[0]));
+                file = fs.readFileSync(path.join(OUTPUT_DIR, files[0]), 'utf8');
 
                 expect(file).toContain('foo.Bar');
             });

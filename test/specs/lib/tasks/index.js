@@ -2,7 +2,7 @@ const _ = require('lodash');
 const t = require('../../../../lib/tasks/index');
 
 const expectedTasks = [
-    'CopyFiles',
+    'CopyStaticFiles',
     'GenerateCoreDocs',
     'GenerateFiles',
     'GenerateGlobals',
