@@ -134,6 +134,22 @@ describe('lib/tasks/set-context', () => {
                 expect(context.needsOutputFile.bar).toBeUndefined();
             });
 
+            it('sets `pageTitlePrefix` correctly when there is no package', async () => {
+                await instance.run(context);
+
+                expect(context.pageTitlePrefix).toBeEmptyString();
+            });
+
+            it('sets `pageTitlePrefix` correctly when there is a package', async () => {
+                context.package = {
+                    name: 'foo',
+                    version: '5.6.7'
+                };
+                await instance.run(context);
+
+                expect(context.pageTitlePrefix).toMatch(/^foo 5\.6\.7/);
+            });
+
             it('sets `template` correctly', async () => {
                 await instance.run(context);
 
