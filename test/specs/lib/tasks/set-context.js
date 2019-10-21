@@ -93,6 +93,27 @@ describe('lib/tasks/set-context', () => {
             }
         });
 
+        describe('event listeners', () => {
+            it('adds a `listeners` property to events that have listeners', async () => {
+                const eventDoclet = {
+                    kind: 'event',
+                    longname: 'event:foo'
+                };
+                const listenerDoclet = {
+                    kind: 'function',
+                    listens: ['event:foo'],
+                    longname: 'bar'
+                };
+
+                context.doclets = db({
+                    values: [eventDoclet, listenerDoclet]
+                });
+                await instance.run(context);
+
+                expect(eventDoclet.listeners).toEqual(['bar']);
+            });
+        });
+
         describe('properties', () => {
             it('sets `allLongnames` correctly', async () => {
                 await instance.run(context);
