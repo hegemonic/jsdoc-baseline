@@ -114,6 +114,21 @@ describe('lib/tasks/set-context', () => {
             });
         });
 
+        describe('longnames', () => {
+            it('strips the variation, if present, from each longname', async () => {
+                const doclet = {
+                    longname: 'foo(2)',
+                    name: 'foo',
+                    variation: '2'
+                };
+
+                context.doclets = db({ values: [doclet] });
+                await instance.run(context);
+
+                expect(doclet.longname).toBe('foo');
+            });
+        });
+
         describe('properties', () => {
             it('sets `allLongnames` correctly', async () => {
                 await instance.run(context);
