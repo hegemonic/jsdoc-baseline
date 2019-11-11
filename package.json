@@ -55,7 +55,7 @@
     "gulp-less": "^4.0.1",
     "gulp-uglify": "^3.0.2",
     "jasmine-console-reporter": "^3.1.0",
-    "jqtree": "^1.4.11",
+    "jqtree": "^1.4.12",
     "jsdoc": "^3.6.3",
     "mock-fs": "^4.10.3",
     "requizzle": "^0.2.3"
