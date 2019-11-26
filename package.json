@@ -57,7 +57,7 @@
     "jasmine-console-reporter": "^3.1.0",
     "jqtree": "^1.4.12",
     "jsdoc": "^3.6.3",
-    "mock-fs": "^4.10.3",
+    "mock-fs": "^4.10.4",
     "requizzle": "^0.2.3"
   },
   "peerDependencies": {
