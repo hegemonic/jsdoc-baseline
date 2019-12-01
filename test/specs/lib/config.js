@@ -17,7 +17,7 @@ describe('lib/config', () => {
     const config = require('../../../lib/config');
     const env = require('jsdoc/env');
     const logger = require('jsdoc/util/logger');
-    const path = require('jsdoc/path');
+    const path = require('path');
 
     const baselineConfigPath = env.conf.templates.baseline;
     const templatePath = env.opts.template;
