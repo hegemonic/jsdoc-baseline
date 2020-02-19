@@ -27,8 +27,9 @@
   },
   "homepage": "https://github.com/hegemonic/jsdoc-baseline",
   "dependencies": {
-    "@jsdoc/core": "^0.2.2",
+    "@jsdoc/core": "^0.3.1",
     "@jsdoc/task-runner": "^0.1.6",
+    "@jsdoc/util": "^0.2.0",
     "catharsis": "^0.8.11",
     "common-path-prefix": "^3.0.0",
     "deep-extend": "^0.6.0",
@@ -41,6 +42,7 @@
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.15",
     "messageformat": "^2.3.0",
+    "ow": "^0.16.0",
     "spdx-license-list": "^6.1.0",
     "strip-json-comments": "^3.0.1"
   },
