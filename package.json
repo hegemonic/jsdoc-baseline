@@ -34,7 +34,7 @@
     "common-path-prefix": "^3.0.0",
     "deep-extend": "^0.6.0",
     "escape-string-regexp": "^2.0.0",
-    "fast-glob": "^3.2.1",
+    "fast-glob": "^3.2.2",
     "fs-extra": "^8.1.0",
     "handlebars": "^4.7.3",
     "handlebars-layouts": "^3.1.4",
