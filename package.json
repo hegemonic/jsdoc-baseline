@@ -42,7 +42,7 @@
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.15",
     "messageformat": "^2.3.0",
-    "ow": "^0.16.0",
+    "ow": "^0.17.0",
     "spdx-license-list": "^6.1.0",
     "strip-json-comments": "^3.0.1"
   },
