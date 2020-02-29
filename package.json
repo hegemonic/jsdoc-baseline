@@ -29,7 +29,7 @@
   "dependencies": {
     "@jsdoc/core": "^0.3.1",
     "@jsdoc/task-runner": "^0.1.6",
-    "@jsdoc/util": "^0.2.0",
+    "@jsdoc/util": "^0.2.1",
     "catharsis": "^0.8.11",
     "common-path-prefix": "^3.0.0",
     "deep-extend": "^0.6.0",
