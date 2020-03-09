@@ -1,14 +1,16 @@
 const mock = require('mock-fs');
 const config = require('../../../../lib/config');
+const { EventBus } = require('@jsdoc/util');
 const fs = require('fs-extra');
 const GenerateFiles = require('../../../../lib/tasks/generate-files');
-const logger = require('jsdoc/util/logger');
 const path = require('path');
 const Template = require('../../../../lib/template');
 const Ticket = require('../../../../lib/ticket');
 
 const OUTPUT_DIR = 'out';
 const TYPE_ERROR = 'TypeError';
+
+const bus = new EventBus('jsdoc');
 
 // Wrapper that provides explicit getters we can spy on.
 // TODO: Move to test helper.
@@ -66,13 +68,9 @@ describe('lib/tasks/generate-files', () => {
     describe('run', () => {
         let conf;
         let context;
-        let fatalSpy;
         let result;
 
         beforeEach(() => {
-            // Suppress logging.
-            fatalSpy = spyOn(logger, 'fatal');
-
             conf = config.loadSync().get();
             context = {
                 destination: OUTPUT_DIR,
@@ -361,6 +359,7 @@ describe('lib/tasks/generate-files', () => {
             });
 
             it('fails on unknown views', async () => {
+                let event;
                 const ticket = new Ticket({
                     data: {},
                     url: 'foo.html',
@@ -371,9 +370,13 @@ describe('lib/tasks/generate-files', () => {
                     tickets: [ticket]
                 });
 
+                bus.once('logger:fatal', e => {
+                    event = e;
+                });
+
                 await task.run(context);
 
-                expect(fatalSpy).toHaveBeenCalled();
+                expect(event).toBeDefined();
             });
         });
     });

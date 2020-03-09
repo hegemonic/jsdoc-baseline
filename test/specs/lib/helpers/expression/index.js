@@ -14,13 +14,14 @@
     limitations under the License.
 */
 describe('lib/helpers/expression', () => {
-    let expression;
     const env = require('jsdoc/env');
+    const { EventBus } = require('@jsdoc/util');
     const handlebars = require('handlebars');
     const SafeString = handlebars.SafeString;
     const templateHelper = require('jsdoc/util/templateHelper');
+    const expression = require('../../../../../lib/helpers/expression');
 
-    expression = require('../../../../../lib/helpers/expression');
+    const bus = new EventBus('jsdoc');
 
     it('should export a function', () => {
         expect(typeof expression).toBe('function');
@@ -259,16 +260,17 @@ describe('lib/helpers/expression', () => {
 
         describe('debug', () => {
             it('should log the JSON-stringified arguments at level DEBUG', () => {
-                const logger = require('jsdoc/util/logger');
+                let event;
 
-                spyOn(logger, 'debug');
+                bus.once('logger:debug', e => {
+                    event = e;
+                });
 
                 instance.debug('foo', {
                     bar: 'baz'
                 }, { /* fake options object */ });
 
-                expect(logger.debug).toHaveBeenCalled();
-                expect(logger.debug).toHaveBeenCalledWith('foo {"bar":"baz"}');
+                expect(event).toBe('foo {"bar":"baz"}');
             });
         });
 

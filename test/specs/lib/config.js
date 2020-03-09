@@ -14,12 +14,13 @@
     limitations under the License.
 */
 describe('lib/config', () => {
+    const { EventBus } = require('@jsdoc/util');
     const config = require('../../../lib/config');
     const env = require('jsdoc/env');
-    const logger = require('jsdoc/util/logger');
     const path = require('path');
 
     const baselineConfigPath = env.conf.templates.baseline;
+    const bus = new EventBus('jsdoc');
     const templatePath = env.opts.template;
 
     afterEach(() => {
@@ -109,25 +110,34 @@ describe('lib/config', () => {
         });
 
         it('should set default values even if the config file is missing', () => {
-            spyOn(logger, 'fatal');
+            let event;
 
             env.conf.templates.baseline = path.resolve(__dirname, '/not/a/real/path');
 
+            bus.once('logger:fatal', e => {
+                event = e;
+            });
             config.loadSync();
 
-            expect(logger.fatal).toHaveBeenCalled();
+            expect(event).toBeDefined();
             expect(Object.keys(config.get()).length).not.toBe(0);
         });
 
         it('should work with JSON files that contain comments', () => {
-            spyOn(logger, 'fatal');
+            let event;
+
+            function listener(e) {
+                event = e;
+            }
 
             env.conf.templates.baseline = path.resolve(__dirname,
                 '../../fixtures/comments.json');
 
+            bus.on('logger:fatal', listener);
             config.loadSync();
+            bus.off('logger:fatal', listener);
 
-            expect(logger.fatal).not.toHaveBeenCalled();
+            expect(event).toBeUndefined();
             expect(config.get('foo')).toBe('bar');
         });
 
@@ -151,10 +161,6 @@ describe('lib/config', () => {
     });
 
     describe('readJsonSync', () => {
-        beforeEach(() => {
-            spyOn(logger, 'fatal');
-        });
-
         it('should be able to read a JSON file with comments', () => {
             function readJson() {
                 return config.readJsonSync(path.resolve(__dirname, '../../fixtures/comments.json'));
@@ -162,7 +168,6 @@ describe('lib/config', () => {
 
             expect(readJson).not.toThrow();
             expect(readJson().foo).toBe('bar');
-            expect(logger.fatal).not.toHaveBeenCalled();
         });
 
         it('should log a fatal error if there is an exception', () => {
@@ -171,7 +176,6 @@ describe('lib/config', () => {
             }
 
             expect(readJson).not.toThrow();
-            expect(logger.fatal).toHaveBeenCalled();
         });
 
         it('should return nothing if no path is specified', () => {
