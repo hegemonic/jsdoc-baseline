@@ -36,7 +36,7 @@
     "escape-string-regexp": "^2.0.0",
     "fast-glob": "^3.2.2",
     "fs-extra": "^9.0.0",
-    "handlebars": "^4.7.4",
+    "handlebars": "^4.7.5",
     "handlebars-layouts": "^3.1.4",
     "js-beautify": "^1.10.3",
     "js-yaml": "^3.13.1",
