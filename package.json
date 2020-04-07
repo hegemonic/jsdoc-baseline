@@ -33,7 +33,7 @@
     "catharsis": "^0.8.11",
     "common-path-prefix": "^3.0.0",
     "deep-extend": "^0.6.0",
-    "escape-string-regexp": "^2.0.0",
+    "escape-string-regexp": "^3.0.0",
     "fast-glob": "^3.2.2",
     "fs-extra": "^9.0.0",
     "handlebars": "^4.7.6",
