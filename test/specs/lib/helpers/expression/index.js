@@ -669,10 +669,6 @@ describe('lib/helpers/expression', () => {
             });
         });
 
-        xdescribe('linkToTutorial', () => {
-            // TODO
-        });
-
         xdescribe('linkWithSignature', () => {
             // TODO
         });

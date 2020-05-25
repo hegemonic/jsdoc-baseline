@@ -50,10 +50,6 @@ describe('publish', () => {
             // TODO
         });
 
-        xit('generates docs for tutorials if necessary', () => {
-            // TODO
-        });
-
         xit('generates output files for doclets that get their own output file', () => {
             // TODO
         });

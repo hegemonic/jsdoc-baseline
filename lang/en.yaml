@@ -137,10 +137,6 @@ headings:
             other {Sources}}
     throws: 'Throws'
     todo: 'To do'
-    tutorials: |
-        {items, plural,
-            =1 {Tutorial}
-            other {Tutorials}}
     type: 'Type'
     typedefs: |
         {items, plural,
