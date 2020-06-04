@@ -35,7 +35,7 @@
     "deep-extend": "^0.6.0",
     "escape-string-regexp": "^4.0.0",
     "fast-glob": "^3.2.2",
-    "fs-extra": "^9.0.0",
+    "fs-extra": "^9.0.1",
     "handlebars": "^4.7.6",
     "handlebars-layouts": "^3.1.4",
     "js-beautify": "^1.11.0",
