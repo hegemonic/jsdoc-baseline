@@ -61,7 +61,7 @@ jsdoc --configure <path/to/conf.json> --template <path/to/baseline> <path/to/js-
 
 ## Legal stuff
 
-Copyright 2014-2019 Google LLC. Licensed under the Apache License, Version 2.0.
+Copyright 2014-2020 Google LLC. Licensed under the Apache License, Version 2.0.
 
 See [LICENSE.md][license] for more information.
 
