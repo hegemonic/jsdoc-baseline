@@ -50,13 +50,18 @@ describe('lib/tasks/generate-index', () => {
             doclets: db({ values: doclets }),
             globals: db({ values: [] }),
             pageTitlePrefix: '',
-            readme: '<p>test</p>',
+            readme: 'fixtures/readme.md',
             template: new Template(templateConfig),
             templateConfig
         };
-        instance = new GenerateIndex({ name: 'generateIndex '});
+        instance = new GenerateIndex({
+            name: 'generateIndex',
+            url: 'index.html'
+        });
 
-        mock();
+        mock({
+            'fixtures/readme.md': 'Hello, world!'
+        });
     });
 
     afterEach(() => {
@@ -109,7 +114,7 @@ describe('lib/tasks/generate-index', () => {
             await instance.run(context);
             file = fs.readFileSync(path.join(OUTPUT_DIR, instance.url), 'utf8');
 
-            expect(file).toContain(context.readme);
+            expect(file).toContain('Hello, world!');
         });
 
         it('includes all of the longnames in the generated file', async () => {
@@ -121,6 +126,17 @@ describe('lib/tasks/generate-index', () => {
             for (const doclet of doclets) {
                 expect(file).toContain(doclet.longname);
             }
+        });
+
+        describe('readme', () => {
+            it('includes the README file, converted to HTML', async () => {
+                let file;
+
+                await instance.run(context);
+                file = fs.readFileSync(path.join(OUTPUT_DIR, instance.url), 'utf8');
+
+                expect(file).toContain('<p>Hello, world!</p>');
+            });
         });
 
         describe('title', () => {

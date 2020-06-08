@@ -256,6 +256,15 @@ describe('lib/tasks/set-context', () => {
                 expect(context.pageTitlePrefix).toMatch(/^foo 5\.6\.7/);
             });
 
+            it('sets `readme` correctly', async () => {
+                const filepath = '/foo/bar/README.md';
+
+                context.config.opts.readme = filepath;
+                await instance.run(context);
+
+                expect(context.readme).toBe(filepath);
+            });
+
             it('sets `template` correctly', async () => {
                 await instance.run(context);
 
