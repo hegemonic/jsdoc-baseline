@@ -20,34 +20,34 @@
 {{~#if symbol.kind~}}
     {{~#contains 'class' 'module' 'namespace' value=symbol.kind~}}
     {{~else~}}
-        {{~#embed 'symbol-labels'}}{{/embed~}}
+        {{> symbol-labels}}
     {{~/contains~}}
 {{~/if~}}
 {{~#unless symbol.hideconstructor~}}
     <h id="{{id symbol}}">
         {{~#with symbol~}}
-            {{~#embed 'constructor-prefix'}}{{/embed~}}
+            {{~> constructor-prefix~}}
             <span {{~cssClass '!symbol-name'}}>{{name}}</span>
-            {{~#embed 'signature'}}{{/embed~}}
+            {{~> signature~}}
         {{~/with~}}
     </h>
 {{~/unless}}
 {{#with symbol}}
     {{#unless (config 'sourceFiles.singleLink')}}
         {{#unless hideconstructor}}
-            {{#embed 'source-file'}}{{/embed}}
+            {{> source-file}}
         {{/unless}}
     {{/unless}}
     {{#unless hideconstructor}}
-        {{#embed 'description'}}{{/embed}}
-        {{#embed 'examples'}}{{/embed}}
-        {{#embed 'params'}}{{/embed}}
-        {{#embed 'properties'}}{{/embed}}
+        {{> description}}
+        {{> examples}}
+        {{> params}}
+        {{> properties}}
     {{/unless}}
 
     {{#unless hideconstructor}}
         <dl {{~cssClass '!dl-compact'}}>
-            {{#embed 'details'}}{{/embed}}
+            {{> details}}
         </dl>
     {{/unless}}
 {{/with}}

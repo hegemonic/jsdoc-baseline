@@ -13,11 +13,12 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 --}}
-{{#extend 'symbol'}}
-    {{#content 'title'}}
+{{#> symbol}}
+    {{#*inline 'block-title'}}
         <title>{{{pageTitle}}}</title>
-    {{/content}}
-    {{#content 'body-main-symbol-overview' mode='prepend'}}
+    {{/inline}}
+
+    {{#*inline 'block-symbol-overview-heading'}}
         <h {{~cssClass 'page-title'}}>{{pageHeading}}</h>
-    {{/content}}
-{{/extend}}
+    {{/inline}}
+{{/symbol}}

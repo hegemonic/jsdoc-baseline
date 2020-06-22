@@ -15,83 +15,81 @@
 --}}
 <!doctype html>
 <html>
-    {{#block 'head'}}
+    {{#> block-head}}
         <head>
-            {{#block 'meta'}}
+            {{#> block-meta}}
                 <meta name="generator" content="JSDoc {{jsdocVersion}}">
                 <meta charset="{{config 'encoding'}}">
                 {{!-- TODO: anything else to include by default? Maybe viewport scale? --}}
-            {{/block}}
-            {{#block 'title'}}
+            {{/block-meta}}
+            {{#> block-title}}
                 <title>{{translatePageTitle pageTitlePrefix pageTitle pageCategory}}</title>
-            {{/block}}
-            {{#block 'css'}}
+            {{/block-title}}
+            {{#> block-css}}
                 {{!-- TODO: https://github.com/typekit/webfontloader --}}
                 {{!-- TODO: add fonts to repo (with option to copy those or use webfontloader) --}}
                 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata:400,700|Karla:400,400i,700,700i|Noto+Serif:400,400i,700,700i&display=swap&subset=latin-ext">
                 {{!-- TODO: use relative path to CSS file --}}
                 <link rel="stylesheet" href="css/baseline.css">
-            {{/block}}
+            {{/block-css}}
         </head>
-    {{/block}}
-    {{#block 'body'}}
+    {{/block-head}}
+    {{#> block-body}}
         {{!-- TODO: move onload to script file --}}
         <body onload="prettyPrint()">
-            {{#block 'body-navbar'}}
-                {{#embed 'navbar'}}{{/embed}}
-            {{/block}}
-            {{#block 'body-container'}}
+            {{#> block-body-navbar}}
+                {{> navbar}}
+            {{/block-body-navbar}}
+            {{#> block-body-container}}
                 <div id="jsdoc-body-container">
-                    {{#block 'body-content'}}
+                    {{#> block-body-content}}
                         <div id="jsdoc-content">
-                            {{#block 'body-content-container'}}
+                            {{#> block-body-content-container}}
                                 <div id="jsdoc-content-container">
-                                    {{#block 'body-banner'}}
+                                    {{#> block-body-banner}}
                                         <div id="jsdoc-banner" role="banner">
-                                            {{#block 'body-banner-content'}}
+                                            {{#> block-body-banner-content}}
                                                 {{!--
-                                                    Override the `body-banner-content` block
-                                                    to add content.
+                                                    Use an inline partial to add content.
                                                 --}}
-                                            {{/block}}
+                                            {{/block-body-banner-content}}
                                         </div>
-                                    {{/block}}
-                                    {{#block 'body-main'}}
+                                    {{/block-body-banner}}
+                                    {{#> block-body-main}}
                                         <div id="jsdoc-main" role="main">
-                                            {{#block 'body-main-content'}}
+                                            {{#> block-body-main-content}}
                                                 {{!--
-                                                    Override the `body-main-content` block
-                                                    to add content.
+                                                    Use an inline partial to add content.
                                                 --}}
-                                            {{/block}}
+                                            {{/block-body-main-content}}
                                         </div>
-                                    {{/block}}
+                                    {{/block-body-main}}
                                 </div>
-                            {{/block}}
-                            {{#block 'body-toc-navbar'}}
-                                {{!-- content is inserted on page load --}}
+                            {{/block-body-content-container}}
+                            {{#> block-body-toc-navbar}}
+                                {{!-- Content is inserted on page load. --}}
                                 <nav id="jsdoc-toc-nav" role="navigation"></nav>
-                            {{/block}}
+                            {{/block-body-toc-navbar}}
                         </div>
-                    {{/block}}
+                    {{/block-body-content}}
                 </div>
-            {{/block}}
-            {{#block 'body-footer'}}
+            {{/block-body-container}}
+            {{#> block-body-footer}}
                 {{#if (config 'components.footer')}}
                     <footer id="jsdoc-footer" {{~cssClass '!jsdoc-footer'}}>
-                        {{#block 'body-footer-container'}}
+                        {{#> block-body-footer-container}}
                             <div id="jsdoc-footer-container">
-                                {{#block 'body-footer-content'}}
+                                {{#> block-body-footer-content}}
                                     <p>
                                       {{generatedBy}}
                                     </p>
-                                {{/block}}
+                                {{/block-body-footer-content}}
                             </div>
-                        {{/block}}
+                        {{/block-body-footer-container}}
                     </footer>
                 {{/if}}
-            {{/block}}
-            {{#block 'body-scripts'}}
+            {{/block-body-footer}}
+            {{#> block-body-scripts}}
                 {{!-- TODO: combine JS for JSDoc-only files --}}
                 {{!-- TODO: fix up path relative to current output directory --}}
                 <script src="scripts/jquery.min.js"></script>
@@ -100,7 +98,7 @@
                 <script src="scripts/jsdoc-toc.js"></script>
                 <script src="scripts/linenumber.js"></script>
                 <script src="scripts/scrollanchor.js"></script>
-            {{/block}}
+            {{/block-body-scripts}}
         </body>
-    {{/block}}
+    {{/block-body}}
 </html>

@@ -37,7 +37,6 @@
     "fast-glob": "^3.2.4",
     "fs-extra": "^9.0.1",
     "handlebars": "^4.7.6",
-    "handlebars-layouts": "^3.1.4",
     "js-beautify": "^1.11.0",
     "js-yaml": "^3.14.0",
     "lodash": "^4.17.15",

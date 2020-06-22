@@ -14,25 +14,26 @@
     limitations under the License.
 --}}
 <table {{~cssClass '!jsdoc-details-table'}}>
-    {{#block 'details-table-header'}}
+    {{#> block-details-table-header}}
         <thead>
             <tr>
                 <th>{{translate 'tables.header.name'}}</th>
                 <th>{{translate 'tables.header.type'}}</th>
                 {{!--
-                    TODO: make it possible to collapse this column if there are no optional values.
-                    do that by default, but provide a pref to always show the column.
+                    TODO: Make it possible to collapse this column if there are no optional values.
+                    Do that by default, but provide a pref to always show the column.
                 --}}
                 <th>{{translate 'tables.header.optional'}}</th>
                 <th>{{translate 'tables.header.description'}}</th>
             </tr>
         </thead>
-    {{/block}}
-    {{#block 'details-table-body'}}
+    {{/block-details-table-header}}
+
+    {{#> block-details-table-body}}
         <tbody>
             {{#each values}}
-                {{#embed 'details-table-row' isEnum=../isEnum}}{{/embed}}
+                {{> details-table-row isEnum=../isEnum}}
             {{/each}}
         </tbody>
-    {{/block}}
+    {{/block-details-table-body}}
 </table>

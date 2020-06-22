@@ -14,25 +14,26 @@
     limitations under the License.
 --}}
 <header {{~cssClass '!page-header'}}>
-    {{#block 'symbol-header-heading'}}
-        {{~#withOnly symbol=this~}}
-            {{~#embed 'symbol-labels'}}{{/embed~}}
-        {{/withOnly~}}
+    {{#> block-symbol-header-heading}}
+        {{> symbol-labels symbol=this}}
         <h>
             {{~#isnt longname memberof}}<small>{{ancestors longname}}</small>{{/isnt~}}
             <span {{~cssClass '!symbol-name'}}>{{name}}</span></h>
-    {{~/block}}
-    {{#block 'symbol-header-source'~}}
-        {{~#embed 'source-file'}}{{/embed~}}
-    {{~/block}}
-    {{#block 'symbol-header-classdesc'}}
+    {{/block-symbol-header-heading}}
+
+    {{#> block-symbol-header-source}}
+        {{> source-file}}
+    {{/block-symbol-header-source}}
+
+    {{#> block-symbol-header-classdesc}}
         {{#if classdesc}}
             <div {{~cssClass '!symbol-classdesc'}}>
                 {{#markdown}}{{resolveLinks classdesc}}{{/markdown}}
             </div>
         {{/if}}
-    {{/block}}
-    {{#block 'symbol-header-description'}}
+    {{/block-symbol-header-classdesc}}
+
+    {{#> block-symbol-header-description}}
         {{!--
             We don't put a description here for classes, or for namespaces that are also
             functions.
@@ -41,37 +42,40 @@
             {{#is kind 'namespace'}}
                 {{#unless (needsSignature this)}}
                     <div {{~cssClass '!symbol-description'}}>
-                        {{#embed 'description'}}{{/embed}}
+                        {{> description}}
                     </div>
                 {{/unless}}
             {{else}}
                 <div {{~cssClass '!symbol-description'}}>
-                    {{#embed 'description'}}{{/embed}}
+                    {{> description}}
                 </div>
             {{/is}}
         {{/isnt}}
-    {{/block}}
-    {{#block 'symbol-header-examples'}}
+    {{/block-symbol-header-description}}
+
+    {{#> block-symbol-header-examples}}
         {{#isnt kind 'class'}}
-            {{#embed 'examples'}}{{/embed}}
+            {{> examples}}
         {{/isnt}}
-    {{/block}}
-    {{#block 'symbol-header-details'}}
+    {{/block-symbol-header-examples}}
+
+    {{#> block-symbol-header-details}}
         <dl {{~cssClass '!dl-compact'}}>
-            {{#embed 'implements'}}{{/embed}}
-            {{#embed 'implementations'}}{{/embed}}
-            {{#embed 'mixes'}}{{/embed}}
+            {{> implements}}
+            {{> implementations}}
+            {{> mixes}}
         </dl>
-    {{/block}}
-    {{#block 'symbol-header-class-details'}}
+    {{/block-symbol-header-details}}
+
+    {{#> block-symbol-header-class-details}}
         {{!--
-            For classes where we're not displaying the constructor, we show the details here, above the
-            summary blocks.
+            For classes where we're not displaying the constructor, we show the details here, above
+            the summary blocks.
         --}}
         {{#if hideconstructor}}
             <dl {{~cssClass '!dl-compact'}}>
-                {{#embed 'details'}}{{/embed}}
+                {{> details}}
             </dl>
         {{/if}}
-    {{/block}}
+    {{/block-symbol-header-class-details}}
 </header>

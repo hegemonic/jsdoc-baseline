@@ -17,9 +17,7 @@
     <h>{{translateHeading headingKey items}}</h>
     <section>
         {{#each items}}
-            {{#withOnly symbol=this}}
-                {{#embed 'symbol-detail'}}{{/embed}}
-            {{/withOnly}}
+            {{> symbol-detail symbol=this}}
         {{/each}}
     </section>
 {{/any}}

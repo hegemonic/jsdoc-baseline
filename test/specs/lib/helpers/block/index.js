@@ -316,16 +316,5 @@ describe('lib/helpers/block', () => {
                     '(http://www.folklore.org/StoryView.py?story=Mister_Macintosh.txt)</p>');
             });
         });
-
-        describe('withOnly', () => {
-            it('should create a context with the options hash values as properties', () => {
-                const options = makeOptions({
-                    test: 'foo'
-                }, ({test}) => test);
-                const text = instance.withOnly(options);
-
-                expect(text).toBe('foo');
-            });
-        });
     });
 });

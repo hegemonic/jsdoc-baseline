@@ -14,45 +14,32 @@
     limitations under the License.
 --}}
 <section>
-    {{#block 'symbol-content-classes'}}
-        {{#withOnly items=members.classes headingKey='classes'}}
-            {{#embed 'members-links'}}{{/embed}}
-        {{/withOnly}}
-    {{/block}}
+    {{!-- TODO: Ensure order stays in sync with `summary-blocks.hbs`. --}}
+    {{#> block-symbol-content-classes}}
+        {{> members-links items=members.classes headingKey='classes'}}
+    {{/block-symbol-content-classes}}
 
-    {{#block 'symbol-content-interfaces'}}
-        {{#withOnly items=members.interfaces headingKey='interfaces'}}
-            {{#embed 'members-links'}}{{/embed}}
-        {{/withOnly}}
-    {{/block}}
+    {{#> block-symbol-content-interfaces}}
+        {{> members-links items=members.interfaces headingKey='interfaces'}}
+    {{/block-symbol-content-interfaces}}
 
-    {{#block 'symbol-content-namespaces'}}
-        {{#withOnly items=members.namespaces headingKey='namespaces'}}
-            {{#embed 'members-links'}}{{/embed}}
-        {{/withOnly}}
-    {{/block}}
+    {{#> block-symbol-content-namespaces}}
+        {{> members-links items=members.namespaces headingKey='namespaces'}}
+    {{/block-symbol-content-namespaces}}
 
-    {{#block 'symbol-content-properties'}}
-        {{#withOnly items=members.properties headingKey='properties'}}
-            {{#embed 'members-details'}}{{/embed}}
-        {{/withOnly}}
-    {{/block}}
+    {{#> block-symbol-content-properties}}
+        {{> members-details items=members.properties headingKey='properties'}}
+    {{/block-symbol-content-properties}}
 
-    {{#block 'symbol-content-methods'}}
-        {{#withOnly items=members.functions headingKey='functions'}}
-            {{#embed 'members-details'}}{{/embed}}
-        {{/withOnly}}
-    {{/block}}
+    {{#> block-symbol-content-methods}}
+        {{> members-details items=members.functions headingKey='functions'}}
+    {{/block-symbol-content-methods}}
 
-    {{#block 'symbol-content-typedefs'}}
-        {{#withOnly items=members.typedefs headingKey='typedefs'}}
-            {{#embed 'members-details'}}{{/embed}}
-        {{/withOnly}}
-    {{/block}}
+    {{#> block-symbol-content-typedefs}}
+        {{> members-details items=members.typedefs headingKey='typedefs'}}
+    {{/block-symbol-content-typedefs}}
 
-    {{#block 'symbol-content-events'}}
-        {{#withOnly items=members.events headingKey='events'}}
-            {{#embed 'members-details'}}{{/embed}}
-        {{/withOnly}}
-    {{/block}}
+    {{#> block-symbol-content-events}}
+        {{> members-details items=members.events headingKey='events'}}
+    {{/block-symbol-content-events}}
 </section>

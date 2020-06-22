@@ -18,11 +18,8 @@
         <dl {{~cssClass '!dl-summary-callout'}}>
             {{#each summaryGroup}}
                 <dt>{{linkWithSignature this}}</dt>
-                {{!-- Always include <dd> tag, which is required for validity --}}
                 <dd>
-                    {{#if summary}}
-                        {{#embed 'summary'}}{{/embed}}
-                    {{/if}}
+                    {{> summary}}
                 </dd>
             {{/each}}
         </dl>

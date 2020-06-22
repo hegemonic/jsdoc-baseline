@@ -20,9 +20,7 @@
         {{/if}}
         <div {{~cssClass '!summary-content'}}>
             {{#each (group items 3)}}
-                {{#withOnly summaryGroup=this}}
-                    {{#embed 'summary-block-column'}}{{/embed}}
-                {{/withOnly}}
+                {{> summary-block-column summaryGroup=this}}
             {{/each}}
         </div>
     </div>

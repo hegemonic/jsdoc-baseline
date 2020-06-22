@@ -14,12 +14,13 @@
     limitations under the License.
 --}}
 <tr>
-    {{#block 'details-table-name'}}
+    {{#> block-details-table-name}}
         <td {{~cssClass 'details-table-name'}}>
             <p>{{#if name}}{{name}}{{else}}{{translate 'tables.notApplicable'}}{{/if}}</p>
         </td>
-    {{/block}}
-    {{#block 'details-table-types'}}
+    {{/block-details-table-name}}
+
+    {{#> block-details-table-types}}
         <td {{~cssClass 'details-table-types'}}>
             {{#all type type.parsedType}}
                 <p>{{describeType type.parsedType 'extended'}}</p>
@@ -27,9 +28,10 @@
                 <p>&nbsp;</p>
             {{/all}}
         </td>
-    {{/block}}
-    {{#block 'details-table-optional'}}
-        {{!-- TODO: make it possible to collapse this column, and do so by default --}}
+    {{/block-details-table-types}}
+
+    {{#> block-details-table-optional}}
+        {{!-- TODO: Make it possible to collapse this column, and do so by default. --}}
         <td {{~cssClass 'details-table-optional'}}>
             {{#if optional}}
                 <p>{{translate 'tables.body.isOptional'}}</p>
@@ -37,8 +39,9 @@
                 <p>{{translate 'tables.body.isRequired'}}</p>
             {{/if}}
         </td>
-    {{/block}}
-    {{#block 'details-table-description'}}
+    {{/block-details-table-optional}}
+
+    {{#> block-details-table-description}}
         <td {{~cssClass 'details-table-description'}}>
             {{#if description}}
                 {{#markdown}}{{resolveLinks description}}{{/markdown}}
@@ -48,10 +51,8 @@
             {{/if}}
             {{#if children}}
                 <p>{{translate 'tables.body.eachValueHasProperties' name=name}}</p>
-                {{#withOnly values=children}}
-                    {{#embed 'details-table'}}{{/embed}}
-                {{/withOnly}}
+                {{> details-table values=children}}
             {{/if}}
         </td>
-    {{/block}}
+    {{/block-details-table-description}}
 </tr>

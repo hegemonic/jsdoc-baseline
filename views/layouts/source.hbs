@@ -13,17 +13,18 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 --}}
-{{#extend 'layout'}}
-    {{#content 'body-main-content'}}
-        {{#block 'body-main-source-heading'}}
+{{#> layout}}
+    {{#*inline 'block-body-main-content'}}
+        {{#> block-source-heading}}
             <header {{~cssClass '!page-header'}}>
                 <h {{~cssClass 'page-title'}}>{{translatePageTitle '' pageTitle 'sources'}}</h>
             </header>
-        {{/block}}
-        {{#block 'body-main-source-content'}}
+        {{/block-source-heading}}
+
+        {{#> block-source-content}}
             <article>
                 <pre {{~cssClass '!prettyprint' '!linenums' 'source'}}><code>{{docs}}</code></pre>
             </article>
-        {{/block}}
-    {{/content}}
-{{/extend}}
+        {{/block-source-content}}
+    {{/inline}}
+{{/layout}}

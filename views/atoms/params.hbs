@@ -16,8 +16,6 @@
 {{#any params}}
     <section>
         <h>{{translateHeading 'parameters' params}}</h>
-        {{#withOnly values=(reparentItems this 'params')}}
-            {{#embed 'details-table'}}{{/embed}}
-        {{/withOnly}}
+        {{> details-table values=(reparentItems this 'params')}}
     </section>
 {{/any}}

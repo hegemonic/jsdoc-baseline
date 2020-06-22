@@ -13,22 +13,26 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 --}}
-{{#extend 'layout'}}
-    {{#content 'title'}}
+{{#> layout}}
+    {{#*inline 'block-title'}}
         <title>{{{pageTitle}}}</title>
-    {{/content}}
-    {{#content 'body-banner-content'}}
-        {{!-- TODO --}}
-    {{/content}}
-    {{#content 'body-main-content'}}
-        {{#block 'body-package-title'}}
-            {{#embed 'package-title'}}{{/embed}}
-        {{/block}}
-        {{#block 'body-readme'}}
-            {{#embed 'readme'}}{{/embed}}
-        {{/block}}
-        {{#block 'body-symbol-index'}}
-            {{#embed 'symbol-index'}}{{/embed}}
-        {{/block}}
-    {{/content}}
-{{/extend}}
+    {{/inline}}
+
+    {{#*inline 'block-body-banner-content'}}
+    {{/inline}}
+
+    {{#*inline 'block-body-main-content'}}
+        {{#> block-package-title}}
+            {{> package-title}}
+        {{/block-package-title}}
+
+        {{! If we don't trim whitespace here, <pre> blocks end up with extra whitespace.}}
+        {{~#> block-readme~}}
+            {{~> readme~}}
+        {{~/block-readme~}}
+
+        {{#> block-symbol-index}}
+            {{> symbol-index}}
+        {{/block-symbol-index}}
+    {{/inline}}
+{{/layout}}

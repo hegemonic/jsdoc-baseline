@@ -14,62 +14,46 @@
     limitations under the License.
 --}}
 {{#if (config 'components.summary')}}
-    {{!-- TODO: register this ID with a helper so we don't repeat it --}}
+    {{!-- TODO: Register this ID with a helper so we don't repeat it. --}}
     <section id="summary">
         {{!--
-            Either constructors (for a class) or symbols exported by the module (for a module)
+            Either constructors (for a class) or symbols exported by the module (for a module).
 
             TODO:
-            + this doesn't appear to be showing up in the generated docs
-            + if all the constructors are tagged with `hideconstructor`, we should hide this
-              section
+            + This doesn't appear to be showing up in the generated docs.
+            + If all the constructors are tagged with `hideconstructor`, we should hide this
+              section.
         --}}
-        {{#block 'summary-classes-exports'}}
-            {{#withOnly items=headingDocs headingKey=headingKey}}
-                {{#embed 'summary-block'}}{{/embed}}
-            {{/withOnly}}
-        {{/block}}
+        {{#> block-summary-classes-exports}}
+            {{> summary-block items=headingDocs headingKey=headingKey}}
+        {{/block-summary-classes-exports}}
 
-        {{#block 'summary-child-classes'}}
-            {{#withOnly items=members.classes headingKey='childClasses'}}
-                {{#embed 'summary-block'}}{{/embed}}
-            {{/withOnly}}
-        {{/block}}
+        {{#> block-summary-child-classes}}
+            {{> summary-block items=members.classes headingKey='childClasses'}}
+        {{/block-summary-child-classes}}
 
-        {{#block 'summary-child-interfaces'}}
-            {{#withOnly items=members.interfaces headingKey='childInterfaces'}}
-                {{#embed 'summary-block'}}{{/embed}}
-            {{/withOnly}}
-        {{/block}}
+        {{#> block-summary-child-interfaces}}
+            {{> summary-block items=members.interfaces headingKey='childInterfaces'}}
+        {{/block-summary-child-interfaces}}
 
-        {{#block 'summary-namespaces'}}
-            {{#withOnly items=members.namespaces headingKey='namespaces'}}
-                {{#embed 'summary-block'}}{{/embed}}
-            {{/withOnly}}
-        {{/block}}
+        {{#> block-summary-namespaces}}
+            {{> summary-block items=members.namespaces headingKey='namespaces'}}
+        {{/block-summary-namespaces}}
 
-        {{#block 'summary-properties'}}
-            {{#withOnly items=members.properties headingKey='properties'}}
-                {{#embed 'summary-block'}}{{/embed}}
-            {{/withOnly}}
-        {{/block}}
+        {{#> block-summary-properties}}
+            {{> summary-block items=members.properties headingKey='properties'}}
+        {{/block-summary-properties}}
 
-        {{#block 'summary-functions'}}
-            {{#withOnly items=members.functions headingKey='functions'}}
-                {{#embed 'summary-block'}}{{/embed}}
-            {{/withOnly}}
-        {{/block}}
+        {{#> block-summary-methods}}
+            {{> summary-block items=members.functions headingKey='functions'}}
+        {{/block-summary-methods}}
 
-        {{#block 'summary-typedefs'}}
-            {{#withOnly items=members.typedefs headingKey='typedefs'}}
-                {{#embed 'summary-block'}}{{/embed}}
-            {{/withOnly}}
-        {{/block}}
+        {{#> block-summary-typedefs}}
+            {{> summary-block items=members.typedefs headingKey='typedefs'}}
+        {{/block-summary-typedefs}}
 
-        {{#block 'summary-events'}}
-            {{#withOnly items=members.events headingKey='events'}}
-                {{#embed 'summary-block'}}{{/embed}}
-            {{/withOnly}}
-        {{/block}}
+        {{#> block-summary-events}}
+            {{> summary-block items=members.events headingKey='events'}}
+        {{/block-summary-events}}
     </section>
 {{/if}}

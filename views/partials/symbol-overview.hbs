@@ -15,11 +15,11 @@
 --}}
 {{#any docs}}
     {{#first docs}}
-        {{#embed 'symbol-header'}}{{/embed}}
+        {{> symbol-header}}
     {{/first}}
 {{/any}}
 
-{{#embed 'summary-blocks'}}{{/embed}}
+{{> summary-blocks}}
 
 {{#each docs}}
     {{#if @first}}
@@ -41,36 +41,28 @@
     {{#is kind 'module'}}
         {{#if exports}}
             {{#each exports}}
-                {{#withOnly symbol=this}}
-                    <section>
-                        {{#embed 'symbol-detail'}}{{/embed}}
-                    </section>
-                {{/withOnly}}
+                <section>
+                    {{> symbol-detail symbol=this}}
+                </section>
             {{/each}}
         {{/if}}
     {{!-- Classes also need additional information in the overview. --}}
     {{else is kind 'class'}}
         <section>
-            {{#withOnly symbol=this}}
-                {{#embed 'symbol-detail'}}{{/embed}}
-            {{/withOnly}}
+            {{> symbol-detail symbol=this}}
         </section>
     {{!-- Externals also need additional information in the overview. --}}
     {{else is kind 'external'}}
         <section>
-            {{#with this}}
-                <dl {{~cssClass '!dl-compact'}}>
-                    {{#embed 'details'}}{{/embed}}
-                </dl>
-            {{/with}}
+            <dl {{~cssClass '!dl-compact'}}>
+                {{> details}}
+            </dl>
         </section>
     {{!-- Namespaces that are functions also need additional information in the overview. --}}
     {{else is kind 'namespace'}}
         {{#if (needsSignature this)}}
             <section>
-                {{#withOnly symbol=this}}
-                    {{#embed 'symbol-detail'}}{{/embed}}
-                {{/withOnly}}
+                {{> symbol-detail symbol=this}}
             </section>
         {{/if}}
     {{/is}}

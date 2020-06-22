@@ -21,7 +21,7 @@
         </h>
         {{#each examples}}
             {{#with (example this)}}
-                {{#embed 'example'}}{{/embed}}
+                {{> example}}
             {{/with}}
         {{/each}}
     </section>
