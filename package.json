@@ -39,7 +39,7 @@
     "handlebars": "^4.7.6",
     "js-beautify": "^1.11.0",
     "js-yaml": "^3.14.0",
-    "lodash": "^4.17.17",
+    "lodash": "^4.17.19",
     "markdown-it": "^11.0.0",
     "markdown-it-anchor": "^5.3.0",
     "messageformat": "^2.3.0",
