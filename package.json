@@ -28,7 +28,7 @@
   "homepage": "https://github.com/hegemonic/jsdoc-baseline",
   "dependencies": {
     "@jsdoc/core": "^0.3.2",
-    "@jsdoc/task-runner": "^0.1.7",
+    "@jsdoc/task-runner": "^0.1.8",
     "@jsdoc/util": "^0.2.1",
     "catharsis": "^0.9.0",
     "common-path-prefix": "^3.0.0",
