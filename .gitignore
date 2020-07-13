@@ -3,8 +3,9 @@ npm-debug.log
 node_modules
 
 # Development files
-coverage/
+.nyc_output/
 .vscode/
+coverage/
 
 # Dotfile detritus
 .DS_Store

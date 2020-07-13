@@ -4,6 +4,7 @@
   "description": "A basic template for JSDoc.",
   "main": "publish.js",
   "scripts": {
+    "coverage": "nyc gulp jasmine && nyc report --reporter=html",
     "test": "gulp test"
   },
   "repository": {
@@ -63,6 +64,7 @@
     "jqtree": "^1.4.12",
     "jsdoc": "^3.6.4",
     "mock-fs": "^4.12.0",
+    "nyc": "^15.1.0",
     "requizzle": "^0.2.3"
   },
   "peerDependencies": {
