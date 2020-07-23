@@ -62,13 +62,13 @@
     "gulp-uglify": "^3.0.2",
     "jasmine-console-reporter": "^3.1.0",
     "jqtree": "^1.4.12",
-    "jsdoc": "^3.6.4",
+    "jsdoc": "^3.6.5",
     "mock-fs": "^4.12.0",
     "nyc": "^15.1.0",
     "requizzle": "^0.2.3"
   },
   "peerDependencies": {
-    "jsdoc": "^3.6.4"
+    "jsdoc": "^3.6.5"
   },
   "engines": {
     "node": ">=10.18.0"
