@@ -53,7 +53,7 @@
     "@jsdoc/test-matchers": "^0.1.4",
     "bootstrap": "^3.3.7",
     "code-prettify": "^0.1.0",
-    "eslint": "^7.9.0",
+    "eslint": "^7.10.0",
     "gulp": "^4.0.2",
     "gulp-csso": "^4.0.1",
     "gulp-eslint": "^6.0.0",
