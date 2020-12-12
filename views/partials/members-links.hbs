@@ -17,7 +17,7 @@
     <h>{{translateHeading headingKey items}}</h>
     <section id='members-links'>
         {{#each items}}
-            <h>{{link longname name}}</h>
+            <h>{{link longname name monospace=false}}</h>
             {{> summary}}
             {{sourceFile}}
         {{/each}}

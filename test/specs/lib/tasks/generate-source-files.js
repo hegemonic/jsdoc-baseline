@@ -37,6 +37,10 @@ describe('lib/tasks/generate-source-files', () => {
                 template: new Template(conf),
                 templateConfig: conf
             };
+            context.linkManager = context.template.linkManager;
+            Object.keys(context.sourceFiles).forEach(
+                sourceFile => context.linkManager.requestFilename(sourceFile)
+            );
 
             mock(mockObj);
         });
@@ -93,14 +97,14 @@ describe('lib/tasks/generate-source-files', () => {
                 await task.run(context);
 
                 try {
-                    fooFile = findOutputFile('foo.js');
+                    fooFile = findOutputFile('foo-js');
                     fs.statSync(path.join(OUTPUT_DIR, fooFile));
                 } catch (e) {
                     fooError = e;
                 }
 
                 try {
-                    barFile = findOutputFile('bar.js');
+                    barFile = findOutputFile('bar-js');
                     fs.statSync(path.join(OUTPUT_DIR, barFile));
                 } catch (e) {
                     barError = e;
@@ -133,7 +137,7 @@ describe('lib/tasks/generate-source-files', () => {
 
                 await task.run(context);
 
-                fileName = findOutputFile('foo.js');
+                fileName = findOutputFile('foo-js');
                 file = fs.readFileSync(path.join(OUTPUT_DIR, fileName), 'utf8');
 
                 expect(file).toMatch(/<pre [^>]+><code>exports.foo/);
@@ -146,7 +150,7 @@ describe('lib/tasks/generate-source-files', () => {
 
                 await task.run(context);
 
-                fileName = findOutputFile('bar.js');
+                fileName = findOutputFile('bar-js');
                 file = fs.readFileSync(path.join(OUTPUT_DIR, fileName), 'utf8');
 
                 expect(file).toContain('2 &lt; 3');
@@ -159,7 +163,7 @@ describe('lib/tasks/generate-source-files', () => {
 
                 await task.run(context);
 
-                fileName = findOutputFile('foo.js');
+                fileName = findOutputFile('foo-js');
                 file = fs.readFileSync(path.join(OUTPUT_DIR, fileName), 'utf8');
 
                 expect(file).toMatch(/foo.js<\/title>/);
@@ -172,7 +176,7 @@ describe('lib/tasks/generate-source-files', () => {
 
                 await task.run(context);
 
-                fileName = findOutputFile('foo.js');
+                fileName = findOutputFile('foo-js');
                 file = fs.readFileSync(path.join(OUTPUT_DIR, fileName), 'utf8');
 
                 expect(file).toContain('<title>Source');
@@ -186,7 +190,7 @@ describe('lib/tasks/generate-source-files', () => {
                 context.pageTitlePrefix = 'Hello';
                 await task.run(context);
 
-                fileName = findOutputFile('foo.js');
+                fileName = findOutputFile('foo-js');
                 file = fs.readFileSync(path.join(OUTPUT_DIR, fileName), 'utf8');
 
                 expect(file).toContain('<title>Hello');

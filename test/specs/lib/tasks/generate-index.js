@@ -3,7 +3,7 @@ const config = require('../../../../lib/config');
 const { db } = require('../../../../lib/db');
 const fs = require('fs-extra');
 const GenerateIndex = require('../../../../lib/tasks/generate-index');
-const helper = require('jsdoc/util/templateHelper');
+const { name } = require('@jsdoc/core');
 const path = require('path');
 const Template = require('../../../../lib/template');
 
@@ -24,10 +24,9 @@ describe('lib/tasks/generate-index', () => {
             name: 'Bar'
         }
     ];
+    let indexFilename;
     let instance;
     let templateConfig;
-
-    helper.registerLink('index', helper.getUniqueFilename('index'));
 
     beforeEach(() => {
         templateConfig = config.loadSync().get();
@@ -37,7 +36,7 @@ describe('lib/tasks/generate-index', () => {
             }
         };
         context = {
-            allLongnamesTree: helper.longnamesToTree(
+            allLongnamesTree: name.longnamesToTree(
                 doclets.map(d => d.longname),
                 doclets.reduce((obj, d) => {
                     obj[d.longname] = d;
@@ -54,9 +53,11 @@ describe('lib/tasks/generate-index', () => {
             template: new Template(templateConfig),
             templateConfig
         };
+        context.linkManager = context.template.linkManager;
+        indexFilename = context.linkManager.getUniqueFilename('index');
         instance = new GenerateIndex({
             name: 'generateIndex',
-            url: 'index.html'
+            url: indexFilename
         });
 
         mock({

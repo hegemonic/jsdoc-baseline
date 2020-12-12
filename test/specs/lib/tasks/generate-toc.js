@@ -3,7 +3,7 @@ const config = require('../../../../lib/config');
 const { db } = require('../../../../lib/db');
 const fs = require('fs-extra');
 const GenerateToc = require('../../../../lib/tasks/generate-toc');
-const helper = require('jsdoc/util/templateHelper');
+const { name } = require('@jsdoc/core');
 const path = require('path');
 const Template = require('../../../../lib/template');
 
@@ -90,7 +90,7 @@ describe('lib/tasks/generate-toc', () => {
                 name: 'Bar'
             }
         ];
-        const navTree = helper.longnamesToTree(nonGlobals.map(d => d.longname));
+        const navTree = name.longnamesToTree(nonGlobals.map(d => d.longname));
         const templateConfig = config.loadSync().get();
         const template = new Template(templateConfig);
 
@@ -105,6 +105,7 @@ describe('lib/tasks/generate-toc', () => {
                 template,
                 templateConfig
             };
+            context.linkManager = context.template.linkManager;
 
             mock();
         });
@@ -192,8 +193,8 @@ describe('lib/tasks/generate-toc', () => {
             await instance.run(context);
             file = fs.readFileSync(outputPath, 'utf8');
 
-            for (const name of names) {
-                expect(file).toContain(name);
+            for (const docletName of names) {
+                expect(file).toContain(docletName);
             }
         });
 

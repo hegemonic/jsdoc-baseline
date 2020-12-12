@@ -3,7 +3,6 @@ const config = require('../../../../lib/config');
 const { db } = require('../../../../lib/db');
 const fs = require('fs-extra');
 const GenerateCoreDocs = require('../../../../lib/tasks/generate-core-docs');
-const helper = require('jsdoc/util/templateHelper');
 const { KIND_TO_CATEGORY, OUTPUT_FILE_CATEGORIES } = require('../../../../lib/enums');
 const path = require('path');
 const Template = require('../../../../lib/template');
@@ -47,10 +46,6 @@ describe('lib/tasks/generate-core-docs', () => {
         let instance;
         let templateConfig;
 
-        for (const d of allDoclets) {
-            helper.registerLink(d.longname, helper.createLink(d));
-        }
-
         beforeEach(() => {
             doclets = allDoclets.slice();
             templateConfig = config.loadSync().get();
@@ -82,6 +77,10 @@ describe('lib/tasks/generate-core-docs', () => {
                 template: new Template(templateConfig),
                 templateConfig
             };
+            context.linkManager = context.template.linkManager;
+            for (const d of allDoclets) {
+                context.linkManager.registerDoclet(d);
+            }
             instance = new GenerateCoreDocs({ name: 'generateCoreDocs' });
 
             mock();
@@ -118,9 +117,9 @@ describe('lib/tasks/generate-core-docs', () => {
                 files = fs.readdirSync(OUTPUT_DIR).sort();
 
                 expect(files.length).toBe(2);
-                expect(files[0]).toMatch(/^foo\.Bar/);
+                expect(files[0]).toMatch(/^foo-bar/);
                 expect(files[1]).toMatch(/^foo/);
-                expect(files[1]).not.toMatch(/^foo\.Bar/);
+                expect(files[1]).not.toMatch(/^foo-bar/);
             });
 
             it('does not generate output if a module has the same longname', async () => {
@@ -142,13 +141,13 @@ describe('lib/tasks/generate-core-docs', () => {
 
                 context.doclets = db({ values });
                 context.needsOutputFile[longname] = true;
-                helper.registerLink(longname, helper.createLink(newDoclets[0]));
+                context.linkManager.registerDoclet(newDoclets[0]);
 
                 await instance.run(context);
                 files = fs.readdirSync(OUTPUT_DIR, 'utf8').sort();
 
                 expect(files.length).toBe(3);
-                expect(files[0]).toMatch(/^foo\.Bar/);
+                expect(files[0]).toMatch(/^foo-bar/);
                 expect(files[1]).toMatch(/^foo/);
                 expect(files[2]).toMatch(/^module-baz/);
             });
@@ -172,7 +171,7 @@ describe('lib/tasks/generate-core-docs', () => {
                 files = fs.readdirSync(OUTPUT_DIR, 'utf8').filter(f => f.match(/^foo\.[^B]/));
                 file = fs.readFileSync(path.join(OUTPUT_DIR, files[0]), 'utf8');
 
-                expect(file).toContain('foo.Bar');
+                expect(file).toContain('foo-bar');
             });
 
             describe('title', () => {

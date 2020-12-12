@@ -1,6 +1,5 @@
 const config = require('../../../../lib/config');
 const { db } = require('../../../../lib/db');
-const helper = require('jsdoc/util/templateHelper');
 const SetContext = require('../../../../lib/tasks/set-context');
 const Template = require('../../../../lib/template');
 
@@ -11,11 +10,13 @@ describe('lib/tasks/set-context', () => {
     const fakeDoclets = [
         {
             kind: 'class',
-            longname: 'Foo'
+            longname: 'Foo',
+            name: 'Foo'
         },
         {
             kind: 'function',
             longname: 'bar',
+            name: 'bar',
             scope: 'global'
         }
     ];
@@ -89,7 +90,7 @@ describe('lib/tasks/set-context', () => {
             await instance.run(context);
 
             for (const doclet of fakeDoclets) {
-                expect(helper.longnameToUrl[doclet.longname]).toBeString();
+                expect(context.linkManager.getUri(doclet.longname)).toBeString();
             }
         });
 
@@ -97,12 +98,14 @@ describe('lib/tasks/set-context', () => {
             it('adds a `listeners` property to events that have listeners', async () => {
                 const eventDoclet = {
                     kind: 'event',
-                    longname: 'event:foo'
+                    longname: 'event:foo',
+                    name: 'event:foo'
                 };
                 const listenerDoclet = {
                     kind: 'function',
                     listens: ['event:foo'],
-                    longname: 'bar'
+                    longname: 'bar',
+                    name: 'bar'
                 };
 
                 context.doclets = db({
@@ -117,6 +120,7 @@ describe('lib/tasks/set-context', () => {
         describe('longnames', () => {
             it('strips the variation, if present, from each longname', async () => {
                 const doclet = {
+                    kind: 'function',
                     longname: 'foo(2)',
                     name: 'foo',
                     variation: '2'

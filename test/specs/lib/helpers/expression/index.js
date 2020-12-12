@@ -18,7 +18,6 @@ describe('lib/helpers/expression', () => {
     const { EventBus } = require('@jsdoc/util');
     const handlebars = require('handlebars');
     const SafeString = handlebars.SafeString;
-    const templateHelper = require('jsdoc/util/templateHelper');
     const expression = require('../../../../../lib/helpers/expression');
 
     const bus = new EventBus('jsdoc');
@@ -35,8 +34,13 @@ describe('lib/helpers/expression', () => {
 
     describe('helpers', () => {
         // TODO: use a dummy template instance that pulls L10N strings from fixtures/
+        let instance;
         const template = helpers.template;
-        const instance = expression(template);
+        const linkManager = template.linkManager;
+
+        beforeEach(() => {
+            instance = expression(template);
+        });
 
         describe('_decrementHeading', () => {
             beforeEach(() => {
@@ -109,27 +113,15 @@ describe('lib/helpers/expression', () => {
         });
 
         describe('ancestors', () => {
-            const fakeLinks = [
-                {
-                    longname: 'module:foo',
-                    url: 'module-foo.html'
-                },
-                {
-                    longname: 'module:foo/bar',
-                    url: 'module-foo_bar.html'
-                },
-                {
-                    longname: 'module:foo/bar.Baz',
-                    url: 'module-foo_bar.Baz.html'
-                },
-                {
-                    longname: 'module:foo/bar.Baz#qux',
-                    url: 'module-foo_bar.Baz.html#qux'
-                }
+            const fakeLongnames = [
+                'module:foo',
+                'module:foo/bar',
+                'module:foo/bar.Baz',
+                'module:foo/bar.Baz#qux'
             ];
 
-            fakeLinks.forEach(({longname, url}) => {
-                templateHelper.registerLink(longname, url);
+            fakeLongnames.forEach(longname => {
+                linkManager.requestFilename(longname);
             });
 
             it('should link to ancestors when no CSS class is specified', () => {
@@ -137,10 +129,10 @@ describe('lib/helpers/expression', () => {
 
                 expect(ancestors).toBeInstanceOf(SafeString);
                 expect(ancestors.toString()).toBe([
-                    '<a href="module-foo_bar.html">foo/<wbr>bar</a>',
-                    '.<wbr>',
-                    '<a href="module-foo_bar.Baz.html">Baz</a>',
-                    '#<wbr>'
+                    '<a href="module-foo-bar.html">foo/<wbr />bar</a>',
+                    '.<wbr />',
+                    '<a href="module-foo-bar-baz.html">Baz</a>',
+                    '#<wbr />'
                 ].join(''));
             });
 
@@ -149,8 +141,8 @@ describe('lib/helpers/expression', () => {
 
                 expect(ancestors).toBeInstanceOf(SafeString);
                 expect(ancestors.toString()).toBe([
-                    '<a href="module-foo_bar.html" class="frozzle">foo/<wbr>bar</a>',
-                    '.<wbr>'
+                    '<a href="module-foo-bar.html" class="frozzle">foo/<wbr />bar</a>',
+                    '.<wbr />'
                 ].join(''));
             });
 
@@ -570,8 +562,8 @@ describe('lib/helpers/expression', () => {
         });
 
         describe('licenseLink', () => {
-            it('should return a URL if a valid license ID is specified', () => {
-                expect(instance.licenseLink('MIT')).toContain('http://');
+            it('should return a link if a valid license ID is specified', () => {
+                expect(instance.licenseLink('MIT')).toContain('https://');
             });
 
             it('should return the license ID if no link is found', () => {
@@ -596,14 +588,6 @@ describe('lib/helpers/expression', () => {
                 expect(makeLink).not.toThrow();
             });
 
-            it('should not blow up if only three parameters are provided', () => {
-                function makeLink() {
-                    return instance.link('foo', 'bar', 'baz');
-                }
-
-                expect(makeLink).not.toThrow();
-            });
-
             it('should not blow up when a non-string value is passed in', () => {
                 function makeLink() {
                     return instance.link(true);
@@ -614,14 +598,42 @@ describe('lib/helpers/expression', () => {
                 expect(makeLink().toString()).toBe('');
             });
 
-            it('should include the requested link text, link class, and fragment ID', () => {
+            it('should include the requested link text', () => {
                 let link;
 
-                templateHelper.registerLink('linkExpressionHelper', 'foo.html');
-                link = instance.link('linkExpressionHelper', 'helpful!', 'classy', 'bar');
+                linkManager.requestFilename('foo');
+                link = instance.link('foo', 'helpful!');
 
                 expect(link).toBeInstanceOf(SafeString);
-                expect(link.toString()).toBe('<a href="foo.html#bar" class="classy">helpful!</a>');
+                expect(link.toString()).toBe('<a href="foo.html">helpful!</a>');
+            });
+
+            it('should allow you to force a link to use a fixed-width font', () => {
+                const uri = 'https://example.com/';
+                const defaultLink = instance.link(uri);
+                const monospaceLink = instance.link(uri, {
+                    hash: {
+                        monospace: true
+                    }
+                });
+
+                // First, make sure we're actually overriding the default behavior.
+                expect(defaultLink.toString()).not.toBe(monospaceLink.toString());
+
+                expect(monospaceLink).toBeInstanceOf(SafeString);
+                expect(monospaceLink.toString()).toContain('<code>');
+            });
+
+            it('should ignore a `monospace` argument that is not a boolean', () => {
+                const uri = 'https://example.com/';
+                const fakeMonospaceLink = instance.link(uri, {
+                    hash: {
+                        monospace: 17
+                    }
+                });
+
+                expect(fakeMonospaceLink).toBeInstanceOf(SafeString);
+                expect(fakeMonospaceLink.toString()).not.toContain('<code>');
             });
         });
 
@@ -635,14 +647,14 @@ describe('lib/helpers/expression', () => {
                 shortpath: 'glitch.js'
             };
 
-            templateHelper.registerLink('glitch.js', 'glitch.js.html');
+            linkManager.requestFilename('glitch.js');
 
             it('should work when a CSS class is specified', () => {
                 const link = instance.linkToLine(fakeDocletMeta, 'foo');
 
                 expect(link).toBeInstanceOf(SafeString);
                 expect(link.toString()).toBe(
-                    '<a href="glitch.js.html#source-line-70" class="foo">glitch.<wbr>js:70</a>'
+                    '<a href="glitch-js.html#source-line-70" class="foo">glitch.<wbr />js:70</a>'
                 );
             });
 
@@ -651,7 +663,7 @@ describe('lib/helpers/expression', () => {
 
                 expect(link).toBeInstanceOf(SafeString);
                 expect(link.toString()).toBe(
-                    '<a href="glitch.js.html#source-line-70">glitch.<wbr>js:70</a>'
+                    '<a href="glitch-js.html#source-line-70">glitch.<wbr />js:70</a>'
                 );
             });
 
@@ -664,7 +676,7 @@ describe('lib/helpers/expression', () => {
 
                 expect(link).toBeInstanceOf(SafeString);
                 expect(link.toString()).toBe(
-                    '<a href="glitch.js.html">glitch.<wbr>js</a>'
+                    '<a href="glitch-js.html">glitch.<wbr />js</a>'
                 );
             });
         });
@@ -1117,8 +1129,40 @@ describe('lib/helpers/expression', () => {
             });
         });
 
-        xdescribe('resolveAuthorLinks', () => {
-            // TODO
+        describe('resolveAuthorLinks', () => {
+            it('does not crash if no input is specified', () => {
+                function resolve() {
+                    instance.resolveAuthorLinks();
+                }
+
+                expect(resolve).not.toThrow();
+            });
+
+            it('should convert email addresses in angle brackets to mailto: links', () => {
+                const str = ' John Doe  <asdf.fdsa-2@gmail.com> ';
+                const out = instance.resolveAuthorLinks(str);
+
+                expect(out).toBeInstanceOf(SafeString);
+                expect(out.toString()).toBe('<a href="mailto:asdf.fdsa-2@gmail.com">John Doe</a>');
+            });
+
+            it('should escape author names when necessary', () => {
+                const str = ' John<Doe  <asdf.fdsa-2@gmail.com> ';
+                const out = instance.resolveAuthorLinks(str);
+
+                expect(out).toBeInstanceOf(SafeString);
+                expect(out.toString()).toBe(
+                    '<a href="mailto:asdf.fdsa-2@gmail.com">John&lt;Doe</a>'
+                );
+            });
+
+            it('should escape and return the input string if no email address is found', () => {
+                const str = 'John Doe <dummy>';
+                const out = instance.resolveAuthorLinks(str);
+
+                expect(out).toBeInstanceOf(SafeString);
+                expect(out.toString()).toBe('John Doe &lt;dummy&gt;');
+            });
         });
 
         xdescribe('resolveLinks', () => {
@@ -1308,11 +1352,11 @@ describe('lib/helpers/expression', () => {
             it('should return the URL for the specified longname', () => {
                 let url;
 
-                templateHelper.registerLink('urlExpressionHelper', 'urlexpressionhelper.html');
+                linkManager.requestFilename('urlExpressionHelper');
                 url = instance.url('urlExpressionHelper');
 
                 expect(url).toBeInstanceOf(SafeString);
-                expect(url.toString()).toBe('urlexpressionhelper.html');
+                expect(url.toString()).toBe('url-expression-helper.html');
             });
 
             it('should return an empty string if the specified longname is unknown', () => {

@@ -3,7 +3,6 @@ const config = require('../../../../lib/config');
 const { db } = require('../../../../lib/db');
 const fs = require('fs-extra');
 const GenerateGlobals = require('../../../../lib/tasks/generate-globals');
-const helper = require('jsdoc/util/templateHelper');
 const path = require('path');
 const Template = require('../../../../lib/template');
 
@@ -56,8 +55,6 @@ describe('lib/tasks/generate-globals', () => {
     let instance;
     let templateConfig;
 
-    helper.registerLink('global', helper.getUniqueFilename('global'));
-
     beforeEach(() => {
         templateConfig = config.loadSync().get();
         conf = {
@@ -76,7 +73,10 @@ describe('lib/tasks/generate-globals', () => {
             template: new Template(templateConfig),
             templateConfig
         };
+        context.linkManager = context.template.linkManager;
         instance = new GenerateGlobals({ name: 'generateGlobals' });
+
+        context.linkManager.getUniqueFilename('global');
 
         mock();
     });
