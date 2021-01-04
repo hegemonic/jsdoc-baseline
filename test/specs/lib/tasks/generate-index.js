@@ -1,6 +1,7 @@
 const mock = require('mock-fs');
-const config = require('../../../../lib/config');
+const _ = require('lodash');
 const { db } = require('../../../../lib/db');
+const { defaultConfig } = require('../../../../lib/config');
 const fs = require('fs-extra');
 const GenerateIndex = require('../../../../lib/tasks/generate-index');
 const { name } = require('@jsdoc/core');
@@ -26,10 +27,8 @@ describe('lib/tasks/generate-index', () => {
     ];
     let indexFilename;
     let instance;
-    let templateConfig;
 
     beforeEach(() => {
-        templateConfig = config.loadSync().get();
         conf = {
             opts: {
                 access: ['undefined']
@@ -50,8 +49,8 @@ describe('lib/tasks/generate-index', () => {
             globals: db({ values: [] }),
             pageTitlePrefix: '',
             readme: 'fixtures/readme.md',
-            template: new Template(templateConfig),
-            templateConfig
+            template: new Template(defaultConfig),
+            templateConfig: defaultConfig
         };
         context.linkManager = context.template.linkManager;
         indexFilename = context.linkManager.getUniqueFilename('index');
@@ -60,9 +59,9 @@ describe('lib/tasks/generate-index', () => {
             url: indexFilename
         });
 
-        mock({
+        mock(_.defaults({}, helpers.baseViews, {
             'fixtures/readme.md': 'Hello, world!'
-        });
+        }));
     });
 
     afterEach(() => {

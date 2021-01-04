@@ -1,6 +1,6 @@
 const mock = require('mock-fs');
-const config = require('../../../../lib/config');
 const { db } = require('../../../../lib/db');
+const { defaultConfig } = require('../../../../lib/config');
 const fs = require('fs-extra');
 const GenerateGlobals = require('../../../../lib/tasks/generate-globals');
 const path = require('path');
@@ -53,10 +53,8 @@ describe('lib/tasks/generate-globals', () => {
         }
     ];
     let instance;
-    let templateConfig;
 
     beforeEach(() => {
-        templateConfig = config.loadSync().get();
         conf = {
             opts: {
                 access: ['undefined']
@@ -70,15 +68,15 @@ describe('lib/tasks/generate-globals', () => {
                 values: globals
             }),
             pageTitlePrefix: '',
-            template: new Template(templateConfig),
-            templateConfig
+            template: new Template(defaultConfig),
+            templateConfig: defaultConfig
         };
         context.linkManager = context.template.linkManager;
         instance = new GenerateGlobals({ name: 'generateGlobals' });
 
         context.linkManager.getUniqueFilename('global');
 
-        mock();
+        mock(helpers.baseViews);
     });
 
     afterEach(() => {

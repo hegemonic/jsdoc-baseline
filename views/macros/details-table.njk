@@ -1,0 +1,97 @@
+{#
+    Copyright 2014-2020 Google LLC
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        https://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+#}
+{% macro detailsTableName(name) %}
+  <td {{- '!details-table-name' | cssClass }}>
+    <p>
+      {%- if name -%}
+        {{ name }}
+      {%- else -%}
+        {{ 'tables.notApplicable' | translate }}
+      {%- endif -%}
+    </p>
+  </td>
+{% endmacro %}
+
+{% macro detailsTableTypes(type) %}
+  <td {{- '!details-table-types' | cssClass }}>
+    {% if type and type.parsedType %}
+      <p>{{ type.parsedType | describeType('extended') }}</p>
+    {% else %}
+      <p>&nbsp;</p>
+    {% endif %}
+  </td>
+{% endmacro %}
+
+{% macro detailsTableOptional(optional) %}
+  {# TODO: Make it possible to collapse this column, and do so by default. #}
+  <td {{- '!details-table-optional' | cssClass}}>
+    {% if optional %}
+      <p>{{ 'tables.body.isOptional' | translate }}</p>
+    {% else %}
+      <p>{{ 'tables.body.isRequired' | translate }}</p>
+    {% endif %}
+  </td>
+{% endmacro %}
+
+{% macro detailsTableDescription(value, isEnum) %}
+  <td {{- '!details-table-description' | cssClass }}>
+    {% if value.description %}
+      {{ value.description | markdown | resolveLinks }}
+    {% endif %}
+    {% if value | hasModifiers(isEnum) %}
+      <p>{{ value | modifierText(isEnum) }}</p>
+    {% endif %}
+    {% if value.children %}
+      <p>{{ 'tables.body.eachValueHasProperties' | translate(1, name=value.name) }}</p>
+      {{ detailsTable(value.children) }}
+    {% endif %}
+  </td>
+{% endmacro %}
+
+{% macro detailsTableRow(value, isEnum) %}
+  <tr>
+    {{ detailsTableName(value.name) }}
+    {{ detailsTableTypes(value.type) }}
+    {{ detailsTableOptional(value.optional) }}
+    {{ detailsTableDescription(value, isEnum) }}
+  </tr>
+{% endmacro %}
+
+{#
+  This table must be implemented as a macro so that it can be called recursively, without shadowing
+  or overwriting variables in a parent scope.
+#}
+{% macro detailsTable(values, isEnum) %}
+  <table {{- '!jsdoc-details-table' | cssClass }}>
+    <thead>
+      <tr>
+        <th>{{ 'tables.header.name' | translate }}</th>
+        <th>{{ 'tables.header.type' | translate }}</th>
+        {#
+          TODO: Make it possible to collapse this column if there are no optional values.
+          Do that by default, with a pref to always show the column.
+        #}
+        <th>{{ 'tables.header.optional' | translate }}</th>
+        <th>{{ 'tables.header.description' | translate }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for value in values %}
+        {{ detailsTableRow(value, isEnum) }}
+      {% endfor %}
+    </tbody>
+  </table>
+{% endmacro %}

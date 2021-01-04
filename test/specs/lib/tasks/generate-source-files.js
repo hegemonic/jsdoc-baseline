@@ -1,15 +1,16 @@
 const mock = require('mock-fs');
-const config = require('../../../../lib/config');
+const _ = require('lodash');
+const { defaultConfig } = require('../../../../lib/config');
 const fs = require('fs-extra');
 const GenerateSourceFiles = require('../../../../lib/tasks/generate-source-files');
 const path = require('path');
 const Template = require('../../../../lib/template');
 
-const mockObj = {
+const mockObj = _.defaults({}, helpers.baseViews, {
     'foo.js': 'exports.foo = 1;',
     'bar.js': 'exports.bar = () => 2 < 3;',
     out: {}
-};
+});
 const OUTPUT_DIR = 'out';
 
 describe('lib/tasks/generate-source-files', () => {
@@ -22,11 +23,9 @@ describe('lib/tasks/generate-source-files', () => {
     });
 
     describe('run', () => {
-        let conf;
         let context;
 
         beforeEach(() => {
-            conf = config.loadSync().get();
             context = {
                 destination: OUTPUT_DIR,
                 pageTitlePrefix: '',
@@ -34,8 +33,8 @@ describe('lib/tasks/generate-source-files', () => {
                     'foo.js': 'foo.js',
                     'bar.js': 'bar.js'
                 },
-                template: new Template(conf),
-                templateConfig: conf
+                template: new Template(defaultConfig),
+                templateConfig: defaultConfig
             };
             context.linkManager = context.template.linkManager;
             Object.keys(context.sourceFiles).forEach(

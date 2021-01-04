@@ -17,19 +17,19 @@ describe('main layout', () => {
     // TODO: more tests
 
     describe('footer', () => {
-        it('should include a footer by default', () => {
-            const text = helpers.render('layout', {});
+        it('includes a footer by default', () => {
+            const text = helpers.render('layout.njk', {});
 
             expect(text).toContain('<footer');
         });
 
-        it('should omit the footer when necessary', () => {
+        it('omits the footer when necessary', () => {
             const template = helpers.createTemplate({
                 components: {
                     footer: false
                 }
             });
-            const text = template.render('layout', {});
+            const text = template.render('layout.njk', {});
 
             expect(text).not.toContain('<footer');
         });

@@ -55,7 +55,7 @@ describe('lib/markdown', () => {
                 '```';
             const convertedText = '' +
                 '<pre class="prettyprint source lang-html"><code>' +
-                '&lt;p>&lt;a href=&quot;#&quot;>Sample \'HTML.\'&lt;/a>&lt;/p>\n' +
+                '&lt;p&gt;&lt;a href=&quot;#&quot;&gt;Sample \'HTML.\'&lt;/a&gt;&lt;/p&gt;\n' +
                 '</code></pre>';
 
             expect(parser(markdownText)).toBe(convertedText);

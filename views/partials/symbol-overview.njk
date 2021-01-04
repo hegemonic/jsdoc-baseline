@@ -1,0 +1,74 @@
+{#
+    Copyright 2014-2020 Google LLC
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        https://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+#}
+{% if docs %}
+  {% set item = docs[0] %}
+  {% include 'symbol-header.njk' %}
+{% endif %}
+
+{% include 'summary-blocks.njk' %}
+
+{% for doc in docs %}
+  {% block first %}
+    {% if loop.first %}
+      {% if pageCategory == 'classes' or doc.exports %}<section>{% endif %}
+      {# Everything except classes gets a heading that indicates what we're about to list. #}
+      {% if pageCategory != 'classes' and doc.exports %}
+        <h>{{ 'headings.exports' | translate(docs) }}</h>
+      {% endif %}
+    {% endif %}
+  {% endblock %}
+
+  {% block details %}
+    {#
+      If a module exports only one symbol, document the symbol in the overview, because it's not a
+      member of anything else.
+    #}
+    {% if doc.kind == 'module' %}
+      {% if doc.exports %}
+        {% for item in exports %}
+          <section>
+            {% include 'symbol-detail.njk' %}
+          </section>
+        {% endfor %}
+      {% endif %}
+    {# Classes get extra information. #}
+    {% elif doc.kind == 'class' %}
+      <section>
+        {% set item = doc %}
+        {% include 'symbol-detail.njk' %}
+      </section>
+    {# Externals get extra information. #}
+    {% elif doc.kind == 'external' %}
+      <section>
+        {% set item = doc %}
+        <dl {{- '!dl-compact' | cssClass }}>
+          {% include 'details.njk' %}
+        </dl>
+      </section>
+    {# Namespaces that are functions get extra information. #}
+    {% elif doc.kind == 'namespace' and doc | needsSignature %}
+      <section>
+        {% set item = doc %}
+        {% include 'symbol-detail.njk' %}
+    {% endif %}
+  {% endblock %}
+
+  {% block last %}
+    {% if loop.last %}
+      {% if pageCategory == 'classes' or doc.exports %}</section>{% endif %}
+    {% endif %}
+  {% endblock %}
+{% endfor %}

@@ -1,6 +1,6 @@
 const mock = require('mock-fs');
-const config = require('../../../../lib/config');
-const { EventBus } = require('@jsdoc/util');
+const _ = require('lodash');
+const { defaultConfig } = require('../../../../lib/config');
 const fs = require('fs-extra');
 const GenerateFiles = require('../../../../lib/tasks/generate-files');
 const path = require('path');
@@ -10,7 +10,11 @@ const Ticket = require('../../../../lib/ticket');
 const OUTPUT_DIR = 'out';
 const TYPE_ERROR = 'TypeError';
 
-const bus = new EventBus('jsdoc');
+function rethrower(e) {
+    return () => {
+        throw e;
+    };
+}
 
 // Wrapper that provides explicit getters we can spy on.
 // TODO: Move to test helper.
@@ -54,7 +58,7 @@ describe('lib/tasks/generate-files', () => {
             new Ticket({
                 data: {},
                 url: 'foo.html',
-                viewName: 'layout'
+                viewName: 'layout.njk'
             })
         ];
         const task = new GenerateFiles({
@@ -66,19 +70,17 @@ describe('lib/tasks/generate-files', () => {
     });
 
     describe('run', () => {
-        let conf;
         let context;
         let result;
 
         beforeEach(() => {
-            conf = config.loadSync().get();
             context = {
                 destination: OUTPUT_DIR,
-                templateConfig: conf
+                templateConfig: defaultConfig
             };
 
             context.template = new Template(context.templateConfig);
-            mock();
+            mock(helpers.baseViews);
         });
 
         afterEach(() => {
@@ -142,7 +144,7 @@ describe('lib/tasks/generate-files', () => {
                     new Ticket({
                         data: {},
                         url: 'foo.html',
-                        viewName: 'deprecated'
+                        viewName: 'deprecated.njk'
                     })
                 ];
                 const wrappers = tickets.map(ticket => new TicketWrapper(ticket));
@@ -162,12 +164,12 @@ describe('lib/tasks/generate-files', () => {
                     new Ticket({
                         data: {},
                         url: 'foo.html',
-                        viewName: 'deprecated'
+                        viewName: 'deprecated.njk'
                     }),
                     new Ticket({
                         data: {},
                         url: 'bar.html',
-                        viewName: 'copyright'
+                        viewName: 'copyright.njk'
                     })
                 ];
                 const wrappers = tickets.map(ticket => new TicketWrapper(ticket));
@@ -196,7 +198,7 @@ describe('lib/tasks/generate-files', () => {
                 const ticket = new Ticket({
                     data: {},
                     url,
-                    viewName: 'layout'
+                    viewName: 'layout.njk'
                 });
                 const task = new GenerateFiles({
                     name: 'oneTicket',
@@ -217,12 +219,12 @@ describe('lib/tasks/generate-files', () => {
                     new Ticket({
                         data: {},
                         url: urls[0],
-                        viewName: 'layout'
+                        viewName: 'layout.njk'
                     }),
                     new Ticket({
                         data: {},
                         url: urls[1],
-                        viewName: 'layout'
+                        viewName: 'layout.njk'
                     })
                 ];
                 const task = new GenerateFiles({
@@ -241,7 +243,7 @@ describe('lib/tasks/generate-files', () => {
                 const ticket = new Ticket({
                     data: {},
                     url,
-                    viewName: 'layout'
+                    viewName: 'layout.njk'
                 });
                 const task = new GenerateFiles({
                     name: 'generateFiles',
@@ -258,7 +260,7 @@ describe('lib/tasks/generate-files', () => {
                 const ticket = new Ticket({
                     data: {},
                     url,
-                    viewName: 'layout'
+                    viewName: 'layout.njk'
                 });
                 const task = new GenerateFiles({
                     name: 'generateFiles'
@@ -275,7 +277,7 @@ describe('lib/tasks/generate-files', () => {
                 const ticket = new Ticket({
                     data: {},
                     url: 'foo.html',
-                    viewName: 'layout'
+                    viewName: 'layout.njk'
                 });
                 const task = new GenerateFiles({
                     name: 'beautify',
@@ -293,7 +295,7 @@ describe('lib/tasks/generate-files', () => {
                 const ticket = new Ticket({
                     data: {},
                     url: 'foo.nothtml',
-                    viewName: 'layout'
+                    viewName: 'layout.njk'
                 });
                 const task = new GenerateFiles({
                     name: 'beautify',
@@ -315,14 +317,14 @@ describe('lib/tasks/generate-files', () => {
 
                 mock.restore();
                 context.template = new Template(context.templateConfig);
-                mock({
+                mock(_.defaults({}, helpers.baseViews, {
                     out: {}
-                });
+                }));
 
                 ticket = new Ticket({
                     data: {},
                     url: 'foo.html',
-                    viewName: 'layout'
+                    viewName: 'layout.njk'
                 });
                 task = new GenerateFiles({
                     name: 'noBeautify',
@@ -342,10 +344,12 @@ describe('lib/tasks/generate-files', () => {
                 const url = 'foo.html';
                 const ticket = new Ticket({
                     data: {
-                        deprecated: 'since 4.0.0'
+                        item: {
+                            deprecated: 'since 4.0.0'
+                        }
                     },
                     url,
-                    viewName: 'deprecated'
+                    viewName: 'deprecated.njk'
                 });
                 const task = new GenerateFiles({
                     name: 'usesView',
@@ -359,7 +363,7 @@ describe('lib/tasks/generate-files', () => {
             });
 
             it('fails on unknown views', async () => {
-                let event;
+                let error;
                 const ticket = new Ticket({
                     data: {},
                     url: 'foo.html',
@@ -370,13 +374,13 @@ describe('lib/tasks/generate-files', () => {
                     tickets: [ticket]
                 });
 
-                bus.once('logger:fatal', e => {
-                    event = e;
-                });
+                try {
+                    await task.run(context);
+                } catch (e) {
+                    error = e;
+                }
 
-                await task.run(context);
-
-                expect(event).toBeDefined();
+                expect(rethrower(error)).toThrowError();
             });
         });
     });

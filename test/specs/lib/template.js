@@ -14,19 +14,21 @@
     limitations under the License.
 */
 describe('lib/template', () => {
-    const config = require('../../../lib/config');
+    const { defaultConfig } = require('../../../lib/config');
     /* eslint-disable no-unused-vars */
     let instance;
     /* eslint-enable no-unused-vars */
     const Template = require('../../../lib/template');
 
     beforeEach(() => {
-        instance = new Template(config.loadSync('', '.').get());
+        /* eslint-disable no-unused-vars */
+        instance = new Template(defaultConfig);
+        /* eslint-enable no-unused-vars */
     });
 
     it('should be a constructor', () => {
         expect(Template).toBeFunction();
-        expect(new Template(config.loadSync('', '.').get())).toBeInstanceOf(Template);
+        expect(new Template(defaultConfig)).toBeInstanceOf(Template);
     });
 
     xdescribe('render', () => {

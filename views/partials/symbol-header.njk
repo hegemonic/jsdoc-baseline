@@ -1,0 +1,83 @@
+{#
+    Copyright 2014-2020 Google LLC
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        https://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+#}
+{% import 'list.njk' as list %}
+
+<header {{- '!page-header' | cssClass }}>
+  {% block heading %}
+    {% include 'symbol-labels.njk' %}
+    <h>
+      {%- if item.longname != item.memberof %}<small>{{ item.longname | ancestors }}</small>{% endif -%}
+      <span {{ '!symbol-name' | cssClass }}>{{ item.name }}</span>
+    </h>
+  {% endblock %}
+
+  {% block source %}
+    {% include 'source-file.njk' %}
+  {% endblock %}
+
+  {% block classdesc %}
+    {% if item.classdesc %}
+      <div {{ '!symbol-classdesc' | cssClass }}>
+        {{ item.classdesc | resolveLinks | markdown }}
+      </div>
+    {% endif %}
+  {% endblock %}
+
+  {% block description %}
+    {# We don't show a description for classes, or for namespaces that are also functions. #}
+    {% if item.kind != 'class' %}
+      {% if item.kind == 'namespace' %}
+        {% if not needsSignature(item) %}
+          <div {{- '!symbol-description' | cssClass }}>
+            {% include 'description.njk' %}
+          </div>
+        {% endif %}
+      {% else %}
+        <div {{- '!symbol-description' | cssClass }}>
+            {% include 'description.njk' %}
+        </div>
+      {% endif %}
+    {% endif %}
+  {% endblock %}
+
+  {% block examples %}
+    {# TODO: Why not show examples for classes? Do they show up elsewhere? #}
+    {% if item.kind != 'class' %}
+      {% include 'examples.njk' %}
+    {% endif %}
+  {% endblock %}
+
+  {% block details %}
+    {# TODO: Only insert the <dl> if there are items to show. #}
+    <dl {{- '!dl-compact' | cssClass }}>
+      {% include 'implements.njk' %}
+      {% include 'implementations.njk' %}
+      {{ list.dictList(item.mixes, 'headings.mixes') }}
+    </dl>
+  {% endblock %}
+
+  {% block class_details %}
+    {#
+      For classes where we're not displaying the constructor, we show the details here, above the
+      summary blocks.
+    #}
+    {% if item.hideconstructor %}
+      <dl {{- '!dl-compact' | cssClass }}>
+        {% include 'details.njk' %}
+      </dl>
+    {% endif %}
+  {% endblock %}
+</header>

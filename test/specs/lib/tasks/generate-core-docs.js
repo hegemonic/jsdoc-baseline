@@ -1,6 +1,6 @@
 const mock = require('mock-fs');
-const config = require('../../../../lib/config');
 const { db } = require('../../../../lib/db');
+const { defaultConfig } = require('../../../../lib/config');
 const fs = require('fs-extra');
 const GenerateCoreDocs = require('../../../../lib/tasks/generate-core-docs');
 const { KIND_TO_CATEGORY, OUTPUT_FILE_CATEGORIES } = require('../../../../lib/enums');
@@ -44,11 +44,9 @@ describe('lib/tasks/generate-core-docs', () => {
         let context;
         let doclets;
         let instance;
-        let templateConfig;
 
         beforeEach(() => {
             doclets = allDoclets.slice();
-            templateConfig = config.loadSync().get();
             conf = {
                 opts: {
                     access: ['undefined']
@@ -74,8 +72,8 @@ describe('lib/tasks/generate-core-docs', () => {
                     return obj;
                 })(),
                 pageTitlePrefix: '',
-                template: new Template(templateConfig),
-                templateConfig
+                template: new Template(defaultConfig),
+                templateConfig: defaultConfig
             };
             context.linkManager = context.template.linkManager;
             for (const d of allDoclets) {
@@ -83,7 +81,7 @@ describe('lib/tasks/generate-core-docs', () => {
             }
             instance = new GenerateCoreDocs({ name: 'generateCoreDocs' });
 
-            mock();
+            mock(helpers.baseViews);
         });
 
         afterEach(() => {

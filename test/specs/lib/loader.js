@@ -14,72 +14,138 @@
     limitations under the License.
 */
 const mock = require('mock-fs');
+const { BASE_VIEWS } = require('../../../lib/template');
+const { FileSystemLoader } = require('nunjucks');
+const loader = require('../../../lib/loader');
+const path = require('path');
 
 describe('lib/loader', () => {
-    const loader = require('../../../lib/loader');
-
-    it('should export a "loadSync" method', () => {
-        expect(typeof loader.loadSync).toBe('function');
+    it('exports a ViewLoader constructor', () => {
+        expect(typeof loader.ViewLoader).toBe('function');
     });
 
-    it('should export a "preprocess" method', () => {
+    it('exports a preprocess method', () => {
         expect(typeof loader.preprocess).toBe('function');
     });
 
-    describe('loadSync', () => {
-        function loadString(text) {
-            let result;
+    describe('ViewLoader', () => {
+        const fakePath = path.join(path.dirname(Object.keys(helpers.baseViews)[0]), 'fake.njk');
+        const fakes = {
+            [fakePath]: null
+        };
+        let instance;
+        const ViewLoader = loader.ViewLoader;
 
-            mock({
-                '/Users/jdoe/file.txt': text
-            });
-            result = loader.loadSync('/Users/jdoe/file.txt', 'utf8');
+        function mockSource(str) {
+            let source;
+
+            fakes[fakePath] = str;
+            mock(fakes);
+            source = instance.getSource('fake.njk');
             mock.restore();
 
-            return result;
+            return source;
         }
 
-        it('should read the specified file', () => {
-            const text = loadString('hello world');
-
-            expect(text).toBe('hello world');
+        beforeEach(() => {
+            instance = new ViewLoader(BASE_VIEWS);
         });
 
-        it('should add helpers to <h> elements with no attributes', () => {
-            const text = loadString('<h>hello world</h>');
-
-            expect(text).toBe('<h{{_headingLevel}}>hello world</h{{_headingLevel}}>');
+        it('extends nunjucks.FileSystemLoader', () => {
+            expect(instance instanceof FileSystemLoader).toBeTrue();
         });
 
-        it('should add helpers to <h> elements with attributes', () => {
-            const text = loadString('<h id="foo">hello world</h>');
+        describe('emit', () => {
+            it('emits nothing by default', () => {
+                let source;
 
-            expect(text).toBe('<h{{_headingLevel}} id="foo">hello world</h{{_headingLevel}}>');
+                instance.once('load', (name, src) => {
+                    source = src;
+                });
+                instance.emit('load', 'foo.njk', {});
+
+                expect(source).toBeUndefined();
+            });
+
+            it('emits events when REALLY_EMIT_KEY is passed in', () => {
+                let source;
+
+                instance.once('load', (name, src) => {
+                    source = src;
+                });
+                instance.emit('load', 'foo.njk', { src: 'hello world' }, 'REALLY_EMIT_KEY');
+
+                expect(source).toBeObject();
+                expect(source.src).toBe('hello world');
+            });
+
+            it('does not emit REALLY_EMIT_KEY', () => {
+                let key;
+                let source;
+
+                instance.once('load', (name, src, emitKey) => {
+                    source = src;
+                    key = emitKey;
+                });
+                instance.emit('load', 'foo.njk', { src: 'hello world' }, 'REALLY_EMIT_KEY');
+
+                expect(source).toBeObject();
+                expect(key).toBeUndefined();
+            });
         });
 
-        it('should add helpers to <section> elements with no attributes', () => {
-            const text = loadString('<section><p>hello world</p></section>');
+        describe('getSource', () => {
+            it('reads the specified file', () => {
+                const fakeSource = 'hello world';
+                const source = mockSource(fakeSource);
 
-            expect(text).toBe('<section>{{_incrementHeading}}<p>hello world</p>' +
-                '{{_decrementHeading}}</section>');
+                expect(source).toBeObject();
+                expect(source.src).toBeString();
+                expect(source.src).toBe(fakeSource);
+            });
+
+            it('adds helpers to <h> elements with no attributes', () => {
+                const fakeSource = '<h>hello world</h>';
+                const source = mockSource(fakeSource);
+
+                expect(source.src).toBe('<h{{ headingLevel() }}>hello world' +
+                    '</h{{ headingLevel() }}>');
+            });
+
+            it('adds helpers to <h> elements with attributes', () => {
+                const fakeSource = '<h id="hi">hello world</h>';
+                const source = mockSource(fakeSource);
+
+                expect(source.src).toBe('<h{{ headingLevel() }} id="hi">hello world' +
+                    '</h{{ headingLevel() }}>');
+            });
+
+            it('adds helpers to <section> elements with no attributes', () => {
+                const fakeSource = '<section><p>hello world</p></section>';
+                const source = mockSource(fakeSource);
+
+                expect(source.src).toBe('<section>{{ incrementHeading() }}<p>hello world</p>' +
+                    '{{ decrementHeading() }}</section>');
+            });
+
+            it('adds helpers to <section> elements with attributes', () => {
+                const fakeSource = '<section id="hi"><p>hello world</p></section>';
+                const source = mockSource(fakeSource);
+
+                expect(source.src).toBe('<section id="hi">{{ incrementHeading() }}' +
+                    '<p>hello world</p>{{ decrementHeading() }}</section>');
+            });
         });
 
-        it('should add helpers to <section> elements with attributes', () => {
-            const text = loadString('<section id="foo"><p>hello world</p></section>');
+        describe('preprocess', () => {
+            // No need to repeat all the ViewLoader tests here. Just verify that preprocess applies the
+            // same transforms as the ViewLoader.
+            it('should process <h> and <section> elements', () => {
+                const text = loader.preprocess('<section><h>hello world</h></section>');
 
-            expect(text).toBe('<section id="foo">{{_incrementHeading}}<p>hello world</p>' +
-                '{{_decrementHeading}}</section>');
-        });
-    });
-
-    describe('preprocess', () => {
-        // no need to repeat all the loadSync tests here; just verify that preprocess applies
-        // the same transforms
-        it('should process <h> and <section> elements', () => {
-            const text = loader.preprocess('<section><h>hello world</h></section>');
-
-            expect(text).toBe('<section>{{_incrementHeading}}<h{{_headingLevel}}>hello world' +
-                '</h{{_headingLevel}}>{{_decrementHeading}}</section>');
+                expect(text).toBe('<section>{{ incrementHeading() }}<h{{ headingLevel() }}>' +
+                    'hello world</h{{ headingLevel() }}>{{ decrementHeading() }}</section>');
+            });
         });
     });
 });

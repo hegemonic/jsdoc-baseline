@@ -1,5 +1,5 @@
 const mock = require('mock-fs');
-const config = require('../../../../lib/config');
+const { defaultConfig } = require('../../../../lib/config');
 const { db } = require('../../../../lib/db');
 const fs = require('fs-extra');
 const GenerateToc = require('../../../../lib/tasks/generate-toc');
@@ -91,8 +91,7 @@ describe('lib/tasks/generate-toc', () => {
             }
         ];
         const navTree = name.longnamesToTree(nonGlobals.map(d => d.longname));
-        const templateConfig = config.loadSync().get();
-        const template = new Template(templateConfig);
+        const template = new Template(defaultConfig);
 
         beforeEach(() => {
             context = {
@@ -103,11 +102,11 @@ describe('lib/tasks/generate-toc', () => {
                 globals,
                 navTree,
                 template,
-                templateConfig
+                templateConfig: defaultConfig
             };
             context.linkManager = context.template.linkManager;
 
-            mock();
+            mock(helpers.baseViews);
         });
 
         afterEach(() => {

@@ -16,9 +16,12 @@
 // Helper functions for testing the Baseline template.
 
 const deepExtend = require('deep-extend');
+const fs = require('fs');
+const glob = require('fast-glob');
 const path = require('path');
+const Template = require('../../lib/template');
 
-// Reset environment variables used by JSDoc to the default values for tests.
+// Resets environment variables used by JSDoc to the default values for tests.
 function resetJsdocEnv() {
     const env = require('jsdoc/env');
 
@@ -48,28 +51,43 @@ function resetJsdocEnv() {
 }
 
 global.helpers = {
-    // Create a new, fully initialized Template object with the specified configuration settings.
+    // Maps each base view's path to its contents. Allows base views to be read when file system is
+    // mocked.
+    baseViews: (() => {
+        const baseViews = {};
+        const viewsPath = path.resolve(__dirname, '../../views');
+        const globbed = glob.sync('**/*.njk', {
+            cwd: viewsPath,
+            fs,
+            onlyFiles: true
+        });
+
+        globbed.forEach(filepath => {
+            filepath = path.join(viewsPath, filepath);
+            baseViews[filepath] = fs.readFileSync(filepath);
+        });
+
+        return baseViews;
+    })(),
+
+    // Creates a new, fully initialized Template object with the specified configuration settings.
     createTemplate: config => {
         let defaultConfig;
-        let Template;
 
         config = config || {};
 
         global.helpers.setup();
-        defaultConfig = require('../../lib/config')
-            .loadSync('', '.')
-            .get();
-        Template = require('../../lib/template');
+        defaultConfig = require('../../lib/config').defaultConfig;
 
         config = deepExtend({}, defaultConfig, config);
 
         return new Template(config);
     },
 
-    // Render a Handlebars view.
+    // Renders a Handlebars view.
     render: (...args) => global.helpers.template.render(...args),
 
-    // Set up the runtime environment so that JSDoc can work properly.
+    // Sets up the runtime environment so that JSDoc can work properly.
     setup: resetJsdocEnv
 };
 

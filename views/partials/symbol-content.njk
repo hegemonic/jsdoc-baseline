@@ -1,0 +1,59 @@
+{#
+    Copyright 2014-2020 Google LLC
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        https://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+#}
+<section>
+  {# TODO: Ensure this list stays in the same order as summary-blocks.njk. #}
+  {% block classes %}
+    {% set items = members.classes %}
+    {% set headingKey = 'headings.classes' %}
+    {% include 'members-links.njk' %}
+  {% endblock %}
+
+  {% block interfaces %}
+    {% set items = members.interfaces %}
+    {% set headingKey = 'headings.interfaces' %}
+    {% include 'members-links.njk' %}
+  {% endblock %}
+
+  {% block namespaces %}
+    {% set items = members.namespaces %}
+    {% set headingKey = 'headings.namespaces' %}
+    {% include 'members-links.njk' %}
+  {% endblock %}
+
+  {% block properties %}
+    {% set items = members.properties %}
+    {% set headingKey = 'headings.properties' %}
+    {% include 'members-details.njk' %}
+  {% endblock %}
+
+  {% block functions %}
+    {% set items = members.functions %}
+    {% set headingKey = 'headings.functions' %}
+    {% include 'members-details.njk' %}
+  {% endblock %}
+
+  {% block typedefs %}
+    {% set items = members.typedefs %}
+    {% set headingKey = 'headings.typedefs' %}
+    {% include 'members-details.njk' %}
+  {% endblock %}
+
+  {% block events %}
+    {% set items = members.events %}
+    {% set headingKey = 'headings.events' %}
+    {% include 'members-details.njk' %}
+  {% endblock %}
+</section>

@@ -49,7 +49,7 @@ describe('symbol detail partial', () => {
             const fakeDoclet = {
                 hideconstructor: true
             };
-            const text = helpers.render('symbol-detail', {symbol: fakeDoclet});
+            const text = helpers.render('symbol-detail', {item: fakeDoclet});
 
             expect(text).not.toContain('<h');
         });
@@ -72,7 +72,7 @@ describe('symbol detail partial', () => {
                     lineno: '1'
                 }
             };
-            const text = helpers.render('symbol-detail', {symbol: fakeDoclet});
+            const text = helpers.render('symbol-detail', {item: fakeDoclet});
 
             expect(text).not.toContain('<a');
         });
@@ -88,7 +88,7 @@ describe('symbol detail partial', () => {
                 description: 'Hidden',
                 hideconstructor: true
             };
-            const text = helpers.render('symbol-detail', {symbol: fakeDoclet});
+            const text = helpers.render('symbol-detail', {item: fakeDoclet});
 
             expect(text).not.toContain('Hidden');
         });
@@ -106,7 +106,7 @@ describe('symbol detail partial', () => {
                 ],
                 hideconstructor: true
             };
-            const text = helpers.render('symbol-detail', {symbol: fakeDoclet});
+            const text = helpers.render('symbol-detail', {item: fakeDoclet});
 
             expect(text).not.toContain('example');
         });
@@ -132,7 +132,7 @@ describe('symbol detail partial', () => {
                     }
                 ]
             };
-            const text = helpers.render('symbol-detail', {symbol: fakeDoclet});
+            const text = helpers.render('symbol-detail', {item: fakeDoclet});
 
             expect(text).not.toContain('foo');
         });
@@ -158,7 +158,7 @@ describe('symbol detail partial', () => {
                     }
                 ]
             };
-            const text = helpers.render('symbol-detail', {symbol: fakeDoclet});
+            const text = helpers.render('symbol-detail', {item: fakeDoclet});
 
             expect(text).not.toContain('foo');
         });
@@ -174,7 +174,7 @@ describe('symbol detail partial', () => {
                 copyright: 'Foo',
                 hideconstructor: true
             };
-            const text = helpers.render('symbol-detail', {symbol: fakeDoclet});
+            const text = helpers.render('symbol-detail', {item: fakeDoclet});
 
             expect(text).not.toContain('Foo');
         });

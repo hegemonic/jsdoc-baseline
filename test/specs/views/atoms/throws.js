@@ -15,7 +15,7 @@
 */
 describe('throws atom', () => {
     it('should generate nothing if the doclet has no "exceptions" items', () => {
-        const text = helpers.render('throws', {});
+        const text = helpers.render('throws.njk', {});
 
         expect(text).toBe('');
     });
@@ -28,7 +28,7 @@ describe('throws atom', () => {
                 }
             ]
         };
-        const text = helpers.render('throws', doclet);
+        const text = helpers.render('throws.njk', { item: doclet });
 
         expect(text).toContain('foo bar baz');
     });
@@ -47,7 +47,7 @@ describe('throws atom', () => {
                 }
             ]
         };
-        const text = helpers.render('throws', doclet);
+        const text = helpers.render('throws.njk', { item: doclet });
 
         expect(text).toContain('<code>TypeError</code>');
     });
@@ -60,7 +60,7 @@ describe('throws atom', () => {
                 }
             ]
         };
-        const text = helpers.render('throws', doclet);
+        const text = helpers.render('throws.njk', { item: doclet });
 
         expect(text).not.toContain('<code>');
     });

@@ -5,22 +5,22 @@
 
 An extensible template for [JSDoc][jsdoc].
 
-**This is a preview version of the Baseline template.** Baseline is still under active development.
+**This is a preview version of the Baseline template.** Baseline is under active development.
 Everything in the template is subject to change.
 
 ## What is Baseline?
 
-Baseline is a new HTML template for [JSDoc][jsdoc]. It offers several benefits:
+Baseline is an HTML template for [JSDoc][jsdoc]. It offers several benefits:
 
 + **Extensible from the ground up.** You can use extensions to customize your documentation's
 content and appearance without changing Baseline itself. In addition, you can localize the headings
 and other text that are added by the template. **Note:** Customization options are limited in this
-preview version. More options will be available soon.
+preview version.
 + **Easy to navigate.** An expandable table of contents helps users find what they're looking for.
-Also, a summary at the top of each page shows users what's documented on that page.
-+ **Modern template syntax.** Baseline uses [Handlebars][handlebars], a powerful JavaScript template
-engine, to define the template layout. Handlebars makes it possible to define new tags and helpers
-that you can use in your customizations to Baseline.
+Also, a summary at the top of each page shows what's documented on that page.
++ **Modern template syntax.** Baseline uses [Nunjucks][nunjucks], a powerful JavaScript template
+engine, to define the template layout. You can define new Nunjucks filters and use them in your
+customizations to Baseline.
 
 ## Installing Baseline
 
@@ -61,10 +61,9 @@ jsdoc --configure <path/to/conf.json> --template <path/to/baseline> <path/to/js-
 
 ## Legal stuff
 
-Copyright 2014-2020 Google LLC. Licensed under the Apache License, Version 2.0.
+Copyright 2014-2021 The Baseline Authors. Licensed under the Apache License, Version 2.0. See
+[LICENSE.md][license] for more information.
 
-See [LICENSE.md][license] for more information.
-
-[handlebars]: https://handlebarsjs.com/
 [jsdoc]: https://github.com/jsdoc/jsdoc
 [license]: https://github.com/hegemonic/jsdoc-baseline/blob/master/LICENSE.md
+[nunjucks]: https://mozilla.github.io/nunjucks/

@@ -26,7 +26,7 @@ describe('symbol header partial', () => {
                 copyright: 'Foo',
                 hideconstructor: true
             };
-            const text = helpers.render('symbol-header', fakeDoclet);
+            const text = helpers.render('symbol-header.njk', {item: fakeDoclet});
 
             expect(text).toContain('Foo');
         });
