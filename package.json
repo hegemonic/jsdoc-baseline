@@ -39,7 +39,7 @@
     "escape-string-regexp": "^4.0.0",
     "fast-glob": "^3.2.5",
     "fs-extra": "^9.1.0",
-    "html-escaper": "^3.0.0",
+    "html-escaper": "^3.0.3",
     "js-beautify": "^1.13.5",
     "js-yaml": "^4.0.0",
     "lodash": "^4.17.20",
