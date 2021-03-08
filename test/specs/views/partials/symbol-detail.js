@@ -53,6 +53,18 @@ describe('symbol detail partial', () => {
 
             expect(text).not.toContain('<h');
         });
+
+        it('should dequote quoted names for externals', () => {
+            const fakeDoclet = {
+                kind: 'external',
+                longname: '"my.external"',
+                name: '"my.external"'
+            };
+            const text = helpers.render('symbol-detail', {item: fakeDoclet});
+
+            expect(text).toContain('my.external');
+            expect(text).not.toContain('"my.external"');
+        });
     });
 
     describe('source file link', () => {

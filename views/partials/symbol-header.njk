@@ -20,7 +20,13 @@
     {% include 'symbol-labels.njk' %}
     <h>
       {%- if item.longname != item.memberof %}<small>{{ item.longname | ancestors }}</small>{% endif -%}
-      <span {{ '!symbol-name' | cssClass }}>{{ item.name }}</span>
+      <span {{ '!symbol-name' | cssClass }}>
+        {%- if item.kind == 'external' -%}
+          {{ item.name | dequote }}
+        {%- else -%}
+          {{ item.name }}
+        {%- endif -%}
+      </span>
     </h>
   {% endblock %}
 

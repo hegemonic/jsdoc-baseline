@@ -194,6 +194,16 @@ describe('lib/filters', () => {
             });
         });
 
+        describe('dequote', () => {
+            it('removes enclosing quotation marks', () => {
+                expect(instance.dequote('"hello"')).toBe('hello');
+            });
+
+            it('does not change strings with embedded quotation marks', () => {
+                expect(instance.dequote('he"llo')).toBe('he"llo');
+            });
+        });
+
         describe('describeType', () => {
             const catharsis = require('catharsis');
 
