@@ -43,7 +43,7 @@
     "js-beautify": "^1.13.11",
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
-    "markdown-it": "^12.0.4",
+    "markdown-it": "^12.0.5",
     "markdown-it-anchor": "^7.1.0",
     "messageformat": "^2.3.0",
     "nunjucks": "^3.2.3",
