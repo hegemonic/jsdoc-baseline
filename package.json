@@ -54,7 +54,7 @@
   "devDependencies": {
     "@jsdoc/eslint-config": "^1.1.7",
     "@jsdoc/prettier-config": "^0.1.0",
-    "@jsdoc/test-matchers": "^0.1.6",
+    "@jsdoc/test-matchers": "^0.1.7",
     "bootstrap": "^3.3.7",
     "code-prettify": "^0.1.0",
     "eslint": "^7.32.0",
