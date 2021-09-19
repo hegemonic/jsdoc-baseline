@@ -1,3 +1,3 @@
 xdescribe('lib/default-tasks', () => {
-    // TODO: tests
+  // TODO: tests
 });

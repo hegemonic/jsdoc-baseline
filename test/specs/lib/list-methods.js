@@ -16,112 +16,112 @@
 const list = require('../../../lib/list-methods');
 
 describe('lib/list-methods', () => {
-    it('has a listMethods method', () => {
-        expect(list.listMethods).toBeFunction();
+  it('has a listMethods method', () => {
+    expect(list.listMethods).toBeFunction();
+  });
+
+  /* eslint-disable no-empty-function */
+  describe('listMethods', () => {
+    const listMethods = list.listMethods;
+
+    it('lists methods owned by an object', () => {
+      class Point {
+        x() {}
+        y() {}
+      }
+
+      const point = new Point();
+      const methods = listMethods(point);
+
+      expect(methods.sort()).toEqual(['x', 'y']);
     });
 
-    /* eslint-disable no-empty-function */
-    describe('listMethods', () => {
-        const listMethods = list.listMethods;
+    it('lists inherited methods', () => {
+      class Point {
+        x() {}
+        y() {}
+      }
 
-        it('lists methods owned by an object', () => {
-            class Point {
-                x() {}
-                y() {}
-            }
+      class LineOrigin extends Point {
+        type() {}
+      }
 
-            const point = new Point();
-            const methods = listMethods(point);
+      const origin = new LineOrigin();
+      const methods = listMethods(origin);
 
-            expect(methods.sort()).toEqual(['x', 'y']);
-        });
-
-        it('lists inherited methods', () => {
-            class Point {
-                x() {}
-                y() {}
-            }
-
-            class LineOrigin extends Point {
-                type() {}
-            }
-
-            const origin = new LineOrigin();
-            const methods = listMethods(origin);
-
-            expect(methods.sort()).toEqual(['type', 'x', 'y']);
-        });
-
-        it('does not list methods on Object.prototype', () => {
-            class Point {
-                x() {}
-                y() {}
-            }
-
-            const point = new Point();
-            const methods = listMethods(point);
-
-            expect(methods).not.toContain('hasOwnProperty');
-        });
-
-        it('lists private methods (with a leading underscore) by default', () => {
-            class Point {
-                _private() {}
-                x() {}
-                y() {}
-            }
-
-            const point = new Point();
-            const methods = listMethods(point);
-
-            expect(methods.sort()).toEqual(['_private', 'x', 'y']);
-        });
-
-        it('omits private methods (with a leading underscore) when requested', () => {
-            class Point {
-                _private() {}
-                x() {}
-                y() {}
-            }
-
-            const point = new Point();
-            const methods = listMethods(point, {
-                includePrivate: false
-            });
-
-            expect(methods.sort()).toEqual(['x', 'y']);
-        });
-
-        it('lists private methods when includePrivate is falsy, but not `false`', () => {
-            class Point {
-                _coordinates() {}
-                x() {}
-                y() {}
-            }
-
-            const point = new Point();
-            const methods = listMethods(point, {
-                includePrivate: undefined
-            });
-
-            expect(methods.sort()).toEqual(['_coordinates', 'x', 'y']);
-        });
-
-        it('accepts a regexp that matches private methods', () => {
-            class Point {
-                coordinates_() {}
-                x() {}
-                y() {}
-            }
-
-            const point = new Point();
-            const methods = listMethods(point, {
-                includePrivate: false,
-                privateRegExp: /_$/
-            });
-
-            expect(methods.sort()).toEqual(['x', 'y']);
-        });
+      expect(methods.sort()).toEqual(['type', 'x', 'y']);
     });
-    /* eslint-enable no-empty-function */
+
+    it('does not list methods on Object.prototype', () => {
+      class Point {
+        x() {}
+        y() {}
+      }
+
+      const point = new Point();
+      const methods = listMethods(point);
+
+      expect(methods).not.toContain('hasOwnProperty');
+    });
+
+    it('lists private methods (with a leading underscore) by default', () => {
+      class Point {
+        _private() {}
+        x() {}
+        y() {}
+      }
+
+      const point = new Point();
+      const methods = listMethods(point);
+
+      expect(methods.sort()).toEqual(['_private', 'x', 'y']);
+    });
+
+    it('omits private methods (with a leading underscore) when requested', () => {
+      class Point {
+        _private() {}
+        x() {}
+        y() {}
+      }
+
+      const point = new Point();
+      const methods = listMethods(point, {
+        includePrivate: false,
+      });
+
+      expect(methods.sort()).toEqual(['x', 'y']);
+    });
+
+    it('lists private methods when includePrivate is falsy, but not `false`', () => {
+      class Point {
+        _coordinates() {}
+        x() {}
+        y() {}
+      }
+
+      const point = new Point();
+      const methods = listMethods(point, {
+        includePrivate: undefined,
+      });
+
+      expect(methods.sort()).toEqual(['_coordinates', 'x', 'y']);
+    });
+
+    it('accepts a regexp that matches private methods', () => {
+      class Point {
+        coordinates_() {}
+        x() {}
+        y() {}
+      }
+
+      const point = new Point();
+      const methods = listMethods(point, {
+        includePrivate: false,
+        privateRegExp: /_$/,
+      });
+
+      expect(methods.sort()).toEqual(['x', 'y']);
+    });
+  });
+  /* eslint-enable no-empty-function */
 });

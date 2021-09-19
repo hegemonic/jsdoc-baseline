@@ -14,23 +14,23 @@
     limitations under the License.
 */
 describe('readme atom', () => {
-    it('generates nothing if there is no readme', () => {
-        const text = helpers.render('readme.njk', {});
+  it('generates nothing if there is no readme', () => {
+    const text = helpers.render('readme.njk', {});
 
-        expect(text).toBe('');
+    expect(text).toBe('');
+  });
+
+  it('includes the readme data', () => {
+    const text = helpers.render('readme.njk', {
+      readme: 'hello world',
     });
 
-    it('includes the readme data', () => {
-        const text = helpers.render('readme.njk', {
-            readme: 'hello world'
-        });
+    expect(text).toContain('hello world');
+  });
 
-        expect(text).toContain('hello world');
-    });
+  it('does not escape HTML readme data', () => {
+    const text = helpers.render('readme.njk', { readme: '<h1>hello world</h1>' });
 
-    it('does not escape HTML readme data', () => {
-        const text = helpers.render('readme.njk', { readme: '<h1>hello world</h1>' });
-
-        expect(text).toContain('<h1>hello world</h1>');
-    });
+    expect(text).toContain('<h1>hello world</h1>');
+  });
 });

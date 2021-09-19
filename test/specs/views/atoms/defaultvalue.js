@@ -14,40 +14,40 @@
     limitations under the License.
 */
 describe('defaultvalue atom', () => {
-    it('generates nothing if there is no default value', () => {
-        const text = helpers.render('defaultvalue.njk', {});
+  it('generates nothing if there is no default value', () => {
+    const text = helpers.render('defaultvalue.njk', {});
 
-        expect(text).toBe('');
+    expect(text).toBe('');
+  });
+
+  it('shows truthy default values', () => {
+    const text = helpers.render('defaultvalue.njk', {
+      item: {
+        defaultvalue: 1,
+      },
     });
 
-    it('shows truthy default values', () => {
-        const text = helpers.render('defaultvalue.njk', {
-            item: {
-                defaultvalue: 1
-            }
-        });
+    expect(text).toContain('<dd>1</dd>');
+  });
 
-        expect(text).toContain('<dd>1</dd>');
+  it('shows falsy default values', () => {
+    const text = helpers.render('defaultvalue.njk', {
+      item: {
+        defaultvalue: 0,
+      },
     });
 
-    it('shows falsy default values', () => {
-        const text = helpers.render('defaultvalue.njk', {
-            item: {
-                defaultvalue: 0
-            }
-        });
+    expect(text).toContain('<dd>0</dd>');
+  });
 
-        expect(text).toContain('<dd>0</dd>');
+  it('should wrap default values in a <pre> tag when appropriate', () => {
+    const text = helpers.render('defaultvalue.njk', {
+      item: {
+        defaultvalue: '{"foo": "bar"}',
+        defaultvaluetype: 'object',
+      },
     });
 
-    it('should wrap default values in a <pre> tag when appropriate', () => {
-        const text = helpers.render('defaultvalue.njk', {
-            item: {
-                defaultvalue: '{"foo": "bar"}',
-                defaultvaluetype: 'object'
-            }
-        });
-
-        expect(text).toContain('<pre class="prettyprint">');
-    });
+    expect(text).toContain('<pre class="prettyprint">');
+  });
 });

@@ -14,28 +14,28 @@
     limitations under the License.
 */
 describe('lib/template', () => {
-    const { defaultConfig } = require('../../../lib/config');
+  const { defaultConfig } = require('../../../lib/config');
+  /* eslint-disable no-unused-vars */
+  let instance;
+  /* eslint-enable no-unused-vars */
+  const Template = require('../../../lib/template');
+
+  beforeEach(() => {
     /* eslint-disable no-unused-vars */
-    let instance;
+    instance = new Template(defaultConfig);
     /* eslint-enable no-unused-vars */
-    const Template = require('../../../lib/template');
+  });
 
-    beforeEach(() => {
-        /* eslint-disable no-unused-vars */
-        instance = new Template(defaultConfig);
-        /* eslint-enable no-unused-vars */
-    });
+  it('should be a constructor', () => {
+    expect(Template).toBeFunction();
+    expect(new Template(defaultConfig)).toBeInstanceOf(Template);
+  });
 
-    it('should be a constructor', () => {
-        expect(Template).toBeFunction();
-        expect(new Template(defaultConfig)).toBeInstanceOf(Template);
-    });
+  xdescribe('render', () => {
+    // TODO
+  });
 
-    xdescribe('render', () => {
-        // TODO
-    });
-
-    xdescribe('translate', () => {
-        // TODO
-    });
+  xdescribe('translate', () => {
+    // TODO
+  });
 });

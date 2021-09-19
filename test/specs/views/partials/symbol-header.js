@@ -14,21 +14,21 @@
     limitations under the License.
 */
 describe('symbol header partial', () => {
-    // TODO: more tests
+  // TODO: more tests
 
-    describe('class details', () => {
-        xit('should not show details for a normal class', () => {
-            // TODO
-        });
-
-        it('should show details for hidden constructors', () => {
-            const fakeDoclet = {
-                copyright: 'Foo',
-                hideconstructor: true
-            };
-            const text = helpers.render('symbol-header.njk', {item: fakeDoclet});
-
-            expect(text).toContain('Foo');
-        });
+  describe('class details', () => {
+    xit('should not show details for a normal class', () => {
+      // TODO
     });
+
+    it('should show details for hidden constructors', () => {
+      const fakeDoclet = {
+        copyright: 'Foo',
+        hideconstructor: true,
+      };
+      const text = helpers.render('symbol-header.njk', { item: fakeDoclet });
+
+      expect(text).toContain('Foo');
+    });
+  });
 });

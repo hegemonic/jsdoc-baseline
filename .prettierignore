@@ -1,0 +1,6 @@
+# Ignore test fixtures.
+static/**
+test/fixtures/**
+
+# Ignore code coverage reports.
+.nyc_output/

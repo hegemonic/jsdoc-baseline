@@ -14,24 +14,24 @@
     limitations under the License.
 */
 describe('main layout', () => {
-    // TODO: more tests
+  // TODO: more tests
 
-    describe('footer', () => {
-        it('includes a footer by default', () => {
-            const text = helpers.render('layout.njk', {});
+  describe('footer', () => {
+    it('includes a footer by default', () => {
+      const text = helpers.render('layout.njk', {});
 
-            expect(text).toContain('<footer');
-        });
-
-        it('omits the footer when necessary', () => {
-            const template = helpers.createTemplate({
-                components: {
-                    footer: false
-                }
-            });
-            const text = template.render('layout.njk', {});
-
-            expect(text).not.toContain('<footer');
-        });
+      expect(text).toContain('<footer');
     });
+
+    it('omits the footer when necessary', () => {
+      const template = helpers.createTemplate({
+        components: {
+          footer: false,
+        },
+      });
+      const text = template.render('layout.njk', {});
+
+      expect(text).not.toContain('<footer');
+    });
+  });
 });

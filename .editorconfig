@@ -5,7 +5,7 @@ trim_trailing_whitespace = true
 
 [{**/*.js,**/*.less, *.json}]
 indent_style = space
-indent_size = 4
+indent_size = 2
 
 [**/*.njk]
 indent_style = space

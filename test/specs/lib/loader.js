@@ -20,132 +20,138 @@ const loader = require('../../../lib/loader');
 const path = require('path');
 
 describe('lib/loader', () => {
-    it('exports a ViewLoader constructor', () => {
-        expect(typeof loader.ViewLoader).toBe('function');
+  it('exports a ViewLoader constructor', () => {
+    expect(typeof loader.ViewLoader).toBe('function');
+  });
+
+  it('exports a preprocess method', () => {
+    expect(typeof loader.preprocess).toBe('function');
+  });
+
+  describe('ViewLoader', () => {
+    const fakePath = path.join(path.dirname(Object.keys(helpers.baseViews)[0]), 'fake.njk');
+    const fakes = {
+      [fakePath]: null,
+    };
+    let instance;
+    const ViewLoader = loader.ViewLoader;
+
+    function mockSource(str) {
+      let source;
+
+      fakes[fakePath] = str;
+      mock(fakes);
+      source = instance.getSource('fake.njk');
+      mock.restore();
+
+      return source;
+    }
+
+    beforeEach(() => {
+      instance = new ViewLoader(BASE_VIEWS);
     });
 
-    it('exports a preprocess method', () => {
-        expect(typeof loader.preprocess).toBe('function');
+    it('extends nunjucks.FileSystemLoader', () => {
+      expect(instance instanceof FileSystemLoader).toBeTrue();
     });
 
-    describe('ViewLoader', () => {
-        const fakePath = path.join(path.dirname(Object.keys(helpers.baseViews)[0]), 'fake.njk');
-        const fakes = {
-            [fakePath]: null
-        };
-        let instance;
-        const ViewLoader = loader.ViewLoader;
+    describe('emit', () => {
+      it('emits nothing by default', () => {
+        let source;
 
-        function mockSource(str) {
-            let source;
-
-            fakes[fakePath] = str;
-            mock(fakes);
-            source = instance.getSource('fake.njk');
-            mock.restore();
-
-            return source;
-        }
-
-        beforeEach(() => {
-            instance = new ViewLoader(BASE_VIEWS);
+        instance.once('load', (name, src) => {
+          source = src;
         });
+        instance.emit('load', 'foo.njk', {});
 
-        it('extends nunjucks.FileSystemLoader', () => {
-            expect(instance instanceof FileSystemLoader).toBeTrue();
+        expect(source).toBeUndefined();
+      });
+
+      it('emits events when REALLY_EMIT_KEY is passed in', () => {
+        let source;
+
+        instance.once('load', (name, src) => {
+          source = src;
         });
+        instance.emit('load', 'foo.njk', { src: 'hello world' }, 'REALLY_EMIT_KEY');
 
-        describe('emit', () => {
-            it('emits nothing by default', () => {
-                let source;
+        expect(source).toBeObject();
+        expect(source.src).toBe('hello world');
+      });
 
-                instance.once('load', (name, src) => {
-                    source = src;
-                });
-                instance.emit('load', 'foo.njk', {});
+      it('does not emit REALLY_EMIT_KEY', () => {
+        let key;
+        let source;
 
-                expect(source).toBeUndefined();
-            });
-
-            it('emits events when REALLY_EMIT_KEY is passed in', () => {
-                let source;
-
-                instance.once('load', (name, src) => {
-                    source = src;
-                });
-                instance.emit('load', 'foo.njk', { src: 'hello world' }, 'REALLY_EMIT_KEY');
-
-                expect(source).toBeObject();
-                expect(source.src).toBe('hello world');
-            });
-
-            it('does not emit REALLY_EMIT_KEY', () => {
-                let key;
-                let source;
-
-                instance.once('load', (name, src, emitKey) => {
-                    source = src;
-                    key = emitKey;
-                });
-                instance.emit('load', 'foo.njk', { src: 'hello world' }, 'REALLY_EMIT_KEY');
-
-                expect(source).toBeObject();
-                expect(key).toBeUndefined();
-            });
+        instance.once('load', (name, src, emitKey) => {
+          source = src;
+          key = emitKey;
         });
+        instance.emit('load', 'foo.njk', { src: 'hello world' }, 'REALLY_EMIT_KEY');
 
-        describe('getSource', () => {
-            it('reads the specified file', () => {
-                const fakeSource = 'hello world';
-                const source = mockSource(fakeSource);
-
-                expect(source).toBeObject();
-                expect(source.src).toBeString();
-                expect(source.src).toBe(fakeSource);
-            });
-
-            it('adds helpers to <h> elements with no attributes', () => {
-                const fakeSource = '<h>hello world</h>';
-                const source = mockSource(fakeSource);
-
-                expect(source.src).toBe('<h{{ headingLevel() }}>hello world' +
-                    '</h{{ headingLevel() }}>');
-            });
-
-            it('adds helpers to <h> elements with attributes', () => {
-                const fakeSource = '<h id="hi">hello world</h>';
-                const source = mockSource(fakeSource);
-
-                expect(source.src).toBe('<h{{ headingLevel() }} id="hi">hello world' +
-                    '</h{{ headingLevel() }}>');
-            });
-
-            it('adds helpers to <section> elements with no attributes', () => {
-                const fakeSource = '<section><p>hello world</p></section>';
-                const source = mockSource(fakeSource);
-
-                expect(source.src).toBe('<section>{{ incrementHeading() }}<p>hello world</p>' +
-                    '{{ decrementHeading() }}</section>');
-            });
-
-            it('adds helpers to <section> elements with attributes', () => {
-                const fakeSource = '<section id="hi"><p>hello world</p></section>';
-                const source = mockSource(fakeSource);
-
-                expect(source.src).toBe('<section id="hi">{{ incrementHeading() }}' +
-                    '<p>hello world</p>{{ decrementHeading() }}</section>');
-            });
-        });
-
-        describe('preprocess', () => {
-            // No need to repeat all the ViewLoader tests here. Just verify that preprocess applies the
-            // same transforms as the ViewLoader.
-            it('should process <h> and <section> elements', () => {
-                const text = loader.preprocess('<section><h>hello world</h></section>');
-
-                expect(text).toBe('<section>{{ incrementHeading() }}<h{{ headingLevel() }}>' +
-                    'hello world</h{{ headingLevel() }}>{{ decrementHeading() }}</section>');
-            });
-        });
+        expect(source).toBeObject();
+        expect(key).toBeUndefined();
+      });
     });
+
+    describe('getSource', () => {
+      it('reads the specified file', () => {
+        const fakeSource = 'hello world';
+        const source = mockSource(fakeSource);
+
+        expect(source).toBeObject();
+        expect(source.src).toBeString();
+        expect(source.src).toBe(fakeSource);
+      });
+
+      it('adds helpers to <h> elements with no attributes', () => {
+        const fakeSource = '<h>hello world</h>';
+        const source = mockSource(fakeSource);
+
+        expect(source.src).toBe('<h{{ headingLevel() }}>hello world</h{{ headingLevel() }}>');
+      });
+
+      it('adds helpers to <h> elements with attributes', () => {
+        const fakeSource = '<h id="hi">hello world</h>';
+        const source = mockSource(fakeSource);
+
+        expect(source.src).toBe(
+          '<h{{ headingLevel() }} id="hi">hello world</h{{ headingLevel() }}>'
+        );
+      });
+
+      it('adds helpers to <section> elements with no attributes', () => {
+        const fakeSource = '<section><p>hello world</p></section>';
+        const source = mockSource(fakeSource);
+
+        expect(source.src).toBe(
+          '<section>{{ incrementHeading() }}<p>hello world</p>' +
+            '{{ decrementHeading() }}</section>'
+        );
+      });
+
+      it('adds helpers to <section> elements with attributes', () => {
+        const fakeSource = '<section id="hi"><p>hello world</p></section>';
+        const source = mockSource(fakeSource);
+
+        expect(source.src).toBe(
+          '<section id="hi">{{ incrementHeading() }}' +
+            '<p>hello world</p>{{ decrementHeading() }}</section>'
+        );
+      });
+    });
+
+    describe('preprocess', () => {
+      // No need to repeat all the ViewLoader tests here. Just verify that preprocess applies the
+      // same transforms as the ViewLoader.
+      it('should process <h> and <section> elements', () => {
+        const text = loader.preprocess('<section><h>hello world</h></section>');
+
+        expect(text).toBe(
+          '<section>{{ incrementHeading() }}<h{{ headingLevel() }}>' +
+            'hello world</h{{ headingLevel() }}>{{ decrementHeading() }}</section>'
+        );
+      });
+    });
+  });
 });

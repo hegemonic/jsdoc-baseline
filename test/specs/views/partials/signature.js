@@ -14,60 +14,56 @@
     limitations under the License.
 */
 describe('signature partial', () => {
-    // TODO: more tests
+  // TODO: more tests
 
-    it('includes the return type for functions if one is supplied', () => {
-        const fakeDoclet = {
-            kind: 'function',
-            name: 'foo',
-            returns: [
-                {
-                    type: {
-                        names: [
-                            'string'
-                        ]
-                    }
-                }
-            ]
-        };
-        const returnTypesSeparator = helpers.template.translate('returnTypesSeparator');
-        const text = helpers.render('signature.njk', {item: fakeDoclet});
+  it('includes the return type for functions if one is supplied', () => {
+    const fakeDoclet = {
+      kind: 'function',
+      name: 'foo',
+      returns: [
+        {
+          type: {
+            names: ['string'],
+          },
+        },
+      ],
+    };
+    const returnTypesSeparator = helpers.template.translate('returnTypesSeparator');
+    const text = helpers.render('signature.njk', { item: fakeDoclet });
 
-        expect(text).toContain(returnTypesSeparator);
-        expect(text).toContain('string');
-    });
+    expect(text).toContain(returnTypesSeparator);
+    expect(text).toContain('string');
+  });
 
-    it('does not show the return-type separator if there is no return type', () => {
-        const fakeDoclet = {
-            kind: 'function',
-            name: 'foo',
-            returns: [
-                {
-                    description: 'bar'
-                }
-            ]
-        };
-        const returnTypesSeparator = helpers.template.translate('returnTypesSeparator');
-        const text = helpers.render('signature.njk', {item: fakeDoclet});
+  it('does not show the return-type separator if there is no return type', () => {
+    const fakeDoclet = {
+      kind: 'function',
+      name: 'foo',
+      returns: [
+        {
+          description: 'bar',
+        },
+      ],
+    };
+    const returnTypesSeparator = helpers.template.translate('returnTypesSeparator');
+    const text = helpers.render('signature.njk', { item: fakeDoclet });
 
-        expect(text).not.toContain(returnTypesSeparator);
-    });
+    expect(text).not.toContain(returnTypesSeparator);
+  });
 
-    it('shows complete type information for properties', () => {
-        const catharsis = require('catharsis');
+  it('shows complete type information for properties', () => {
+    const catharsis = require('catharsis');
 
-        const fakeDoclet = {
-            kind: 'member',
-            name: 'foo',
-            type: {
-                names: [
-                    'function'
-                ],
-                parsedType: catharsis.parse('?function(!string)')
-            }
-        };
-        const text = helpers.render('signature.njk', {item: fakeDoclet});
+    const fakeDoclet = {
+      kind: 'member',
+      name: 'foo',
+      type: {
+        names: ['function'],
+        parsedType: catharsis.parse('?function(!string)'),
+      },
+    };
+    const text = helpers.render('signature.njk', { item: fakeDoclet });
 
-        expect(text).toContain('nullable function(non-null string)');
-    });
+    expect(text).toContain('nullable function(non-null string)');
+  });
 });

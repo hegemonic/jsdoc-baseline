@@ -19,52 +19,53 @@ const path = require('path');
 const Template = require('../../../../lib/template');
 
 describe('details-table macro', () => {
-    // TODO: more tests
-    const config = _.defaultsDeep({
-        views: [
-            path.resolve(__dirname, '..', '..', '..', 'fixtures', 'views')
-        ]
-    }, defaultConfig);
-    let template;
+  // TODO: more tests
+  const config = _.defaultsDeep(
+    {
+      views: [path.resolve(__dirname, '..', '..', '..', 'fixtures', 'views')],
+    },
+    defaultConfig
+  );
+  let template;
 
-    beforeEach(() => {
-        template = new Template(config);
+  beforeEach(() => {
+    template = new Template(config);
+  });
+
+  it('does not insert an empty paragraph when a doclet has no modifiers', () => {
+    const text = template.render('details-table-test.njk', {
+      values: [
+        {
+          description: 'foo',
+        },
+      ],
     });
 
-    it('does not insert an empty paragraph when a doclet has no modifiers', () => {
-        const text = template.render('details-table-test.njk', {
-            values: [
-                {
-                    description: 'foo'
-                }
-            ]
-        });
+    expect(text).not.toContain('<p></p>');
+  });
 
-        expect(text).not.toContain('<p></p>');
+  it('includes the default value when one is provided', () => {
+    const text = template.render('details-table-test.njk', {
+      values: [
+        {
+          description: 'test',
+          defaultvalue: 'foo',
+        },
+      ],
     });
 
-    it('includes the default value when one is provided', () => {
-        const text = template.render('details-table-test.njk', {
-            values: [
-                {
-                    description: 'test',
-                    defaultvalue: 'foo'
-                }
-            ]
-        });
+    expect(text).toContain('foo');
+  });
 
-        expect(text).toContain('foo');
+  it('includes modifier text even when the description is missing', () => {
+    const text = template.render('details-table-test.njk', {
+      values: [
+        {
+          defaultvalue: 'foo',
+        },
+      ],
     });
 
-    it('includes modifier text even when the description is missing', () => {
-        const text = template.render('details-table-test.njk', {
-            values: [
-                {
-                    defaultvalue: 'foo'
-                }
-            ]
-        });
-
-        expect(text).toContain('foo');
-    });
+    expect(text).toContain('foo');
+  });
 });
