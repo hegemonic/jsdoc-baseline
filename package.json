@@ -52,7 +52,7 @@
     "strip-json-comments": "^3.1.1"
   },
   "devDependencies": {
-    "@jsdoc/eslint-config": "^1.1.6",
+    "@jsdoc/eslint-config": "^1.1.7",
     "@jsdoc/prettier-config": "^0.1.0",
     "@jsdoc/test-matchers": "^0.1.6",
     "bootstrap": "^3.3.7",
