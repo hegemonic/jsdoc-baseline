@@ -29,7 +29,7 @@
   "homepage": "https://github.com/hegemonic/jsdoc-baseline",
   "dependencies": {
     "@jsdoc/core": "^0.4.1",
-    "@jsdoc/tag": "^0.1.0",
+    "@jsdoc/tag": "^0.1.1",
     "@jsdoc/task-runner": "^0.1.10",
     "@jsdoc/util": "^0.2.4",
     "@sindresorhus/slugify": "^1.1.2",
