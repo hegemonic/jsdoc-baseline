@@ -30,7 +30,7 @@
   "dependencies": {
     "@jsdoc/core": "^0.4.1",
     "@jsdoc/tag": "^0.1.1",
-    "@jsdoc/task-runner": "^0.1.10",
+    "@jsdoc/task-runner": "^0.1.11",
     "@jsdoc/util": "^0.2.4",
     "@sindresorhus/slugify": "^1.1.2",
     "catharsis": "^0.9.0",
