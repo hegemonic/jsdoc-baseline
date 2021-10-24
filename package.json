@@ -5,6 +5,7 @@
   "main": "publish.js",
   "scripts": {
     "coverage": "nyc gulp jasmine && nyc report --reporter=html",
+    "preinstall": "npx npm-force-resolutions",
     "test": "gulp test"
   },
   "repository": {
@@ -77,6 +78,10 @@
   },
   "peerDependencies": {
     "jsdoc": "^3.6.7"
+  },
+  "resolutions": {
+    "ansi-regex": "5.0.1",
+    "glob-parent": "6.0.2"
   },
   "engines": {
     "node": ">=v14.18.1"
