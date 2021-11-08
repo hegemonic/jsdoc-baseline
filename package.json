@@ -71,7 +71,7 @@
     "jasmine-console-reporter": "^3.1.0",
     "jqtree": "^1.6.1",
     "jsdoc": "^3.6.7",
-    "mock-fs": "^5.1.1",
+    "mock-fs": "^5.1.2",
     "nyc": "^15.1.0",
     "prettier": "^2.4.1",
     "requizzle": "^0.2.3"
