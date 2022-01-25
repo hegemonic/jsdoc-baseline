@@ -70,14 +70,14 @@
     "gulp-uglify": "^3.0.2",
     "jasmine-console-reporter": "^3.1.0",
     "jqtree": "^1.6.2",
-    "jsdoc": "^3.6.9",
+    "jsdoc": "^3.6.10",
     "mock-fs": "^5.1.2",
     "nyc": "^15.1.0",
     "prettier": "^2.5.1",
     "requizzle": "^0.2.3"
   },
   "peerDependencies": {
-    "jsdoc": "^3.6.9"
+    "jsdoc": "^3.6.10"
   },
   "resolutions": {
     "ansi-regex": "5.0.1",
