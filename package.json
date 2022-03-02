@@ -59,7 +59,7 @@
     "bootstrap": "^3.3.7",
     "code-prettify": "^0.1.0",
     "eslint": "^8.10.0",
-    "eslint-config-prettier": "^8.4.0",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
     "gulp": "^4.0.2",
     "gulp-csso": "^4.0.1",
