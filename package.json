@@ -41,7 +41,7 @@
     "fast-glob": "^3.2.11",
     "fs-extra": "^10.0.1",
     "html-escaper": "^3.0.3",
-    "js-beautify": "^1.14.2",
+    "js-beautify": "^1.14.3",
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
     "markdown-it": "^12.3.2",
