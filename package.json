@@ -73,7 +73,7 @@
     "jsdoc": "^3.6.10",
     "mock-fs": "^5.1.2",
     "nyc": "^15.1.0",
-    "prettier": "^2.7.0",
+    "prettier": "^2.7.1",
     "requizzle": "^0.2.3"
   },
   "peerDependencies": {
