@@ -38,7 +38,7 @@
     "common-path-prefix": "^3.0.0",
     "deep-extend": "^0.6.0",
     "escape-string-regexp": "^4.0.0",
-    "fast-glob": "^3.2.11",
+    "fast-glob": "^3.2.12",
     "fs-extra": "^10.1.0",
     "html-escaper": "^3.0.3",
     "js-beautify": "^1.14.6",
