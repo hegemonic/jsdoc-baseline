@@ -56,7 +56,7 @@
     "@jsdoc/eslint-config": "^1.1.7",
     "@jsdoc/prettier-config": "^0.1.0",
     "@jsdoc/test-matchers": "^0.1.7",
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^4.0.0",
     "code-prettify": "^0.1.0",
     "eslint": "^8.23.1",
     "eslint-config-prettier": "^8.5.0",
