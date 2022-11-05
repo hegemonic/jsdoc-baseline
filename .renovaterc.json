@@ -1,12 +1,18 @@
 {
-    "extends": [
-        "config:base"
-    ],
-    "ignoreDeps": [
-        "bootstrap"
-    ],
-    "statusCheckVerify": true,
-    "automerge": true,
-    "automergeType": "branch",
-    "rangeStrategy": "bump"
+  "extends": [
+    "config:base"
+  ],
+  "ignoreDeps": [
+    "bootstrap"
+  ],
+  "statusCheckVerify": true,
+  "automerge": true,
+  "automergeType": "branch",
+  "rangeStrategy": "bump",
+  "packageRules": [
+    {
+      "packageNames": ["node"],
+      "enabled": false
+    }
+  ]
 }
