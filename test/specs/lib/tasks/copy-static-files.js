@@ -1,10 +1,9 @@
 const mock = require('mock-fs');
-const config = require('../../../../lib/config');
+const { loadConfigSync } = require('../../../../lib/config');
 const CopyStaticFiles = require('../../../../lib/tasks/copy-static-files');
 const FileInfo = require('../../../../lib/file-info');
 const fs = require('fs-extra');
 const path = require('path');
-const Template = require('../../../../lib/template');
 
 const OUTPUT_DIR = 'out';
 const SOURCE_DIR = 'files';
@@ -15,11 +14,11 @@ describe('lib/tasks/copy-static-files', () => {
   let instance;
 
   beforeEach(() => {
-    conf = config.loadSync().get();
+    conf = loadConfigSync(helpers.deps);
     conf.staticFiles = [new FileInfo(SOURCE_DIR, 'foo.txt')];
     context = {
       destination: OUTPUT_DIR,
-      template: new Template(conf),
+      template: helpers.createTemplate(conf),
       templateConfig: conf,
     };
     instance = new CopyStaticFiles({ name: 'copyStaticFiles' });

@@ -5,7 +5,6 @@ const fs = require('fs-extra');
 const GenerateToc = require('../../../../lib/tasks/generate-toc');
 const { name } = require('@jsdoc/core');
 const path = require('path');
-const Template = require('../../../../lib/template');
 
 const ARGUMENT_ERROR = 'ArgumentError';
 const OUTPUT_DIR = 'out';
@@ -91,7 +90,7 @@ describe('lib/tasks/generate-toc', () => {
       },
     ];
     const navTree = name.longnamesToTree(nonGlobals.map((d) => d.longname));
-    const template = new Template(defaultConfig);
+    const template = helpers.createTemplate(defaultConfig);
 
     beforeEach(() => {
       context = {

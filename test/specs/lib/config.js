@@ -16,19 +16,13 @@
 describe('lib/config', () => {
   const { EventBus } = require('@jsdoc/util');
   const config = require('../../../lib/config');
-  const env = require('jsdoc/env');
   const path = require('path');
 
-  const baselineConfigPath = env.conf.templates.baseline;
+  let env;
   const bus = new EventBus('jsdoc');
-  const templatePath = env.opts.template;
 
-  afterEach(() => {
-    env.conf.templates.baseline = baselineConfigPath;
-    env.opts.template = templatePath;
-
-    config.reset();
-  });
+  beforeEach(() => (env = helpers.deps.get('env')));
+  afterEach(() => helpers.setup());
 
   it('should be an object', () => {
     expect(config).toBeObject();
@@ -38,76 +32,40 @@ describe('lib/config', () => {
     expect(config.defaultConfig).toBeObject();
   });
 
-  it('should export a "get" method', () => {
-    expect(config.get).toBeFunction();
-  });
-
-  it('should export a "loadSync" method', () => {
-    expect(config.loadSync).toBeFunction();
+  it('should export a "loadConfigSync" method', () => {
+    expect(config.loadConfigSync).toBeFunction();
   });
 
   it('should export a "readJsonSync" method', () => {
     expect(config.readJsonSync).toBeFunction();
   });
 
-  it('should export a "reset" method', () => {
-    expect(config.reset).toBeFunction();
-  });
-
-  it('should export a "set" method', () => {
-    expect(config.set).toBeFunction();
-  });
-
-  describe('get', () => {
-    it('should return the specified key', () => {
-      env.conf.templates.baseline = path.resolve(__dirname, '../../fixtures/config.json');
-      config.loadSync();
-
-      expect(config.get('foo')).toBe('bar');
-    });
-
-    it('should return all config values if no key is specified', () => {
-      expect(config.loadSync().get()).toBeObject();
-    });
-  });
-
-  describe('loadSync', () => {
-    it('should return the "config" module object', () => {
-      const conf = config.loadSync();
-
-      expect(conf).toBe(config);
-    });
-
+  describe('loadConfigSync', () => {
     it('should work if the config object is embedded in the JSDoc config file', () => {
+      let conf;
+
       env.conf.templates.baseline = {
         beautify: !config.defaultConfig.beautify,
       };
-      config.loadSync();
+      conf = config.loadConfigSync(helpers.deps);
 
-      expect(config.get('beautify')).toBe(!config.defaultConfig.beautify);
+      expect(conf.beautify).toBe(!config.defaultConfig.beautify);
     });
 
     it('should use the correct default paths', () => {
+      let conf;
+
       env.conf.templates.baseline = path.resolve(__dirname, '../../fixtures/config.json');
       env.opts.template = '/foo/bar/baz';
 
-      config.loadSync();
+      conf = config.loadConfigSync(helpers.deps);
 
-      expect(config.get('foo')).toBe('bar');
-      expect(config.get('templatePath')).toBe('/foo/bar/baz');
-    });
-
-    it('should accept the template-config and template paths as parameters', () => {
-      const baselineTemplatePath = '/foo/bar/baz';
-      const confPath = path.resolve(__dirname, '../../fixtures/config.json');
-
-      config.loadSync(confPath, baselineTemplatePath);
-
-      expect(config.get('foo')).toBe('bar');
-      expect(config.get('templatePath')).toBe('/foo/bar/baz');
+      expect(conf.foo).toBe('bar');
+      expect(conf.templatePath).toBe('/foo/bar/baz');
     });
 
     it('should set default values even if the config file is missing', () => {
+      let conf;
       let event;
 
       env.conf.templates.baseline = path.resolve(__dirname, '/not/a/real/path');
@@ -115,13 +73,14 @@ describe('lib/config', () => {
       bus.once('logger:fatal', (e) => {
         event = e;
       });
-      config.loadSync();
+      conf = config.loadConfigSync(helpers.deps);
 
       expect(event).toBeDefined();
-      expect(Object.keys(config.get()).length).not.toBe(0);
+      expect(Object.keys(conf).length).toBeGreaterThan(0);
     });
 
     it('should work with JSON files that contain comments', () => {
+      let conf;
       let event;
 
       function listener(e) {
@@ -131,27 +90,31 @@ describe('lib/config', () => {
       env.conf.templates.baseline = path.resolve(__dirname, '../../fixtures/comments.json');
 
       bus.on('logger:fatal', listener);
-      config.loadSync();
+      conf = config.loadConfigSync(helpers.deps);
       bus.off('logger:fatal', listener);
 
       expect(event).toBeUndefined();
-      expect(config.get('foo')).toBe('bar');
+      expect(conf.foo).toBe('bar');
     });
 
     it('should get the L10N filename from the locale', () => {
+      let conf;
+
       env.conf.templates.baseline = path.resolve(__dirname, '../../fixtures/config.json');
 
-      config.loadSync();
+      conf = config.loadConfigSync(helpers.deps);
 
-      expect(config.get('l10nFile')).toBe('en.yaml');
+      expect(conf.l10nFile).toBe('en.yaml');
     });
 
     it('should use the L10N filename from the config file, if specified there', () => {
+      let conf;
+
       env.conf.templates.baseline = path.resolve(__dirname, '../../fixtures/config-l10nfile.json');
 
-      config.loadSync();
+      conf = config.loadConfigSync(helpers.deps);
 
-      expect(config.get('l10nFile')).toBe('l10n.yaml');
+      expect(conf.l10nFile).toBe('l10n.yaml');
     });
   });
 
@@ -177,41 +140,6 @@ describe('lib/config', () => {
       const result = config.readJsonSync();
 
       expect(result).toBeUndefined();
-    });
-  });
-
-  describe('reset', () => {
-    it('should reset all config values', () => {
-      config.set('a', 'b');
-      config.reset();
-
-      expect(config.get('a')).toBeUndefined();
-    });
-  });
-
-  describe('set', () => {
-    it('should not throw before calling "loadSync"', () => {
-      function updateConfig() {
-        config.set('a', 'b');
-      }
-
-      expect(updateConfig).not.toThrow();
-    });
-
-    it('should not throw after calling "loadSync"', () => {
-      function updateConfig() {
-        config.set('a', 'b');
-      }
-
-      config.loadSync();
-
-      expect(updateConfig).not.toThrow();
-    });
-
-    it('should return the "config" module object', () => {
-      const conf = config.set('a', 'b');
-
-      expect(conf).toBe(config);
     });
   });
 });

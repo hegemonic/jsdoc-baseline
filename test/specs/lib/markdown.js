@@ -1,5 +1,4 @@
 describe('lib/markdown', () => {
-  const env = require('jsdoc/env');
   const markdown = require('../../../lib/markdown');
   const path = require('path');
 
@@ -12,27 +11,27 @@ describe('lib/markdown', () => {
   });
 
   describe('getParser', () => {
-    const originalMarkdownConf = env.conf.markdown;
-
     function setMarkdownConf(conf) {
+      const env = helpers.deps.get('env');
+
       env.conf.markdown = conf;
     }
 
     afterEach(() => {
-      env.conf.markdown = originalMarkdownConf;
+      helpers.setup();
     });
 
     it('returns a function when the config is empty', () => {
       let parser;
 
       setMarkdownConf({});
-      parser = markdown.getParser();
+      parser = markdown.getParser(helpers.deps);
 
       expect(parser).toBeFunction();
     });
 
     it('does not change text within inline tags', () => {
-      const parser = markdown.getParser();
+      const parser = markdown.getParser(helpers.deps);
 
       expect(parser('{@link MyClass#_x} and {@link MyClass#_y}')).toBe(
         '<p>{@link MyClass#_x} and {@link MyClass#_y}</p>'
@@ -40,7 +39,7 @@ describe('lib/markdown', () => {
     });
 
     it('does not convert HTTP/HTTPS URLs to links', () => {
-      const parser = markdown.getParser();
+      const parser = markdown.getParser(helpers.deps);
 
       expect(parser('Visit {@link http://usejsdoc.com}.')).toBe(
         '<p>Visit {@link http://usejsdoc.com}.</p>'
@@ -51,7 +50,7 @@ describe('lib/markdown', () => {
     });
 
     it('escapes the expected characters in code blocks', () => {
-      const parser = markdown.getParser();
+      const parser = markdown.getParser(helpers.deps);
       const markdownText = '```html\n<p><a href="#">Sample \'HTML.\'</a></p>\n```';
       const convertedText =
         '' +
@@ -66,7 +65,7 @@ describe('lib/markdown', () => {
       let parser;
 
       setMarkdownConf({ hardwrap: true });
-      parser = markdown.getParser();
+      parser = markdown.getParser(helpers.deps);
 
       expect(parser('line one\nline two')).toBe('<p>line one<br>\nline two</p>');
     });
@@ -75,13 +74,13 @@ describe('lib/markdown', () => {
       let parser;
 
       setMarkdownConf({ idInHeadings: true });
-      parser = markdown.getParser();
+      parser = markdown.getParser(helpers.deps);
 
       expect(parser('# Hello')).toBe('<h1 id="hello">Hello</h1>');
     });
 
     it('does not pretty-print code blocks that start with "```plain"', () => {
-      const parser = markdown.getParser();
+      const parser = markdown.getParser(helpers.deps);
       const markdownText = '```plain\nconsole.log("foo");\n```';
       const convertedText =
         '<pre class="source"><code>console.log(&quot;foo&quot;);\n</code></pre>';
@@ -98,7 +97,7 @@ describe('lib/markdown', () => {
             return `<pre><code>${code} highlighted as ${language}</code></pre>`;
           },
         });
-        parser = markdown.getParser();
+        parser = markdown.getParser(helpers.deps);
 
         expect(parser('```js\nhello\n```')).toBe(
           '<pre><code>hello\n highlighted as js</code></pre>'
@@ -111,7 +110,7 @@ describe('lib/markdown', () => {
         setMarkdownConf({
           highlight: path.join(__dirname, '../../fixtures/markdown/highlighter'),
         });
-        parser = markdown.getParser();
+        parser = markdown.getParser(helpers.deps);
 
         expect(parser('```js\nhello\n```')).toBe(
           '<pre><code>hello\n in this language: js</code></pre>'
@@ -121,11 +120,11 @@ describe('lib/markdown', () => {
       // TODO: Re-enable when `jsdoc.didLog()` is available outside of the JSDoc repo
       xit('logs an error if the `highlight` module cannot be found', () => {
         /*
-                function getParser() {
+                function getParser(helpers.deps) {
                     setMarkdownConf({
                         highlight: path.join(__dirname, 'foo/bar/baz')
                     });
-                    markdown.getParser();
+                    markdown.getParser(helpers.deps);
                 }
 
                 expect(jsdoc.didLog(getParser, 'error')).toBeTrue();
@@ -138,11 +137,11 @@ describe('lib/markdown', () => {
           '`exports.highlight`',
         () => {
           /*
-                function getParser() {
+                function getParser(helpers.deps) {
                     setMarkdownConf({
                         highlight: path.join(__dirname, '../../fixtures/markdown/bad-highlighter')
                     });
-                    markdown.getParser();
+                    markdown.getParser(helpers.deps);
                 }
 
                 expect(jsdoc.didLog(getParser, 'error')).toBeTrue();

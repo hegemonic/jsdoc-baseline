@@ -4,7 +4,6 @@ const { defaultConfig } = require('../../../../lib/config');
 const fs = require('fs-extra');
 const GenerateFiles = require('../../../../lib/tasks/generate-files');
 const path = require('path');
-const Template = require('../../../../lib/template');
 const Ticket = require('../../../../lib/ticket');
 
 const OUTPUT_DIR = 'out';
@@ -76,10 +75,10 @@ describe('lib/tasks/generate-files', () => {
     beforeEach(() => {
       context = {
         destination: OUTPUT_DIR,
-        templateConfig: defaultConfig,
+        templateConfig: _.cloneDeep(defaultConfig),
       };
 
-      context.template = new Template(context.templateConfig);
+      context.template = helpers.createTemplate(context.templateConfig);
       mock(helpers.baseViews);
     });
 
@@ -317,14 +316,6 @@ describe('lib/tasks/generate-files', () => {
         let ticket;
 
         context.templateConfig.beautify = false;
-
-        mock.restore();
-        context.template = new Template(context.templateConfig);
-        mock(
-          _.defaults({}, helpers.baseViews, {
-            out: {},
-          })
-        );
 
         ticket = new Ticket({
           data: {},

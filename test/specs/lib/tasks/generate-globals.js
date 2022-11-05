@@ -4,7 +4,6 @@ const { defaultConfig } = require('../../../../lib/config');
 const fs = require('fs-extra');
 const GenerateGlobals = require('../../../../lib/tasks/generate-globals');
 const path = require('path');
-const Template = require('../../../../lib/template');
 
 const OUTPUT_DIR = 'out';
 
@@ -68,7 +67,7 @@ describe('lib/tasks/generate-globals', () => {
         values: globals,
       }),
       pageTitlePrefix: '',
-      template: new Template(defaultConfig),
+      template: helpers.createTemplate(defaultConfig),
       templateConfig: defaultConfig,
     };
     context.linkManager = context.template.linkManager;

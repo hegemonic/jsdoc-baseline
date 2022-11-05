@@ -4,7 +4,6 @@ const { defaultConfig } = require('../../../../lib/config');
 const fs = require('fs-extra');
 const GenerateSourceFiles = require('../../../../lib/tasks/generate-source-files');
 const path = require('path');
-const Template = require('../../../../lib/template');
 
 const mockObj = _.defaults({}, helpers.baseViews, {
   'foo.js': 'exports.foo = 1;',
@@ -33,7 +32,7 @@ describe('lib/tasks/generate-source-files', () => {
           'foo.js': 'foo.js',
           'bar.js': 'bar.js',
         },
-        template: new Template(defaultConfig),
+        template: helpers.createTemplate(defaultConfig),
         templateConfig: defaultConfig,
       };
       context.linkManager = context.template.linkManager;

@@ -6,7 +6,6 @@ const fs = require('fs-extra');
 const GenerateIndex = require('../../../../lib/tasks/generate-index');
 const { name } = require('@jsdoc/core');
 const path = require('path');
-const Template = require('../../../../lib/template');
 
 const OUTPUT_DIR = 'out';
 
@@ -49,7 +48,7 @@ describe('lib/tasks/generate-index', () => {
       globals: db({ values: [] }),
       pageTitlePrefix: '',
       readme: 'fixtures/readme.md',
-      template: new Template(defaultConfig),
+      template: helpers.createTemplate(defaultConfig),
       templateConfig: defaultConfig,
     };
     context.linkManager = context.template.linkManager;

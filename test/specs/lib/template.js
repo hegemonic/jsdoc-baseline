@@ -22,13 +22,13 @@ describe('lib/template', () => {
 
   beforeEach(() => {
     /* eslint-disable no-unused-vars */
-    instance = new Template(defaultConfig);
+    instance = new Template(defaultConfig, helpers.deps);
     /* eslint-enable no-unused-vars */
   });
 
   it('should be a constructor', () => {
     expect(Template).toBeFunction();
-    expect(new Template(defaultConfig)).toBeInstanceOf(Template);
+    expect(new Template(defaultConfig, helpers.deps)).toBeInstanceOf(Template);
   });
 
   xdescribe('render', () => {

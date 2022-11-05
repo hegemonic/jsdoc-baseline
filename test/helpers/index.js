@@ -16,6 +16,8 @@
 // Helper functions for testing the Baseline template.
 
 const deepExtend = require('deep-extend');
+const { defaultConfig } = require('../../lib/config');
+const { Dependencies } = require('@jsdoc/core');
 const fs = require('fs');
 const glob = require('fast-glob');
 const path = require('path');
@@ -23,7 +25,7 @@ const Template = require('../../lib/template');
 
 // Resets environment variables used by JSDoc to the default values for tests.
 function resetJsdocEnv() {
-  const env = require('jsdoc/env');
+  const env = {};
 
   env.conf = {
     tags: {
@@ -48,6 +50,9 @@ function resetJsdocEnv() {
   env.version = {
     number: '1.2.3.4',
   };
+
+  global.helpers.deps = new Dependencies();
+  global.helpers.deps.registerValue('env', env);
 }
 
 global.helpers = {
@@ -72,17 +77,15 @@ global.helpers = {
 
   // Creates a new, fully initialized Template object with the specified configuration settings.
   createTemplate: (config) => {
-    let defaultConfig;
-
     config = config || {};
-
     global.helpers.setup();
-    defaultConfig = require('../../lib/config').defaultConfig;
 
     config = deepExtend({}, defaultConfig, config);
 
-    return new Template(config);
+    return new Template(config, global.helpers.deps);
   },
+
+  deps: new Dependencies(),
 
   // Renders a Handlebars view.
   render: (...args) => global.helpers.template.render(...args),

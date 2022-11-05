@@ -1,4 +1,4 @@
-const config = require('../../../../lib/config');
+const { loadConfigSync } = require('../../../../lib/config');
 const { db } = require('../../../../lib/db');
 const SetContext = require('../../../../lib/tasks/set-context');
 const Template = require('../../../../lib/template');
@@ -29,8 +29,9 @@ describe('lib/tasks/set-context', () => {
           destination: 'out',
         },
       },
+      dependencies: helpers.deps,
       doclets: db({ values: fakeDoclets }),
-      templateConfig: config.loadSync().get(),
+      templateConfig: loadConfigSync(helpers.deps),
     };
     instance = new SetContext({ name: 'setContext' });
   });

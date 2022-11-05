@@ -16,7 +16,6 @@
 const _ = require('lodash');
 const { defaultConfig } = require('../../../../lib/config');
 const path = require('path');
-const Template = require('../../../../lib/template');
 
 describe('details-table macro', () => {
   // TODO: more tests
@@ -29,7 +28,7 @@ describe('details-table macro', () => {
   let template;
 
   beforeEach(() => {
-    template = new Template(config);
+    template = helpers.createTemplate(config);
   });
 
   it('does not insert an empty paragraph when a doclet has no modifiers', () => {

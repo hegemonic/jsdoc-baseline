@@ -1,5 +1,5 @@
 const mock = require('mock-fs');
-const config = require('../../../../lib/config');
+const { loadConfigSync } = require('../../../../lib/config');
 const fs = require('fs-extra');
 const CopyFiles = require('../../../../lib/tasks/copy-files');
 const path = require('path');
@@ -67,7 +67,7 @@ describe('lib/tasks/copy-files', () => {
     let result;
 
     beforeEach(() => {
-      conf = config.loadSync().get();
+      conf = loadConfigSync(helpers.deps);
       context = {
         destination: OUTPUT_DIR,
         templateConfig: conf,
