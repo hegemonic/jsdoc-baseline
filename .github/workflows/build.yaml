@@ -1,11 +1,26 @@
 name: build
 on: [push, pull_request]
 jobs:
-  build:
+  lint:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        # os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest]
+        node: [18]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Lint
+        run: |
+          npm install -g gulp
+          npm install
+          gulp lint
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
         os: [ubuntu-latest]
         node: [14, 16, 18]
     steps:
@@ -13,8 +28,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
-      - name: Test and lint
+      - name: Test
         run: |
           npm install -g gulp
           npm install
-          gulp
+          gulp jasmine
