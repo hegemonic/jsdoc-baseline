@@ -53,31 +53,27 @@
     "strip-json-comments": "^3.1.1"
   },
   "devDependencies": {
-    "@jsdoc/eslint-config": "^1.1.7",
+    "@jsdoc/eslint-config": "^1.1.10",
     "@jsdoc/prettier-config": "^0.1.0",
-    "@jsdoc/test-matchers": "^0.1.7",
+    "@jsdoc/test-matchers": "^0.1.13",
     "bootstrap": "^3.4.1",
     "eslint": "^8.27.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
     "gulp": "^4.0.2",
     "gulp-csso": "^4.0.1",
-    "gulp-eslint7": "^0.3.2",
+    "gulp-eslint-new": "^1.7.1",
     "gulp-jasmine": "^4.0.0",
     "gulp-less": "^5.0.0",
     "gulp-prettier": "^4.0.0",
     "gulp-uglify": "^3.0.2",
     "jasmine-console-reporter": "^3.1.0",
-    "jquery": "^3.6.1",
     "jqtree": "^1.6.3",
-    "jsdoc": "^4.0.0",
+    "jquery": "^3.6.1",
     "mock-fs": "^5.2.0",
     "nyc": "^15.1.0",
     "prettier": "^2.7.1",
     "requizzle": "^0.2.3"
-  },
-  "peerDependencies": {
-    "jsdoc": "^4.0.0"
   },
   "engines": {
     "node": ">=v14.0.0"
