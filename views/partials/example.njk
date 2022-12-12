@@ -19,5 +19,5 @@
     {# TODO: Improve markup. #}
     <p {{- 'example-caption' | cssClass }}>{{ caption }}</p>
   {% endif %}
-  <pre {{- '!prettyprint' | cssClass }}><code>{{ code }}</code></pre>
+  {{ code | highlight }}
 </div>

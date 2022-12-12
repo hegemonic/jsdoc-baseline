@@ -28,6 +28,7 @@ function resetJsdocEnv() {
   const env = {};
 
   env.conf = {
+    markdown: {},
     tags: {
       dictionaries: ['jsdoc'],
     },

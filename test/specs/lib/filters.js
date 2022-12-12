@@ -329,6 +329,42 @@ describe('lib/filters', () => {
       });
     });
 
+    describe('highlight', () => {
+      // Behavior is tested further by the tests for `lib/highlight`.
+
+      it('returns highlighted code wrapped in <pre><code>', () => {
+        const highlighted = instance.highlight('const foo = "bar";', 'js');
+
+        expect(highlighted).toMatch(/<pre><code[^>]*>.+<\/code><\/pre>/);
+        expect(highlighted).toMatch('hljs');
+      });
+
+      it('works when no language is specified', () => {
+        const highlighted = instance.highlight('const foo = "bar";');
+
+        expect(highlighted).toMatch(/<pre><code[^>]*>.+<\/code><\/pre>/);
+        expect(highlighted).toMatch('hljs');
+      });
+    });
+
+    describe('highlightUnwrapped', () => {
+      // Behavior is tested further by the tests for `lib/highlight`.
+
+      it('returns highlighted code that is not wrapped in <pre><code>', () => {
+        const highlighted = instance.highlightUnwrapped('const foo = "bar";', 'js');
+
+        expect(highlighted).not.toMatch(/<pre><code[^>]*>.+<\/code><\/pre>/);
+        expect(highlighted).toMatch('hljs');
+      });
+
+      it('works when no language is specified', () => {
+        const highlighted = instance.highlightUnwrapped('const foo = "bar";');
+
+        expect(highlighted).not.toMatch(/<pre><code[^>]*>.+<\/code><\/pre>/);
+        expect(highlighted).toMatch('hljs');
+      });
+    });
+
     xdescribe('id', () => {
       // TODO: Write me
 
@@ -471,16 +507,14 @@ describe('lib/filters', () => {
         const link = instance.linkToLine(fakeDocletMeta, 'foo');
 
         expect(link.toString()).toBe(
-          '<a href="glitch-js.html#source-line-70" class="foo">glitch.<wbr />js:70</a>'
+          '<a href="glitch-js.html#L70" class="foo">glitch.<wbr />js:70</a>'
         );
       });
 
       it('works when no CSS class is specified', () => {
         const link = instance.linkToLine(fakeDocletMeta);
 
-        expect(link.toString()).toBe(
-          '<a href="glitch-js.html#source-line-70">glitch.<wbr />js:70</a>'
-        );
+        expect(link.toString()).toBe('<a href="glitch-js.html#L70">glitch.<wbr />js:70</a>');
       });
 
       it('ignores the line number if the code is on line 1', () => {

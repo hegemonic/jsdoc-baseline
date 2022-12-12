@@ -144,7 +144,7 @@ describe('lib/tasks/generate-source-files', () => {
         fileName = findOutputFile('foo-js');
         file = fs.readFileSync(path.join(OUTPUT_DIR, fileName), 'utf8');
 
-        expect(file).toMatch(/<pre [^>]+><code>exports.foo/);
+        expect(file).toMatch(/<td[^>]+>.*exports.*\..*foo.*<\/td>/);
       });
 
       it('encodes characters in the source file that are not HTML-safe', async () => {
@@ -157,7 +157,7 @@ describe('lib/tasks/generate-source-files', () => {
         fileName = findOutputFile('bar-js');
         file = fs.readFileSync(path.join(OUTPUT_DIR, fileName), 'utf8');
 
-        expect(file).toContain('2 &lt; 3');
+        expect(file).toMatch(/2.* .*&lt;.* .*3/);
       });
 
       it('includes the filename in the page title', async () => {

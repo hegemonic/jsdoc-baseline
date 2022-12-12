@@ -29,14 +29,14 @@
         {# TODO: https://github.com/typekit/webfontloader #}
         {# TODO: add fonts to repo (with option to copy those or use webfontloader) #}
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata:400,700|Karla:400,400i,700,700i|Noto+Serif:400,400i,700,700i&display=swap&subset=latin-ext">
-        {# TODO: use relative path to CSS file #}
+        {# TODO: use relative path to CSS files #}
         <link rel="stylesheet" href="css/baseline.css">
+        <link rel="stylesheet" href="css/hljs-tomorrow.css">
       {% endblock %}
     </head>
   {% endblock %}
   {% block body %}
-    {# TODO: move onload to script file #}
-    <body onload="prettyPrint()">
+    <body>
       {% block body_navbar %}
         {% include 'navbar.njk' %}
       {% endblock %}
@@ -90,9 +90,7 @@
         {# TODO: fix up path relative to current output directory #}
         <script src="scripts/jquery.min.js"></script>
         <script src="scripts/tree.jquery.js"></script>
-        <script src="scripts/prettify.js"></script>
         <script src="scripts/jsdoc-toc.js"></script>
-        <script src="scripts/linenumber.js"></script>
         <script src="scripts/scrollanchor.js"></script>
       {% endblock %}
     </body>

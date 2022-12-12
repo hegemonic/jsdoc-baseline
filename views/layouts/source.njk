@@ -22,8 +22,8 @@
     </header>
   {% endblock %}
   {% block source_content %}
-    <article>
-      <pre {{- cssClass('!prettyprint', '!linenums', 'source') }}><code>{{ docs }}</code></pre>
+    <article {{ cssClass('!source-code') }}>
+      {% include 'highlight-code.njk' %}
     </article>
   {% endblock %}
 {% endblock %}
