@@ -39,7 +39,7 @@
     "escape-string-regexp": "^4.0.0",
     "fast-glob": "^3.2.12",
     "fs-extra": "^10.1.0",
-    "highlight.js": "^11.6.0",
+    "highlight.js": "^11.7.0",
     "html-escaper": "^3.0.3",
     "js-beautify": "^1.14.7",
     "js-yaml": "^4.1.0",
