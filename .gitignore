@@ -3,7 +3,6 @@ npm-debug.log
 node_modules
 
 # Development files
-.nyc_output/
 .vscode/
 coverage/
 

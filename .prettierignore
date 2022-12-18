@@ -1,6 +1,8 @@
-# Ignore test fixtures.
-static/**
-test/fixtures/**
-
 # Ignore code coverage reports.
-.nyc_output/
+coverage/
+
+# Ignore static files that are part of the template's output.
+static/**
+
+# Ignore test fixtures.
+test/fixtures/**

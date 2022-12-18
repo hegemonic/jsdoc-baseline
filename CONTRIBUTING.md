@@ -22,14 +22,7 @@ again.
 To install the required Node.js modules:
 
 ```sh
-npm install -g gulp
 npm install
-
-To install Bower and its required components:
-
-```sh
-npm install -g bower
-bower install
 ```
 
 ## Make your changes
@@ -42,20 +35,19 @@ automatically.
 ### CSS files
 
 1. Update the [LESS][less] source files in the `styles/` directory.
-2. Run `gulp css` to generate CSS files or `gulp css-minify` to generate
-minified CSS files.
+2. Run `npm run css` to generate CSS files.
 
 ### Client-side scripts
 
 1. Update the source files in the `scripts/` directory.
-2. Run `gulp js` to copy and minify the script files.
+2. Run `npm run js` to copy and minify the script files.
 
 ## Run tests
 
 Make sure your changes pass the tests:
 
 ```sh
-gulp test
+npm run default
 ```
 
 You'll get errors if your code is not lint-free, or if the test coverage isn't

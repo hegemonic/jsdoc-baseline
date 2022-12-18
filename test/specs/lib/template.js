@@ -15,15 +15,11 @@
 */
 describe('lib/template', () => {
   const { defaultConfig } = require('../../../lib/config');
-  /* eslint-disable no-unused-vars */
-  let instance;
-  /* eslint-enable no-unused-vars */
+  let instance; // eslint-disable-line no-unused-vars
   const Template = require('../../../lib/template');
 
   beforeEach(() => {
-    /* eslint-disable no-unused-vars */
     instance = new Template(defaultConfig, helpers.deps);
-    /* eslint-enable no-unused-vars */
   });
 
   it('should be a constructor', () => {
@@ -32,10 +28,10 @@ describe('lib/template', () => {
   });
 
   xdescribe('render', () => {
-    // TODO
+    xit('TODO: Write me');
   });
 
   xdescribe('translate', () => {
-    // TODO
+    xit('TODO: Write me');
   });
 });

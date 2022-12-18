@@ -89,7 +89,7 @@ describe('lib/filters', () => {
     });
 
     xdescribe('config', () => {
-      // TODO: Write me
+      xit('TODO: Write me');
     });
 
     describe('cssClass', () => {
@@ -244,11 +244,11 @@ describe('lib/filters', () => {
     });
 
     xdescribe('filterProperties', () => {
-      // TODO: Write me
+      xit('TODO: Write me');
     });
 
     xdescribe('formatParams', () => {
-      // TODO: Write me
+      xit('TODO: Write me');
     });
 
     describe('generatedBy', () => {
@@ -270,7 +270,7 @@ describe('lib/filters', () => {
     });
 
     xdescribe('groupDocletTree', () => {
-      // TODO: Write me
+      xit('TODO: Write me');
     });
 
     describe('hasModifiers', () => {
@@ -374,7 +374,7 @@ describe('lib/filters', () => {
     });
 
     xdescribe('includes', () => {
-      // TODO: Write me
+      xit('TODO: Write me');
     });
 
     describe('incrementHeading', () => {
@@ -422,12 +422,12 @@ describe('lib/filters', () => {
     });
 
     xdescribe('labels', () => {
-      // TODO: Write me
+      xit('TODO: Write me');
     });
 
     describe('licenseLink', () => {
       it('returns a link if a valid license ID is specified', () => {
-        expect(instance.licenseLink('MIT')).toContain('https://');
+        expect(String(instance.licenseLink('MIT'))).toContain('https://');
       });
 
       it('returns the license ID if no link is found', () => {
@@ -490,7 +490,7 @@ describe('lib/filters', () => {
     });
 
     xdescribe('linkLongnameWithSignature', () => {
-      // TODO: Write me
+      xit('TODO: Write me');
     });
 
     describe('linkToLine', () => {
@@ -529,7 +529,7 @@ describe('lib/filters', () => {
     });
 
     xdescribe('linkWithSignature', () => {
-      // TODO: Write me
+      xit('TODO: Write me');
     });
 
     describe('markdown', () => {
@@ -675,11 +675,11 @@ describe('lib/filters', () => {
     });
 
     xdescribe('packageLink', () => {
-      // TODO: Write me
+      xit('TODO: Write me');
     });
 
     xdescribe('parseType', () => {
-      // TODO: Write me
+      xit('TODO: Write me');
     });
 
     describe('pluck', () => {
@@ -699,7 +699,7 @@ describe('lib/filters', () => {
     });
 
     xdescribe('registerAll', () => {
-      // TODO: Write me
+      xit('TODO: Write me');
     });
 
     describe('reparentItems', () => {
@@ -973,7 +973,7 @@ describe('lib/filters', () => {
     });
 
     xdescribe('resolveLinks', () => {
-      // TODO: Write me
+      xit('TODO: Write me');
     });
 
     describe('returnTypes', () => {
@@ -1069,11 +1069,11 @@ describe('lib/filters', () => {
     });
 
     xdescribe('see', () => {
-      // TODO: Write me
+      xit('TODO: Write me');
     });
 
     xdescribe('shouldHighlight', () => {
-      // TODO: Write me
+      xit('TODO: Write me');
     });
 
     describe('translate', () => {
@@ -1131,7 +1131,7 @@ describe('lib/filters', () => {
     });
 
     xdescribe('typeUnion', () => {
-      // TODO: Write me
+      xit('TODO: Write me');
     });
 
     describe('url', () => {

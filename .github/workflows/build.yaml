@@ -14,9 +14,8 @@ jobs:
           node-version: ${{ matrix.node }}
       - name: Lint
         run: |
-          npm install -g gulp
           npm install
-          gulp lint
+          npm run lint
   test:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -30,6 +29,5 @@ jobs:
           node-version: ${{ matrix.node }}
       - name: Test
         run: |
-          npm install -g gulp
           npm install
-          gulp jasmine
+          npm run jasmine
