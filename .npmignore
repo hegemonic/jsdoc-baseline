@@ -3,7 +3,6 @@
 .eslintrc.js
 .gitignore
 .github/
-.nyc_output/
 .renovaterc.json
 .travis.yml
 CHANGES.md

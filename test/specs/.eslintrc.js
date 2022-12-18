@@ -14,7 +14,7 @@
     limitations under the License.
 */
 module.exports = {
-    globals: {
-        helpers: 'readonly'
-    }
+  globals: {
+    helpers: 'readonly',
+  },
 };

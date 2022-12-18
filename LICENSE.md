@@ -16,7 +16,6 @@ License.
 The source code for Baseline is available at:
 https://github.com/hegemonic/baseline/
 
-
 # Bundled third-party software
 
 Baseline includes versions of the following third-party software. Each third-party software package
@@ -70,7 +69,6 @@ jQuery is distributed under the MIT License, which is reproduced above.
 Copyright 2005, 2014 [jQuery Foundation](https://jquery.org/) and other contributors.
 
 The source code for jQuery is available at: https://github.com/jquery/jquery
-
 
 # Other third-party dependencies
 

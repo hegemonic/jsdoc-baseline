@@ -1,10 +1,6 @@
 {
-  "extends": [
-    "config:base"
-  ],
-  "ignoreDeps": [
-    "bootstrap"
-  ],
+  "extends": ["config:base"],
+  "ignoreDeps": ["bootstrap"],
   "statusCheckVerify": true,
   "automerge": true,
   "automergeType": "branch",
