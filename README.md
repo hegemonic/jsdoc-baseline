@@ -1,6 +1,6 @@
 # Baseline
 
-![Build status](https://img.shields.io/github/workflow/status/hegemonic/jsdoc-baseline/build?style=flat-square)
+![Build status](https://img.shields.io/github/actions/workflow/status/hegemonic/jsdoc-baseline/build.yaml?branch=main&style=flat-square)
 [![npm version](https://img.shields.io/npm/v/jsdoc-baseline.svg?style=flat-square)](https://www.npmjs.org/package/jsdoc-baseline)
 
 An extensible template for [JSDoc][jsdoc].
