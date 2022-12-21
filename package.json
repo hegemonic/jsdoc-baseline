@@ -62,7 +62,7 @@
     "@jsdoc/eslint-config": "^1.1.10",
     "@jsdoc/prettier-config": "^0.1.0",
     "@jsdoc/test-matchers": "^0.1.13",
-    "@swc/core": "^1.3.23",
+    "@swc/core": "^1.3.24",
     "bootstrap": "^3.4.1",
     "c8": "^7.12.0",
     "csso-cli": "^4.0.1",
