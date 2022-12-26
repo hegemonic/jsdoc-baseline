@@ -17,7 +17,7 @@
 {% set properties = filterProperties(item.properties) %}
 {% if properties and properties.length %}
   <section>
-    <h>{{ 'headings.properties' | translate(properties) }}</h>
+    <h class="h symbol-properties">{{ 'headings.properties' | translate(properties) }}</h>
     {% set values = reparentItems(item, 'properties') %}
     {{ details.detailsTable(values, item.isEnum) }}
   </section>
