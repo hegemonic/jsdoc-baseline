@@ -144,7 +144,7 @@ describe('lib/tasks/generate-source-files', () => {
         fileName = findOutputFile('foo-js');
         file = fs.readFileSync(path.join(OUTPUT_DIR, fileName), 'utf8');
 
-        expect(file).toMatch(/<td[^>]+>.*exports.*\..*foo.*<\/td>/);
+        expect(file).toMatch(/<code[^>]+>.*exports.*\..*foo.*<\/code>/);
       });
 
       it('encodes characters in the source file that are not HTML-safe', async () => {

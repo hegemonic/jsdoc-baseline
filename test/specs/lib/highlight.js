@@ -105,16 +105,16 @@ describe('lib/highlight', () => {
         expect(html).toMatch(/<code[^>]*>[\n]{3}\.<\/code>/);
       });
 
-      it('adds a `<pre><code>` wrapper by default', () => {
+      it('adds a `<code>` wrapper by default', () => {
         const html = highlighter('hi');
 
-        expect(html).toMatch(/^<pre><code[^>]*>.+<\/code><\/pre>$/);
+        expect(html).toMatch(/^<code[^>]*>.+<\/code>$/);
       });
 
-      it('omits the `<pre><code>` wrapper when requested', () => {
+      it('omits the `<code>` wrapper when requested', () => {
         const html = highlighter('hi', null, { omitWrapper: true });
 
-        expect(html).not.toMatch(/^<pre><code[^>]*>.+<\/code><\/pre>$/);
+        expect(html).not.toMatch(/^<code[^>]*>.+<\/code>$/);
       });
 
       describe('plaintext', () => {

@@ -13,14 +13,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 #}
-<table {{ cssClass('!jsdoc-code-table') }}>
-  <tbody>
-    {% set code = docs | highlightUnwrapped(filenameExtension) %}
-    {% for line in code.split('\n') %}
-      <tr>
-        <td id="L{{ loop.index }}" {{- cssClass('!line-number') }}>{{ loop.index }}</td>
-        <td id="LC{{ loop.index }}" {{- cssClass('!highlighted-code')}}>{{ line | safe }}</td>
-      </tr>
-    {% endfor %}
-  </tbody>
-</table>
+<pre class="source-code-numbered">
+  <code class="line-number">
+    {%- for line in docs.split('\n') -%}
+      {#- Prevent an extra blank line at the end. -#}
+      {%- if not loop.last -%}
+        <span id="L{{ loop.index }}">{{ loop.index }}</span>
+      {% endif -%}
+    {%- endfor -%}
+  </code>
+  {{ docs | highlight(filenameExtension) | safe }}
+</pre>

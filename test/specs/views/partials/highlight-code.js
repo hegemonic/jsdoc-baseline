@@ -30,7 +30,7 @@ describe('highlight-code partial', () => {
       filenameExtension: 'js',
     });
 
-    expect(text).toContain('<table class="jsdoc-code-table">');
+    expect(text).toContain('<code class="hljs language-js">');
     expect(text).toContain('function');
     expect(text).toContain('sayHello');
   });
