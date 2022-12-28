@@ -14,19 +14,24 @@
     limitations under the License.
 #}
 <div {{- '!symbol-index' | cssClass }}>
-  {% set groups = allLongnamesTree | groupDocletTree %}
-  {% for groupName in groups | keys | sort %}
-    {% set group = groups[groupName] %}
-    <section>
-      <div {{- '!symbol-index-content' | cssClass }}>
-        {# TODO: Register this ID with a helper. #}
-        <h id="{{ groupName }}">{{ groupName }}</h>
-        <div {{- '!symbol-index-section' | cssClass }}>
-          {% for items in group | batch(3) %}
-            {% include 'symbol-index-section.njk' %}
-          {% endfor %}
+  <section>
+    {% if readme %}
+      <h>{{ 'headings.packageIndex' | translate }}</h>
+    {% endif %}
+    {% set groups = allLongnamesTree | groupDocletTree %}
+    {% for groupName in groups | keys | sort %}
+      {% set group = groups[groupName] %}
+      <section>
+        <div {{- '!symbol-index-content' | cssClass }}>
+          {# TODO: Register this ID with a helper. #}
+          <h id="{{ groupName }}">{{ groupName }}</h>
+          <div {{- '!symbol-index-section' | cssClass }}>
+            {% for items in group | batch(3) %}
+              {% include 'symbol-index-section.njk' %}
+            {% endfor %}
+          </div>
         </div>
-      </div>
-    </section>
-  {% endfor %}
+      </section>
+    {% endfor %}
+  </section>
 </div>

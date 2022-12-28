@@ -23,7 +23,6 @@
 {% for doc in docs %}
   {% block first %}
     {% if loop.first %}
-      {% if pageCategory == 'classes' or doc.exports %}<section>{% endif %}
       {# Everything except classes gets a heading that indicates what we're about to list. #}
       {% if pageCategory != 'classes' and doc.exports %}
         <h>{{ 'headings.exports' | translate(docs) }}</h>
@@ -63,12 +62,10 @@
       <section>
         {% set item = doc %}
         {% include 'symbol-detail.njk' %}
+      </section>
     {% endif %}
   {% endblock %}
 
   {% block last %}
-    {% if loop.last %}
-      {% if pageCategory == 'classes' or doc.exports %}</section>{% endif %}
-    {% endif %}
   {% endblock %}
 {% endfor %}

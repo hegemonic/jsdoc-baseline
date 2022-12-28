@@ -16,14 +16,14 @@
 {% extends 'layout.njk' %}
 
 {% block body_main_content %}
-  {% block source_heading %}
-    <header {{ cssClass('!page-header') }}>
-      <h {{- cssClass('page-title') }}>{{ translatePageTitle('', pageTitle, 'sources') }}</h>
-    </header>
-  {% endblock %}
-  {% block source_content %}
-    <article {{ cssClass('!source-code') }}>
+  <article>
+    {% block source_heading %}
+      <header {{ cssClass('!page-header') }}>
+        <h {{- cssClass('page-title') }}>{{ translatePageTitle('', pageTitle, 'sources') }}</h>
+      </header>
+    {% endblock %}
+    {% block source_content %}
       {% include 'highlight-code.njk' %}
-    </article>
-  {% endblock %}
+    {% endblock %}
+  </article>
 {% endblock %}

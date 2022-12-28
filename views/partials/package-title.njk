@@ -13,7 +13,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 #}
-{% if package %}
+{% if package and not readme %}
   <header {{- '!page-header' | cssClass }}>
     <h {{- 'page-title' | cssClass }}>
       {{- package.name }}{% if package.version %} {{ package.version }}{% endif -%}

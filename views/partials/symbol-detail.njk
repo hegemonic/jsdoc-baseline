@@ -22,7 +22,8 @@
 {%- endif -%}
 
 {%- if not item.hideconstructor -%}
-  <h id="{{ item | id }}">
+  {% set itemId = id(item) %}
+  <h {% if itemId %}id="{{ itemId }}"{%- endif %}>
     {%- include 'constructor-prefix.njk' -%}
     <span {{- '!symbol-name' | cssClass }}>{{ item.name }}</span>
     {%- include 'signature.njk' -%}

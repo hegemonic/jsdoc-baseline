@@ -119,6 +119,7 @@ headings:
     {items, plural,
         =1 {Namespace}
         other {Namespaces}}
+  packageIndex: 'Package index'
   parameters: |
     {items, plural,
         =1 {Parameter}
