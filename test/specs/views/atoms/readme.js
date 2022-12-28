@@ -17,7 +17,7 @@ describe('readme atom', () => {
   it('generates nothing if there is no readme', () => {
     const text = helpers.render('readme.njk', {});
 
-    expect(text).toBe('');
+    expect(text.trim()).toBe('');
   });
 
   it('includes the readme data', () => {

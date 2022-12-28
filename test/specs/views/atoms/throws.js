@@ -17,7 +17,7 @@ describe('throws atom', () => {
   it('should generate nothing if the doclet has no "exceptions" items', () => {
     const text = helpers.render('throws.njk', {});
 
-    expect(text).toBe('');
+    expect(text.trim()).toBe('');
   });
 
   it('should include the description, if present', () => {

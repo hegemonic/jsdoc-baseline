@@ -274,7 +274,7 @@ describe('lib/tasks/generate-files', () => {
         expect(() => stat(context, url)).not.toThrow();
       });
 
-      it('beautifies HTML output by default', async () => {
+      it('does not beautify HTML output by default', async () => {
         let file;
         const ticket = new Ticket({
           data: {},
@@ -289,7 +289,25 @@ describe('lib/tasks/generate-files', () => {
         await task.run(context);
         file = fs.readFileSync(path.join(OUTPUT_DIR, 'foo.html'), 'utf8');
 
-        expect(file).not.toMatch(/[ ]{20}/);
+        expect(file).toMatch(/[ ]{20}/);
+      });
+
+      it('does not beautify HTML output by default', async () => {
+        let file;
+        const ticket = new Ticket({
+          data: {},
+          url: 'foo.html',
+          viewName: 'layout.njk',
+        });
+        const task = new GenerateFiles({
+          name: 'beautify',
+          tickets: [ticket],
+        });
+
+        await task.run(context);
+        file = fs.readFileSync(path.join(OUTPUT_DIR, 'foo.html'), 'utf8');
+
+        expect(file).toMatch(/[ ]{20}/);
       });
 
       it('only beautifies HTML output', async () => {
@@ -308,6 +326,30 @@ describe('lib/tasks/generate-files', () => {
         file = fs.readFileSync(path.join(OUTPUT_DIR, 'foo.nothtml'), 'utf8');
 
         expect(file).toMatch(/[ ]{20}/);
+      });
+
+      it('beautifies the output file if asked to', async () => {
+        let file;
+        let task;
+        let ticket;
+
+        context.templateConfig.beautify = true;
+        context.template = helpers.createTemplate(context.templateConfig);
+
+        ticket = new Ticket({
+          data: {},
+          url: 'foo.html',
+          viewName: 'layout.njk',
+        });
+        task = new GenerateFiles({
+          name: 'beautify',
+          tickets: [ticket],
+        });
+
+        await task.run(context);
+        file = fs.readFileSync(path.join(OUTPUT_DIR, 'foo.html'), 'utf8');
+
+        expect(file).not.toMatch(/[ ]{20}/);
       });
 
       it('does not beautify the output file if asked not to', async () => {

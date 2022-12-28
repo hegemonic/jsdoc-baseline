@@ -14,7 +14,7 @@
     limitations under the License.
 */
 // Helper functions for testing the Baseline template.
-
+const mock = require('mock-fs');
 const deepExtend = require('deep-extend');
 const { defaultConfig } = require('../../lib/config');
 const { Dependencies } = require('@jsdoc/core');
@@ -83,7 +83,7 @@ global.helpers = {
 
     config = deepExtend({}, defaultConfig, config);
 
-    return new Template(config, global.helpers.deps);
+    return mock.bypass(() => new Template(config, global.helpers.deps));
   },
 
   deps: new Dependencies(),

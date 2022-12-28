@@ -17,7 +17,7 @@ describe('copyright atom', () => {
   it('generates nothing if there is no copyright owner', () => {
     const text = helpers.render('copyright.njk', {});
 
-    expect(text).toBe('');
+    expect(text.trim()).toBe('');
   });
 
   it('shows the copyright owner', () => {

@@ -24,6 +24,9 @@ describe('lib/tasks/generate-source-files', () => {
   describe('run', () => {
     let context;
 
+    // Prettier lazy-loads its parsers, so preload the HTML parser while we're not mocked.
+    require('prettier/parser-html');
+
     beforeEach(() => {
       context = {
         destination: OUTPUT_DIR,

@@ -17,7 +17,7 @@ describe('defaultvalue atom', () => {
   it('generates nothing if there is no default value', () => {
     const text = helpers.render('defaultvalue.njk', {});
 
-    expect(text).toBe('');
+    expect(text.trim()).toBe('');
   });
 
   it('shows truthy default values', () => {
