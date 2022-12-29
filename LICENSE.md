@@ -1,6 +1,6 @@
 # License
 
-Copyright 2014-2020 Google LLC
+Copyright 2014 the Baseline Authors.
 
 Baseline is licensed under the Apache License, Version 2.0 (the "License"). You may not use Baseline
 except in compliance with the License.
@@ -14,7 +14,7 @@ implied. See the License for the specific language governing permissions and lim
 License.
 
 The source code for Baseline is available at:
-https://github.com/hegemonic/baseline/
+https://github.com/hegemonic/jsdoc-baseline/
 
 # Bundled third-party software
 
@@ -23,8 +23,8 @@ is provided under its own license.
 
 ## MIT License
 
-Several of the following software packages are distributed under the MIT License, which is
-reproduced below:
+Some of the following software packages are distributed under the MIT License, which is reproduced
+below:
 
 > Permission is hereby granted, free of charge, to any person obtaining a copy
 > of this software and associated documentation files (the "Software"), to deal
@@ -43,16 +43,6 @@ reproduced below:
 > LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 > OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 > SOFTWARE.
-
-## google-code-prettify
-
-google-code-prettify is distributed under the Apache License, Version 2.0, which is
-included with this package.
-
-Copyright Google Inc.
-
-The source code for google-code-prettify is available at:
-https://code.google.com/p/google-code-prettify/
 
 ## jqTree
 

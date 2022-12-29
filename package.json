@@ -12,6 +12,7 @@
     "dev": "node_modules/.bin/hereby dev",
     "format": "node_modules/.bin/hereby format",
     "js": "node_modules/.bin/hereby js",
+    "license-check": "node_modules/.bin/hereby license-check",
     "lint": "node_modules/.bin/hereby lint",
     "test": "node_modules/.bin/hereby test"
   },
@@ -79,6 +80,7 @@
     "jasmine-console-reporter": "^3.1.0",
     "jqtree": "^1.7.0",
     "jquery": "^3.6.3",
+    "license-check-and-add": "^4.0.5",
     "mock-fs": "^5.2.0",
     "prettier": "^2.8.1",
     "sass": "^1.57.1"

@@ -1,0 +1,40 @@
+{
+  "defaultFormat": {
+    "prepend": "",
+    "append": ""
+  },
+  "ignore": [
+    "**/.*",
+    "**/*.EXAMPLE",
+    "**/*.md",
+    "**/*.txt",
+    "AUTHORS",
+    "CONTRIB*",
+    "coverage/**/*",
+    "static/**/*",
+    "test/fixtures/**"
+  ],
+  "license": ".license-header.txt",
+  "licenseFormats": {
+    "css|js|mjs|scss|ts": {
+      "prepend": "/*",
+      "eachLine": {
+        "prepend": "  "
+      },
+      "append": "*/"
+    },
+    "njk": {
+      "prepend": "{#-",
+      "eachLine": {
+        "prepend": "  "
+      },
+      "append": "-#}"
+    },
+    "yaml": {
+      "eachLine": {
+        "prepend": "# "
+      }
+    }
+  },
+  "regexIdentifier": "%%"
+}
