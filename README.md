@@ -47,8 +47,8 @@ jsdoc --template <path/to/baseline> <path/to/js-files>
 
 To use the Baseline template with customized settings:
 
-1.  Copy `baseline-config.json.EXAMPLE` to a new file (for example, `baseline-config.json`).
-2.  Modify the configuration file as needed. See `baseline-config.json.EXAMPLE` for information
+1.  Copy `baseline-config-example.json` to a new file (for example, `baseline-config.json`).
+2.  Modify the configuration file as needed. See `baseline-config-example.json` for information
     about the supported options. You can use comments in the configuration file.
 3.  Update your JSDoc `conf.json` file to include a `templates.baseline` property. This property
     must contain the path to your Baseline configuration file.
@@ -61,7 +61,7 @@ jsdoc --configure <path/to/conf.json> --template <path/to/baseline> <path/to/js-
 
 ## Legal stuff
 
-Copyright 2014-2021 The Baseline Authors. Licensed under the Apache License, Version 2.0. See
+Copyright 2014 the Baseline Authors. Licensed under the Apache License, Version 2.0. See
 [LICENSE.md][license] for more information.
 
 [jsdoc]: https://github.com/jsdoc/jsdoc
