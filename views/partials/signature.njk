@@ -18,15 +18,15 @@
   explicit return type.
 #}
 {%- if needsSignature(item) -%}
-  <span {{- '!signature' | cssClass }}><span {{- '!signature-params' | cssClass }}>{{ item.params | formatParams }}</span>
+  <span class="signature"><span class="signature-params">{{ item.params | formatParams }}</span>
     {%- set types = returnTypes(item) -%}
     {%- if item.kind != 'class' and types -%}
       {{- 'returnTypesSeparator' | translate -}}
-      <span {{- '!signature-returns' | cssClass }}> {{ types | describeType }}</span>
+      <span class="signature-returns"> {{ types | describeType }}</span>
     {%- endif -%}
   </span>
 {%- elif item.type -%}
-  <small {{- cssClass('!property-type', 'symbol-type') -}}>
+  <small class="property-type">
     &nbsp;{{ item.type.parsedType | describeType -}}
   </small>
 {%- endif -%}

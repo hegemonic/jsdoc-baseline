@@ -14,7 +14,7 @@
   limitations under the License.
 -#}
 {% macro detailsTableName(name) %}
-  <td {{- '!details-table-name' | cssClass }}>
+  <td class="details-table-name">
     <p>
       {%- if name -%}
         {{ name }}
@@ -26,7 +26,7 @@
 {% endmacro %}
 
 {% macro detailsTableTypes(type) %}
-  <td {{- '!details-table-types' | cssClass }}>
+  <td class="details-table-types">
     {% if type and type.parsedType %}
       <p>{{ type.parsedType | describeType('extended') }}</p>
     {% else %}
@@ -37,7 +37,7 @@
 
 {% macro detailsTableOptional(optional) %}
   {# TODO: Make it possible to collapse this column, and do so by default. #}
-  <td {{- '!details-table-optional' | cssClass}}>
+  <td class="details-table-optional">
     {% if optional %}
       <p>{{ 'tables.body.isOptional' | translate }}</p>
     {% else %}
@@ -47,7 +47,7 @@
 {% endmacro %}
 
 {% macro detailsTableDescription(value, isEnum) %}
-  <td {{- '!details-table-description' | cssClass }}>
+  <td class="details-table-description">
     {% if value.description %}
       {{ value.description | markdown | resolveLinks }}
     {% endif %}
@@ -75,7 +75,7 @@
   or overwriting variables in a parent scope.
 #}
 {% macro detailsTable(values, isEnum) %}
-  <table {{- '!jsdoc-details-table' | cssClass }}>
+  <table class="jsdoc-details-table">
     <thead>
       <tr>
         <th>{{ 'tables.header.name' | translate }}</th>

@@ -53,7 +53,7 @@
     {% elif doc.kind == 'external' %}
       <section>
         {% set item = doc %}
-        <dl {{- '!dl-compact' | cssClass }}>
+        <dl class="dl-compact">
           {% include 'details.njk' %}
         </dl>
       </section>

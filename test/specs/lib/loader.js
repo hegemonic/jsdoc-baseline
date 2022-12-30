@@ -15,6 +15,7 @@
 */
 const mock = require('mock-fs');
 const { BASE_VIEWS } = require('../../../lib/template');
+const ClassMap = require('../../../lib/class-map');
 const { FileSystemLoader } = require('nunjucks');
 const loader = require('../../../lib/loader');
 const path = require('path');
@@ -22,10 +23,6 @@ const path = require('path');
 describe('lib/loader', () => {
   it('exports a ViewLoader constructor', () => {
     expect(typeof loader.ViewLoader).toBe('function');
-  });
-
-  it('exports a preprocess method', () => {
-    expect(typeof loader.preprocess).toBe('function');
   });
 
   describe('ViewLoader', () => {
@@ -48,7 +45,9 @@ describe('lib/loader', () => {
     }
 
     beforeEach(() => {
-      instance = new ViewLoader(BASE_VIEWS);
+      instance = new ViewLoader(BASE_VIEWS, {
+        cssClassMap: new ClassMap({ fun: 'work', games: 'toil' }),
+      });
     });
 
     it('extends nunjucks.FileSystemLoader', () => {
@@ -104,6 +103,13 @@ describe('lib/loader', () => {
         expect(source.src).toBe(fakeSource);
       });
 
+      it('maps CSS classes', () => {
+        const fakeSource = '<span class="fun">yay!</span>';
+        const source = mockSource(fakeSource);
+
+        expect(source.src).toBe('<span class="work">yay!</span>');
+      });
+
       it('adds helpers to <h> elements with no attributes', () => {
         const fakeSource = '<h>hello world</h>';
         const source = mockSource(fakeSource);
@@ -142,15 +148,39 @@ describe('lib/loader', () => {
     });
 
     describe('preprocess', () => {
-      // No need to repeat all the ViewLoader tests here. Just verify that preprocess applies the
-      // same transforms as the ViewLoader.
-      it('should process <h> and <section> elements', () => {
-        const text = loader.preprocess('<section><h>hello world</h></section>');
+      // No need to repeat the `getSource()` tests here. Just verify that `preprocess()` applies the
+      // same transforms.
+      it('processes class attributes', () => {
+        const text = instance.preprocess('<div class="fun games"></div>');
+
+        expect(text).toBe('<div class="work toil"></div>');
+      });
+
+      it('processes <h> and <section> elements', () => {
+        const text = instance.preprocess('<section><h>hello world</h></section>');
 
         expect(text).toBe(
           '<section>{{ incrementHeading() }}<h{{ headingLevel() }}>' +
             'hello world</h{{ headingLevel() }}>{{ decrementHeading() }}</section>'
         );
+      });
+    });
+
+    describe('preprocessors', () => {
+      it('is an object', () => {
+        expect(instance.preprocessors).toBeObject();
+      });
+
+      it('has a `classes` method', () => {
+        expect(instance.preprocessors.classes).toBeFunction();
+      });
+
+      it('has a `headings` method', () => {
+        expect(instance.preprocessors.headings).toBeFunction();
+      });
+
+      it('has a `sections` method', () => {
+        expect(instance.preprocessors.sections).toBeFunction();
       });
     });
   });

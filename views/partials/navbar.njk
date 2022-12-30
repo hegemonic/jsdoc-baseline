@@ -13,11 +13,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
-<nav id="jsdoc-navbar" {{- '!jsdoc-navbar' | cssClass }}>
+<nav id="jsdoc-navbar" class="jsdoc-navbar">
   {% block navbar_container %}
-    <div id="jsdoc-navbar-container" {{- 'jsdoc-navbar-container' | cssClass }}>
+    <div id="jsdoc-navbar-container" class="jsdoc-navbar-container">
       {% block navbar_content %}
-        <div id="jsdoc-navbar-content" {{- 'jsdoc-navbar-content' | cssClass }}>
+        <div id="jsdoc-navbar-content" class="jsdoc-navbar-content">
           {{ packageLink(package, 'jsdoc-navbar-package-name') }}
           {# TODO: Search; breadcrumbs #}
         </div>

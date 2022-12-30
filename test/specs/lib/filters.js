@@ -26,24 +26,29 @@ describe('lib/filters', () => {
     let linkManager;
     let template;
 
-    beforeEach(() => {
-      template = helpers.createTemplate();
+    function fakeLongnames() {
+      return ['module:foo', 'module:foo/bar', 'module:foo/bar.Baz', 'module:foo/bar.Baz#qux'];
+    }
+
+    function init(templateOpts) {
+      template = helpers.createTemplate(templateOpts);
       linkManager = template.linkManager;
       instance = new Filters(template);
+    }
+
+    function requestFilenames(longnames) {
+      longnames.forEach((longname) => {
+        linkManager.requestFilename(longname);
+      });
+    }
+
+    beforeEach(() => {
+      init();
     });
 
     describe('ancestors', () => {
-      const fakeLongnames = [
-        'module:foo',
-        'module:foo/bar',
-        'module:foo/bar.Baz',
-        'module:foo/bar.Baz#qux',
-      ];
-
       beforeEach(() => {
-        fakeLongnames.forEach((longname) => {
-          linkManager.requestFilename(longname);
-        });
+        requestFilenames(fakeLongnames());
       });
 
       it('links to ancestors when no CSS class is specified', () => {
@@ -63,7 +68,24 @@ describe('lib/filters', () => {
         const ancestors = instance.ancestors('module:foo/bar.Baz', 'frozzle');
 
         expect(ancestors.toString()).toBe(
-          ['<a href="module-foo-bar.html" class="frozzle">foo/<wbr />bar</a>', '.<wbr />'].join('')
+          '<a href="module-foo-bar.html" class="frozzle">foo/<wbr />bar</a>.<wbr />'
+        );
+      });
+
+      it('maps the CSS class when needed', () => {
+        let ancestors;
+
+        init({
+          cssClassMap: {
+            flibble: 'flobble',
+          },
+        });
+        requestFilenames(fakeLongnames());
+
+        ancestors = instance.ancestors('module:foo/bar.Baz', 'flibble');
+
+        expect(ancestors.toString()).toBe(
+          '<a href="module-foo-bar.html" class="flobble">foo/<wbr />bar</a>.<wbr />'
         );
       });
 
@@ -90,69 +112,6 @@ describe('lib/filters', () => {
 
     xdescribe('config', () => {
       xit('TODO: Write me');
-    });
-
-    describe('cssClass', () => {
-      it('formats the class string correctly', () => {
-        const classes = instance.cssClass('!foo');
-
-        expect(classes.toString()).toBe(' class="foo"');
-      });
-
-      it('keeps classes prefixed with ! by default, and strips the !', () => {
-        const classes = instance.cssClass('!foo');
-
-        expect(classes.toString()).toContain('"foo"');
-      });
-
-      it('lets users change the prefix for classes that it keeps', () => {
-        let classes;
-
-        template.config.cssClassPrefix = '?';
-        classes = instance.cssClass('?foo');
-
-        expect(classes.toString()).toContain('"foo"');
-      });
-
-      it('accepts multiple classes', () => {
-        const classes = instance.cssClass('!foo', '!bar');
-
-        expect(classes.toString()).toContain('"foo bar"');
-      });
-
-      it('preserves user-specified classes', () => {
-        let classes;
-
-        template.cssClasses = {
-          foo: true,
-        };
-        classes = instance.cssClass('foo');
-
-        expect(classes.toString()).toContain('"foo"');
-      });
-
-      it('does not preserve non-user-specified classes', () => {
-        const classes = instance.cssClass('foo');
-
-        expect(classes).toBe('');
-      });
-
-      it('does not preserve classes that the user explicitly does not want', () => {
-        let classes;
-
-        template.cssClasses = {
-          foo: false,
-        };
-        classes = instance.cssClass('foo');
-
-        expect(classes).toBe('');
-      });
-
-      it('does not preserve classes whose names match inherited properties', () => {
-        const classes = instance.cssClass('prototype');
-
-        expect(classes).toBe('');
-      });
     });
 
     describe('decrementHeading', () => {
@@ -255,10 +214,10 @@ describe('lib/filters', () => {
       // TODO: Enable when we start inserting the version number
       xit('includes the JSDoc version number', () => {
         /*
-                const generatedBy = instance.generatedBy();
+        const generatedBy = instance.generatedBy();
 
-                expect(generatedBy.toString()).toContain(env.version.number);
-                */
+        expect(generatedBy.toString()).toContain(env.version.number);
+        */
       });
 
       it('includes the date', () => {
@@ -335,15 +294,28 @@ describe('lib/filters', () => {
       it('returns highlighted code wrapped in <code>', () => {
         const highlighted = instance.highlight('const foo = "bar";', 'js');
 
-        expect(highlighted).toMatch(/<code[^>]*>.+<\/code>/);
-        expect(highlighted).toMatch('hljs');
+        expect(highlighted.toString()).toMatch(/<code[^>]*>.+<\/code>/);
+        expect(highlighted.toString()).toMatch('hljs');
       });
 
       it('works when no language is specified', () => {
         const highlighted = instance.highlight('const foo = "bar";');
 
-        expect(highlighted).toMatch(/<code[^>]*>.+<\/code>/);
-        expect(highlighted).toMatch('hljs');
+        expect(highlighted.toString()).toMatch(/<code[^>]*>.+<\/code>/);
+        expect(highlighted.toString()).toMatch('hljs');
+      });
+
+      it('maps CSS classes when needed', () => {
+        let highlighted;
+
+        init({
+          cssClassMap: {
+            'language-js': 'language-ecmascript',
+          },
+        });
+        highlighted = instance.highlight('const foo = "bar";', 'js');
+
+        expect(highlighted.toString()).toMatch(/class=".*language-ecmascript.*"/);
       });
     });
 
@@ -353,15 +325,15 @@ describe('lib/filters', () => {
       it('returns highlighted code that is not wrapped in <code>', () => {
         const highlighted = instance.highlightUnwrapped('const foo = "bar";', 'js');
 
-        expect(highlighted).not.toMatch(/<code[^>]*>.+<\/code>/);
-        expect(highlighted).toMatch('hljs');
+        expect(highlighted.toString()).not.toMatch(/<code[^>]*>.+<\/code>/);
+        expect(highlighted.toString()).toMatch('hljs');
       });
 
       it('works when no language is specified', () => {
         const highlighted = instance.highlightUnwrapped('const foo = "bar";');
 
-        expect(highlighted).not.toMatch(/<code[^>]*>.+<\/code>/);
-        expect(highlighted).toMatch('hljs');
+        expect(highlighted.toString()).not.toMatch(/<code[^>]*>.+<\/code>/);
+        expect(highlighted.toString()).toMatch('hljs');
       });
     });
 
@@ -421,8 +393,22 @@ describe('lib/filters', () => {
       });
     });
 
-    xdescribe('labels', () => {
-      xit('TODO: Write me');
+    describe('labels', () => {
+      xit('TODO: Write more tests');
+
+      it('maps CSS classes as needed', () => {
+        let labels;
+
+        init({
+          cssClassMap: {
+            'label-kind': 'label-kinder-egg',
+          },
+        });
+        labels = instance.labels({ kind: 'class' });
+
+        expect(labels).toBeArrayOfSize(1);
+        expect(labels[0].class).toContain('label-kinder-egg');
+      });
     });
 
     describe('licenseLink', () => {
@@ -489,8 +475,29 @@ describe('lib/filters', () => {
       });
     });
 
-    xdescribe('linkLongnameWithSignature', () => {
-      xit('TODO: Write me');
+    describe('linkLongnameWithSignature', () => {
+      xit('TODO: Write more tests');
+
+      it('maps CSS classes as needed', () => {
+        let fakeDoclet = {
+          kind: 'class',
+          longname: 'Foo',
+          name: 'Foo',
+          params: [{ name: 'bar' }],
+        };
+        let link;
+
+        init({
+          cssClassMap: {
+            flibble: 'flobble',
+          },
+        });
+        requestFilenames(['Foo']);
+
+        link = instance.linkLongnameWithSignature(fakeDoclet, 'flibble');
+
+        expect(link.toString()).toContain('class="flobble"');
+      });
     });
 
     describe('linkToLine', () => {
@@ -517,6 +524,23 @@ describe('lib/filters', () => {
         expect(link.toString()).toBe('<a href="glitch-js.html#L70">glitch.<wbr />js:70</a>');
       });
 
+      it('maps CSS classes as needed', () => {
+        let link;
+
+        init({
+          cssClassMap: {
+            flibble: 'flobble',
+          },
+        });
+        linkManager.requestFilename('glitch.js');
+
+        link = instance.linkToLine(fakeDocletMeta, 'flibble');
+
+        expect(link.toString()).toBe(
+          '<a href="glitch-js.html#L70" class="flobble">glitch.<wbr />js:70</a>'
+        );
+      });
+
       it('ignores the line number if the code is on line 1', () => {
         const meta = {
           lineno: 1,
@@ -528,8 +552,29 @@ describe('lib/filters', () => {
       });
     });
 
-    xdescribe('linkWithSignature', () => {
-      xit('TODO: Write me');
+    describe('linkWithSignature', () => {
+      xit('TODO: Write more tests');
+
+      it('maps CSS classes as needed', () => {
+        let fakeDoclet = {
+          kind: 'class',
+          longname: 'Foo',
+          name: 'Foo',
+          params: [{ name: 'bar' }],
+        };
+        let link;
+
+        init({
+          cssClassMap: {
+            flibble: 'flobble',
+          },
+        });
+        requestFilenames(['Foo']);
+
+        link = instance.linkWithSignature(fakeDoclet, 'flibble');
+
+        expect(link.toString()).toBe('<a href="foo.html" class="flobble">Foo(bar)</a>');
+      });
     });
 
     describe('markdown', () => {
@@ -674,8 +719,23 @@ describe('lib/filters', () => {
       });
     });
 
-    xdescribe('packageLink', () => {
-      xit('TODO: Write me');
+    describe('packageLink', () => {
+      xit('TODO: Write more tests');
+
+      it('maps CSS classes as needed', () => {
+        let link;
+
+        init({
+          cssClassMap: {
+            piffle: 'poffle',
+          },
+        });
+        linkManager.requestFilename('index');
+
+        link = instance.packageLink({ name: 'JubJub' }, 'piffle');
+
+        expect(link.toString()).toBe('<a href="index.html" class="poffle">JubJub</a>');
+      });
     });
 
     xdescribe('parseType', () => {

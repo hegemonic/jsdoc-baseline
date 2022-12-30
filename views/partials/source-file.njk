@@ -15,6 +15,6 @@
 -#}
 {% if config('sourceFiles.generate') %}
   {% if item.meta and item.meta.filename and item.meta.lineno  %}
-    <p {{- '!source-link' | cssClass }}>{{ 'source' | translate }} {{ item.meta | linkToLine }}</p>
+    <p class="source-link">{{ 'source' | translate }} {{ item.meta | linkToLine }}</p>
   {% endif %}
 {% endif %}

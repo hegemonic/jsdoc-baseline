@@ -13,9 +13,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
-<div {{- '!summary-column' | cssClass }}>
+<div class="summary-column">
   {% if summaryGroup %}
-    <dl {{- '!dl-summary-callout' | cssClass }}>
+    <dl class="dl-summary-callout">
       {% for item in summaryGroup %}
         <dt>{{ item | linkWithSignature }}</dt>
         <dd>{% include 'summary.njk' %}</dd>

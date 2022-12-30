@@ -14,11 +14,11 @@
   limitations under the License.
 -#}
 {% if items %}
-  <div {{- '!summary-callout' | cssClass }}>
+  <div class="summary-callout">
     {% if headingKey %}
-      <h {{- '!summary-callout-heading' | cssClass }}>{{ headingKey | translate(items) }}</h>
+      <h class="summary-callout-heading">{{ headingKey | translate(items) }}</h>
     {% endif %}
-    <div {{- '!summary-content' | cssClass }}>
+    <div class="summary-content">
       {% set groups = items | slice(3) %}
       {% for summaryGroup in groups %}
         {% include 'summary-block-column.njk' %}

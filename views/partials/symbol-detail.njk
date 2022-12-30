@@ -25,7 +25,7 @@
   {% set itemId = id(item) %}
   <h {% if itemId %}id="{{ itemId }}"{%- endif %}>
     {%- include 'constructor-prefix.njk' -%}
-    <span {{- '!symbol-name' | cssClass }}>{{ item.name }}</span>
+    <span class="symbol-name">{{ item.name }}</span>
     {%- include 'signature.njk' -%}
   </h>
 {%- endif %}
@@ -41,7 +41,7 @@
   {% include 'examples.njk' %}
   {% include 'params.njk' %}
   {% include 'properties.njk' %}
-  <dl {{- '!dl-compact' | cssClass }}>
+  <dl class="dl-compact">
     {% include 'details.njk' %}
   </dl>
 {% endif %}

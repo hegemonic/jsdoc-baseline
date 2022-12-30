@@ -40,7 +40,7 @@ describe('defaultvalue atom', () => {
     expect(text).toContain('<dd>0</dd>');
   });
 
-  it('should wrap default values in a <pre> tag when appropriate', () => {
+  it('wraps default values in a <pre> tag when appropriate', () => {
     const text = helpers.render('defaultvalue.njk', {
       item: {
         defaultvalue: '{"foo": "bar"}',
@@ -48,6 +48,6 @@ describe('defaultvalue atom', () => {
       },
     });
 
-    expect(text).toContain('<pre class="prettyprint">');
+    expect(text).toContain('<pre>');
   });
 });

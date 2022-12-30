@@ -15,12 +15,12 @@
 -#}
 {% import 'list.njk' as list %}
 
-<header {{- '!page-header' | cssClass }}>
+<header class="page-header">
   {% block heading %}
     {% include 'symbol-labels.njk' %}
     <h>
       {%- if item.longname != item.memberof %}<small>{{ item.longname | ancestors }}</small>{% endif -%}
-      <span {{ '!symbol-name' | cssClass }}>
+      <span class="symbol-name">
         {%- if item.kind == 'external' -%}
           {{ item.name | dequote }}
         {%- else -%}
@@ -36,7 +36,7 @@
 
   {% block classdesc %}
     {% if item.classdesc %}
-      <div {{ '!symbol-classdesc' | cssClass }}>
+      <div class="symbol-classdesc">
         {{ item.classdesc | resolveLinks | markdown }}
       </div>
     {% endif %}
@@ -47,13 +47,13 @@
     {% if item.kind != 'class' %}
       {% if item.kind == 'namespace' %}
         {% if not needsSignature(item) %}
-          <div {{- '!symbol-description' | cssClass }}>
+          <div class="symbol-description">
             {% include 'description.njk' %}
           </div>
         {% endif %}
       {% else %}
-        <div {{- '!symbol-description' | cssClass }}>
-            {% include 'description.njk' %}
+        <div class="symbol-description">
+          {% include 'description.njk' %}
         </div>
       {% endif %}
     {% endif %}
@@ -68,7 +68,7 @@
 
   {% block details %}
     {# TODO: Only insert the <dl> if there are items to show. #}
-    <dl {{- '!dl-compact' | cssClass }}>
+    <dl class="dl-compact">
       {% include 'implements.njk' %}
       {% include 'implementations.njk' %}
       {{ list.dictList(item.mixes, 'headings.mixes') }}
@@ -81,7 +81,7 @@
       summary blocks.
     #}
     {% if item.hideconstructor %}
-      <dl {{- '!dl-compact' | cssClass }}>
+      <dl class="dl-compact">
         {% include 'details.njk' %}
       </dl>
     {% endif %}

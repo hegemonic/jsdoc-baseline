@@ -17,7 +17,7 @@
   <dt>{{ 'headings.defaultValue' | translate }}</dt>
   <dd>
     {%- if item.defaultvaluetype | shouldHighlight -%}
-      <pre {{- '!prettyprint' | cssClass }}><code>{{ item.defaultvalue }}</code></pre>
+      <pre>{{ item.defaultvalue | highlight('js') }}</pre>
     {%- else -%}
       {{ item.defaultvalue }}
     {%- endif -%}

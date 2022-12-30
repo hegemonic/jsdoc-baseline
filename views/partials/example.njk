@@ -14,10 +14,10 @@
   limitations under the License.
 -#}
 {# TODO: Improve appearance. #}
-<div {{- 'example' | cssClass }}>
+<div class="example">
   {% if caption %}
     {# TODO: Improve markup. #}
-    <p {{- 'example-caption' | cssClass }}>{{ caption }}</p>
+    <p class="example-caption">{{ caption }}</p>
   {% endif %}
   {{ code | highlight }}
 </div>

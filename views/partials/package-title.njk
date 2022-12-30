@@ -14,8 +14,8 @@
   limitations under the License.
 -#}
 {% if package and not readme %}
-  <header {{- '!page-header' | cssClass }}>
-    <h {{- 'page-title' | cssClass }}>
+  <header class="page-header">
+    <h class="page-title">
       {{- package.name }}{% if package.version %} {{ package.version }}{% endif -%}
     </h>
   </header>

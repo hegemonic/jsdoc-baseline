@@ -15,7 +15,7 @@
 -#}
 {% if examples %}
   <section>
-    <h {{- 'examples' | cssClass }}>{{ 'headings.examples' | translate(examples)}}</h>
+    <h class="examples">{{ 'headings.examples' | translate(examples)}}</h>
     {% for example in examples %}
       {% include 'example.njk' %}
     {% endfor %}

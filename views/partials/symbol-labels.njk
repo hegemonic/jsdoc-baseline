@@ -15,9 +15,9 @@
 -#}
 {%- set allLabels = labels(item) -%}
 {%- if allLabels and allLabels.length -%}
-  <div {{- '!symbol-detail-labels' | cssClass }}>
+  <div class="symbol-detail-labels">
     {%- for label in allLabels -%}
-      <span {{- '!label' | cssClass(label.class) }}>{{ label.text }}</span>
+      <span class="label {{ label.class }}">{{ label.text }}</span>
       {%- if not loop.last %}&nbsp;{%- endif -%}
     {%- endfor -%}
   </div>

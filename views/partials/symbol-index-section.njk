@@ -13,11 +13,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
-<div {{- '!symbol-index-column' | cssClass }}>
-  <dl {{- '!symbol-index-list' | cssClass }}>
+<div class="symbol-index-column">
+  <dl class="symbol-index-list">
     {% for item in items %}
-      <dt {{- '!symbol-index-name' | cssClass }}>
-        {{- item | linkLongnameWithSignature('!symbol-index-name') -}}
+      <dt class="symbol-index-name">
+        {{- item | linkLongnameWithSignature('symbol-index-name') -}}
       </dt>
       <dd>
         {% include 'summary.njk' %}
@@ -25,4 +25,3 @@
     {% endfor %}
   </dl>
 </div>
-
