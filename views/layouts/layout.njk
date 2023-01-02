@@ -26,8 +26,6 @@
         <title>{{ translatePageTitle(pageTitlePrefix, pageTitle, pageCategory) }}</title>
       {% endblock %}
       {% block css %}
-        {# TODO: https://github.com/typekit/webfontloader #}
-        {# TODO: add fonts to repo (with option to copy those or use webfontloader) #}
         {# Docs: https://developers.google.com/fonts/docs/css2#api_url_specification #}
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&family=Karla:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap">
         {# TODO: use relative path to CSS files #}
@@ -41,36 +39,26 @@
       {% block body_navbar %}
         {% include 'navbar.njk' %}
       {% endblock %}
-      {% block body_container %}
-        <div id="jsdoc-body-container">
-          {% block body_content %}
-            <div id="jsdoc-content">
-              {% block body_content_container %}
-                <div id="jsdoc-content-container">
-                  {% block body_banner %}
-                    <div id="jsdoc-banner" role="banner">
-                      {% block body_banner_content %}
-                        {# Override this block to add content. #}
-                      {% endblock %}
-                    </div>
-                  {% endblock %}
-                  {% block body_main %}
-                    <div id="jsdoc-main" role="main">
-                      {% block body_main_content %}
-                        {# Override this block to add content. #}
-                      {% endblock %}
-                    </div>
-                  {% endblock %}
-                </div>
-              {% endblock %}
-              {% block body_toc_navbar %}
-                {# Content is inserted on page load. #}
-                <nav id="jsdoc-toc-nav"></nav>
-              {% endblock %}
-            </div>
-          {% endblock %}
-        </div>
-      {% endblock %}
+        {% block body_content_container %}
+          <div id="jsdoc-content-container">
+            {% block body_content %}
+              <div id="jsdoc-content">
+                {% block body_main %}
+                  <div id="jsdoc-main" role="main">
+                    {% block body_main_content %}
+                      {# Override this block to add content. #}
+                    {% endblock %}
+                  </div>
+                {% endblock %}
+                {% block body_toc_navbar %}
+                  <nav id="jsdoc-toc-nav">
+                    {% include 'toc.njk' %}
+                  </nav>
+                {% endblock %}
+              </div>
+            {% endblock %}
+          </div>
+        {% endblock %}
       {% block body_footer %}
         {% if config('components.footer') %}
           <footer id="jsdoc-footer" class="jsdoc-footer">
@@ -87,12 +75,9 @@
         {% endif %}
       {% endblock %}
       {% block body_scripts %}
-        {# TODO: combine JS for JSDoc-only files #}
         {# TODO: fix up path relative to current output directory #}
-        <script src="scripts/jquery.min.js"></script>
-        <script src="scripts/tree.jquery.js"></script>
-        <script src="scripts/jsdoc-toc.js"></script>
         <script src="scripts/scrollanchor.js"></script>
+        <script src="scripts/shoelace.js"></script>
       {% endblock %}
     </body>
   {% endblock %}

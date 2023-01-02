@@ -13,20 +13,59 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
-(function($) {
-    // TODO: make the node ID configurable
-    var treeNode = $('#jsdoc-toc-nav');
+{%- macro add_modifiers(item, demoted) -%}
+  {% if href == item.href and not demoted %} selected {% endif %}
+  {% if href == item.href or href in item.descendantHrefs %} expanded {% endif %}
+{%- endmacro -%}
 
-    // initialize the tree
-    treeNode.tree({
-        autoEscape: false,
-        closedIcon: '&#x21e2;',
-        data: {{ tocData | dump | safe }},
-        openedIcon: ' &#x21e3;',
-        saveState: false,
-        useContextMenu: false
-    });
+{#
+  TODO: This behavior is disabled until we come up with better styling and/or link text for the
+  demoted item. The current behavior is to insert a tree item with normal appearance and the label
+  "DOCLET_KIND details," but I don't think that works very well.
+  ---
+  When you click a tree item, it should either expand the item (if it has children) or open the page
+  for that item. It should never do both, because that behavior can be confusing.
 
-    // add event handlers
-    // TODO
-})(jQuery);
+  To make this behavior possible, if a tree item is both expandable and a link, we move the link
+  into a new tree item that's a child of the original tree item.
+#}
+{%- macro make_demoted_link_item(item) -%}
+  <sl-tree-item {{- add_modifiers(item) -}}>
+    {% set l10nKey = 'kinds.' + item.kind %}
+    {% set linkText %}{{ l10nKey | translate }} details{% endset %}
+    {% set linkText = linkText | capitalize %}
+    {{ item.id | link(linkText) }}
+  </sl-tree-item>
+{%- endmacro -%}
+
+{%- macro make_tree_items(items) -%}
+  {% for item in items %}
+    {# TODO: Re-enable this behavior, with improved link text. #}
+    {# {% set demoted %}{{ should_demote(item) }}{% endset %} #}
+    <sl-tree-item {{- add_modifiers(item, demoted) -}}>
+      {# TODO: Re-enable this behavior when we re-enable demoted items. #}
+      {#
+      {% if not item.children | length %}
+        {{ item.id | link(item.label) }}
+      {% else %}
+        {{ item.label }}
+      {% endif %}
+      #}
+      {{ item.id | link(item.label) }}
+      {% if item.children | length %}
+        {% if demoted %}
+          {{ make_demoted_link_item(item) | safe }}
+        {% endif %}
+        {{ make_tree_items(item.children) }}
+      {% endif %}
+    </sl-tree-item>
+  {% endfor %}
+{%- endmacro -%}
+
+{%- macro should_demote(item) -%}
+  {%- if item.children | length and item.href -%}true{%- endif -%}
+{%- endmacro -%}
+
+<sl-tree class="nav-tree">
+  {{ make_tree_items(tocData) }}
+</sl-tree>

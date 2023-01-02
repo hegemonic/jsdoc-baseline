@@ -13,53 +13,39 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const mock = require('mock-fs');
+const _ = require('lodash');
 const { defaultConfig } = require('../../../../lib/config');
 const { db } = require('../../../../lib/db');
-const fs = require('fs-extra');
-const GenerateToc = require('../../../../lib/tasks/generate-toc');
 const { name } = require('@jsdoc/core');
-const path = require('path');
+const SetTocData = require('../../../../lib/tasks/set-toc-data');
 
-const ARGUMENT_ERROR = 'ArgumentError';
 const OUTPUT_DIR = 'out';
 const TYPE_ERROR = 'TypeError';
 
-describe('lib/tasks/generate-toc', () => {
+function findTocLongnames(items, seen = []) {
+  items.forEach((item) => {
+    seen.push(item.id);
+    findTocLongnames(item.children, seen);
+  });
+
+  return _.uniq(seen).sort();
+}
+
+describe('lib/tasks/set-toc-data', () => {
   let instance;
 
   beforeEach(() => {
-    instance = new GenerateToc({
-      name: 'generateToc',
-      url: 'toc.js',
+    instance = new SetTocData({
+      name: 'setTocData',
     });
   });
 
   it('is a constructor', () => {
     function factory() {
-      return new GenerateToc({ name: 'generateToc' });
+      return new SetTocData({ name: 'setTocData' });
     }
 
     expect(factory).not.toThrow();
-  });
-
-  it('has an undefined `url` property by default', () => {
-    expect(new GenerateToc({}).url).toBeUndefined();
-  });
-
-  it('accepts a `url` property', () => {
-    instance = new GenerateToc({
-      name: 'customUrl',
-      url: 'foo',
-    });
-
-    expect(instance.url).toBe('foo');
-  });
-
-  it('accepts new values for `url`', () => {
-    instance.url = 'foo';
-
-    expect(instance.url).toBe('foo');
   });
 
   describe('run', () => {
@@ -104,27 +90,30 @@ describe('lib/tasks/generate-toc', () => {
         name: 'Bar',
       },
     ];
-    const navTree = name.longnamesToTree(nonGlobals.map((d) => d.longname));
-    const template = helpers.createTemplate(defaultConfig);
+    const navTree = name.longnamesToTree(
+      nonGlobals.map((d) => d.longname),
+      nonGlobals.reduce((accumulator, doclet) => {
+        accumulator[doclet.longname] = doclet;
+
+        return accumulator;
+      }),
+      {}
+    );
 
     beforeEach(() => {
+      const template = helpers.createTemplate(defaultConfig);
+
       context = {
         config: {
           opts: {},
         },
         destination: OUTPUT_DIR,
         globals,
+        linkManager: template.linkManager,
         navTree,
-        template,
-        templateConfig: defaultConfig,
+        // template,
+        // templateConfig: defaultConfig,
       };
-      context.linkManager = context.template.linkManager;
-
-      mock(helpers.baseViews);
-    });
-
-    afterEach(() => {
-      mock.restore();
     });
 
     it('fails if the `globals` are missing', async () => {
@@ -153,85 +142,40 @@ describe('lib/tasks/generate-toc', () => {
       expect(error).toBeErrorOfType(TYPE_ERROR);
     });
 
-    it('fails if the `template` is missing', async () => {
-      let error;
-
-      context.template = null;
-      try {
-        await instance.run(context);
-      } catch (e) {
-        error = e;
-      }
-
-      expect(error).toBeErrorOfType(TYPE_ERROR);
-    });
-
-    it('fails if the `url` is missing', async () => {
-      let error;
-
-      instance.url = null;
-      try {
-        await instance.run(context);
-      } catch (e) {
-        error = e;
-      }
-
-      expect(error).toBeErrorOfType(ARGUMENT_ERROR);
-    });
-
-    it('saves the output file to the specified location', async () => {
-      const url = instance.url;
-      const outputPath = path.join(OUTPUT_DIR, url);
-
+    it('adds the TOC data to the context', async () => {
       await instance.run(context);
 
-      expect(fs.existsSync(outputPath)).toBeTrue();
-    });
-
-    it('saves the output file to a subdirectory if asked', async () => {
-      const url = (instance.url = path.join('scripts', 'foo.js'));
-      const outputPath = path.join(OUTPUT_DIR, url);
-
-      await instance.run(context);
-
-      expect(fs.existsSync(outputPath)).toBeTrue();
+      expect(context.tocData).toBeArrayOfObjects();
     });
 
     it('adds everything in the `navTree` to the TOC', async () => {
-      let file;
-      const names = nonGlobals.map((d) => d.name);
-      const url = instance.url;
-      const outputPath = path.join(OUTPUT_DIR, url);
-
-      await instance.run(context);
-      file = fs.readFileSync(outputPath, 'utf8');
-
-      for (const docletName of names) {
-        expect(file).toContain(docletName);
-      }
-    });
-
-    it('does not include an entry for globals if there are no globals', async () => {
-      let file;
-      const url = instance.url;
-      const outputPath = path.join(OUTPUT_DIR, url);
+      const longnames = nonGlobals.map((d) => d.longname).sort();
+      let tocLongnames;
 
       context.globals = db({ values: [] });
       await instance.run(context);
-      file = fs.readFileSync(outputPath, 'utf8');
+      tocLongnames = findTocLongnames(context.tocData);
 
-      expect(file).not.toContain('global');
+      expect(tocLongnames).toEqual(longnames);
+    });
+
+    it('does not include an entry for globals if there are no globals', async () => {
+      let tocLongnames;
+
+      context.globals = db({ values: [] });
+      await instance.run(context);
+      tocLongnames = findTocLongnames(context.tocData);
+
+      expect(tocLongnames).not.toContain('global');
     });
 
     it('includes an entry for globals when there are globals', async () => {
-      let file;
-      const url = instance.url;
-      const outputPath = path.join(OUTPUT_DIR, url);
+      let tocLongnames;
 
       await instance.run(context);
-      file = fs.readFileSync(outputPath, 'utf8');
+      tocLongnames = findTocLongnames(context.tocData);
 
-      expect(file).toContain('global');
+      expect(tocLongnames).toContain('global');
     });
   });
 });

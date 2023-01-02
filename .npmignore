@@ -11,6 +11,7 @@ tmp/
 .gitignore
 .license-check.json
 .license-header.txt
+.parcelrc
 .prettierignore
 .prettierrc.js
 .renovaterc.json

@@ -191,7 +191,7 @@ describe('lib/tasks/set-context', () => {
         await instance.run(context);
 
         expect(context.needsOutputFile).toBeObject();
-        expect(context.needsOutputFile.Foo).toBeTrue();
+        expect(context.needsOutputFile.Foo).toBeTruthy();
         expect(context.needsOutputFile.bar).toBeUndefined();
       });
 

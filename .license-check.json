@@ -4,6 +4,7 @@
     "append": ""
   },
   "ignore": [
+    ".parcel-cache/**/*",
     "**/.*",
     "**/*.EXAMPLE",
     "**/*.md",

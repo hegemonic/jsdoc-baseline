@@ -23,8 +23,8 @@ const expectedTasks = [
   'GenerateGlobals',
   'GenerateIndex',
   'GenerateSourceFiles',
-  'GenerateToc',
   'SetContext',
+  'SetTocData',
 ];
 
 describe('lib/tasks/index', () => {
