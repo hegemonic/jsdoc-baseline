@@ -15,6 +15,7 @@
 */
 // Helper functions for testing the Baseline template.
 const mock = require('mock-fs');
+const _ = require('lodash');
 const deepExtend = require('deep-extend');
 const { defaultConfig } = require('../../lib/config');
 const { Dependencies } = require('@jsdoc/core');
@@ -56,6 +57,19 @@ function resetJsdocEnv() {
   global.helpers.deps.registerValue('env', env);
 }
 
+function findMatchingFilepath(filepaths, filename) {
+  let result;
+
+  for (const filepath of filepaths) {
+    if (filepath.endsWith(filename)) {
+      result = filepath;
+      break;
+    }
+  }
+
+  return result;
+}
+
 global.helpers = {
   // Maps each base view's path to its contents. Allows base views to be read when file system is
   // mocked.
@@ -75,6 +89,26 @@ global.helpers = {
 
     return baseViews;
   })(),
+
+  // The same as `baseViews()`, but you can override the contents of specific files.
+  baseViewsModified: (mods) => {
+    const filepaths = Object.keys(global.helpers.baseViews);
+    let views = {};
+
+    Object.keys(mods).forEach((filename) => {
+      const baseViewsKey = findMatchingFilepath(filepaths, filename);
+
+      if (!baseViewsKey) {
+        throw new Error(
+          `No existing view named "${filename}". You can only override an existing view.`
+        );
+      }
+
+      views = _.defaults(views, { [baseViewsKey]: mods[filename] });
+    });
+
+    return _.defaults(views, global.helpers.baseViews);
+  },
 
   // Creates a new, fully initialized Template object with the specified configuration settings.
   createTemplate: (config) => {

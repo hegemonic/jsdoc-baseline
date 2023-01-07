@@ -13,25 +13,37 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
-<div class="symbol-index">
-  <section>
-    {% if readme %}
-      <h>{{ 'headings.packageIndex' | translate }}</h>
-    {% endif %}
-    {% set groups = allLongnamesTree | groupDocletTree %}
-    {% for groupName in groups | keys | sort %}
-      {% set group = groups[groupName] %}
-      <section>
-        <div class="symbol-index-content">
-          {# TODO: Register this ID with a helper. #}
-          <h id="{{ groupName }}">{{ groupName }}</h>
-          <div class="symbol-index-section">
-            {% for items in group | batch(3) %}
-              {% include 'symbol-index-section.njk' %}
-            {% endfor %}
-          </div>
+{% set NUM_COLUMNS = 3 %}
+
+{% macro content() %}
+  {% set groups = allLongnamesTree | groupDocletTree %}
+  {% for groupName in groups | keys | sort %}
+    {% set group = groups[groupName] %}
+    <section>
+      <div class="symbol-index-content">
+        {# TODO: Register this ID with a helper. #}
+        <h id="{{ groupName }}">{{ groupName }}</h>
+        <div class="symbol-index-section">
+          {% set batch_size = group | length %}
+          {% if batch_size > NUM_COLUMNS %}
+            {% set batch_size = (batch_size / NUM_COLUMNS) | round(0, 'ceil') %}
+          {% endif %}
+          {% for items in group | batch(batch_size) %}
+            {% include 'symbol-index-section.njk' %}
+          {% endfor %}
         </div>
-      </section>
-    {% endfor %}
-  </section>
+      </div>
+    </section>
+  {% endfor %}
+{% endmacro %}
+
+<div class="symbol-index">
+  {% if readme %}
+    <section>
+      <h>{{ 'headings.packageIndex' | translate }}</h>
+      {{ content() }}
+    </section>
+  {% else %}
+    {{ content() }}
+  {% endif %}
 </div>
