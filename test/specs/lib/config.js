@@ -24,24 +24,16 @@ describe('lib/config', () => {
   beforeEach(() => (env = helpers.deps.get('env')));
   afterEach(() => helpers.setup());
 
-  it('should be an object', () => {
+  it('is an object', () => {
     expect(config).toBeObject();
   });
 
-  it('should export a "defaultConfig" object', () => {
+  it('has a `defaultConfig` object', () => {
     expect(config.defaultConfig).toBeObject();
   });
 
-  it('should export a "loadConfigSync" method', () => {
-    expect(config.loadConfigSync).toBeFunction();
-  });
-
-  it('should export a "readJsonSync" method', () => {
-    expect(config.readJsonSync).toBeFunction();
-  });
-
   describe('loadConfigSync', () => {
-    it('should work if the config object is embedded in the JSDoc config file', () => {
+    it('works if the config object is embedded in the JSDoc config file', () => {
       let conf;
 
       env.conf.templates.baseline = {
@@ -52,7 +44,7 @@ describe('lib/config', () => {
       expect(conf.beautify).toBe(!config.defaultConfig.beautify);
     });
 
-    it('should use the correct default paths', () => {
+    it('uses the correct default paths', () => {
       let conf;
 
       env.conf.templates.baseline = path.resolve(__dirname, '../../fixtures/config.json');
@@ -64,7 +56,7 @@ describe('lib/config', () => {
       expect(conf.templatePath).toBe('/foo/bar/baz');
     });
 
-    it('should set default values even if the config file is missing', () => {
+    it('sets default values if the config file is missing', () => {
       let conf;
       let event;
 
@@ -79,7 +71,7 @@ describe('lib/config', () => {
       expect(Object.keys(conf).length).toBeGreaterThan(0);
     });
 
-    it('should work with JSON files that contain comments', () => {
+    it('supports JSON files that contain comments', () => {
       let conf;
       let event;
 
@@ -97,7 +89,7 @@ describe('lib/config', () => {
       expect(conf.foo).toBe('bar');
     });
 
-    it('should get the L10N filename from the locale', () => {
+    it('gets the L10N filename from the locale', () => {
       let conf;
 
       env.conf.templates.baseline = path.resolve(__dirname, '../../fixtures/config.json');
@@ -107,7 +99,7 @@ describe('lib/config', () => {
       expect(conf.l10nFile).toBe('en.yaml');
     });
 
-    it('should use the L10N filename from the config file, if specified there', () => {
+    it('uses the L10N filename from the config file, if specified there', () => {
       let conf;
 
       env.conf.templates.baseline = path.resolve(__dirname, '../../fixtures/config-l10nfile.json');
@@ -119,7 +111,7 @@ describe('lib/config', () => {
   });
 
   describe('readJsonSync', () => {
-    it('should be able to read a JSON file with comments', () => {
+    it('reads a JSON file with comments', () => {
       function readJson() {
         return config.readJsonSync(path.resolve(__dirname, '../../fixtures/comments.json'));
       }
@@ -128,7 +120,7 @@ describe('lib/config', () => {
       expect(readJson().foo).toBe('bar');
     });
 
-    it('should log a fatal error if there is an exception', () => {
+    it('logs a fatal error if there is an exception', () => {
       function readJson() {
         return config.readJsonSync(path.resolve(__dirname, 'no-such-file.json'));
       }
@@ -136,7 +128,7 @@ describe('lib/config', () => {
       expect(readJson).not.toThrow();
     });
 
-    it('should return nothing if no path is specified', () => {
+    it('returns `undefined` if no path is specified', () => {
       const result = config.readJsonSync();
 
       expect(result).toBeUndefined();

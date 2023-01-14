@@ -4,6 +4,8 @@
   "beautify": true,
   // Components to display in each HTML output file.
   "components": {
+    // Set to `true` to include a footer on each page. Set to `false` to omit the footer.
+    "footer": true,
     // Set to `true` to display a summary section at the top of each page. Set to `false` to omit
     // the summary section.
     "summary": true
@@ -13,6 +15,25 @@
   // The character encoding to write to the <meta> tag in HTML output files. You are strongly
   // encouraged to use the default setting.
   "encoding": "utf-8",
+  // The file extensions to use for output files.
+  "extensions": {
+    // The file extension to use in links to other pages within your docs. For example, if you host
+    // your docs on a server that doesn't require the `.html` file extension, you could change this
+    // setting to an empty string.
+    "links": ".html",
+    // The file extension to use for generated files.
+    "outputFiles": ".html"
+  },
+  // The modules to use as template helpers.
+  "helpers": {
+    // The module that provides template filters. Must export a `Filters` class; this class's
+    // methods must be Nunjucks filters: https://mozilla.github.io/nunjucks/api.html#custom-filters
+    "filters": "lib/filters"
+  },
+  // The directory that contains localized text for different languages.
+  "l10n": "lang",
+  // The language for displaying localized text.
+  "lang": "en-US",
   // The locale for displaying localized text.
   "locale": "en",
   // Set to `true` to convert text from Markdown to HTML or `false` to disable Markdown support.
@@ -29,9 +50,14 @@
     // documentation.
     "singleLink": true
   },
+  // TODO: Add description after changing the format of this property.
+  "staticFiles": [],
   "tables": {
     // Set to `true` to embed child properties of parameters within the same table row as the
     // parameter. Set to `false` to list child properties on their own rows.
     "nestedPropertyTables": true
-  }
+  },
+  // The paths to view files. If a file has the same name as a built-in view, then the file
+  // overrides the built-in view.
+  "views": []
 }
