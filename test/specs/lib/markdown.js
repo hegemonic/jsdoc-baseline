@@ -20,11 +20,11 @@ describe('lib/markdown', () => {
     expect(markdown).toBeObject();
   });
 
-  it('exports a getParser function', () => {
-    expect(markdown.getParser).toBeFunction();
+  it('exports a getRenderer function', () => {
+    expect(markdown.getRenderer).toBeFunction();
   });
 
-  describe('getParser', () => {
+  describe('getRenderer', () => {
     function setMarkdownConf(conf) {
       const env = helpers.deps.get('env');
 
@@ -39,13 +39,13 @@ describe('lib/markdown', () => {
       let parser;
 
       setMarkdownConf({});
-      parser = markdown.getParser(helpers.deps);
+      parser = markdown.getRenderer(helpers.deps);
 
       expect(parser).toBeFunction();
     });
 
     it('does not change text within inline tags', () => {
-      const parser = markdown.getParser(helpers.deps);
+      const parser = markdown.getRenderer(helpers.deps);
 
       expect(parser('{@link MyClass#_x} and {@link MyClass#_y}')).toBe(
         '<p>{@link MyClass#_x} and {@link MyClass#_y}</p>'
@@ -53,7 +53,7 @@ describe('lib/markdown', () => {
     });
 
     it('does not convert HTTP/HTTPS URLs to links', () => {
-      const parser = markdown.getParser(helpers.deps);
+      const parser = markdown.getRenderer(helpers.deps);
 
       expect(parser('Visit {@link http://usejsdoc.com}.')).toBe(
         '<p>Visit {@link http://usejsdoc.com}.</p>'
@@ -67,7 +67,7 @@ describe('lib/markdown', () => {
       let parser;
 
       setMarkdownConf({ hardwrap: true });
-      parser = markdown.getParser(helpers.deps);
+      parser = markdown.getRenderer(helpers.deps);
 
       expect(parser('line one\nline two')).toBe('<p>line one<br>\nline two</p>');
     });
@@ -76,7 +76,7 @@ describe('lib/markdown', () => {
       let parser;
 
       setMarkdownConf({ idInHeadings: true });
-      parser = markdown.getParser(helpers.deps);
+      parser = markdown.getRenderer(helpers.deps);
 
       expect(parser('# Hello')).toBe('<h1 id="hello">Hello</h1>');
     });
