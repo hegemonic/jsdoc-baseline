@@ -64,7 +64,7 @@
     "prettier": "^2.8.3"
   },
   "devDependencies": {
-    "@jsdoc/eslint-config": "^1.1.10",
+    "@jsdoc/eslint-config": "^1.1.11",
     "@jsdoc/prettier-config": "^0.1.0",
     "@jsdoc/test-matchers": "^0.1.17",
     "@parcel/transformer-sass": "^2.8.2",
