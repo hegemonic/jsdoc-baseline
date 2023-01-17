@@ -87,7 +87,7 @@
     "sass": "^1.57.1"
   },
   "engines": {
-    "node": ">=v14.0.0"
+    "node": ">=v16.0.0"
   },
   "targets": {
     "default": {
