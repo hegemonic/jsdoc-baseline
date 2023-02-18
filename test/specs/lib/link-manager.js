@@ -616,6 +616,22 @@ describe('lib/link-manager', () => {
       );
     });
 
+    it('works when a pipe is used as a separator, without spaces', () => {
+      const str = '{@link https://example.com/|link text}';
+
+      expect(instance.resolveInlineLinks(str)).toBe(
+        '<a href="https://example.com/"><code>link text</code></a>'
+      );
+    });
+
+    it('works when a pipe is used as a separator, with spaces', () => {
+      const str = '{@link https://example.com/ | link text}';
+
+      expect(instance.resolveInlineLinks(str)).toBe(
+        '<a href="https://example.com/"><code>link text</code></a>'
+      );
+    });
+
     it('extracts leading link text in square brackets from one tag', () => {
       instance.requestFilename('foo');
 
