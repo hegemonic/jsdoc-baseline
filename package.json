@@ -73,7 +73,7 @@
     "c8": "^7.13.0",
     "csso-cli": "^4.0.2",
     "eslint": "^8.35.0",
-    "eslint-config-prettier": "^8.6.0",
+    "eslint-config-prettier": "^8.7.0",
     "eslint-plugin-prettier": "^4.2.1",
     "execa": "^7.0.0",
     "hereby": "^1.8.0",
