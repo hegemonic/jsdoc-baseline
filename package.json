@@ -41,7 +41,7 @@
     "@jsdoc/tag": "^0.1.6",
     "@jsdoc/task-runner": "^0.1.14",
     "@jsdoc/util": "^0.2.8",
-    "@sindresorhus/slugify": "^1.1.2",
+    "@sindresorhus/slugify": "^2.2.0",
     "catharsis": "^0.9.0",
     "common-path-prefix": "^3.0.0",
     "deep-extend": "^0.6.0",
