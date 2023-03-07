@@ -56,7 +56,7 @@
     "markdown-it-anchor": "^8.6.7",
     "messageformat": "^2.3.0",
     "nunjucks": "^3.2.3",
-    "ow": "^0.28.2",
+    "ow": "^1.1.1",
     "spdx-license-list": "^6.6.0",
     "strip-json-comments": "^3.1.1"
   },
