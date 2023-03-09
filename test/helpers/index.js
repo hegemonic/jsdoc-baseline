@@ -132,6 +132,12 @@ global.helpers = {
 
   deps: new Dependencies(),
 
+  handlePromise: (promise, cb) =>
+    promise.then(
+      () => cb(),
+      () => cb()
+    ),
+
   // Renders a Handlebars view.
   render: (...args) => global.helpers.template.render(...args),
 

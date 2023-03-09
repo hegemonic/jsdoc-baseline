@@ -116,10 +116,7 @@ describe('lib/tasks/generate-files', () => {
 
       expect(result).toBeInstanceOf(Promise);
 
-      result.then(
-        () => cb(),
-        () => cb()
-      );
+      helpers.handlePromise(result, cb);
     });
 
     it('returns a promise on failure', (cb) => {
@@ -131,10 +128,7 @@ describe('lib/tasks/generate-files', () => {
 
       expect(result).toBeInstanceOf(Promise);
 
-      result.then(
-        () => cb(),
-        () => cb()
-      );
+      helpers.handlePromise(result, cb);
     });
 
     describe('tickets', () => {

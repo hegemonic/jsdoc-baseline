@@ -69,11 +69,7 @@ describe('lib/tasks/copy-static-files', () => {
 
       expect(result).toBeInstanceOf(Promise);
 
-      // Handle the fulfilled promise.
-      result.then(
-        () => cb(),
-        () => cb()
-      );
+      helpers.handlePromise(result, cb);
     });
 
     it('returns a promise on error', (cb) => {
@@ -81,11 +77,7 @@ describe('lib/tasks/copy-static-files', () => {
 
       expect(result).toBeInstanceOf(Promise);
 
-      // Handle the rejected promise.
-      result.then(
-        () => cb(),
-        () => cb()
-      );
+      helpers.handlePromise(result, cb);
     });
 
     it('creates the output directory if necessary', async () => {

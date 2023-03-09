@@ -75,11 +75,7 @@ describe('lib/tasks/generate-source-files', () => {
 
       expect(result).toBeInstanceOf(Promise);
 
-      // Handle the resolved promise.
-      result.then(
-        () => cb(),
-        () => cb()
-      );
+      helpers.handlePromise(result, cb);
     });
 
     it('returns a promise on failure', (cb) => {
@@ -93,11 +89,7 @@ describe('lib/tasks/generate-source-files', () => {
 
       expect(result).toBeInstanceOf(Promise);
 
-      // Handle the rejected promise.
-      result.then(
-        () => cb(),
-        () => cb()
-      );
+      helpers.handlePromise(result, cb);
     });
 
     describe('output', () => {

@@ -111,11 +111,7 @@ describe('lib/tasks/copy-files', () => {
 
       expect(result).toBeInstanceOf(Promise);
 
-      // Handle the resolved promise.
-      result.then(
-        () => cb(),
-        () => cb()
-      );
+      helpers.handlePromise(result, cb);
     });
 
     it('returns a promise on failure', (cb) => {
@@ -127,11 +123,7 @@ describe('lib/tasks/copy-files', () => {
 
       expect(result).toBeInstanceOf(Promise);
 
-      // Handle the rejected promise.
-      result.then(
-        () => cb(),
-        () => cb()
-      );
+      helpers.handlePromise(result, cb);
     });
 
     describe('tickets', () => {
