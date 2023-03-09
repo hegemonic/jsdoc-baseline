@@ -13,13 +13,20 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const mock = require('mock-fs');
-const _ = require('lodash');
-const { defaultConfig } = require('../../../../lib/config');
-const fs = require('fs-extra');
-const GenerateFiles = require('../../../../lib/tasks/generate-files');
-const path = require('path');
-const Ticket = require('../../../../lib/ticket');
+// eslint-disable-next-line simple-import-sort/imports
+import mock from 'mock-fs';
+
+import path from 'node:path';
+
+import fs from 'fs-extra';
+import _ from 'lodash';
+
+import { defaultConfig } from '../../../../lib/config.js';
+import GenerateFiles from '../../../../lib/tasks/generate-files.js';
+import Ticket from '../../../../lib/ticket.js';
+
+// Prettier lazy-loads its HTML parser. Preload it now when we know we're not mocked.
+import 'prettier/parser-html.js';
 
 const OUTPUT_DIR = 'out';
 const TYPE_ERROR = 'TypeError';
@@ -87,13 +94,14 @@ describe('lib/tasks/generate-files', () => {
     let context;
     let result;
 
-    beforeEach(() => {
+    beforeEach(async () => {
+      const templateConfig = _.cloneDeep(defaultConfig);
+
       context = {
         destination: OUTPUT_DIR,
-        templateConfig: _.cloneDeep(defaultConfig),
+        templateConfig,
       };
-
-      context.template = helpers.createTemplate(context.templateConfig);
+      context.template = await helpers.createTemplate(templateConfig);
       mock(helpers.baseViews);
     });
 
@@ -346,10 +354,11 @@ describe('lib/tasks/generate-files', () => {
       it('beautifies the output file if asked to', async () => {
         let file;
         let task;
+        const templateConfig = (context.templateConfig = _.cloneDeep(defaultConfig));
         let ticket;
 
-        context.templateConfig.beautify = true;
-        context.template = helpers.createTemplate(context.templateConfig);
+        templateConfig.beautify = true;
+        context.template = await helpers.createTemplate(templateConfig);
 
         ticket = new Ticket({
           data: {},

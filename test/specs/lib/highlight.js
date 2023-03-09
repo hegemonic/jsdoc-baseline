@@ -13,9 +13,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const highlight = require('../../../lib/highlight');
-const { log } = require('@jsdoc/util');
-const path = require('path');
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+import { log } from '@jsdoc/util';
+
+import * as highlight from '../../../lib/highlight.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 function fakeDeps(highlightValue) {
   const deps = new Map();
@@ -44,56 +50,60 @@ describe('lib/highlight', () => {
     const { getHighlighter } = highlight;
     let highlighter;
 
-    beforeEach(() => {
-      highlighter = getHighlighter(fakeDeps());
+    beforeEach(async () => {
+      highlighter = await getHighlighter(fakeDeps());
     });
 
     it('works if the dependencies are not provided', () => {
-      expect(() => getHighlighter()).not.toThrow();
+      expect(async () => {
+        await getHighlighter();
+      }).not.toThrow();
     });
 
-    it('returns the default highlighter if none is specified', () => {
+    it('returns the default highlighter if none is specified', async () => {
       // We don't have a good way to check whether it's the "default highlighter," so we just
       // confirm that it's a function that returns a string. Its behavior is tested elsewhere.
-      const defaultHighlighter = getHighlighter(fakeDeps());
+      const defaultHighlighter = await getHighlighter(fakeDeps());
 
       expect(defaultHighlighter).toBeFunction();
       expect(defaultHighlighter('hello')).toBeString();
     });
 
-    it('loads a module when one is specified', () => {
+    it('loads a module when one is specified', async () => {
       let html;
       let newHighlighter;
       const requirePath = path.resolve(__dirname, '../../fixtures/highlighter/highlighter.js');
 
-      newHighlighter = getHighlighter(fakeDeps(requirePath));
+      newHighlighter = await getHighlighter(fakeDeps(requirePath));
       html = newHighlighter('hello');
 
       expect(html).toBe('hello is highlighted!');
     });
 
-    it('logs an error and returns the default if the module cannot be loaded', () => {
+    it('logs an error and returns the default if the module cannot be loaded', async () => {
       let newHighlighter;
       const spy = spyOn(log, 'error');
 
-      newHighlighter = getHighlighter(fakeDeps('./not-a-real-module'));
+      newHighlighter = await getHighlighter(fakeDeps('./not-a-real-module'));
 
       expect(spy).toHaveBeenCalled();
       expect(newHighlighter('hello')).toBe(highlighter('hello'));
     });
 
-    it('logs an error and returns the default if the module has no `highlight` method', () => {
+    it('logs an error and returns the default if the module has no `highlight` method', async () => {
       let newHighlighter;
       const spy = spyOn(log, 'error');
 
-      newHighlighter = getHighlighter(fakeDeps(`./${__filename}`));
+      newHighlighter = await getHighlighter(fakeDeps(`./${__filename}`));
 
       expect(spy).toHaveBeenCalled();
       expect(newHighlighter('hello')).toBe(highlighter('hello'));
     });
 
-    it('uses the function in the config file if specified', () => {
-      const newHighlighter = getHighlighter(fakeDeps((code) => `This highlighter is ${code}`));
+    it('uses the function in the config file if specified', async () => {
+      const newHighlighter = await getHighlighter(
+        fakeDeps((code) => `This highlighter is ${code}`)
+      );
 
       expect(newHighlighter('lackluster')).toBe('This highlighter is lackluster');
     });

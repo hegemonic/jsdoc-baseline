@@ -13,9 +13,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const mock = require('mock-fs');
-const _ = require('lodash');
-const { longnamesToTree } = require('@jsdoc/core').name;
+// eslint-disable-next-line simple-import-sort/imports
+import mock from 'mock-fs';
+
+import { name as jsdocName } from '@jsdoc/core';
+import _ from 'lodash';
+
+const { longnamesToTree } = jsdocName;
 
 function makeDoclets(longnameMap) {
   let doclets = {};
@@ -56,7 +60,7 @@ describe('symbol-index partial', () => {
     return longnamesToTree(longnames, fakeDoclets);
   }
 
-  beforeEach(() => {
+  beforeEach(async () => {
     allLongnamesTree = longnamesToTree(Object.keys(fakeDoclets), fakeDoclets);
     mock(
       helpers.baseViewsModified({
@@ -68,7 +72,7 @@ describe('symbol-index partial', () => {
           </index-group>`,
       })
     );
-    template = helpers.createTemplate();
+    template = await helpers.createTemplate();
   });
 
   afterEach(() => {

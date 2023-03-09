@@ -13,12 +13,16 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const mock = require('mock-fs');
-const { BASE_VIEWS } = require('../../../lib/template');
-const ClassMap = require('../../../lib/class-map');
-const { FileSystemLoader } = require('nunjucks');
-const loader = require('../../../lib/loader');
-const path = require('path');
+// eslint-disable-next-line simple-import-sort/imports
+import mock from 'mock-fs';
+
+import path from 'node:path';
+
+import { FileSystemLoader } from 'nunjucks';
+
+import ClassMap from '../../../lib/class-map.js';
+import * as loader from '../../../lib/loader.js';
+import { BASE_VIEWS } from '../../../lib/template.js';
 
 describe('lib/loader', () => {
   it('exports a ViewLoader constructor', () => {

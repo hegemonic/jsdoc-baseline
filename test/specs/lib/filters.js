@@ -13,7 +13,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const filters = require('../../../lib/filters');
+import catharsis from 'catharsis';
+
+import * as filters from '../../../lib/filters.js';
 
 describe('lib/filters', () => {
   it('exports a Filters constructor', () => {
@@ -21,7 +23,7 @@ describe('lib/filters', () => {
   });
 
   describe('Filters', () => {
-    const Filters = filters.Filters;
+    const { Filters } = filters;
     let instance;
     let linkManager;
     let template;
@@ -30,10 +32,10 @@ describe('lib/filters', () => {
       return ['module:foo', 'module:foo/bar', 'module:foo/bar.Baz', 'module:foo/bar.Baz#qux'];
     }
 
-    function init(templateOpts) {
-      template = helpers.createTemplate(templateOpts);
+    async function init(templateOpts) {
+      template = await helpers.createTemplate(templateOpts);
       linkManager = template.linkManager;
-      instance = new Filters(template);
+      instance = await Filters.create(template);
     }
 
     function requestFilenames(longnames) {
@@ -42,8 +44,8 @@ describe('lib/filters', () => {
       });
     }
 
-    beforeEach(() => {
-      init();
+    beforeEach(async () => {
+      await init();
     });
 
     describe('ancestors', () => {
@@ -72,10 +74,10 @@ describe('lib/filters', () => {
         );
       });
 
-      it('maps the CSS class when needed', () => {
+      it('maps the CSS class when needed', async () => {
         let ancestors;
 
-        init({
+        await init({
           cssClassMap: {
             flibble: 'flobble',
           },
@@ -165,8 +167,6 @@ describe('lib/filters', () => {
     });
 
     describe('describeType', () => {
-      const catharsis = require('catharsis');
-
       const parsedType = catharsis.parse('!string');
 
       it('uses "unknown type" if no type is provided', () => {
@@ -305,10 +305,10 @@ describe('lib/filters', () => {
         expect(highlighted.toString()).toMatch('hljs');
       });
 
-      it('maps CSS classes when needed', () => {
+      it('maps CSS classes when needed', async () => {
         let highlighted;
 
-        init({
+        await init({
           cssClassMap: {
             'language-js': 'language-ecmascript',
           },
@@ -396,10 +396,10 @@ describe('lib/filters', () => {
     describe('labels', () => {
       xit('TODO: Write more tests');
 
-      it('maps CSS classes as needed', () => {
+      it('maps CSS classes as needed', async () => {
         let labels;
 
-        init({
+        await init({
           cssClassMap: {
             'label-kind': 'label-kinder-egg',
           },
@@ -478,7 +478,7 @@ describe('lib/filters', () => {
     describe('linkLongnameWithSignature', () => {
       xit('TODO: Write more tests');
 
-      it('maps CSS classes as needed', () => {
+      it('maps CSS classes as needed', async () => {
         let fakeDoclet = {
           kind: 'class',
           longname: 'Foo',
@@ -487,7 +487,7 @@ describe('lib/filters', () => {
         };
         let link;
 
-        init({
+        await init({
           cssClassMap: {
             flibble: 'flobble',
           },
@@ -524,10 +524,10 @@ describe('lib/filters', () => {
         expect(link.toString()).toBe('<a href="glitch-js.html#L70">glitch.<wbr />js:70</a>');
       });
 
-      it('maps CSS classes as needed', () => {
+      it('maps CSS classes as needed', async () => {
         let link;
 
-        init({
+        await init({
           cssClassMap: {
             flibble: 'flobble',
           },
@@ -555,7 +555,7 @@ describe('lib/filters', () => {
     describe('linkWithSignature', () => {
       xit('TODO: Write more tests');
 
-      it('maps CSS classes as needed', () => {
+      it('maps CSS classes as needed', async () => {
         let fakeDoclet = {
           kind: 'class',
           longname: 'Foo',
@@ -564,7 +564,7 @@ describe('lib/filters', () => {
         };
         let link;
 
-        init({
+        await init({
           cssClassMap: {
             flibble: 'flobble',
           },
@@ -584,31 +584,31 @@ describe('lib/filters', () => {
         expect(text.toString()).toBe('<p><strong>foo</strong></p>');
       });
 
-      it('does not use a Markdown parser when Markdown is disabled', () => {
+      it('does not use a Markdown parser when Markdown is disabled', async () => {
         let text;
 
         template.config.markdown = false;
-        instance = new Filters(template);
+        instance = await Filters.create(template);
         text = instance.markdown('**foo**');
 
         expect(text.toString()).toBe('<p>**foo**</p>');
       });
 
-      it('expands standalone <p> tags into proper markup when Markdown is disabled', () => {
+      it('expands standalone <p> tags into proper markup when Markdown is disabled', async () => {
         let text;
 
         template.config.markdown = false;
-        instance = new Filters(template);
+        instance = await Filters.create(template);
         text = instance.markdown('foo<p>bar<p>baz');
 
         expect(text.toString()).toBe('<p>foo</p><p>bar</p><p>baz</p>');
       });
 
-      it('does not wrap text in an extra <p> tag when Markdown is disabled', () => {
+      it('does not wrap text in an extra <p> tag when Markdown is disabled', async () => {
         let text;
 
         template.config.markdown = false;
-        instance = new Filters(template);
+        instance = await Filters.create(template);
         text = instance.markdown('<p>**foo**</p>');
 
         expect(text.toString()).toBe('<p>**foo**</p>');
@@ -722,10 +722,10 @@ describe('lib/filters', () => {
     describe('packageLink', () => {
       xit('TODO: Write more tests');
 
-      it('maps CSS classes as needed', () => {
+      it('maps CSS classes as needed', async () => {
         let link;
 
-        init({
+        await init({
           cssClassMap: {
             piffle: 'poffle',
           },

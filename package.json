@@ -2,7 +2,7 @@
   "name": "jsdoc-baseline",
   "version": "0.1.4",
   "description": "A basic template for JSDoc.",
-  "main": "publish.js",
+  "main": "index.js",
   "scripts": {
     "build": "node_modules/.bin/hereby build",
     "coverage": "node_modules/.bin/hereby coverage",
@@ -35,17 +35,29 @@
   "bugs": {
     "url": "https://github.com/hegemonic/jsdoc-baseline/issues"
   },
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./index.js"
+    },
+    "./lib/*": {
+      "import": "./lib/*"
+    },
+    "./lib/tasks/*": {
+      "import": "./lib/tasks/*"
+    }
+  },
   "homepage": "https://github.com/hegemonic/jsdoc-baseline",
   "dependencies": {
-    "@jsdoc/core": "^0.4.6",
-    "@jsdoc/tag": "^0.1.6",
-    "@jsdoc/task-runner": "^0.1.14",
-    "@jsdoc/util": "^0.2.8",
-    "@sindresorhus/slugify": "^1.1.2",
+    "@jsdoc/core": "^0.5.1",
+    "@jsdoc/tag": "^0.2.1",
+    "@jsdoc/task-runner": "^0.2.1",
+    "@jsdoc/util": "^0.3.0",
+    "@sindresorhus/slugify": "^2.2.0",
     "catharsis": "^0.9.0",
     "common-path-prefix": "^3.0.0",
     "deep-extend": "^0.6.0",
-    "escape-string-regexp": "^4.0.0",
+    "escape-string-regexp": "^5.0.0",
     "fast-glob": "^3.2.12",
     "fs-extra": "^11.1.0",
     "highlight.js": "^11.7.0",
@@ -56,17 +68,17 @@
     "markdown-it-anchor": "^8.6.7",
     "messageformat": "^2.3.0",
     "nunjucks": "^3.2.3",
-    "ow": "^0.28.2",
+    "ow": "^1.1.1",
     "spdx-license-list": "^6.6.0",
-    "strip-json-comments": "^3.1.1"
+    "strip-json-comments": "^5.0.0"
   },
   "optionalDependencies": {
     "prettier": "^2.8.4"
   },
   "devDependencies": {
     "@jsdoc/eslint-config": "^1.2.0",
-    "@jsdoc/prettier-config": "^0.2.0",
-    "@jsdoc/test-matchers": "^0.2.0",
+    "@jsdoc/prettier-config": "^0.2.1",
+    "@jsdoc/test-matchers": "^0.2.1",
     "@parcel/transformer-sass": "^2.8.3",
     "@shoelace-style/shoelace": "^2.2.0",
     "bootstrap": "^5.3.0-alpha1",

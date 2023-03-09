@@ -13,11 +13,16 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-describe('lib/config', () => {
-  const { EventBus } = require('@jsdoc/util');
-  const config = require('../../../lib/config');
-  const path = require('path');
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
+import { EventBus } from '@jsdoc/util';
+
+import * as config from '../../../lib/config.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+describe('lib/config', () => {
   let env;
   const bus = new EventBus('jsdoc');
 

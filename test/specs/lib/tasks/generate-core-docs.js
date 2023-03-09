@@ -13,13 +13,17 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const mock = require('mock-fs');
-const { db } = require('../../../../lib/db');
-const { defaultConfig } = require('../../../../lib/config');
-const fs = require('fs-extra');
-const GenerateCoreDocs = require('../../../../lib/tasks/generate-core-docs');
-const { KIND_TO_CATEGORY, OUTPUT_FILE_CATEGORIES } = require('../../../../lib/enums');
-const path = require('path');
+// eslint-disable-next-line simple-import-sort/imports
+import mock from 'mock-fs';
+
+import path from 'node:path';
+
+import fs from 'fs-extra';
+
+import { defaultConfig } from '../../../../lib/config.js';
+import { db } from '../../../../lib/db.js';
+import { KIND_TO_CATEGORY, OUTPUT_FILE_CATEGORIES } from '../../../../lib/enums.js';
+import GenerateCoreDocs from '../../../../lib/tasks/generate-core-docs.js';
 
 const OUTPUT_DIR = 'out';
 
@@ -59,7 +63,7 @@ describe('lib/tasks/generate-core-docs', () => {
     let doclets;
     let instance;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       doclets = allDoclets.slice();
       conf = {
         opts: {
@@ -86,7 +90,7 @@ describe('lib/tasks/generate-core-docs', () => {
           return obj;
         })(),
         pageTitlePrefix: '',
-        template: helpers.createTemplate(defaultConfig),
+        template: await helpers.createTemplate(defaultConfig),
         templateConfig: defaultConfig,
       };
       context.linkManager = context.template.linkManager;

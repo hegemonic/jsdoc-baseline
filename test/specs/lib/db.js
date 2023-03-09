@@ -13,9 +13,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const _ = require('lodash');
-const { db, mixins } = require('../../../lib/db');
-const { CATEGORY_TO_KIND } = require('../../../lib/enums');
+import _ from 'lodash';
+
+import { db, defaultMixins } from '../../../lib/db.js';
+import { CATEGORY_TO_KIND } from '../../../lib/enums.js';
 
 describe('lib/db', () => {
   let config;
@@ -370,17 +371,17 @@ describe('lib/db', () => {
     });
   });
 
-  describe('mixins', () => {
+  describe('defaultMixins', () => {
     it('has a `categorize` method', () => {
-      expect(mixins.categorize).toBeFunction();
+      expect(defaultMixins.categorize).toBeFunction();
     });
 
     it('has a `prune` method', () => {
-      expect(mixins.prune).toBeFunction();
+      expect(defaultMixins.prune).toBeFunction();
     });
 
     it('has a `sortOn` method', () => {
-      expect(mixins.sortOn).toBeFunction();
+      expect(defaultMixins.sortOn).toBeFunction();
     });
   });
 });

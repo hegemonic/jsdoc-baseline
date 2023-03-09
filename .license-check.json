@@ -17,7 +17,7 @@
   ],
   "license": ".license-header.txt",
   "licenseFormats": {
-    "css|js|mjs|scss|ts": {
+    "cjs|css|js|mjs|scss|ts": {
       "prepend": "/*",
       "eachLine": {
         "prepend": "  "

@@ -23,8 +23,8 @@ describe('main layout', () => {
       expect(text).toContain('<footer');
     });
 
-    it('omits the footer when necessary', () => {
-      const template = helpers.createTemplate({
+    it('omits the footer when necessary', async () => {
+      const template = await helpers.createTemplate({
         components: {
           footer: false,
         },

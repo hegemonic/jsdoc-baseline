@@ -13,8 +13,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+import ClassMap from '../../../lib/class-map.js';
+
 describe('lib/class-map', () => {
-  const ClassMap = require('../../../lib/class-map');
   let map;
 
   beforeEach(() => {

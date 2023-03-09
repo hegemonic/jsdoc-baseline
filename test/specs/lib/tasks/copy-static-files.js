@@ -13,12 +13,16 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const mock = require('mock-fs');
-const { loadConfigSync } = require('../../../../lib/config');
-const CopyStaticFiles = require('../../../../lib/tasks/copy-static-files');
-const FileInfo = require('../../../../lib/file-info');
-const fs = require('fs-extra');
-const path = require('path');
+// eslint-disable-next-line simple-import-sort/imports
+import mock from 'mock-fs';
+
+import path from 'node:path';
+
+import fs from 'fs-extra';
+
+import { loadConfigSync } from '../../../../lib/config.js';
+import FileInfo from '../../../../lib/file-info.js';
+import CopyStaticFiles from '../../../../lib/tasks/copy-static-files.js';
 
 const OUTPUT_DIR = 'out';
 const SOURCE_DIR = 'files';
@@ -28,12 +32,12 @@ describe('lib/tasks/copy-static-files', () => {
   let context;
   let instance;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     conf = loadConfigSync(helpers.deps);
     conf.staticFiles = [new FileInfo(SOURCE_DIR, 'foo.txt')];
     context = {
       destination: OUTPUT_DIR,
-      template: helpers.createTemplate(conf),
+      template: await helpers.createTemplate(conf),
       templateConfig: conf,
     };
     instance = new CopyStaticFiles({ name: 'copyStaticFiles' });

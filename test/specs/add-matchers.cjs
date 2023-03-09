@@ -1,5 +1,5 @@
 /*
-  Copyright 2014 the Baseline Authors.
+  Copyright 2023 the Baseline Authors.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -13,25 +13,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-import Ticket from '../ticket.js';
-import CopyFiles from './copy-files.js';
+const matchers = require('@jsdoc/test-matchers');
 
-export default class CopyStaticFiles extends CopyFiles {
-  run(ctx) {
-    try {
-      const staticFiles = ctx.templateConfig.staticFiles;
-
-      this.tickets = staticFiles.map(
-        (staticFile) =>
-          new Ticket({
-            source: staticFile.absolute,
-            url: staticFile.relative,
-          })
-      );
-
-      return super.run(ctx);
-    } catch (e) {
-      return Promise.reject(e);
-    }
-  }
-}
+beforeAll(() => {
+  jasmine.addMatchers(matchers);
+});

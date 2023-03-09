@@ -13,14 +13,18 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const mock = require('mock-fs');
-const _ = require('lodash');
-const { db } = require('../../../../lib/db');
-const { defaultConfig } = require('../../../../lib/config');
-const fs = require('fs-extra');
-const GenerateIndex = require('../../../../lib/tasks/generate-index');
-const { name } = require('@jsdoc/core');
-const path = require('path');
+// eslint-disable-next-line simple-import-sort/imports
+import mock from 'mock-fs';
+
+import path from 'node:path';
+
+import { name } from '@jsdoc/core';
+import fs from 'fs-extra';
+import _ from 'lodash';
+
+import { defaultConfig } from '../../../../lib/config.js';
+import { db } from '../../../../lib/db.js';
+import GenerateIndex from '../../../../lib/tasks/generate-index.js';
 
 const OUTPUT_DIR = 'out';
 
@@ -42,7 +46,7 @@ describe('lib/tasks/generate-index', () => {
   let indexFilename;
   let instance;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     conf = {
       opts: {
         access: ['undefined'],
@@ -63,7 +67,7 @@ describe('lib/tasks/generate-index', () => {
       globals: db({ values: [] }),
       pageTitlePrefix: '',
       readme: 'fixtures/readme.md',
-      template: helpers.createTemplate(defaultConfig),
+      template: await helpers.createTemplate(defaultConfig),
       templateConfig: defaultConfig,
     };
     context.linkManager = context.template.linkManager;

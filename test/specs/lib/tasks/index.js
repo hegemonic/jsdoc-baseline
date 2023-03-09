@@ -13,8 +13,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const _ = require('lodash');
-const t = require('../../../../lib/tasks/index');
+import _ from 'lodash';
+
+import t from '../../../../lib/tasks/index.js';
 
 const expectedTasks = [
   'CopyStaticFiles',
@@ -35,8 +36,8 @@ describe('lib/tasks/index', () => {
   for (const key of expectedTasks) {
     const fileName = _.kebabCase(key);
 
-    it(`is lib/tasks/${fileName}`, () => {
-      const klass = require(`../../../../lib/tasks/${fileName}`);
+    it(`is lib/tasks/${fileName}`, async () => {
+      const { default: klass } = await import(`../../../../lib/tasks/${fileName}.js`);
 
       expect(t[key]).toBe(klass);
     });

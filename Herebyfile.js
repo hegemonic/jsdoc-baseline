@@ -13,26 +13,26 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-import ConsoleReporter from 'jasmine-console-reporter';
-import Jasmine from 'jasmine';
 import { execa } from 'execa';
-import { promises as fs } from 'fs';
 import glob from 'fast-glob';
-import path from 'path';
+import { promises as fs } from 'fs';
 import { task } from 'hereby';
+import Jasmine from 'jasmine';
+import ConsoleReporter from 'jasmine-console-reporter';
+import path from 'path';
 
 const BIN_DIR = 'node_modules/.bin';
 const sourceGlob = {
   code: ['publish.js', 'lib/**/*.js', 'scripts/**/*.js'],
   css: ['styles/hljs-tomorrow.css'],
-  helpers: ['test/helpers/**/*.js', 'node_modules/@jsdoc/test-matchers/index.js'],
+  helpers: ['test/helpers/**/*.js'],
   js: {
     copy: [],
     minify: ['scripts/*.js'],
   },
   lint: ['*.js', 'lib/**/*.js', 'scripts/**/*.js', 'test/**/*.js'],
   sass: ['styles/baseline.scss'],
-  tests: ['test/specs/**/*.js'],
+  tests: ['test/specs/add-matchers.cjs', 'test/specs/**/*.js'],
   views: ['views/**/*.hbs'],
 };
 const target = {

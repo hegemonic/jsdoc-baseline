@@ -13,12 +13,16 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const mock = require('mock-fs');
-const { loadConfigSync } = require('../../../../lib/config');
-const fs = require('fs-extra');
-const CopyFiles = require('../../../../lib/tasks/copy-files');
-const path = require('path');
-const Ticket = require('../../../../lib/ticket');
+// eslint-disable-next-line simple-import-sort/imports
+import mock from 'mock-fs';
+
+import path from 'node:path';
+
+import fs from 'fs-extra';
+
+import { loadConfigSync } from '../../../../lib/config.js';
+import CopyFiles from '../../../../lib/tasks/copy-files.js';
+import Ticket from '../../../../lib/ticket.js';
 
 const SOURCE_DIR = 'sourcefiles';
 const OUTPUT_DIR = 'out';

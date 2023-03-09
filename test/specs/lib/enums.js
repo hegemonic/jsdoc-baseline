@@ -13,9 +13,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-describe('lib/enums', () => {
-  const ENUMS = require('../../../lib/enums');
+import * as ENUMS from '../../../lib/enums.js';
 
+describe('lib/enums', () => {
   it('should export a "CATEGORIES" object', () => {
     expect(ENUMS.CATEGORIES).toBeObject();
   });

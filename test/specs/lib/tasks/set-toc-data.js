@@ -13,11 +13,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const _ = require('lodash');
-const { defaultConfig } = require('../../../../lib/config');
-const { db } = require('../../../../lib/db');
-const { name } = require('@jsdoc/core');
-const SetTocData = require('../../../../lib/tasks/set-toc-data');
+import { name } from '@jsdoc/core';
+import _ from 'lodash';
+
+import { defaultConfig } from '../../../../lib/config.js';
+import { db } from '../../../../lib/db.js';
+import SetTocData from '../../../../lib/tasks/set-toc-data.js';
 
 const OUTPUT_DIR = 'out';
 const TYPE_ERROR = 'TypeError';
@@ -100,8 +101,8 @@ describe('lib/tasks/set-toc-data', () => {
       {}
     );
 
-    beforeEach(() => {
-      const template = helpers.createTemplate(defaultConfig);
+    beforeEach(async () => {
+      const template = await helpers.createTemplate(defaultConfig);
 
       context = {
         config: {

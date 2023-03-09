@@ -13,10 +13,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const { loadConfigSync } = require('../../../../lib/config');
-const { db } = require('../../../../lib/db');
-const SetContext = require('../../../../lib/tasks/set-context');
-const Template = require('../../../../lib/template');
+import { loadConfigSync } from '../../../../lib/config.js';
+import { db } from '../../../../lib/db.js';
+import SetContext from '../../../../lib/tasks/set-context.js';
+import Template from '../../../../lib/template.js';
 
 const TYPE_ERROR = 'TypeError';
 

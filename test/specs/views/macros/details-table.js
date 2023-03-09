@@ -13,9 +13,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const _ = require('lodash');
-const { defaultConfig } = require('../../../../lib/config');
-const path = require('path');
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+import _ from 'lodash';
+
+import { defaultConfig } from '../../../../lib/config.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 describe('details-table macro', () => {
   // TODO: more tests
@@ -27,8 +32,8 @@ describe('details-table macro', () => {
   );
   let template;
 
-  beforeEach(() => {
-    template = helpers.createTemplate(config);
+  beforeEach(async () => {
+    template = await helpers.createTemplate(config);
   });
 
   it('does not insert an empty paragraph when a doclet has no modifiers', () => {

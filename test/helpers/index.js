@@ -14,15 +14,21 @@
   limitations under the License.
 */
 // Helper functions for testing the Baseline template.
-const mock = require('mock-fs');
-const _ = require('lodash');
-const deepExtend = require('deep-extend');
-const { defaultConfig } = require('../../lib/config');
-const { Dependencies } = require('@jsdoc/core');
-const fs = require('fs');
-const glob = require('fast-glob');
-const path = require('path');
-const Template = require('../../lib/template');
+import mock from 'mock-fs'; // eslint-disable-line
+
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+import { Dependencies } from '@jsdoc/core';
+import deepExtend from 'deep-extend';
+import glob from 'fast-glob';
+import _ from 'lodash';
+
+import { defaultConfig } from '../../lib/config.js';
+import Template from '../../lib/template.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Resets environment variables used by JSDoc to the default values for tests.
 function resetJsdocEnv() {
@@ -117,7 +123,11 @@ global.helpers = {
 
     config = deepExtend({}, defaultConfig, config);
 
-    return mock.bypass(() => new Template(config, global.helpers.deps));
+    return mock.bypass(async () => {
+      const template = await Template.create(config, global.helpers.deps);
+
+      return template;
+    });
   },
 
   deps: new Dependencies(),
@@ -129,4 +139,8 @@ global.helpers = {
   setup: resetJsdocEnv,
 };
 
-global.helpers.template = (() => global.helpers.createTemplate())();
+global.helpers.template = await (async () => {
+  const template = await global.helpers.createTemplate();
+
+  return template;
+})();

@@ -13,14 +13,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const _ = require('lodash');
-const { loadConfigSync } = require('./lib/config');
-const { db } = require('./lib/db');
-const DocletHelper = require('./lib/doclethelper');
-const { TaskRunner } = require('@jsdoc/task-runner');
-const tasks = require('./lib/default-tasks');
+import { TaskRunner } from '@jsdoc/task-runner';
+import _ from 'lodash';
 
-exports.publish = async (taffyData, dependencies) => {
+import { loadConfigSync } from './lib/config.js';
+import { db } from './lib/db.js';
+import tasks from './lib/default-tasks.js';
+import DocletHelper from './lib/doclethelper.js';
+
+export async function publish(taffyData, dependencies) {
   const options = dependencies.get('options');
   const templateConfig = loadConfigSync(dependencies);
   const allConfig = _.defaults(
@@ -57,4 +58,4 @@ exports.publish = async (taffyData, dependencies) => {
   }
 
   return Promise.resolve();
-};
+}

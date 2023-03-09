@@ -13,6 +13,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+import catharsis from 'catharsis';
+
 describe('signature partial', () => {
   // TODO: more tests
 
@@ -52,8 +54,6 @@ describe('signature partial', () => {
   });
 
   it('shows complete type information for properties', () => {
-    const catharsis = require('catharsis');
-
     const fakeDoclet = {
       kind: 'member',
       name: 'foo',

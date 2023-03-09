@@ -13,9 +13,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-describe('lib/markdown', () => {
-  const markdown = require('../../../lib/markdown');
+import * as markdown from '../../../lib/markdown.js';
 
+describe('lib/markdown', () => {
   it('is an object', () => {
     expect(markdown).toBeObject();
   });
@@ -35,25 +35,25 @@ describe('lib/markdown', () => {
       helpers.setup();
     });
 
-    it('returns a function when the config is empty', () => {
+    it('returns a function when the config is empty', async () => {
       let parser;
 
       setMarkdownConf({});
-      parser = markdown.getRenderer(helpers.deps);
+      parser = await markdown.getRenderer(helpers.deps);
 
       expect(parser).toBeFunction();
     });
 
-    it('does not change text within inline tags', () => {
-      const parser = markdown.getRenderer(helpers.deps);
+    it('does not change text within inline tags', async () => {
+      const parser = await markdown.getRenderer(helpers.deps);
 
       expect(parser('{@link MyClass#_x} and {@link MyClass#_y}')).toBe(
         '<p>{@link MyClass#_x} and {@link MyClass#_y}</p>'
       );
     });
 
-    it('does not convert HTTP/HTTPS URLs to links', () => {
-      const parser = markdown.getRenderer(helpers.deps);
+    it('does not convert HTTP/HTTPS URLs to links', async () => {
+      const parser = await markdown.getRenderer(helpers.deps);
 
       expect(parser('Visit {@link http://usejsdoc.com}.')).toBe(
         '<p>Visit {@link http://usejsdoc.com}.</p>'
@@ -63,20 +63,20 @@ describe('lib/markdown', () => {
       );
     });
 
-    it('hardwraps new lines when requested', () => {
+    it('hardwraps new lines when requested', async () => {
       let parser;
 
       setMarkdownConf({ hardwrap: true });
-      parser = markdown.getRenderer(helpers.deps);
+      parser = await markdown.getRenderer(helpers.deps);
 
       expect(parser('line one\nline two')).toBe('<p>line one<br>\nline two</p>');
     });
 
-    it('adds heading IDs when requested', () => {
+    it('adds heading IDs when requested', async () => {
       let parser;
 
       setMarkdownConf({ idInHeadings: true });
-      parser = markdown.getRenderer(helpers.deps);
+      parser = await markdown.getRenderer(helpers.deps);
 
       expect(parser('# Hello')).toBe('<h1 id="hello">Hello</h1>');
     });

@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const Ticket = require('../../../lib/ticket');
+import Ticket from '../../../lib/ticket.js';
 
 const ARGUMENT_ERROR = 'ArgumentError';
 

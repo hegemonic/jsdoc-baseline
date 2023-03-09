@@ -13,12 +13,19 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const mock = require('mock-fs');
-const _ = require('lodash');
-const { defaultConfig } = require('../../../../lib/config');
-const fs = require('fs-extra');
-const GenerateSourceFiles = require('../../../../lib/tasks/generate-source-files');
-const path = require('path');
+// eslint-disable-next-line simple-import-sort/imports
+import mock from 'mock-fs';
+
+// Prettier lazy-loads its parsers, so preload the HTML parser while we're not mocked.
+import 'prettier/esm/parser-html.mjs';
+
+import path from 'node:path';
+
+import fs from 'fs-extra';
+import _ from 'lodash';
+
+import { defaultConfig } from '../../../../lib/config.js';
+import GenerateSourceFiles from '../../../../lib/tasks/generate-source-files.js';
 
 const mockObj = _.defaults({}, helpers.baseViews, {
   'foo.js': 'exports.foo = 1;',
@@ -39,10 +46,7 @@ describe('lib/tasks/generate-source-files', () => {
   describe('run', () => {
     let context;
 
-    // Prettier lazy-loads its parsers, so preload the HTML parser while we're not mocked.
-    require('prettier/parser-html');
-
-    beforeEach(() => {
+    beforeEach(async () => {
       context = {
         destination: OUTPUT_DIR,
         pageTitlePrefix: '',
@@ -50,7 +54,7 @@ describe('lib/tasks/generate-source-files', () => {
           'foo.js': 'foo.js',
           'bar.js': 'bar.js',
         },
-        template: helpers.createTemplate(defaultConfig),
+        template: await helpers.createTemplate(defaultConfig),
         templateConfig: defaultConfig,
       };
       context.linkManager = context.template.linkManager;

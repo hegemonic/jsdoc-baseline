@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const list = require('../../../lib/list-methods');
+import * as list from '../../../lib/list-methods.js';
 
 describe('lib/list-methods', () => {
   it('has a listMethods method', () => {

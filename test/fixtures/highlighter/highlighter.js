@@ -1,1 +1,3 @@
-exports.highlight = (code) => `${code} is highlighted!`;
+export function highlight(code) {
+  return `${code} is highlighted!`;
+}

@@ -13,13 +13,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+import { defaultConfig } from '../../../lib/config.js';
+import Template from '../../../lib/template.js';
+
 describe('lib/template', () => {
-  const { defaultConfig } = require('../../../lib/config');
   let instance; // eslint-disable-line no-unused-vars
-  const Template = require('../../../lib/template');
 
   beforeEach(() => {
-    instance = new Template(defaultConfig, helpers.deps);
+    instance = Template.create(defaultConfig, helpers.deps);
   });
 
   it('should be a constructor', () => {

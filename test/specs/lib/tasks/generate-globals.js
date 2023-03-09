@@ -13,12 +13,16 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-const mock = require('mock-fs');
-const { db } = require('../../../../lib/db');
-const { defaultConfig } = require('../../../../lib/config');
-const fs = require('fs-extra');
-const GenerateGlobals = require('../../../../lib/tasks/generate-globals');
-const path = require('path');
+// eslint-disable-next-line simple-import-sort/imports
+import mock from 'mock-fs';
+
+import path from 'node:path';
+
+import fs from 'fs-extra';
+
+import { defaultConfig } from '../../../../lib/config.js';
+import { db } from '../../../../lib/db.js';
+import GenerateGlobals from '../../../../lib/tasks/generate-globals.js';
 
 const OUTPUT_DIR = 'out';
 
@@ -68,7 +72,7 @@ describe('lib/tasks/generate-globals', () => {
   ];
   let instance;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     conf = {
       opts: {
         access: ['undefined'],
@@ -82,7 +86,7 @@ describe('lib/tasks/generate-globals', () => {
         values: globals,
       }),
       pageTitlePrefix: '',
-      template: helpers.createTemplate(defaultConfig),
+      template: await helpers.createTemplate(defaultConfig),
       templateConfig: defaultConfig,
     };
     context.linkManager = context.template.linkManager;

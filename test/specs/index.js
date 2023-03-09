@@ -13,12 +13,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-describe('publish', () => {
-  const publish = require('../../publish');
+import * as index from '../../index.js';
 
+describe('index', () => {
   it('exports a "publish" function', () => {
-    expect(publish.publish).toBeDefined();
-    expect(typeof publish.publish).toBe('function');
+    expect(index.publish).toBeDefined();
+    expect(index.publish).toBeFunction();
   });
 
   describe('publish', () => {
