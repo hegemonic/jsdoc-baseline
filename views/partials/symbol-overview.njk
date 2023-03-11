@@ -53,9 +53,12 @@
     {% elif doc.kind == 'external' %}
       <section>
         {% set item = doc %}
-        <dl class="dl-compact">
-          {% include 'details.njk' %}
-        </dl>
+        {% set details %}{% include 'details.njk' %}{% endset %}
+        {% if details | trim %}
+          <dl class="dl-compact">
+            {{ details | safe }}
+          </dl>
+        {% endif %}
       </section>
     {# Namespaces that are functions get extra information. #}
     {% elif doc.kind == 'namespace' and doc | needsSignature %}

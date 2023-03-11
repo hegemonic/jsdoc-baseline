@@ -43,17 +43,20 @@
   {% endblock %}
 
   {% block description %}
+    {% set description %}{% include 'description.njk' | trim %}{% endset %}
     {# We don't show a description for classes, or for namespaces that are also functions. #}
     {% if item.kind != 'class' %}
       {% if item.kind == 'namespace' %}
         {% if not needsSignature(item) %}
-          <div class="symbol-description">
-            {% include 'description.njk' %}
-          </div>
+          {% if description %}
+            <div class="symbol-description">
+              {{ description | safe }}
+            </div>
+          {% endif %}
         {% endif %}
-      {% else %}
+      {% elif description %}
         <div class="symbol-description">
-          {% include 'description.njk' %}
+          {{ description | safe }}
         </div>
       {% endif %}
     {% endif %}
@@ -67,12 +70,16 @@
   {% endblock %}
 
   {% block details %}
-    {# TODO: Only insert the <dl> if there are items to show. #}
-    <dl class="dl-compact">
+    {% set details %}
       {% include 'implements.njk' %}
       {% include 'implementations.njk' %}
       {{ list.dictList(item.mixes, 'headings.mixes') }}
-    </dl>
+    {% endset %}
+    {% if details | trim %}
+      <dl class="dl-compact">
+        {{ details | safe }}
+      </dl>
+    {% endif %}
   {% endblock %}
 
   {% block class_details %}

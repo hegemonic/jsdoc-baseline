@@ -16,12 +16,89 @@
 describe('symbol header partial', () => {
   // TODO: more tests
 
+  describe('description', () => {
+    // TODO: more tests
+
+    xit('does not show a description for classes', () => {
+      // TODO: write me
+    });
+
+    xit('does not show a description for namespaces that are also functions', () => {
+      // TODO: write me
+    });
+
+    it('shows a description for namespaces that are not functions', () => {
+      const fakeDoclet = {
+        name: 'foo',
+        longname: 'foo',
+        description: 'The foo namespace.',
+        kind: 'namespace',
+        scope: 'global',
+      };
+      const text = helpers.render('symbol-header.njk', { item: fakeDoclet });
+
+      expect(text).toContainHtml(`
+        <div class="symbol-description">
+          <p>The foo namespace.</p>
+        </div>
+      `);
+    });
+
+    it('shows a description for symbols that are not classes or namespaces', () => {
+      const fakeDoclet = {
+        name: 'foo',
+        longname: 'foo',
+        description: 'The foo module.',
+        kind: 'module',
+      };
+      const text = helpers.render('symbol-header.njk', { item: fakeDoclet });
+
+      expect(text).toContainHtml(`
+        <div class="symbol-description">
+          <p>The foo module.</p>
+        </div>
+      `);
+    });
+  });
+
+  describe('details', () => {
+    // TODO: more tests
+
+    it('shows the symbol details', () => {
+      const fakeDoclet = {
+        name: 'Foo',
+        longname: 'Foo',
+        implements: ['IBar'],
+        kind: 'class',
+        scope: 'global',
+      };
+      const text = helpers.render('symbol-header.njk', { item: fakeDoclet });
+
+      expect(text).toContainHtml(`
+        <dt>Implements</dt>
+        <dd>IBar</dd>
+      `);
+    });
+
+    it('does not add a <dl> if there are no details to show', () => {
+      const fakeDoclet = {
+        name: 'Foo',
+        longname: 'Foo',
+        kind: 'class',
+        scope: 'global',
+      };
+      const text = helpers.render('symbol-header.njk', { item: fakeDoclet });
+
+      expect(text).not.toContain('<dl');
+    });
+  });
+
   describe('class details', () => {
-    xit('should not show details for a normal class', () => {
+    xit('does not show details for a normal class', () => {
       // TODO
     });
 
-    it('should show details for hidden constructors', () => {
+    it('shows details for hidden constructors', () => {
       const fakeDoclet = {
         copyright: 'Foo',
         hideconstructor: true,

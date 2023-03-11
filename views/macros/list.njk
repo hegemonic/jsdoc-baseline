@@ -35,8 +35,8 @@
       <dd>
         {%- filter markdown -%}
           {%- if item.type and item.type.parsedType -%}
-            <code>{{ item.type.parsedType | describeType }}</code>&nbsp;
-          {%- endif -%}
+            <code>{{ item.type.parsedType | describeType }}</code>
+          {% endif -%}
           {{- item.description | resolveLinks -}}
         {%- endfilter -%}
       </dd>

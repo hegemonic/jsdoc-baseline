@@ -41,7 +41,10 @@
   {% include 'examples.njk' %}
   {% include 'params.njk' %}
   {% include 'properties.njk' %}
-  <dl class="dl-compact">
-    {% include 'details.njk' %}
-  </dl>
+  {% set details %}{% include 'details.njk' %}{% endset %}
+  {% if details | trim %}
+    <dl class="dl-compact">
+      {{ details | safe }}
+    </dl>
+  {% endif %}
 {% endif %}

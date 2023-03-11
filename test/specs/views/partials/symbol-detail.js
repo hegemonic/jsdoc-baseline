@@ -13,39 +13,41 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+import catharsis from 'catharsis';
+
 describe('symbol detail partial', () => {
   describe('labels', () => {
-    xit('should show labels when the doclet has the appropriate properties', () => {
+    xit('shows labels when the doclet has the appropriate properties', () => {
       // TODO
     });
 
-    xit('should not show labels for classes', () => {
+    xit('does not show labels for classes', () => {
       // TODO
     });
 
-    xit('should not show labels for modules', () => {
+    xit('does not show labels for modules', () => {
       // TODO
     });
 
-    xit('should not show labels for namespaces', () => {
+    xit('does not show labels for namespaces', () => {
       // TODO
     });
   });
 
   describe('heading', () => {
-    xit('should show the constructor prefix, name, and signature for constructors', () => {
+    xit('shows the constructor prefix, name, and signature for constructors', () => {
       // TODO
     });
 
-    xit('should show the name and signature for functions', () => {
+    xit('shows the name and signature for functions', () => {
       // TODO
     });
 
-    xit('should show the name for members', () => {
+    xit('shows the name for members', () => {
       // TODO
     });
 
-    it('should not show a heading for hidden constructors', () => {
+    it('does not show a heading for hidden constructors', () => {
       const fakeDoclet = {
         hideconstructor: true,
       };
@@ -54,7 +56,7 @@ describe('symbol detail partial', () => {
       expect(text).not.toContain('<h');
     });
 
-    it('should dequote quoted names for externals', () => {
+    it('dequotes quoted names for externals', () => {
       const fakeDoclet = {
         kind: 'external',
         longname: '"my.external"',
@@ -68,15 +70,15 @@ describe('symbol detail partial', () => {
   });
 
   describe('source file link', () => {
-    xit('should show a link when `sourceFiles.singleLink` is false', () => {
+    xit('shows a link when `sourceFiles.singleLink` is false', () => {
       // TODO
     });
 
-    xit('should not show a link when `sourceFiles.singleLink` is true', () => {
+    xit('does not show a link when `sourceFiles.singleLink` is true', () => {
       // TODO
     });
 
-    it('should not show a link for hidden constructors', () => {
+    it('does not show a link for hidden constructors', () => {
       const fakeDoclet = {
         hideconstructor: true,
         meta: {
@@ -91,11 +93,11 @@ describe('symbol detail partial', () => {
   });
 
   describe('description', () => {
-    xit('should show the description', () => {
+    xit('shows the description', () => {
       // TODO
     });
 
-    it('should not show the description for hidden constructors', () => {
+    it('does not show the description for hidden constructors', () => {
       const fakeDoclet = {
         description: 'Hidden',
         hideconstructor: true,
@@ -107,11 +109,11 @@ describe('symbol detail partial', () => {
   });
 
   describe('examples', () => {
-    xit('should show the examples', () => {
+    xit('shows the examples', () => {
       // TODO
     });
 
-    it('should not show the examples for hidden constructors', () => {
+    it('does not show the examples for hidden constructors', () => {
       const fakeDoclet = {
         examples: ['example'],
         hideconstructor: true,
@@ -123,11 +125,11 @@ describe('symbol detail partial', () => {
   });
 
   describe('params', () => {
-    xit('should show the params', () => {
+    xit('shows the params', () => {
       // TODO
     });
 
-    it('should not show the params for hidden constructors', () => {
+    it('does not show the params for hidden constructors', () => {
       const fakeDoclet = {
         hideconstructor: true,
         params: [
@@ -147,11 +149,11 @@ describe('symbol detail partial', () => {
   });
 
   describe('properties', () => {
-    xit('should show the properties', () => {
+    xit('shows the properties', () => {
       // TODO
     });
 
-    it('should not show the properties for hidden constructors', () => {
+    it('does not show the properties for hidden constructors', () => {
       const fakeDoclet = {
         hideconstructor: true,
         properties: [
@@ -171,11 +173,44 @@ describe('symbol detail partial', () => {
   });
 
   describe('details', () => {
-    xit('should show the symbol details', () => {
-      // TODO
+    it('shows the symbol details', () => {
+      const fakeDoclet = {
+        name: 'foo',
+        longname: 'foo',
+        kind: 'function',
+        scope: 'global',
+        returns: [
+          {
+            type: {
+              names: ['string'],
+              parsedType: catharsis.parse('string'),
+            },
+            description: 'Return value.',
+          },
+        ],
+      };
+      const text = helpers.render('symbol-detail', { item: fakeDoclet });
+
+      expect(text).toContainHtml(`
+      <dt>Returns</dt>
+      <dd>
+        <p><code>string</code> Return value.</p>
+      </dd>`);
     });
 
-    it('should not show the symbol details for hidden constructors', () => {
+    it('does not add a <dl> if there are no details to show', () => {
+      const fakeDoclet = {
+        name: 'foo',
+        longname: 'foo',
+        kind: 'function',
+        scope: 'global',
+      };
+      const text = helpers.render('symbol-detail', { item: fakeDoclet });
+
+      expect(text).not.toContain('<dl');
+    });
+
+    it('does not show the symbol details for hidden constructors', () => {
       const fakeDoclet = {
         copyright: 'Foo',
         hideconstructor: true,
