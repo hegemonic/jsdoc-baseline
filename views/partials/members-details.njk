@@ -13,11 +13,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
-{% if items %}
+{%- if items %}
   <h>{{ headingKey | translate(items) }}</h>
   <section>
-    {% for item in items %}
-      {% include 'symbol-detail.njk' %}
-    {% endfor %}
+    {%- for item in items %}
+      {%- include 'symbol-detail.njk' -%}
+    {% endfor -%}
   </section>
-{% endif %}
+{% endif -%}

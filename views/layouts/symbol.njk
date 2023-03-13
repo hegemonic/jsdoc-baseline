@@ -13,9 +13,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
-{% extends 'layout.njk' %}
+{%- extends 'layout.njk' -%}
 
-{% block body_main_content %}
-  {% block symbol_overview %}{% include 'symbol-overview.njk' %}{% endblock %}
-  {% block symbol_content %}{% include 'symbol-content.njk' %}{% endblock %}
-{% endblock %}
+{%- block body_main_content %}
+  {%- block symbol_overview %}{%- include 'symbol-overview.njk' -%}{% endblock -%}
+  {%- block symbol_content %}{%- include 'symbol-content.njk' -%}{% endblock -%}
+{% endblock -%}

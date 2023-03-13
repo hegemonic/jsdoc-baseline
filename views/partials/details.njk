@@ -13,88 +13,88 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
-{% import 'list.njk' as list %}
+{%- import 'list.njk' as list -%}
 
-{% block augments %}
+{%- block augments %}
   {{ list.dictList(item.augments, 'headings.augments') }}
-{% endblock %}
+{% endblock -%}
 
-{% block version %}
-  {% include 'version.njk' %}
-{% endblock %}
+{%- block version %}
+  {%- include 'version.njk' -%}
+{% endblock -%}
 
-{% block since %}
-  {% include 'since.njk' %}
-{% endblock %}
+{%- block since %}
+  {%- include 'since.njk' -%}
+{% endblock -%}
 
-{% block inherits %}
-  {% include 'inherits.njk' %}
-{% endblock %}
+{%- block inherits %}
+  {%- include 'inherits.njk' -%}
+{% endblock -%}
 
-{% block implements %}
+{%- block implements %}
   {{ list.dictList(item.implements, 'headings.implements') }}
-{% endblock %}
+{% endblock-%}
 
-{% block implementations %}
+{%- block implementations %}
   {{ list.dictList(item.implementations, 'headings.implementations') }}
-{% endblock %}
+{% endblock -%}
 
-{% block mixes %}
+{%- block mixes %}
   {{ list.dictList(item.mixes, 'headings.mixes') }}
-{% endblock %}
+{% endblock -%}
 
-{% block deprecated %}
-  {% include 'deprecated.njk' %}
-{% endblock %}
+{%- block deprecated %}
+  {%- include 'deprecated.njk' -%}
+{% endblock -%}
 
-{% block author %}
-  {% include 'author.njk' %}
-{% endblock %}
+{%- block author %}
+  {%- include 'author.njk' -%}
+{% endblock -%}
 
-{% block copyright %}
-  {% include 'copyright.njk' %}
-{% endblock %}
+{%- block copyright %}
+  {%- include 'copyright.njk' -%}
+{% endblock -%}
 
-{% block license %}
-  {% include 'license.njk' %}
-{% endblock %}
+{%- block license %}
+  {%- include 'license.njk' -%}
+{% endblock -%}
 
-{% block defaultvalue %}
-  {% include 'defaultvalue.njk' %}
-{% endblock %}
+{%- block defaultvalue %}
+  {%- include 'defaultvalue.njk' -%}
+{% endblock -%}
 
-{% block see %}
-  {% include 'see.njk' %}
-{% endblock %}
+{%- block see %}
+  {%- include 'see.njk' -%}
+{% endblock -%}
 
-{% block todo %}
+{%- block todo %}
   {{ list.dictList(item.todo, 'headings.todo') }}
-{% endblock %}
+{% endblock -%}
 
-{% block requires %}
+{%- block requires %}
   {{ list.dictList(item.requires, 'headings.requires') }}
-{% endblock %}
+{% endblock -%}
 
-{% block fires %}
+{%- block fires %}
   {{ list.dictList(item.fires, 'headings.fires') }}
-{% endblock %}
+{% endblock -%}
 
-{% block listens %}
+{%- block listens %}
   {{ list.dictList(item.listens, 'headings.listens') }}
-{% endblock %}
+{% endblock -%}
 
-{% block listeners %}
+{%- block listeners %}
   {{ list.dictList(item.listeners, 'headings.listeners') }}
-{% endblock %}
+{% endblock -%}
 
-{% block throws %}
+{%- block throws %}
   {{ list.dictListTypes(item.throws, 'headings.throws') }}
-{% endblock %}
+{% endblock -%}
 
-{% block returns %}
+{%- block returns %}
   {{ list.dictListTypes(item.returns, 'headings.returns') }}
-{% endblock %}
+{% endblock -%}
 
-{% block yields %}
+{%- block yields %}
   {{ list.dictListTypes(item.yields, 'headings.yields') }}
-{% endblock %}
+{% endblock -%}

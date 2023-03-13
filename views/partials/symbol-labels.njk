@@ -14,11 +14,11 @@
   limitations under the License.
 -#}
 {%- set allLabels = labels(item) -%}
-{%- if allLabels and allLabels.length -%}
+{%- if allLabels and allLabels.length %}
   <div class="symbol-detail-labels">
-    {%- for label in allLabels -%}
+    {% for label in allLabels -%}
       <span class="label {{ label.class }}">{{ label.text }}</span>
       {%- if not loop.last %}&nbsp;{%- endif -%}
-    {%- endfor -%}
+    {%- endfor %}
   </div>
-{%- endif -%}
+{% endif -%}

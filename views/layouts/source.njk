@@ -13,17 +13,17 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
-{% extends 'layout.njk' %}
+{%- extends 'layout.njk' -%}
 
-{% block body_main_content %}
+{%- block body_main_content -%}
   <article>
-    {% block source_heading %}
+    {%- block source_heading %}
       <header class="page-header">
         <h class="page-title">{{ translatePageTitle('', pageTitle, 'sources') }}</h>
       </header>
-    {% endblock %}
-    {% block source_content %}
-      {% include 'highlight-code.njk' %}
-    {% endblock %}
+    {% endblock -%}
+    {%- block source_content %}
+      {%- include 'highlight-code.njk' -%}
+    {% endblock -%}
   </article>
-{% endblock %}
+{%- endblock -%}

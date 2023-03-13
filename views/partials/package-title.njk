@@ -13,10 +13,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
-{% if package and not readme %}
+{%- if package and not readme %}
   <header class="page-header">
     <h class="page-title">
       {{- package.name }}{% if package.version %} {{ package.version }}{% endif -%}
     </h>
   </header>
-{% endif %}
+{% endif -%}

@@ -15,70 +15,74 @@
 -#}
 <!doctype html>
 <html lang="{{ config('lang') }}">
-  {% block head %}
+  {%- block head -%}
     <head>
-      {% block meta %}
+      {%- block meta %}
         <meta name="generator" content="JSDoc {{ jsdocVersion() }}">
         <meta charset="{{ config('encoding') }}">
-        {# TODO: anything else to include by default? Maybe viewport scale? #}
-      {% endblock %}
-      {% block title %}
+        {#- TODO: anything else to include by default? Maybe viewport scale? -#}
+      {%- endblock -%}
+
+      {%- block title %}
         <title>{{ translatePageTitle(pageTitlePrefix, pageTitle, pageCategory) }}</title>
-      {% endblock %}
-      {% block css %}
-        {# Docs: https://developers.google.com/fonts/docs/css2#api_url_specification #}
+      {% endblock -%}
+      {%- block css %}
+        {#- Docs: https://developers.google.com/fonts/docs/css2#api_url_specification -#}
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&family=Karla:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap">
-        {# TODO: use relative path to CSS files #}
+        {#- TODO: use relative path to CSS files -#}
         <link rel="stylesheet" href="css/baseline.css">
         <link rel="stylesheet" href="css/hljs-tomorrow.css">
-      {% endblock %}
+      {% endblock -%}
     </head>
-  {% endblock %}
-  {% block body %}
+  {% endblock -%}
+  {%- block body %}
     <body>
-      {% block body_navbar %}
-        {% include 'navbar.njk' %}
-      {% endblock %}
-        {% block body_content_container %}
-          <div id="jsdoc-content-container">
-            {% block body_content %}
-              <div id="jsdoc-content">
-                {% block body_main %}
-                  <div id="jsdoc-main" role="main">
-                    {% block body_main_content %}
-                      {# Override this block to add content. #}
-                    {% endblock %}
-                  </div>
-                {% endblock %}
-                {% block body_toc_navbar %}
-                  <nav id="jsdoc-toc-nav">
-                    {% include 'toc.njk' %}
-                  </nav>
-                {% endblock %}
-              </div>
-            {% endblock %}
-          </div>
-        {% endblock %}
-      {% block body_footer %}
-        {% if config('components.footer') %}
+      {%- block body_navbar %}
+        {%- include 'navbar.njk' -%}
+      {% endblock -%}
+
+      {%- block body_content_container %}
+        <div id="jsdoc-content-container">
+          {%- block body_content %}
+            <div id="jsdoc-content">
+              {%- block body_main %}
+                <div id="jsdoc-main" role="main">
+                  {%- block body_main_content %}
+                    {#- Override this block to add content. -#}
+                  {% endblock -%}
+                </div>
+              {% endblock -%}
+              {%- block body_toc_navbar %}
+                <nav id="jsdoc-toc-nav">
+                  {%- include 'toc.njk' -%}
+                </nav>
+              {% endblock -%}
+            </div>
+          {% endblock -%}
+        </div>
+      {% endblock -%}
+
+      {%- block body_footer %}
+        {%- if config('components.footer') %}
           <footer id="jsdoc-footer" class="jsdoc-footer">
-            {% block body_footer_container %}
+            {%- block body_footer_container %}
               <div id="jsdoc-footer-container">
-                {% block body_footer_content %}
+                {%- block body_footer_content %}
                   <p>
                     {{ generatedBy() }}
                   </p>
-                {% endblock %}
+                {% endblock -%}
               </div>
-            {% endblock %}
+            {% endblock -%}
           </footer>
-        {% endif %}
-      {% endblock %}
-      {% block body_scripts %}
-        {# TODO: fix up path relative to current output directory #}
+        {% endif -%}
+      {% endblock -%}
+
+      {%- block body_scripts %}
+        {#- TODO: fix up path relative to current output directory -#}
         <script src="scripts/scrollanchor.js"></script>
         <script src="scripts/shoelace.js"></script>
-      {% endblock %}
+      {% endblock -%}
     </body>
-  {% endblock %}
+  {% endblock -%}
 </html>

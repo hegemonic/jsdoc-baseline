@@ -13,11 +13,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
-{# TODO: Improve appearance. #}
+{#- TODO: Improve appearance. -#}
 <div class="example">
-  {% if caption %}
-    {# TODO: Improve markup. #}
+  {%- if caption %}
+    {#- TODO: Improve markup. -#}
     <p class="example-caption">{{ caption }}</p>
-  {% endif %}
+  {% endif -%}
   {{ code | highlight }}
 </div>

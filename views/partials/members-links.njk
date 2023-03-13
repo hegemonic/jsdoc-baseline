@@ -13,13 +13,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
-{% if items %}
+{%- if items %}
   <h>{{ headingKey | translate(items) }}</h>
   <section id="members-links">
-    {% for item in items %}
+    {%- for item in items %}
       <h>{{ item.longname | link(item.name, false) }}</h>
       {% include 'summary.njk' %}
       {{ item.sourceFile }}
-    {% endfor %}
+    {% endfor -%}
   </section>
-{% endif %}
+{%- endif -%}

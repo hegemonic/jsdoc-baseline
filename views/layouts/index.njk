@@ -13,12 +13,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
-{% extends 'layout.njk' %}
+{%- extends 'layout.njk' -%}
 
-{% block title %}<title>{{ pageTitle | safe }}</title>{% endblock %}
+{%- block title %}<title>{{ pageTitle | safe }}</title>{% endblock -%}
 
-{% block body_main_content %}
-  {% block package_title %}{% include 'package-title.njk' %}{% endblock %}
-  {% block readme %}{% include 'readme.njk' %}{% endblock %}
-  {% block symbol_index %}{% include 'symbol-index.njk' %}{% endblock %}
-{% endblock %}
+{%- block body_main_content %}
+  {%- block package_title %}{%- include 'package-title.njk' -%}{% endblock -%}
+  {%- block readme %}{%- include 'readme.njk' -%}{% endblock -%}
+  {%- block symbol_index %}{%- include 'symbol-index.njk' -%}{% endblock -%}
+{% endblock -%}

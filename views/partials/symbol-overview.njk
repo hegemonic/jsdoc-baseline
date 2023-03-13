@@ -13,62 +13,60 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
-{% if docs %}
-  {% set item = docs[0] %}
-  {% include 'symbol-header.njk' %}
-{% endif %}
+{%- if docs %}
+  {%- set item = docs[0] -%}
+  {%- include 'symbol-header.njk' -%}
+{% endif -%}
 
-{% include 'summary-blocks.njk' %}
+{%- include 'summary-blocks.njk' -%}
 
-{% for doc in docs %}
-  {% block first %}
-    {% if loop.first %}
-      {# Everything except classes gets a heading that indicates what we're about to list. #}
-      {% if pageCategory != 'classes' and doc.exports %}
+{%- for doc in docs %}
+  {%- block first -%}
+    {%- if loop.first -%}
+      {#- Everything except classes gets a heading that indicates what we're about to list. -#}
+      {%- if pageCategory != 'classes' and doc.exports -%}
         <h>{{ 'headings.exports' | translate(docs) }}</h>
-      {% endif %}
-    {% endif %}
-  {% endblock %}
+      {%- endif -%}
+    {%- endif -%}
+  {% endblock -%}
 
-  {% block details %}
-    {#
+  {%- block details %}
+    {#-
       If a module exports only one symbol, document the symbol in the overview, because it's not a
       member of anything else.
-    #}
-    {% if doc.kind == 'module' %}
-      {% if doc.exports %}
-        {% for item in exports %}
-          <section>
-            {% include 'symbol-detail.njk' %}
-          </section>
-        {% endfor %}
-      {% endif %}
-    {# Classes get extra information. #}
-    {% elif doc.kind == 'class' %}
+    -#}
+    {%- if doc.kind == 'module' and doc.exports -%}
+      {%- for item in exports %}
+        <section>
+          {% include 'symbol-detail.njk' %}
+        </section>
+      {% endfor -%}
+    {#- Classes get extra information. -#}
+    {%- elif doc.kind == 'class' %}
       <section>
-        {% set item = doc %}
+        {%- set item = doc -%}
         {% include 'symbol-detail.njk' %}
       </section>
-    {# Externals get extra information. #}
-    {% elif doc.kind == 'external' %}
+    {#- Externals get extra information. -#}
+    {%- elif doc.kind == 'external' %}
       <section>
-        {% set item = doc %}
-        {% set details %}{% include 'details.njk' %}{% endset %}
-        {% if details | trim %}
+        {%- set item = doc -%}
+        {%- set details -%}{% include 'details.njk' %}{%- endset -%}
+        {%- if details | trim %}
           <dl class="dl-compact">
             {{ details | safe }}
           </dl>
-        {% endif %}
+        {% endif -%}
       </section>
-    {# Namespaces that are functions get extra information. #}
-    {% elif doc.kind == 'namespace' and doc | needsSignature %}
+    {#- Namespaces that are functions get extra information. -#}
+    {%- elif doc.kind == 'namespace' and doc | needsSignature %}
       <section>
-        {% set item = doc %}
+        {%- set item = doc -%}
         {% include 'symbol-detail.njk' %}
       </section>
-    {% endif %}
-  {% endblock %}
+    {% endif -%}
+  {%- endblock -%}
 
-  {% block last %}
-  {% endblock %}
-{% endfor %}
+  {%- block last %}
+  {% endblock -%}
+{% endfor -%}

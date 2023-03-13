@@ -13,84 +13,87 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
-{% import 'list.njk' as list %}
+{%- import 'list.njk' as list -%}
 
 <header class="page-header">
-  {% block heading %}
-    {% include 'symbol-labels.njk' %}
+  {%- block heading %}
+    {%- include 'symbol-labels.njk' -%}
     <h>
-      {%- if item.longname != item.memberof %}<small>{{ item.longname | ancestors }}</small>{% endif -%}
+      {%- if item.longname != item.memberof -%}
+        {%- set itemAncestors -%}{{ item.longname | ancestors | trim }}{%- endset -%}
+        {%- if itemAncestors -%}
+          <small>{{ itemAncestors | safe }}</small>
+        {%- endif -%}
+      {%- endif -%}
       <span class="symbol-name">
         {%- if item.kind == 'external' -%}
           {{ item.name | dequote }}
         {%- else -%}
           {{ item.name }}
         {%- endif -%}
-      </span>
-    </h>
-  {% endblock %}
+      </span></h>
+  {% endblock -%}
 
-  {% block source %}
-    {% include 'source-file.njk' %}
-  {% endblock %}
+  {%- block source %}
+    {%- include 'source-file.njk' -%}
+  {% endblock -%}
 
-  {% block classdesc %}
-    {% if item.classdesc %}
+  {%- block classdesc %}
+    {%- if item.classdesc -%}
       <div class="symbol-classdesc">
         {{ item.classdesc | resolveLinks | markdown }}
       </div>
-    {% endif %}
-  {% endblock %}
+    {%- endif -%}
+  {%- endblock %}
 
-  {% block description %}
-    {% set description %}{% include 'description.njk' | trim %}{% endset %}
-    {# We don't show a description for classes, or for namespaces that are also functions. #}
-    {% if item.kind != 'class' %}
-      {% if item.kind == 'namespace' %}
-        {% if not needsSignature(item) %}
-          {% if description %}
-            <div class="symbol-description">
-              {{ description | safe }}
-            </div>
-          {% endif %}
-        {% endif %}
-      {% elif description %}
+  {%- block description %}
+    {%- set description -%}{%- include 'description.njk' -%}{%- endset -%}
+    {%- set description = description | trim -%}
+    {#- We don't show a description for classes, or for namespaces that are also functions. -#}
+    {%- if item.kind != 'class' -%}
+      {%- if item.kind == 'namespace' -%}
+        {%- if description and not needsSignature(item) -%}
+          <div class="symbol-description">
+            {{ description | safe }}
+          </div>
+        {%- endif -%}
+      {%- elif description -%}
         <div class="symbol-description">
           {{ description | safe }}
         </div>
-      {% endif %}
-    {% endif %}
-  {% endblock %}
+      {%- endif -%}
+    {%- endif -%}
+  {% endblock -%}
 
-  {% block examples %}
-    {# TODO: Why not show examples for classes? Do they show up elsewhere? #}
-    {% if item.kind != 'class' %}
-      {% include 'examples.njk' %}
-    {% endif %}
-  {% endblock %}
+  {%- block examples %}
+    {#- TODO: Why not show examples for classes? Do they show up elsewhere? -#}
+    {%- if item.kind != 'class' -%}
+      {%- include 'examples.njk' -%}
+    {%- endif -%}
+  {% endblock -%}
 
-  {% block details %}
-    {% set details %}
-      {% include 'implements.njk' %}
-      {% include 'implementations.njk' %}
-      {{ list.dictList(item.mixes, 'headings.mixes') }}
-    {% endset %}
-    {% if details | trim %}
+  {%- block details %}
+    {%- set details -%}
+      {%- include 'implements.njk' -%}
+      {%- include 'implementations.njk' -%}
+      {{- list.dictList(item.mixes, 'headings.mixes') -}}
+    {%- endset -%}
+    {%- if details | trim -%}
       <dl class="dl-compact">
         {{ details | safe }}
       </dl>
-    {% endif %}
-  {% endblock %}
+    {%- endif -%}
+  {% endblock -%}
 
-  {% block class_details %}
-    {#
+  {%- block class_details %}
+    {#-
       For classes where we're not displaying the constructor, we show the details here, above the
       summary blocks.
-    #}
-    {% if item.hideconstructor %}
+    -#}
+    {%- if item.hideconstructor -%}
       <dl class="dl-compact">
-        {% include 'details.njk' %}
+        {%- include 'details.njk' -%}
       </dl>
-    {% endif %}
-  {% endblock %}
+    {%- endif -%}
+  {% endblock -%}
 </header>

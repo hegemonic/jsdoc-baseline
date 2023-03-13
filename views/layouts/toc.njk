@@ -14,11 +14,11 @@
   limitations under the License.
 -#}
 {%- macro add_modifiers(item, demoted) -%}
-  {% if href == item.href and not demoted %} selected {% endif %}
-  {% if href == item.href or href in item.descendantHrefs %} expanded {% endif %}
+  {%- if href == item.href and not demoted %} selected{% endif -%}
+  {%- if href == item.href or href in item.descendantHrefs %} expanded{% endif -%}
 {%- endmacro -%}
 
-{#
+{#-
   TODO: This behavior is disabled until we come up with better styling and/or link text for the
   demoted item. The current behavior is to insert a tree item with normal appearance and the label
   "DOCLET_KIND details," but I don't think that works very well.
@@ -28,42 +28,42 @@
 
   To make this behavior possible, if a tree item is both expandable and a link, we move the link
   into a new tree item that's a child of the original tree item.
-#}
+-#}
 {%- macro make_demoted_link_item(item) -%}
   <sl-tree-item {{- add_modifiers(item) -}}>
-    {% set l10nKey = 'kinds.' + item.kind %}
-    {% set linkText %}{{ l10nKey | translate }} details{% endset %}
-    {% set linkText = linkText | capitalize %}
+    {%- set l10nKey = 'kinds.' + item.kind -%}
+    {%- set linkText %}{{ l10nKey | translate }} details{% endset -%}
+    {%- set linkText = linkText | capitalize -%}
     {{ item.id | link(linkText) }}
   </sl-tree-item>
 {%- endmacro -%}
 
+{%- macro should_demote(item) -%}
+  {#- TODO: Re-enable this behavior. -#}
+  {#- {%- if item.children | length and item.href -%}true{%- endif -%} -#}
+{%- endmacro -%}
+
 {%- macro make_tree_items(items) -%}
-  {% for item in items %}
-    {# TODO: Re-enable this behavior, with improved link text. #}
-    {# {% set demoted %}{{ should_demote(item) }}{% endset %} #}
+  {%- for item in items %}
+    {% set demoted %}{{ should_demote(item) }}{% endset %}
     <sl-tree-item {{- add_modifiers(item, demoted) -}}>
-      {# TODO: Re-enable this behavior when we re-enable demoted items. #}
-      {#
+      {#- TODO: Re-enable this behavior when we re-enable demoted items. -#}
+      {#-
       {% if not item.children | length %}
         {{ item.id | link(item.label) }}
       {% else %}
         {{ item.label }}
       {% endif %}
-      #}
+      -#}
       {{ item.id | link(item.label) }}
-      {% if item.children | length %}
-        {% if demoted %}
+      {%- if item.children | length %}
+        {%- if demoted %}
           {{ make_demoted_link_item(item) | safe }}
-        {% endif %}
+        {% endif -%}
         {{ make_tree_items(item.children) }}
-      {% endif %}
+      {% endif -%}
     </sl-tree-item>
-  {% endfor %}
-{%- endmacro -%}
-
-{%- macro should_demote(item) -%}
-  {%- if item.children | length and item.href -%}true{%- endif -%}
+  {% endfor -%}
 {%- endmacro -%}
 
 <sl-tree class="nav-tree">

@@ -13,10 +13,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
-{% macro dictList(items, l10nKey, monospace) %}
-  {% if items and items.length %}
+{%- macro dictList(items, l10nKey, monospace) -%}
+  {%- if items and items.length %}
     <dt>{{ l10nKey | translate(items) }}</dt>
-    {% for item in items %}
+    {%- for item in items %}
       <dd>
         {%- if monospace -%}
           <code>{{ item | link }}</code>
@@ -24,14 +24,14 @@
           {{ item | link }}
         {%- endif -%}
       </dd>
-    {% endfor %}
-  {% endif %}
-{% endmacro %}
+    {% endfor -%}
+  {%- endif -%}
+{%- endmacro %}
 
-{% macro dictListTypes(items, l10nKey) %}
-  {% if items and items.length %}
+{%- macro dictListTypes(items, l10nKey) -%}
+  {%- if items and items.length -%}
     <dt>{{ l10nKey | translate(items) }}</dt>
-    {% for item in items %}
+    {%- for item in items %}
       <dd>
         {%- filter markdown -%}
           {%- if item.type and item.type.parsedType -%}
@@ -40,6 +40,6 @@
           {{- item.description | resolveLinks -}}
         {%- endfilter -%}
       </dd>
-    {% endfor %}
-  {% endif %}
-{% endmacro %}
+    {% endfor -%}
+  {%- endif -%}
+{% endmacro -%}

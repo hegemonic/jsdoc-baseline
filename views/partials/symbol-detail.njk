@@ -13,38 +13,39 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
-{#
+{#-
     We omit the labels for classes, modules, and namespaces, because those labels would duplicate
     the labels for the page's main heading.
-#}
+-#}
 {%- if item.kind and not item.kind | includes(['class', 'module', 'namespace']) -%}
-  {% include 'symbol-labels.njk' %}
+  {%- include 'symbol-labels.njk' -%}
 {%- endif -%}
 
-{%- if not item.hideconstructor -%}
-  {% set itemId = id(item) %}
-  <h {% if itemId %}id="{{ itemId }}"{%- endif %}>
+{%- if not item.hideconstructor %}
+  {%- set itemId = id(item) -%}
+  <h {%- if itemId %} id="{{ itemId }}"{%- endif %}>
     {%- include 'constructor-prefix.njk' -%}
     <span class="symbol-name">{{ item.name }}</span>
     {%- include 'signature.njk' -%}
   </h>
-{%- endif %}
+{% endif -%}
 
-{% if not config('sourceFiles.singleLink') and not item.hideconstructor %}
-  {% include 'source-file.njk' %}
-{% endif %}
+{%- if not config('sourceFiles.singleLink') and not item.hideconstructor %}
+  {%- include 'source-file.njk' -%}
+{% endif -%}
 
-{% if not item.hideconstructor %}
-  {% include 'description.njk' %}
-  {# TODO: Examples aren't showing up in the output. Template assumes this has happened: #}
-  {# https://github.com/jsdoc/jsdoc/blob/1a3195ce/packages/jsdoc/templates/default/publish.js#L475-L490 #}
-  {% include 'examples.njk' %}
-  {% include 'params.njk' %}
-  {% include 'properties.njk' %}
-  {% set details %}{% include 'details.njk' %}{% endset %}
-  {% if details | trim %}
+{%- if not item.hideconstructor %}
+  {%- include 'description.njk' -%}
+  {#- TODO: Examples aren't showing up in the output. Template assumes this has happened: -#}
+  {#- https://github.com/jsdoc/jsdoc/blob/1a3195ce/packages/jsdoc/templates/default/publish.js#L475-L490 -#}
+  {%- include 'examples.njk' -%}
+  {%- include 'params.njk' -%}
+  {%- include 'properties.njk' -%}
+  {%- set details -%}{%- include 'details.njk' -%}{%- endset -%}
+  {%- set details = details | trim -%}
+  {%- if details -%}
     <dl class="dl-compact">
       {{ details | safe }}
     </dl>
-  {% endif %}
-{% endif %}
+  {%- endif -%}
+{%- endif -%}

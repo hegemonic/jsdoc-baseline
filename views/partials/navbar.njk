@@ -14,14 +14,14 @@
   limitations under the License.
 -#}
 <nav id="jsdoc-navbar" class="jsdoc-navbar">
-  {% block navbar_container %}
+  {%- block navbar_container %}
     <div id="jsdoc-navbar-container" class="jsdoc-navbar-container">
-      {% block navbar_content %}
+      {%- block navbar_content %}
         <div id="jsdoc-navbar-content" class="jsdoc-navbar-content">
           {{ packageLink(package, 'jsdoc-navbar-package-name') }}
-          {# TODO: Search; breadcrumbs #}
+          {#- TODO: Search; breadcrumbs -#}
         </div>
-      {% endblock %}
+      {% endblock -%}
     </div>
-  {% endblock %}
+  {% endblock -%}
 </nav>

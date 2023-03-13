@@ -14,12 +14,12 @@
   limitations under the License.
 -#}
 <div class="summary-column">
-  {% if summaryGroup %}
+  {%- if summaryGroup %}
     <dl class="dl-summary-callout">
-      {% for item in summaryGroup %}
+      {%- for item in summaryGroup %}
         <dt>{{ item | linkWithSignature }}</dt>
-        <dd>{% include 'summary.njk' %}</dd>
-      {% endfor %}
+        <dd>{%- include 'summary.njk' -%}</dd>
+      {% endfor -%}
     </dl>
-  {% endif %}
+  {% endif -%}
 </div>

@@ -13,16 +13,16 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
-{% if items %}
+{%- if items %}
   <div class="summary-callout">
-    {% if headingKey %}
+    {%- if headingKey %}
       <h class="summary-callout-heading">{{ headingKey | translate(items) }}</h>
-    {% endif %}
+    {% endif -%}
     <div class="summary-content">
-      {% set groups = items | slice(3) %}
-      {% for summaryGroup in groups %}
-        {% include 'summary-block-column.njk' %}
-      {% endfor %}
+      {%- set groups = items | slice(3) -%}
+      {%- for summaryGroup in groups %}
+        {%- include 'summary-block-column.njk' -%}
+      {% endfor -%}
     </div>
   </div>
-{% endif %}
+{% endif -%}

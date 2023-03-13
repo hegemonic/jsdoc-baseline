@@ -13,8 +13,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
-{% if config('components.summary') %}
-  {%
+{%- if config('components.summary') %}
+  {%-
     if headingDocs
       or members.classes
       or members.interfaces
@@ -24,63 +24,63 @@
       or members.typedefs
       or members.events
   %}
-    {# TODO: Register this ID so we don't repeat it. #}
-    {# TODO: Ensure this list stays in the same order as symbol-content.njk. #}
+    {#- TODO: Register this ID so we don't repeat it. -#}
+    {#- TODO: Ensure this list stays in the same order as symbol-content.njk. -#}
     <section id="summary">
-      {#
+      {#-
         Either constructors (for a class) or symbols exported by the module (for a module).
 
         TODO:
         + Not seeing this in the generated docs, probably because "headingDocs" is not set anywhere.
         + If all the constructors are tagged with `hideconstructor`, we should hide this
           section.
-      #}
-      {% block constructors_exports %}
-        {% set items = headingDocs %}
-        {% include 'summary-block.njk' %}
-      {% endblock %}
+      -#}
+      {%- block constructors_exports %}
+        {%- set items = headingDocs -%}
+        {%- include 'summary-block.njk' -%}
+      {% endblock -%}
 
-      {% block classes %}
-        {% set items = members.classes %}
-        {% set headingKey = 'headings.childClasses' %}
-        {% include 'summary-block.njk' %}
-      {% endblock %}
+      {%- block classes %}
+        {%- set items = members.classes -%}
+        {%- set headingKey = 'headings.childClasses' -%}
+        {%- include 'summary-block.njk' -%}
+      {% endblock -%}
 
-      {% block interfaces %}
-        {% set items = members.interfaces %}
-        {% set headingKey = 'headings.childInterfaces' %}
-        {% include 'summary-block.njk' %}
-      {% endblock %}
+      {%- block interfaces %}
+        {%- set items = members.interfaces -%}
+        {%- set headingKey = 'headings.childInterfaces' -%}
+        {%- include 'summary-block.njk' -%}
+      {% endblock -%}
 
-      {% block namespaces %}
-        {% set items = members.namespaces %}
-        {% set headingKey = 'headings.namespaces' %}
-        {% include 'summary-block.njk' %}
-      {% endblock %}
+      {%- block namespaces %}
+        {%- set items = members.namespaces -%}
+        {%- set headingKey = 'headings.namespaces' -%}
+        {%- include 'summary-block.njk' -%}
+      {% endblock -%}
 
-      {% block properties %}
-        {% set items = members.properties %}
-        {% set headingKey = 'headings.properties' %}
-        {% include 'summary-block.njk' %}
-      {% endblock %}
+      {%- block properties %}
+        {%- set items = members.properties -%}
+        {%-set headingKey = 'headings.properties' -%}
+        {%- include 'summary-block.njk' -%}
+      {% endblock -%}
 
-      {% block functions %}
-        {% set items = members.functions %}
-        {% set headingKey = 'headings.functions' %}
-        {% include 'summary-block.njk' %}
-      {% endblock %}
+      {%- block functions %}
+        {%- set items = members.functions -%}
+        {%- set headingKey = 'headings.functions' -%}
+        {%- include 'summary-block.njk' -%}
+      {% endblock -%}
 
-      {% block typedefs %}
-        {% set items = members.typedefs %}
-        {% set headingKey = 'headings.typedefs' %}
-        {% include 'summary-block.njk' %}
-      {% endblock %}
+      {%- block typedefs %}
+        {%- set items = members.typedefs -%}
+        {%- set headingKey = 'headings.typedefs' -%}
+        {%- include 'summary-block.njk' -%}
+      {% endblock -%}
 
-      {% block events %}
-        {% set items = members.events %}
-        {% set headingKey = 'headings.events' %}
-        {% include 'summary-block.njk' %}
-      {% endblock %}
+      {%- block events %}
+        {%- set items = members.events -%}
+        {%- set headingKey = 'headings.events' -%}
+        {%- include 'summary-block.njk' -%}
+      {% endblock -%}
     </section>
-  {% endif %}
-{% endif %}
+  {% endif -%}
+{%- endif -%}

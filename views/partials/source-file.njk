@@ -13,8 +13,6 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
-{% if config('sourceFiles.generate') %}
-  {% if item.meta and item.meta.filename and item.meta.lineno  %}
-    <p class="source-link">{{ 'source' | translate }} {{ item.meta | linkToLine }}</p>
-  {% endif %}
-{% endif %}
+{%- if config('sourceFiles.generate') and item.meta and item.meta.filename and item.meta.lineno %}
+  <p class="source-link">{{ 'source' | translate }} {{ item.meta | linkToLine }}</p>
+{% endif -%}

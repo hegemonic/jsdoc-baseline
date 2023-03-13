@@ -15,13 +15,13 @@
 -#}
 <div class="symbol-index-column">
   <dl class="symbol-index-list">
-    {% for item in items %}
+    {%- for item in items %}
       <dt class="symbol-index-name">
         {{- item | linkLongnameWithSignature('symbol-index-name') -}}
       </dt>
       <dd>
-        {% include 'summary.njk' %}
+        {%- include 'summary.njk' -%}
       </dd>
-    {% endfor %}
+    {% endfor -%}
   </dl>
 </div>

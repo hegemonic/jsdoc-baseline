@@ -13,11 +13,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
-{% if examples %}
+{%- if examples %}
   <section>
     <h class="examples">{{ 'headings.examples' | translate(examples)}}</h>
-    {% for example in examples %}
-      {% include 'example.njk' %}
-    {% endfor %}
+    {%- for example in examples %}
+      {%- include 'example.njk' -%}
+    {% endfor -%}
   </section>
-{% endif %}
+{% endif -%}

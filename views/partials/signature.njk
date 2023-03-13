@@ -26,7 +26,5 @@
     {%- endif -%}
   </span>
 {%- elif item.type -%}
-  <small class="property-type">
-    &nbsp;{{ item.type.parsedType | describeType -}}
-  </small>
+  <small class="property-type">&nbsp;{{ item.type.parsedType | describeType }}</small>
 {%- endif -%}

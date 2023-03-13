@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
-{% macro detailsTableName(name) %}
+{%- macro detailsTableName(name) -%}
   <td class="details-table-name">
     <p>
       {%- if name -%}
@@ -23,75 +23,75 @@
       {%- endif -%}
     </p>
   </td>
-{% endmacro %}
+{%- endmacro -%}
 
-{% macro detailsTableTypes(type) %}
+{%- macro detailsTableTypes(type) -%}
   <td class="details-table-types">
     {% if type and type.parsedType %}
       <p>{{ type.parsedType | describeType('extended') }}</p>
-    {% else %}
+    {%- else -%}
       <p>&nbsp;</p>
     {% endif %}
   </td>
-{% endmacro %}
+{%- endmacro -%}
 
-{% macro detailsTableOptional(optional) %}
-  {# TODO: Make it possible to collapse this column, and do so by default. #}
+{%- macro detailsTableOptional(optional) -%}
+  {#- TODO: Make it possible to collapse this column, and do so by default. -#}
   <td class="details-table-optional">
     {% if optional %}
       <p>{{ 'tables.body.isOptional' | translate }}</p>
-    {% else %}
+    {%- else -%}
       <p>{{ 'tables.body.isRequired' | translate }}</p>
     {% endif %}
   </td>
-{% endmacro %}
+{%- endmacro -%}
 
-{% macro detailsTableDescription(value, isEnum) %}
+{%- macro detailsTableDescription(value, isEnum) -%}
   <td class="details-table-description">
     {% if value.description %}
       {{ value.description | markdown | resolveLinks }}
-    {% endif %}
-    {% if value | hasModifiers(isEnum) %}
+    {% endif -%}
+    {%- if value | hasModifiers(isEnum) %}
       <p>{{ value | modifierText(isEnum) }}</p>
-    {% endif %}
-    {% if value.children %}
+    {% endif -%}
+    {%- if value.children %}
       <p>{{ 'tables.body.eachValueHasProperties' | translate(1, name=value.name) }}</p>
       {{ detailsTable(value.children) }}
     {% endif %}
   </td>
-{% endmacro %}
+{%- endmacro -%}
 
-{% macro detailsTableRow(value, isEnum) %}
+{%- macro detailsTableRow(value, isEnum) -%}
   <tr>
     {{ detailsTableName(value.name) }}
     {{ detailsTableTypes(value.type) }}
     {{ detailsTableOptional(value.optional) }}
     {{ detailsTableDescription(value, isEnum) }}
   </tr>
-{% endmacro %}
+{%- endmacro -%}
 
-{#
+{#-
   This table must be implemented as a macro so that it can be called recursively, without shadowing
   or overwriting variables in a parent scope.
-#}
-{% macro detailsTable(values, isEnum) %}
+-#}
+{%- macro detailsTable(values, isEnum)-%}
   <table class="jsdoc-details-table">
     <thead>
       <tr>
         <th>{{ 'tables.header.name' | translate }}</th>
         <th>{{ 'tables.header.type' | translate }}</th>
-        {#
+        {#-
           TODO: Make it possible to collapse this column if there are no optional values.
           Do that by default, with a pref to always show the column.
-        #}
+        -#}
         <th>{{ 'tables.header.optional' | translate }}</th>
         <th>{{ 'tables.header.description' | translate }}</th>
       </tr>
     </thead>
     <tbody>
-      {% for value in values %}
+      {%- for value in values %}
         {{ detailsTableRow(value, isEnum) }}
-      {% endfor %}
+      {% endfor -%}
     </tbody>
   </table>
-{% endmacro %}
+{%- endmacro -%}
