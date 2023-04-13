@@ -67,7 +67,7 @@
     "markdown-it": "^13.0.1",
     "markdown-it-anchor": "^8.6.7",
     "messageformat": "^2.3.0",
-    "nunjucks": "^3.2.3",
+    "nunjucks": "^3.2.4",
     "ow": "^1.1.1",
     "spdx-license-list": "^6.6.0",
     "strip-json-comments": "^5.0.0"
