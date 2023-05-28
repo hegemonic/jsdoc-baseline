@@ -82,7 +82,7 @@
     "@parcel/transformer-sass": "^2.9.1",
     "@shoelace-style/shoelace": "^2.4.0",
     "bootstrap": "^5.3.0-alpha1",
-    "c8": "^7.13.0",
+    "c8": "^7.14.0",
     "csso-cli": "^4.0.2",
     "eslint": "^8.41.0",
     "eslint-config-prettier": "^8.8.0",
