@@ -70,7 +70,7 @@
     "nunjucks": "^3.2.4",
     "ow": "^1.1.1",
     "spdx-license-list": "^6.6.0",
-    "strip-json-comments": "^5.0.0"
+    "strip-json-comments": "^5.0.1"
   },
   "optionalDependencies": {
     "prettier": "^2.8.8"
