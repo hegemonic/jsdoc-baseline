@@ -69,7 +69,7 @@
     "messageformat": "^2.3.0",
     "nunjucks": "^3.2.4",
     "ow": "^1.1.1",
-    "spdx-license-list": "^6.6.0",
+    "spdx-license-list": "^6.7.0",
     "strip-json-comments": "^5.0.1"
   },
   "optionalDependencies": {
