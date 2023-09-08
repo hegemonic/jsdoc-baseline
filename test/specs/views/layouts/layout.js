@@ -17,8 +17,8 @@ describe('main layout', () => {
   // TODO: more tests
 
   describe('footer', () => {
-    it('includes a footer by default', () => {
-      const text = helpers.render('layout.njk', {});
+    it('includes a footer by default', async () => {
+      const text = await helpers.render('layout.njk', {});
 
       expect(text).toContain('<footer');
     });
@@ -29,7 +29,7 @@ describe('main layout', () => {
           footer: false,
         },
       });
-      const text = template.render('layout.njk', {});
+      const text = await template.render('layout.njk', {});
 
       expect(text).not.toContain('<footer');
     });

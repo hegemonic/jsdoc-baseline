@@ -14,14 +14,14 @@
   limitations under the License.
 */
 describe('copyright atom', () => {
-  it('generates nothing if there is no copyright owner', () => {
-    const text = helpers.render('copyright.njk', {});
+  it('generates nothing if there is no copyright owner', async () => {
+    const text = await helpers.render('copyright.njk', {});
 
     expect(text.trim()).toBe('');
   });
 
-  it('shows the copyright owner', () => {
-    const text = helpers.render('copyright.njk', {
+  it('shows the copyright owner', async () => {
+    const text = await helpers.render('copyright.njk', {
       item: {
         copyright: 'John Doe',
       },
@@ -30,8 +30,8 @@ describe('copyright atom', () => {
     expect(text).toContain('<dd>John Doe</dd>');
   });
 
-  it('links to the copyright owner when appropriate', () => {
-    const text = helpers.render('copyright.njk', {
+  it('links to the copyright owner when appropriate', async () => {
+    const text = await helpers.render('copyright.njk', {
       item: {
         copyright: 'http://example.org',
       },

@@ -47,22 +47,22 @@ describe('symbol detail partial', () => {
       // TODO
     });
 
-    it('does not show a heading for hidden constructors', () => {
+    it('does not show a heading for hidden constructors', async () => {
       const fakeDoclet = {
         hideconstructor: true,
       };
-      const text = helpers.render('symbol-detail', { item: fakeDoclet });
+      const text = await helpers.render('symbol-detail', { item: fakeDoclet });
 
       expect(text).not.toContain('<h');
     });
 
-    it('dequotes quoted names for externals', () => {
+    it('dequotes quoted names for externals', async () => {
       const fakeDoclet = {
         kind: 'external',
         longname: '"my.external"',
         name: '"my.external"',
       };
-      const text = helpers.render('symbol-detail', { item: fakeDoclet });
+      const text = await helpers.render('symbol-detail', { item: fakeDoclet });
 
       expect(text).toContain('my.external');
       expect(text).not.toContain('"my.external"');
@@ -78,7 +78,7 @@ describe('symbol detail partial', () => {
       // TODO
     });
 
-    it('does not show a link for hidden constructors', () => {
+    it('does not show a link for hidden constructors', async () => {
       const fakeDoclet = {
         hideconstructor: true,
         meta: {
@@ -86,7 +86,7 @@ describe('symbol detail partial', () => {
           lineno: '1',
         },
       };
-      const text = helpers.render('symbol-detail', { item: fakeDoclet });
+      const text = await helpers.render('symbol-detail', { item: fakeDoclet });
 
       expect(text).not.toContain('<a');
     });
@@ -97,12 +97,12 @@ describe('symbol detail partial', () => {
       // TODO
     });
 
-    it('does not show the description for hidden constructors', () => {
+    it('does not show the description for hidden constructors', async () => {
       const fakeDoclet = {
         description: 'Hidden',
         hideconstructor: true,
       };
-      const text = helpers.render('symbol-detail', { item: fakeDoclet });
+      const text = await helpers.render('symbol-detail', { item: fakeDoclet });
 
       expect(text).not.toContain('Hidden');
     });
@@ -129,7 +129,7 @@ describe('symbol detail partial', () => {
       // TODO
     });
 
-    it('does not show the params for hidden constructors', () => {
+    it('does not show the params for hidden constructors', async () => {
       const fakeDoclet = {
         hideconstructor: true,
         params: [
@@ -142,7 +142,7 @@ describe('symbol detail partial', () => {
           },
         ],
       };
-      const text = helpers.render('symbol-detail', { item: fakeDoclet });
+      const text = await helpers.render('symbol-detail', { item: fakeDoclet });
 
       expect(text).not.toContain('foo');
     });
@@ -153,7 +153,7 @@ describe('symbol detail partial', () => {
       // TODO
     });
 
-    it('does not show the properties for hidden constructors', () => {
+    it('does not show the properties for hidden constructors', async () => {
       const fakeDoclet = {
         hideconstructor: true,
         properties: [
@@ -166,14 +166,14 @@ describe('symbol detail partial', () => {
           },
         ],
       };
-      const text = helpers.render('symbol-detail', { item: fakeDoclet });
+      const text = await helpers.render('symbol-detail', { item: fakeDoclet });
 
       expect(text).not.toContain('foo');
     });
   });
 
   describe('details', () => {
-    it('shows the symbol details', () => {
+    it('shows the symbol details', async () => {
       const fakeDoclet = {
         name: 'foo',
         longname: 'foo',
@@ -189,7 +189,7 @@ describe('symbol detail partial', () => {
           },
         ],
       };
-      const text = helpers.render('symbol-detail', { item: fakeDoclet });
+      const text = await helpers.render('symbol-detail', { item: fakeDoclet });
 
       expect(text).toContainHtml(`
       <dt>Returns</dt>
@@ -198,24 +198,24 @@ describe('symbol detail partial', () => {
       </dd>`);
     });
 
-    it('does not add a <dl> if there are no details to show', () => {
+    it('does not add a <dl> if there are no details to show', async () => {
       const fakeDoclet = {
         name: 'foo',
         longname: 'foo',
         kind: 'function',
         scope: 'global',
       };
-      const text = helpers.render('symbol-detail', { item: fakeDoclet });
+      const text = await helpers.render('symbol-detail', { item: fakeDoclet });
 
       expect(text).not.toContain('<dl');
     });
 
-    it('does not show the symbol details for hidden constructors', () => {
+    it('does not show the symbol details for hidden constructors', async () => {
       const fakeDoclet = {
         copyright: 'Foo',
         hideconstructor: true,
       };
-      const text = helpers.render('symbol-detail', { item: fakeDoclet });
+      const text = await helpers.render('symbol-detail', { item: fakeDoclet });
 
       expect(text).not.toContain('Foo');
     });

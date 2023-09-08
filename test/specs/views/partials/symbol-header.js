@@ -27,7 +27,7 @@ describe('symbol header partial', () => {
       // TODO: write me
     });
 
-    it('shows a description for namespaces that are not functions', () => {
+    it('shows a description for namespaces that are not functions', async () => {
       const fakeDoclet = {
         name: 'foo',
         longname: 'foo',
@@ -35,7 +35,7 @@ describe('symbol header partial', () => {
         kind: 'namespace',
         scope: 'global',
       };
-      const text = helpers.render('symbol-header.njk', { item: fakeDoclet });
+      const text = await helpers.render('symbol-header.njk', { item: fakeDoclet });
 
       expect(text).toContainHtml(`
         <div class="symbol-description">
@@ -44,14 +44,14 @@ describe('symbol header partial', () => {
       `);
     });
 
-    it('shows a description for symbols that are not classes or namespaces', () => {
+    it('shows a description for symbols that are not classes or namespaces', async () => {
       const fakeDoclet = {
         name: 'foo',
         longname: 'foo',
         description: 'The foo module.',
         kind: 'module',
       };
-      const text = helpers.render('symbol-header.njk', { item: fakeDoclet });
+      const text = await helpers.render('symbol-header.njk', { item: fakeDoclet });
 
       expect(text).toContainHtml(`
         <div class="symbol-description">
@@ -64,7 +64,7 @@ describe('symbol header partial', () => {
   describe('details', () => {
     // TODO: more tests
 
-    it('shows the symbol details', () => {
+    it('shows the symbol details', async () => {
       const fakeDoclet = {
         name: 'Foo',
         longname: 'Foo',
@@ -72,7 +72,7 @@ describe('symbol header partial', () => {
         kind: 'class',
         scope: 'global',
       };
-      const text = helpers.render('symbol-header.njk', { item: fakeDoclet });
+      const text = await helpers.render('symbol-header.njk', { item: fakeDoclet });
 
       expect(text).toContainHtml(`
         <dt>Implements</dt>
@@ -80,14 +80,14 @@ describe('symbol header partial', () => {
       `);
     });
 
-    it('does not add a <dl> if there are no details to show', () => {
+    it('does not add a <dl> if there are no details to show', async () => {
       const fakeDoclet = {
         name: 'Foo',
         longname: 'Foo',
         kind: 'class',
         scope: 'global',
       };
-      const text = helpers.render('symbol-header.njk', { item: fakeDoclet });
+      const text = await helpers.render('symbol-header.njk', { item: fakeDoclet });
 
       expect(text).not.toContain('<dl');
     });
@@ -98,12 +98,12 @@ describe('symbol header partial', () => {
       // TODO
     });
 
-    it('shows details for hidden constructors', () => {
+    it('shows details for hidden constructors', async () => {
       const fakeDoclet = {
         copyright: 'Foo',
         hideconstructor: true,
       };
-      const text = helpers.render('symbol-header.njk', { item: fakeDoclet });
+      const text = await helpers.render('symbol-header.njk', { item: fakeDoclet });
 
       expect(text).toContain('Foo');
     });

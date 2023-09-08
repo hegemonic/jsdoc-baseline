@@ -80,23 +80,23 @@ describe('symbol-index partial', () => {
   });
 
   describe('heading', () => {
-    it('adds a heading if there is a README', () => {
+    it('adds a heading if there is a README', async () => {
       const data = { allLongnamesTree, readme: 'hello' };
-      const rendered = template.render('symbol-index.njk', data);
+      const rendered = await template.render('symbol-index.njk', data);
 
       expect(rendered).toContainHtml('<h2>Package index</h2>');
     });
 
-    it('omits the heading if there is not a README', () => {
+    it('omits the heading if there is not a README', async () => {
       const data = { allLongnamesTree };
-      const rendered = template.render('symbol-index.njk', data);
+      const rendered = await template.render('symbol-index.njk', data);
 
       expect(rendered).not.toContainHtml('<h2>Package index</h2>');
     });
   });
 
   describe('groups', () => {
-    it('creates one section per group', () => {
+    it('creates one section per group', async () => {
       let data;
       let longnames = [
         'module:breakfast',
@@ -108,7 +108,7 @@ describe('symbol-index partial', () => {
 
       allLongnamesTree = filteredTree(longnames);
       data = { allLongnamesTree };
-      rendered = template.render('symbol-index.njk', data);
+      rendered = await template.render('symbol-index.njk', data);
 
       expect(rendered).toContainHtml(`
         <section>
@@ -138,7 +138,7 @@ describe('symbol-index partial', () => {
       `);
     });
 
-    it('sorts the groups by name', () => {
+    it('sorts the groups by name', async () => {
       let data;
       let longnames = [
         'Sandwich',
@@ -150,7 +150,7 @@ describe('symbol-index partial', () => {
 
       allLongnamesTree = filteredTree(longnames);
       data = { allLongnamesTree };
-      rendered = template.render('symbol-index.njk', data);
+      rendered = await template.render('symbol-index.njk', data);
 
       expect(rendered).toContainHtml(`
         <section>
@@ -179,14 +179,14 @@ describe('symbol-index partial', () => {
     });
 
     describe('columns', () => {
-      it('keeps 3 items in a single column', () => {
+      it('keeps 3 items in a single column', async () => {
         let data;
         const longnames = ['Sandwich', 'Sandwich#addCheeses', 'Sandwich#addProteins'];
         let rendered;
 
         allLongnamesTree = filteredTree(longnames);
         data = { allLongnamesTree };
-        rendered = template.render('symbol-index.njk', data);
+        rendered = await template.render('symbol-index.njk', data);
 
         expect(rendered).toContainHtml(`
           <index-group>
@@ -197,7 +197,7 @@ describe('symbol-index partial', () => {
         `);
       });
 
-      it('splits 4 items across 2 columns', () => {
+      it('splits 4 items across 2 columns', async () => {
         let data;
         const longnames = [
           'Sandwich',
@@ -209,7 +209,7 @@ describe('symbol-index partial', () => {
 
         allLongnamesTree = filteredTree(longnames);
         data = { allLongnamesTree };
-        rendered = template.render('symbol-index.njk', data);
+        rendered = await template.render('symbol-index.njk', data);
 
         expect(rendered).toContainHtml(`
           <index-group>
@@ -223,7 +223,7 @@ describe('symbol-index partial', () => {
         `);
       });
 
-      it('splits 6 items across 3 columns', () => {
+      it('splits 6 items across 3 columns', async () => {
         let data;
         const longnames = [
           'Sandwich',
@@ -237,7 +237,7 @@ describe('symbol-index partial', () => {
 
         allLongnamesTree = filteredTree(longnames);
         data = { allLongnamesTree };
-        rendered = template.render('symbol-index.njk', data);
+        rendered = await template.render('symbol-index.njk', data);
 
         expect(rendered).toContainHtml(`
           <index-group>
@@ -255,7 +255,7 @@ describe('symbol-index partial', () => {
         `);
       });
 
-      it('creates 3 columns at most, even when there are many items', () => {
+      it('creates 3 columns at most, even when there are many items', async () => {
         let data;
         const longnames = Object.keys(longnameToKind).filter((longname) =>
           longname.startsWith('Sandwich')
@@ -264,12 +264,12 @@ describe('symbol-index partial', () => {
 
         allLongnamesTree = filteredTree(longnames);
         data = { allLongnamesTree };
-        rendered = template.render('symbol-index.njk', data);
+        rendered = await template.render('symbol-index.njk', data);
 
         expect([...rendered.matchAll(/<index-group>/g)]).toBeArrayOfSize(3);
       });
 
-      it('balances the number of items in each column', () => {
+      it('balances the number of items in each column', async () => {
         function extract(column, elementName) {
           const regexp = new RegExp(`(?:<${elementName}>[\\s\\S]+?<\\/${elementName}>)`, 'g');
           const items = [...column.matchAll(regexp)];
@@ -286,7 +286,7 @@ describe('symbol-index partial', () => {
 
         allLongnamesTree = filteredTree(longnames);
         data = { allLongnamesTree };
-        rendered = template.render('symbol-index.njk', data);
+        rendered = await template.render('symbol-index.njk', data);
         columns = extract(rendered, 'index-group');
 
         expect(extract(columns[0], 'index-item')).toBeArrayOfSize(4);

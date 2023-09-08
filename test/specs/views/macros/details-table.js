@@ -36,8 +36,8 @@ describe('details-table macro', () => {
     template = await helpers.createTemplate(config);
   });
 
-  it('does not insert an empty paragraph when a doclet has no modifiers', () => {
-    const text = template.render('details-table-test.njk', {
+  it('does not insert an empty paragraph when a doclet has no modifiers', async () => {
+    const text = await template.render('details-table-test.njk', {
       values: [
         {
           description: 'foo',
@@ -48,8 +48,8 @@ describe('details-table macro', () => {
     expect(text).not.toContain('<p></p>');
   });
 
-  it('includes the default value when one is provided', () => {
-    const text = template.render('details-table-test.njk', {
+  it('includes the default value when one is provided', async () => {
+    const text = await template.render('details-table-test.njk', {
       values: [
         {
           description: 'test',
@@ -61,8 +61,8 @@ describe('details-table macro', () => {
     expect(text).toContain('foo');
   });
 
-  it('includes modifier text even when the description is missing', () => {
-    const text = template.render('details-table-test.njk', {
+  it('includes modifier text even when the description is missing', async () => {
+    const text = await template.render('details-table-test.njk', {
       values: [
         {
           defaultvalue: 'foo',

@@ -14,14 +14,14 @@
   limitations under the License.
 */
 describe('defaultvalue atom', () => {
-  it('generates nothing if there is no default value', () => {
-    const text = helpers.render('defaultvalue.njk', {});
+  it('generates nothing if there is no default value', async () => {
+    const text = await helpers.render('defaultvalue.njk', {});
 
     expect(text.trim()).toBe('');
   });
 
-  it('shows truthy default values', () => {
-    const text = helpers.render('defaultvalue.njk', {
+  it('shows truthy default values', async () => {
+    const text = await helpers.render('defaultvalue.njk', {
       item: {
         defaultvalue: 1,
       },
@@ -30,8 +30,8 @@ describe('defaultvalue atom', () => {
     expect(text).toContain('<dd>1</dd>');
   });
 
-  it('shows falsy default values', () => {
-    const text = helpers.render('defaultvalue.njk', {
+  it('shows falsy default values', async () => {
+    const text = await helpers.render('defaultvalue.njk', {
       item: {
         defaultvalue: 0,
       },
@@ -40,8 +40,8 @@ describe('defaultvalue atom', () => {
     expect(text).toContain('<dd>0</dd>');
   });
 
-  it('wraps default values in a <pre> tag when appropriate', () => {
-    const text = helpers.render('defaultvalue.njk', {
+  it('wraps default values in a <pre> tag when appropriate', async () => {
+    const text = await helpers.render('defaultvalue.njk', {
       item: {
         defaultvalue: '{"foo": "bar"}',
         defaultvaluetype: 'object',

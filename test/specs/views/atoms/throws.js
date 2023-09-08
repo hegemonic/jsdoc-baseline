@@ -14,13 +14,13 @@
   limitations under the License.
 */
 describe('throws atom', () => {
-  it('should generate nothing if the doclet has no "exceptions" items', () => {
-    const text = helpers.render('throws.njk', {});
+  it('should generate nothing if the doclet has no "exceptions" items', async () => {
+    const text = await helpers.render('throws.njk', {});
 
     expect(text.trim()).toBe('');
   });
 
-  it('should include the description, if present', () => {
+  it('should include the description, if present', async () => {
     const doclet = {
       exceptions: [
         {
@@ -28,12 +28,12 @@ describe('throws atom', () => {
         },
       ],
     };
-    const text = helpers.render('throws.njk', { item: doclet });
+    const text = await helpers.render('throws.njk', { item: doclet });
 
     expect(text).toContain('foo bar baz');
   });
 
-  it('should describe the exception type, if specified', () => {
+  it('should describe the exception type, if specified', async () => {
     const parsedType = {
       type: 'NameExpression',
       name: 'TypeError',
@@ -47,12 +47,12 @@ describe('throws atom', () => {
         },
       ],
     };
-    const text = helpers.render('throws.njk', { item: doclet });
+    const text = await helpers.render('throws.njk', { item: doclet });
 
     expect(text).toContain('<code>TypeError</code>');
   });
 
-  it('should not include an empty <code> tag if the exception type is not specified', () => {
+  it('should not include an empty <code> tag if the exception type is not specified', async () => {
     const doclet = {
       exceptions: [
         {
@@ -60,7 +60,7 @@ describe('throws atom', () => {
         },
       ],
     };
-    const text = helpers.render('throws.njk', { item: doclet });
+    const text = await helpers.render('throws.njk', { item: doclet });
 
     expect(text).not.toContain('<code>');
   });

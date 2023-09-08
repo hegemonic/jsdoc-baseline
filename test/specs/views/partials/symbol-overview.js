@@ -19,7 +19,7 @@ describe('symbol overview partial', () => {
   describe('details', () => {
     // TODO: more tests
 
-    it('shows extra details for externals', () => {
+    it('shows extra details for externals', async () => {
       const fakeDoclets = [
         {
           name: 'Foo',
@@ -35,7 +35,7 @@ describe('symbol overview partial', () => {
           see: ['https://example.com/'],
         },
       ];
-      const text = helpers.render('symbol-overview.njk', { docs: fakeDoclets });
+      const text = await helpers.render('symbol-overview.njk', { docs: fakeDoclets });
 
       expect(text).toContainHtml(`
         <dt>See also</dt>
@@ -43,14 +43,14 @@ describe('symbol overview partial', () => {
       `);
     });
 
-    it('does not add an empty <dl> if the doclet is not an external', () => {
+    it('does not add an empty <dl> if the doclet is not an external', async () => {
       const fakeDoclet = {
         name: 'Foo',
         longname: 'Foo',
         kind: 'class',
         scope: 'global',
       };
-      const text = helpers.render('symbol-overview.njk', { docs: [fakeDoclet] });
+      const text = await helpers.render('symbol-overview.njk', { docs: [fakeDoclet] });
 
       expect(text).not.toContainHtml(`
         <dl class="dl-compact">

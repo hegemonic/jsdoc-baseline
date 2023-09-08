@@ -23,8 +23,8 @@ describe('highlight-code partial', () => {
 
   `;
 
-  it('inserts highlighted source code', () => {
-    const text = helpers.render('source.njk', {
+  it('inserts highlighted source code', async () => {
+    const text = await helpers.render('source.njk', {
       docs: code,
       filename: 'hello.js',
       filenameExtension: 'js',
