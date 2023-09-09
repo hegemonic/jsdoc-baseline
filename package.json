@@ -73,7 +73,7 @@
     "strip-json-comments": "^5.0.1"
   },
   "optionalDependencies": {
-    "prettier": "^2.8.8"
+    "prettier": "^3.0.3"
   },
   "devDependencies": {
     "@jsdoc/eslint-config": "^1.2.2",
@@ -95,7 +95,7 @@
     "mock-fs": "^5.2.0",
     "parcel": "^2.9.3",
     "parcel-namer-rewrite": "^2.0.0-rc.3",
-    "prettier": "^2.8.8",
+    "prettier": "^3.0.3",
     "sass": "^1.66.1"
   },
   "engines": {
