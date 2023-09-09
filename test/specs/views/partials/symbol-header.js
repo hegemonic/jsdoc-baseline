@@ -35,13 +35,14 @@ describe('symbol header partial', () => {
         kind: 'namespace',
         scope: 'global',
       };
-      const text = await helpers.render('symbol-header.njk', { item: fakeDoclet });
-
-      expect(text).toContainHtml(`
+      const expected = await helpers.normalizeHtml(`
         <div class="symbol-description">
           <p>The foo namespace.</p>
         </div>
       `);
+      const text = await helpers.renderAndNormalize('symbol-header.njk', { item: fakeDoclet });
+
+      expect(text).toContain(expected);
     });
 
     it('shows a description for symbols that are not classes or namespaces', async () => {
@@ -51,13 +52,14 @@ describe('symbol header partial', () => {
         description: 'The foo module.',
         kind: 'module',
       };
-      const text = await helpers.render('symbol-header.njk', { item: fakeDoclet });
-
-      expect(text).toContainHtml(`
+      const expected = await helpers.normalizeHtml(`
         <div class="symbol-description">
           <p>The foo module.</p>
         </div>
       `);
+      const text = await helpers.renderAndNormalize('symbol-header.njk', { item: fakeDoclet });
+
+      expect(text).toContain(expected);
     });
   });
 
@@ -72,12 +74,13 @@ describe('symbol header partial', () => {
         kind: 'class',
         scope: 'global',
       };
-      const text = await helpers.render('symbol-header.njk', { item: fakeDoclet });
-
-      expect(text).toContainHtml(`
+      const expected = await helpers.normalizeHtml(`
         <dt>Implements</dt>
         <dd>IBar</dd>
       `);
+      const text = await helpers.renderAndNormalize('symbol-header.njk', { item: fakeDoclet });
+
+      expect(text).toContain(expected);
     });
 
     it('does not add a <dl> if there are no details to show', async () => {
@@ -87,9 +90,10 @@ describe('symbol header partial', () => {
         kind: 'class',
         scope: 'global',
       };
+      const unexpected = '<dl';
       const text = await helpers.render('symbol-header.njk', { item: fakeDoclet });
 
-      expect(text).not.toContain('<dl');
+      expect(text).not.toContain(unexpected);
     });
   });
 
@@ -103,9 +107,10 @@ describe('symbol header partial', () => {
         copyright: 'Foo',
         hideconstructor: true,
       };
+      const expected = 'Foo';
       const text = await helpers.render('symbol-header.njk', { item: fakeDoclet });
 
-      expect(text).toContain('Foo');
+      expect(text).toContain(expected);
     });
   });
 });

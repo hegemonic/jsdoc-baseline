@@ -82,35 +82,29 @@ describe('symbol-index partial', () => {
   describe('heading', () => {
     it('adds a heading if there is a README', async () => {
       const data = { allLongnamesTree, readme: 'hello' };
-      const rendered = await template.render('symbol-index.njk', data);
+      const expected = '<h2>Package index</h2>';
+      let rendered = await template.render('symbol-index.njk', data);
 
-      expect(rendered).toContainHtml('<h2>Package index</h2>');
+      rendered = await helpers.normalizeHtml(rendered);
+
+      expect(rendered).toContain(expected);
     });
 
     it('omits the heading if there is not a README', async () => {
       const data = { allLongnamesTree };
-      const rendered = await template.render('symbol-index.njk', data);
+      const unexpected = '<h2>Package index</h2>';
+      let rendered = await template.render('symbol-index.njk', data);
 
-      expect(rendered).not.toContainHtml('<h2>Package index</h2>');
+      rendered = await helpers.normalizeHtml(rendered);
+
+      expect(rendered).not.toContain(unexpected);
     });
   });
 
   describe('groups', () => {
     it('creates one section per group', async () => {
       let data;
-      let longnames = [
-        'module:breakfast',
-        'module:breakfast.eat',
-        'module:lunch',
-        'module:lunch.getFavorite',
-      ];
-      let rendered;
-
-      allLongnamesTree = filteredTree(longnames);
-      data = { allLongnamesTree };
-      rendered = await template.render('symbol-index.njk', data);
-
-      expect(rendered).toContainHtml(`
+      const expectedBreakfast = await helpers.normalizeHtml(`
         <section>
           <div class="symbol-index-content">
             <h2 id="module:breakfast">module:breakfast</h2>
@@ -123,7 +117,8 @@ describe('symbol-index partial', () => {
           </div>
         </section>
       `);
-      expect(rendered).toContainHtml(`
+
+      const expectedLunch = await helpers.normalizeHtml(`
         <section>
           <div class="symbol-index-content">
             <h2 id="module:lunch">module:lunch</h2>
@@ -136,13 +131,9 @@ describe('symbol-index partial', () => {
           </div>
         </section>
       `);
-    });
-
-    it('sorts the groups by name', async () => {
-      let data;
       let longnames = [
-        'Sandwich',
-        'Sandwich#addCheeses',
+        'module:breakfast',
+        'module:breakfast.eat',
         'module:lunch',
         'module:lunch.getFavorite',
       ];
@@ -151,8 +142,15 @@ describe('symbol-index partial', () => {
       allLongnamesTree = filteredTree(longnames);
       data = { allLongnamesTree };
       rendered = await template.render('symbol-index.njk', data);
+      rendered = await helpers.normalizeHtml(rendered);
 
-      expect(rendered).toContainHtml(`
+      expect(rendered).toContain(expectedBreakfast);
+      expect(rendered).toContain(expectedLunch);
+    });
+
+    it('sorts the groups by name', async () => {
+      let data;
+      const expected = await helpers.normalizeHtml(`
         <section>
           <div class="symbol-index-content">
             <h2 id="module:lunch">module:lunch</h2>
@@ -176,42 +174,46 @@ describe('symbol-index partial', () => {
           </div>
         </section>
       `);
+      let longnames = [
+        'Sandwich',
+        'Sandwich#addCheeses',
+        'module:lunch',
+        'module:lunch.getFavorite',
+      ];
+      let rendered;
+
+      allLongnamesTree = filteredTree(longnames);
+      data = { allLongnamesTree };
+      rendered = await template.render('symbol-index.njk', data);
+      rendered = await helpers.normalizeHtml(rendered);
+
+      expect(rendered).toContain(expected);
     });
 
     describe('columns', () => {
       it('keeps 3 items in a single column', async () => {
         let data;
-        const longnames = ['Sandwich', 'Sandwich#addCheeses', 'Sandwich#addProteins'];
-        let rendered;
-
-        allLongnamesTree = filteredTree(longnames);
-        data = { allLongnamesTree };
-        rendered = await template.render('symbol-index.njk', data);
-
-        expect(rendered).toContainHtml(`
+        const expected = await helpers.normalizeHtml(`
           <index-group>
             <index-item>Sandwich</index-item>
             <index-item>Sandwich#addCheeses</index-item>
             <index-item>Sandwich#addProteins</index-item>
           </index-group>
         `);
-      });
-
-      it('splits 4 items across 2 columns', async () => {
-        let data;
-        const longnames = [
-          'Sandwich',
-          'Sandwich#addCheeses',
-          'Sandwich#addProteins',
-          'Sandwich#addSpreads',
-        ];
+        const longnames = ['Sandwich', 'Sandwich#addCheeses', 'Sandwich#addProteins'];
         let rendered;
 
         allLongnamesTree = filteredTree(longnames);
         data = { allLongnamesTree };
         rendered = await template.render('symbol-index.njk', data);
+        rendered = await helpers.normalizeHtml(rendered);
 
-        expect(rendered).toContainHtml(`
+        expect(rendered).toContain(expected);
+      });
+
+      it('splits 4 items across 2 columns', async () => {
+        let data;
+        const expected = await helpers.normalizeHtml(`
           <index-group>
             <index-item>Sandwich</index-item>
             <index-item>Sandwich#addCheeses</index-item>
@@ -221,25 +223,25 @@ describe('symbol-index partial', () => {
             <index-item>Sandwich#addSpreads</index-item>
           </index-group>
         `);
-      });
-
-      it('splits 6 items across 3 columns', async () => {
-        let data;
         const longnames = [
           'Sandwich',
           'Sandwich#addCheeses',
           'Sandwich#addProteins',
           'Sandwich#addSpreads',
-          'Sandwich#addToppings',
-          'Sandwich#chooseBread',
         ];
         let rendered;
 
         allLongnamesTree = filteredTree(longnames);
         data = { allLongnamesTree };
         rendered = await template.render('symbol-index.njk', data);
+        rendered = await helpers.normalizeHtml(rendered);
 
-        expect(rendered).toContainHtml(`
+        expect(rendered).toContain(expected);
+      });
+
+      it('splits 6 items across 3 columns', async () => {
+        let data;
+        const expected = await helpers.normalizeHtml(`
           <index-group>
             <index-item>Sandwich</index-item>
             <index-item>Sandwich#addCheeses</index-item>
@@ -253,6 +255,22 @@ describe('symbol-index partial', () => {
             <index-item>Sandwich#chooseBread</index-item>
           </index-group>
         `);
+        const longnames = [
+          'Sandwich',
+          'Sandwich#addCheeses',
+          'Sandwich#addProteins',
+          'Sandwich#addSpreads',
+          'Sandwich#addToppings',
+          'Sandwich#chooseBread',
+        ];
+        let rendered;
+
+        allLongnamesTree = filteredTree(longnames);
+        data = { allLongnamesTree };
+        rendered = await template.render('symbol-index.njk', data);
+        rendered = await helpers.normalizeHtml(rendered);
+
+        expect(rendered).toContain(expected);
       });
 
       it('creates 3 columns at most, even when there are many items', async () => {

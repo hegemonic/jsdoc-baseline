@@ -189,13 +189,14 @@ describe('symbol detail partial', () => {
           },
         ],
       };
-      const text = await helpers.render('symbol-detail', { item: fakeDoclet });
+      const expected = await helpers.normalizeHtml(`
+        <dt>Returns</dt>
+        <dd>
+          <p><code>string</code> Return value.</p>
+        </dd>`);
+      const text = await helpers.renderAndNormalize('symbol-detail', { item: fakeDoclet });
 
-      expect(text).toContainHtml(`
-      <dt>Returns</dt>
-      <dd>
-        <p><code>string</code> Return value.</p>
-      </dd>`);
+      expect(text).toContain(expected);
     });
 
     it('does not add a <dl> if there are no details to show', async () => {

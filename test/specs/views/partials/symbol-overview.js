@@ -35,12 +35,13 @@ describe('symbol overview partial', () => {
           see: ['https://example.com/'],
         },
       ];
-      const text = await helpers.render('symbol-overview.njk', { docs: fakeDoclets });
-
-      expect(text).toContainHtml(`
+      const expected = await helpers.normalizeHtml(`
         <dt>See also</dt>
         <dd><a href="https://example.com/">https://example.com/</a></dd>
       `);
+      const text = await helpers.renderAndNormalize('symbol-overview.njk', { docs: fakeDoclets });
+
+      expect(text).toContain(expected);
     });
 
     it('does not add an empty <dl> if the doclet is not an external', async () => {
@@ -50,12 +51,10 @@ describe('symbol overview partial', () => {
         kind: 'class',
         scope: 'global',
       };
-      const text = await helpers.render('symbol-overview.njk', { docs: [fakeDoclet] });
+      const unexpected = await helpers.normalizeHtml('<dl class="dl-compact"></dl>');
+      const text = await helpers.renderAndNormalize('symbol-overview.njk', { docs: [fakeDoclet] });
 
-      expect(text).not.toContainHtml(`
-        <dl class="dl-compact">
-        </dl>
-      `);
+      expect(text).not.toContain(unexpected);
     });
   });
 });

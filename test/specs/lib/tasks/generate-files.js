@@ -25,9 +25,6 @@ import { defaultConfig } from '../../../../lib/config.js';
 import GenerateFiles from '../../../../lib/tasks/generate-files.js';
 import Ticket from '../../../../lib/ticket.js';
 
-// Prettier lazy-loads its HTML parser. Preload it now when we know we're not mocked.
-import 'prettier/parser-html.js';
-
 const OUTPUT_DIR = 'out';
 const TYPE_ERROR = 'TypeError';
 
@@ -93,6 +90,11 @@ describe('lib/tasks/generate-files', () => {
   describe('run', () => {
     let context;
     let result;
+
+    beforeAll(async () => {
+      // Prettier lazy-loads its HTML parser. Force it to load while the filesystem isn't mocked.
+      await helpers.normalizeHtml('<p>foo</p>');
+    });
 
     beforeEach(async () => {
       const templateConfig = _.cloneDeep(defaultConfig);
@@ -289,24 +291,6 @@ describe('lib/tasks/generate-files', () => {
         await task.run(context);
 
         expect(() => stat(context, url)).not.toThrow();
-      });
-
-      it('does not beautify HTML output by default', async () => {
-        let file;
-        const ticket = new Ticket({
-          data: {},
-          url: 'foo.html',
-          viewName: 'layout.njk',
-        });
-        const task = new GenerateFiles({
-          name: 'beautify',
-          tickets: [ticket],
-        });
-
-        await task.run(context);
-        file = fs.readFileSync(path.join(OUTPUT_DIR, 'foo.html'), 'utf8');
-
-        expect(file).toMatch(/[ ]{20}/);
       });
 
       it('does not beautify HTML output by default', async () => {

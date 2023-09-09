@@ -22,6 +22,7 @@ import { fileURLToPath } from 'node:url';
 
 import { Dependencies } from '@jsdoc/core';
 import deepExtend from 'deep-extend';
+import { format } from 'prettier';
 import glob from 'fast-glob';
 import _ from 'lodash';
 
@@ -29,6 +30,15 @@ import { defaultConfig } from '../../lib/config.js';
 import Template from '../../lib/template.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+function stripWhitespace(str) {
+  // Remove leading whitespace.
+  str = str.replace(/^[\s]+/gm, '');
+  // Remove empty lines.
+  str = str.replace(/^\n$/gm, '');
+
+  return str;
+}
 
 // Resets environment variables used by JSDoc to the default values for tests.
 function resetJsdocEnv() {
@@ -138,8 +148,23 @@ global.helpers = {
       () => cb()
     ),
 
+  normalizeHtml: async (str) => {
+    str = await format(str, {
+      parser: 'html',
+      tabWidth: 2,
+    });
+
+    return stripWhitespace(str);
+  },
+
   // Renders a Handlebars view.
   render: (...args) => global.helpers.template.render(...args),
+
+  renderAndNormalize: async (...args) => {
+    const rendered = await global.helpers.render(...args);
+
+    return global.helpers.normalizeHtml(rendered);
+  },
 
   // Sets up the runtime environment so that JSDoc can work properly.
   setup: resetJsdocEnv,
