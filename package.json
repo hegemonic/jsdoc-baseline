@@ -103,6 +103,7 @@
   },
   "targets": {
     "default": {
+      "context": "browser",
       "optimize": true
     },
     "main": false
