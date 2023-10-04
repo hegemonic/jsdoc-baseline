@@ -21,7 +21,7 @@ import { db } from './lib/db.js';
 import tasks from './lib/default-tasks.js';
 import DocletHelper from './lib/doclethelper.js';
 
-export async function publish(taffyData, dependencies) {
+export async function publish(docletStore, dependencies) {
   const options = dependencies.get('options');
   const templateConfig = loadConfigSync(dependencies);
   const allConfig = _.defaults(
@@ -42,7 +42,7 @@ export async function publish(taffyData, dependencies) {
   const docletHelper = new DocletHelper(dependencies);
   const runner = new TaskRunner();
 
-  docletHelper.addDoclets(taffyData);
+  docletHelper.addDoclets(docletStore);
   context.doclets = db({
     config: allConfig,
     values: docletHelper.allDoclets,
