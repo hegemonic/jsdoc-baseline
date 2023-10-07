@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import { TaskRunner } from '@jsdoc/task-runner';
 import _ from 'lodash';
 
@@ -47,6 +48,7 @@ export async function publish(docletStore, dependencies) {
     config: allConfig,
     values: docletHelper.allDoclets,
   });
+  context.docletStore = docletStore;
   context.sourceFiles = docletHelper.shortPaths;
 
   runner.addTasks(tasks);

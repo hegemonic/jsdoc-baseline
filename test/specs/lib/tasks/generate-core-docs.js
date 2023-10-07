@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 // eslint-disable-next-line simple-import-sort/imports
 import mock from 'mock-fs';
 
@@ -21,11 +22,24 @@ import path from 'node:path';
 import fs from 'fs-extra';
 
 import { defaultConfig } from '../../../../lib/config.js';
-import { db } from '../../../../lib/db.js';
 import { KIND_TO_CATEGORY, OUTPUT_FILE_CATEGORIES } from '../../../../lib/enums.js';
 import GenerateCoreDocs from '../../../../lib/tasks/generate-core-docs.js';
 
 const OUTPUT_DIR = 'out';
+
+function createTestDoclets() {
+  return [
+    helpers.createDoclet(['@namespace', '@name foo', '@longname foo']),
+    helpers.createDoclet(['@class', '@name Bar', '@longname foo.Bar', '@memberof foo', '@static']),
+    helpers.createDoclet([
+      '@function',
+      '@name baz',
+      '@longname foo~baz',
+      '@memberof foo',
+      '@inner',
+    ]),
+  ];
+}
 
 describe('lib/tasks/generate-core-docs', () => {
   it('is a constructor', () => {
@@ -37,34 +51,13 @@ describe('lib/tasks/generate-core-docs', () => {
   });
 
   describe('run', () => {
-    const allDoclets = [
-      {
-        kind: 'namespace',
-        longname: 'foo',
-        name: 'foo',
-      },
-      {
-        kind: 'class',
-        longname: 'foo.Bar',
-        memberof: 'foo',
-        name: 'Bar',
-        scope: 'static',
-      },
-      {
-        kind: 'function',
-        longname: 'foo~baz',
-        memberof: 'foo',
-        name: 'baz',
-        scope: 'inner',
-      },
-    ];
     let conf;
     let context;
     let doclets;
     let instance;
 
     beforeEach(async () => {
-      doclets = allDoclets.slice();
+      doclets = createTestDoclets();
       conf = {
         opts: {
           access: ['undefined'],
@@ -73,10 +66,7 @@ describe('lib/tasks/generate-core-docs', () => {
       context = {
         config: conf,
         destination: OUTPUT_DIR,
-        doclets: db({
-          config: conf,
-          values: doclets,
-        }),
+        docletStore: helpers.createDocletStore(doclets),
         needsOutputFile: (() => {
           const obj = {};
 
@@ -94,8 +84,8 @@ describe('lib/tasks/generate-core-docs', () => {
         templateConfig: defaultConfig,
       };
       context.linkManager = context.template.linkManager;
-      for (const d of allDoclets) {
-        context.linkManager.registerDoclet(d);
+      for (const doclet of doclets) {
+        context.linkManager.registerDoclet(doclet);
       }
       instance = new GenerateCoreDocs({ name: 'generateCoreDocs' });
 
@@ -145,23 +135,19 @@ describe('lib/tasks/generate-core-docs', () => {
       });
 
       it('does not generate output if a module has the same longname', async () => {
+        const fakeMeta = {
+          filename: 'baz.js',
+          path: '/Users/someone',
+        };
         let files;
         const longname = 'module:baz';
         const newDoclets = [
-          {
-            kind: 'module',
-            longname,
-            name: longname,
-          },
-          {
-            kind: 'class',
-            longname,
-            name: longname,
-          },
+          helpers.createDoclet(['@name module:baz', '@longname module:baz', '@module'], fakeMeta),
+          helpers.createDoclet(['@name module:baz', '@longname module:baz', '@class'], fakeMeta),
         ];
         const values = doclets.concat(newDoclets);
 
-        context.doclets = db({ values });
+        context.doclets = helpers.createDocletStore(values);
         context.needsOutputFile[longname] = true;
         context.linkManager.registerDoclet(newDoclets[0]);
 

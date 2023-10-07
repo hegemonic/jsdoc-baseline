@@ -21,6 +21,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { Dependencies } from '@jsdoc/core';
+import { Doclet, DocletStore } from '@jsdoc/doclet';
+import { Dictionary } from '@jsdoc/tag';
+import { EventBus } from '@jsdoc/util';
 import deepExtend from 'deep-extend';
 import { format } from 'prettier';
 import glob from 'fast-glob';
@@ -30,6 +33,7 @@ import { defaultConfig } from '../../lib/config.js';
 import Template from '../../lib/template.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const LONGNAME_FAKE_TAG = '@longname ';
 
 function stripWhitespace(str) {
   // Remove leading whitespace.
@@ -47,6 +51,7 @@ function resetJsdocEnv() {
   env.conf = {
     markdown: {},
     tags: {
+      allowUnknownTags: true,
       dictionaries: ['jsdoc'],
     },
     templates: {
@@ -70,7 +75,10 @@ function resetJsdocEnv() {
   };
 
   global.helpers.deps = new Dependencies();
+  global.helpers.deps.registerValue('config', env.conf);
   global.helpers.deps.registerValue('env', env);
+  global.helpers.deps.registerValue('eventBus', new EventBus('jsdoc'));
+  global.helpers.deps.registerSingletonFactory('tags', () => Dictionary.fromConfig(env));
 }
 
 function findMatchingFilepath(filepaths, filename) {
@@ -126,6 +134,44 @@ global.helpers = {
     return _.defaults(views, global.helpers.baseViews);
   },
 
+  createDoclet: (comment, meta, deps) => {
+    let doclet;
+    let longname;
+
+    // `@longname` isn't a real tag, but we accept it for convenience.
+    comment = comment.filter((tag) => {
+      if (tag.startsWith(LONGNAME_FAKE_TAG)) {
+        longname = tag.replace(LONGNAME_FAKE_TAG, '');
+
+        return false;
+      }
+
+      return true;
+    });
+
+    deps ??= global.helpers.deps;
+    doclet = new Doclet(`/**\n${comment.join('\n')}\n*/`, meta, deps);
+    if (longname) {
+      doclet.longname = longname;
+    }
+
+    if (meta?._emitEvent !== false) {
+      deps.get('eventBus').emit('newDoclet', { doclet });
+    }
+
+    return doclet;
+  },
+
+  createDocletStore: (doclets) => {
+    const docletStore = new DocletStore(global.helpers.deps);
+
+    for (const doclet of doclets) {
+      docletStore.add(doclet);
+    }
+
+    return docletStore;
+  },
+
   // Creates a new, fully initialized Template object with the specified configuration settings.
   createTemplate: (config) => {
     config = config || {};
@@ -134,13 +180,13 @@ global.helpers = {
     config = deepExtend({}, defaultConfig, config);
 
     return mock.bypass(async () => {
-      const template = await Template.create(config, global.helpers.deps);
+      const template = await Template.create(config, {}, global.helpers.deps);
 
       return template;
     });
   },
 
-  deps: new Dependencies(),
+  deps: null,
 
   handlePromise: (promise, cb) =>
     promise.then(
@@ -175,3 +221,5 @@ global.helpers.template = await (async () => {
 
   return template;
 })();
+
+resetJsdocEnv();

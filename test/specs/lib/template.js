@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import { defaultConfig } from '../../../lib/config.js';
 import Template from '../../../lib/template.js';
 
@@ -20,7 +21,7 @@ describe('lib/template', () => {
   let instance; // eslint-disable-line no-unused-vars
 
   beforeEach(() => {
-    instance = Template.create(defaultConfig, helpers.deps);
+    instance = Template.create(defaultConfig, {}, helpers.deps);
   });
 
   it('should be a constructor', () => {

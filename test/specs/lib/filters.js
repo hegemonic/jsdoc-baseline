@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import catharsis from 'catharsis';
 
 import * as filters from '../../../lib/filters.js';
@@ -503,11 +504,15 @@ describe('lib/filters', () => {
     describe('linkToLine', () => {
       const fakeDocletMeta = {
         lineno: 70,
-        shortpath: 'glitch.js',
+        filename: 'glitch.js',
+        path: '/Users/someone',
       };
 
       beforeEach(() => {
         linkManager.requestFilename('glitch.js');
+        instance._template.context.sourceFiles = {
+          '/Users/someone/glitch.js': 'glitch.js',
+        };
       });
 
       it('works when a CSS class is specified', () => {
@@ -533,6 +538,9 @@ describe('lib/filters', () => {
           },
         });
         linkManager.requestFilename('glitch.js');
+        instance._template.context.sourceFiles = {
+          '/Users/someone/glitch.js': 'glitch.js',
+        };
 
         link = instance.linkToLine(fakeDocletMeta, 'flibble');
 
@@ -544,7 +552,8 @@ describe('lib/filters', () => {
       it('ignores the line number if the code is on line 1', () => {
         const meta = {
           lineno: 1,
-          shortpath: 'glitch.js',
+          filename: 'glitch.js',
+          path: '/Users/someone',
         };
         const link = instance.linkToLine(meta);
 

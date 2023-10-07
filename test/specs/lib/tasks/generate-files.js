@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 // eslint-disable-next-line simple-import-sort/imports
 import mock from 'mock-fs';
 
@@ -22,6 +23,7 @@ import fs from 'fs-extra';
 import _ from 'lodash';
 
 import { defaultConfig } from '../../../../lib/config.js';
+import { CATEGORY_TO_KIND } from '../../../../lib/enums.js';
 import GenerateFiles from '../../../../lib/tasks/generate-files.js';
 import Ticket from '../../../../lib/ticket.js';
 
@@ -71,6 +73,10 @@ describe('lib/tasks/generate-files', () => {
     expect(factory).not.toThrow();
   });
 
+  it('has a static `categorizeDoclets` method', () => {
+    expect(GenerateFiles.categorizeDoclets).toBeFunction();
+  });
+
   it('accepts tickets', () => {
     const tickets = [
       new Ticket({
@@ -85,6 +91,34 @@ describe('lib/tasks/generate-files', () => {
     });
 
     expect(task.tickets).toBe(tickets);
+  });
+
+  describe('categorizeDoclets', () => {
+    const fakeDoclets = [{ kind: 'constant' }, { kind: 'function' }, { kind: 'module' }];
+
+    it('categorizes doclets based on their kind', () => {
+      const categorized = GenerateFiles.categorizeDoclets(fakeDoclets);
+      const categories = Object.keys(categorized);
+
+      expect(categories).toBeArrayOfSize(3);
+
+      for (const category of categories) {
+        const doclets = categorized[category];
+
+        for (const doclet of doclets) {
+          expect(CATEGORY_TO_KIND[category]).toContain(doclet.kind);
+        }
+      }
+    });
+
+    it('categorizes items correctly when multiple doclet kinds map to one category', () => {
+      const propertyDoclet = { kind: 'member' };
+      const data = fakeDoclets.concat(propertyDoclet);
+      const categorized = GenerateFiles.categorizeDoclets(data);
+
+      expect(categorized.properties).toBeArrayOfSize(2);
+      expect(categorized.properties).toEqual([{ kind: 'constant' }, { kind: 'member' }]);
+    });
   });
 
   describe('run', () => {
