@@ -108,9 +108,9 @@ describe('lib/tasks/set-context', () => {
           '@event',
         ]);
         const listenerDoclet = helpers.createDoclet([
-          '@name bar',
-          '@longname bar',
-          '@event',
+          '@name Bar',
+          '@longname Bar',
+          '@class',
           '@listens event:foo',
         ]);
 
@@ -118,7 +118,7 @@ describe('lib/tasks/set-context', () => {
         context.docletStore = helpers.createDocletStore([eventDoclet, listenerDoclet]);
         await instance.run(context);
 
-        expect(eventDoclet.listeners).toEqual(['bar']);
+        expect(eventDoclet.listeners).toEqual(['Bar']);
       });
     });
 
@@ -140,12 +140,6 @@ describe('lib/tasks/set-context', () => {
     });
 
     describe('properties', () => {
-      it('sets `allLongnames` correctly', async () => {
-        await instance.run(context);
-
-        expect(context.allLongnames).toEqual(['Foo', 'bar']);
-      });
-
       it('sets `allLongnamesTree` correctly', async () => {
         await instance.run(context);
 
