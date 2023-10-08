@@ -44,7 +44,6 @@ export async function publish(docletStore, dependencies) {
   const runner = new TaskRunner();
 
   docletHelper.addDoclets(docletStore);
-  context.sourceFiles = docletHelper.shortPaths;
 
   runner.addTasks(tasks);
   try {

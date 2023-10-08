@@ -22,8 +22,14 @@ const TYPE_ERROR = 'TypeError';
 describe('lib/tasks/set-context', () => {
   let context;
   const fakeDoclets = [
-    helpers.createDoclet(['@name Foo', '@longname Foo', '@class']),
-    helpers.createDoclet(['@name bar', '@longname bar', '@function', '@global']),
+    helpers.createDoclet(['@name Foo', '@longname Foo', '@class'], {
+      filename: '/Users/someone/lib/foo.js',
+      lineno: 1,
+    }),
+    helpers.createDoclet(['@name bar', '@longname bar', '@function', '@global'], {
+      filename: '/Users/someone/bar.js',
+      lineno: 1,
+    }),
   ];
   let instance;
 
@@ -233,6 +239,26 @@ describe('lib/tasks/set-context', () => {
         await instance.run(context);
 
         expect(context.readme).toBe(filepath);
+      });
+
+      it('sets `sourceFiles` correctly when there is one source file', async () => {
+        context.docletStore._removeListeners();
+        context.docletStore = helpers.createDocletStore(fakeDoclets.slice(0, 1));
+
+        await instance.run(context);
+
+        expect(context.sourceFiles).toEqual({
+          '/Users/someone/lib/foo.js': 'foo.js',
+        });
+      });
+
+      it('sets `sourceFiles` correctly when there are multiple source files', async () => {
+        await instance.run(context);
+
+        expect(context.sourceFiles).toEqual({
+          '/Users/someone/lib/foo.js': 'lib/foo.js',
+          '/Users/someone/bar.js': 'bar.js',
+        });
       });
 
       it('sets `template` correctly', async () => {
