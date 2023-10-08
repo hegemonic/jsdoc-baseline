@@ -37,13 +37,13 @@ export async function publish(docletStore, dependencies) {
   const context = {
     config: allConfig,
     dependencies,
+    docletStore,
     templateConfig,
   };
-  const docletHelper = new DocletHelper(dependencies);
+  const docletHelper = new DocletHelper();
   const runner = new TaskRunner();
 
   docletHelper.addDoclets(docletStore);
-  context.docletStore = docletStore;
   context.sourceFiles = docletHelper.shortPaths;
 
   runner.addTasks(tasks);
