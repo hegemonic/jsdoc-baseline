@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 // eslint-disable-next-line simple-import-sort/imports
 import mock from 'mock-fs';
 
@@ -23,7 +24,6 @@ import fs from 'fs-extra';
 import _ from 'lodash';
 
 import { defaultConfig } from '../../../../lib/config.js';
-import { db } from '../../../../lib/db.js';
 import GenerateIndex from '../../../../lib/tasks/generate-index.js';
 
 const OUTPUT_DIR = 'out';
@@ -63,8 +63,6 @@ describe('lib/tasks/generate-index', () => {
       ),
       config: conf,
       destination: OUTPUT_DIR,
-      doclets: db({ values: doclets }),
-      globals: db({ values: [] }),
       pageTitlePrefix: '',
       readme: 'fixtures/readme.md',
       template: await helpers.createTemplate(defaultConfig),
@@ -105,15 +103,7 @@ describe('lib/tasks/generate-index', () => {
   });
 
   describe('run', () => {
-    it('generates a file if there are no doclets', async () => {
-      context.doclets = db({ values: [] });
-
-      await instance.run(context);
-
-      expect(fs.existsSync(path.join(OUTPUT_DIR, instance.url))).toBeTrue();
-    });
-
-    it('generates a file if there are doclets', async () => {
+    it('generates a file', async () => {
       await instance.run(context);
 
       expect(fs.existsSync(path.join(OUTPUT_DIR, instance.url))).toBeTrue();

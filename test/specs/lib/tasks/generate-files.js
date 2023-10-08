@@ -77,6 +77,10 @@ describe('lib/tasks/generate-files', () => {
     expect(GenerateFiles.categorizeDoclets).toBeFunction();
   });
 
+  it('has a static `sortDoclets` method', () => {
+    expect(GenerateFiles.sortDoclets).toBeFunction();
+  });
+
   it('accepts tickets', () => {
     const tickets = [
       new Ticket({
@@ -118,6 +122,49 @@ describe('lib/tasks/generate-files', () => {
 
       expect(categorized.properties).toBeArrayOfSize(2);
       expect(categorized.properties).toEqual([{ kind: 'constant' }, { kind: 'member' }]);
+    });
+
+    it('does not sort doclets by default', () => {
+      const unsortedFakeDoclets = [
+        { longname: 'foo', kind: 'function' },
+        { longname: 'bar', kind: 'function' },
+      ];
+      const categorized = GenerateFiles.categorizeDoclets(unsortedFakeDoclets);
+
+      expect(categorized.functions).toEqual(unsortedFakeDoclets);
+    });
+
+    it('sorts by a single property when asked', () => {
+      const unsortedFakeDoclets = [
+        { longname: 'foo', kind: 'function', since: '2.0.0' },
+        { longname: 'foo', kind: 'function', since: '1.0.0' },
+        { longname: 'bar', kind: 'function', since: '8.0.0' },
+      ];
+      const categorized = GenerateFiles.categorizeDoclets(unsortedFakeDoclets, ['longname']);
+
+      expect(categorized.functions).toEqual([
+        { longname: 'bar', kind: 'function', since: '8.0.0' },
+        { longname: 'foo', kind: 'function', since: '2.0.0' },
+        { longname: 'foo', kind: 'function', since: '1.0.0' },
+      ]);
+    });
+
+    it('sorts by multiple properties when asked, in the specified order', () => {
+      const unsortedFakeDoclets = [
+        { longname: 'foo', kind: 'function', since: '2.0.0' },
+        { longname: 'foo', kind: 'function', since: '1.0.0' },
+        { longname: 'bar', kind: 'function', since: '8.0.0' },
+      ];
+      const categorized = GenerateFiles.categorizeDoclets(unsortedFakeDoclets, [
+        'longname',
+        'since',
+      ]);
+
+      expect(categorized.functions).toEqual([
+        { longname: 'bar', kind: 'function', since: '8.0.0' },
+        { longname: 'foo', kind: 'function', since: '1.0.0' },
+        { longname: 'foo', kind: 'function', since: '2.0.0' },
+      ]);
     });
   });
 
@@ -456,6 +503,38 @@ describe('lib/tasks/generate-files', () => {
 
         expect(rethrower(error)).toThrowError();
       });
+    });
+  });
+
+  describe('sortDoclets', () => {
+    const unsortedFakeDoclets = [
+      { longname: 'foo', kind: 'function', since: '2.0.0' },
+      { longname: 'foo', kind: 'function', since: '1.0.0' },
+      { longname: 'bar', kind: 'function', since: '8.0.0' },
+    ];
+
+    it('sorts by a single property when asked', () => {
+      const doclets = unsortedFakeDoclets.slice();
+
+      GenerateFiles.sortDoclets(doclets, ['longname']);
+
+      expect(doclets).toEqual([
+        { longname: 'bar', kind: 'function', since: '8.0.0' },
+        { longname: 'foo', kind: 'function', since: '2.0.0' },
+        { longname: 'foo', kind: 'function', since: '1.0.0' },
+      ]);
+    });
+
+    it('sorts by multiple properties when asked, in the specified order', () => {
+      const doclets = unsortedFakeDoclets.slice();
+
+      GenerateFiles.sortDoclets(doclets, ['longname', 'since']);
+
+      expect(doclets).toEqual([
+        { longname: 'bar', kind: 'function', since: '8.0.0' },
+        { longname: 'foo', kind: 'function', since: '1.0.0' },
+        { longname: 'foo', kind: 'function', since: '2.0.0' },
+      ]);
     });
   });
 });

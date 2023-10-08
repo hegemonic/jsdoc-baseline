@@ -18,7 +18,6 @@ import { TaskRunner } from '@jsdoc/task-runner';
 import _ from 'lodash';
 
 import { loadConfigSync } from './lib/config.js';
-import { db } from './lib/db.js';
 import tasks from './lib/default-tasks.js';
 import DocletHelper from './lib/doclethelper.js';
 
@@ -44,10 +43,6 @@ export async function publish(docletStore, dependencies) {
   const runner = new TaskRunner();
 
   docletHelper.addDoclets(docletStore);
-  context.doclets = db({
-    config: allConfig,
-    values: docletHelper.allDoclets,
-  });
   context.docletStore = docletStore;
   context.sourceFiles = docletHelper.shortPaths;
 

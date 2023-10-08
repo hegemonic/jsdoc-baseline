@@ -14,7 +14,6 @@
   limitations under the License.
 */
 import { loadConfigSync } from '../../../../lib/config.js';
-import { db } from '../../../../lib/db.js';
 import SetContext from '../../../../lib/tasks/set-context.js';
 import Template from '../../../../lib/template.js';
 
@@ -23,17 +22,8 @@ const TYPE_ERROR = 'TypeError';
 describe('lib/tasks/set-context', () => {
   let context;
   const fakeDoclets = [
-    {
-      kind: 'class',
-      longname: 'Foo',
-      name: 'Foo',
-    },
-    {
-      kind: 'function',
-      longname: 'bar',
-      name: 'bar',
-      scope: 'global',
-    },
+    helpers.createDoclet(['@name Foo', '@longname Foo', '@class']),
+    helpers.createDoclet(['@name bar', '@longname bar', '@function', '@global']),
   ];
   let instance;
 
@@ -45,10 +35,14 @@ describe('lib/tasks/set-context', () => {
         },
       },
       dependencies: helpers.deps,
-      doclets: db({ values: fakeDoclets }),
+      docletStore: helpers.createDocletStore(fakeDoclets),
       templateConfig: loadConfigSync(helpers.deps),
     };
     instance = new SetContext({ name: 'setContext' });
+  });
+
+  afterEach(() => {
+    context.docletStore._removeListeners();
   });
 
   it('is a constructor', () => {
@@ -57,10 +51,6 @@ describe('lib/tasks/set-context', () => {
     }
 
     expect(factory).not.toThrow();
-  });
-
-  it('has a `globalKinds` property', () => {
-    expect(instance.globalKinds).toBeArrayOfStrings();
   });
 
   describe('run', () => {
@@ -112,21 +102,20 @@ describe('lib/tasks/set-context', () => {
 
     describe('event listeners', () => {
       it('adds a `listeners` property to events that have listeners', async () => {
-        const eventDoclet = {
-          kind: 'event',
-          longname: 'event:foo',
-          name: 'event:foo',
-        };
-        const listenerDoclet = {
-          kind: 'function',
-          listens: ['event:foo'],
-          longname: 'bar',
-          name: 'bar',
-        };
+        const eventDoclet = helpers.createDoclet([
+          '@name event:foo',
+          '@longname event:foo',
+          '@event',
+        ]);
+        const listenerDoclet = helpers.createDoclet([
+          '@name bar',
+          '@longname bar',
+          '@event',
+          '@listens event:foo',
+        ]);
 
-        context.doclets = db({
-          values: [eventDoclet, listenerDoclet],
-        });
+        context.docletStore._removeListeners();
+        context.docletStore = helpers.createDocletStore([eventDoclet, listenerDoclet]);
         await instance.run(context);
 
         expect(eventDoclet.listeners).toEqual(['bar']);
@@ -135,14 +124,15 @@ describe('lib/tasks/set-context', () => {
 
     describe('longnames', () => {
       it('strips the variation, if present, from each longname', async () => {
-        const doclet = {
-          kind: 'function',
-          longname: 'foo(2)',
-          name: 'foo',
-          variation: '2',
-        };
+        const doclet = helpers.createDoclet([
+          '@name foo',
+          '@longname foo(2)',
+          '@function',
+          '@variation 2',
+        ]);
 
-        context.doclets = db({ values: [doclet] });
+        context.docletStore._removeListeners();
+        context.docletStore = helpers.createDocletStore([doclet]);
         await instance.run(context);
 
         expect(doclet.longname).toBe('foo');
@@ -172,14 +162,6 @@ describe('lib/tasks/set-context', () => {
         expect(context.destination).toBe('out');
       });
 
-      it('sets `globals` correctly', async () => {
-        const globals = fakeDoclets.filter((d) => d.scope === 'global');
-
-        await instance.run(context);
-
-        expect(context.globals.value()).toEqual(globals);
-      });
-
       it('sets `navTree` correctly', async () => {
         await instance.run(context);
 
@@ -202,59 +184,36 @@ describe('lib/tasks/set-context', () => {
       });
 
       it('does not set `package` when the package is a placeholder', async () => {
-        const packages = [
-          {
-            kind: 'package',
-            name: 'package:undefined',
-            longname: 'package:undefined',
-          },
-        ];
+        const fakePackage = helpers.createPackage();
 
-        context.doclets = db({
-          values: fakeDoclets.concat(packages),
-        });
+        context.docletStore._removeListeners();
+        context.docletStore = helpers.createDocletStore([...fakeDoclets, fakePackage]);
         await instance.run(context);
 
         expect(context.package).toBeUndefined();
       });
 
       it('sets `package` correctly when there is a package', async () => {
-        const packages = [
-          {
-            kind: 'package',
-            name: 'package:foo',
-            longname: 'package:foo',
-          },
-        ];
+        const fakePackage = helpers.createPackage({ name: 'foo' });
 
-        context.doclets = db({
-          values: fakeDoclets.concat(packages),
-        });
+        context.docletStore._removeListeners();
+        context.docletStore = helpers.createDocletStore([...fakeDoclets, fakePackage]);
         await instance.run(context);
 
-        expect(context.package).toBe(packages[0]);
+        expect(context.package).toBe(fakePackage);
       });
 
       it('sets `package` to the first package when there are two packages', async () => {
-        const packages = [
-          {
-            kind: 'package',
-            name: 'package:foo',
-            longname: 'package:foo',
-          },
-          {
-            kind: 'package',
-            name: 'package:bar',
-            longname: 'package:bar',
-          },
+        const fakePackages = [
+          helpers.createPackage({ name: 'foo' }),
+          helpers.createPackage({ name: 'bar' }),
         ];
 
-        context.doclets = db({
-          values: fakeDoclets.concat(packages),
-        });
+        context.docletStore._removeListeners();
+        context.docletStore = helpers.createDocletStore(fakeDoclets.concat(fakePackages));
         await instance.run(context);
 
-        expect(context.package).toBe(packages[0]);
+        expect(context.package).toBe(fakePackages[0]);
       });
 
       it('sets `pageTitlePrefix` correctly when there is no package', async () => {

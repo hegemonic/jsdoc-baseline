@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 // Helper functions for testing the Baseline template.
 import mock from 'mock-fs'; // eslint-disable-line
 
@@ -21,7 +22,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { Dependencies } from '@jsdoc/core';
-import { Doclet, DocletStore } from '@jsdoc/doclet';
+import { Doclet, DocletStore, Package } from '@jsdoc/doclet';
 import { Dictionary } from '@jsdoc/tag';
 import { EventBus } from '@jsdoc/util';
 import deepExtend from 'deep-extend';
@@ -150,6 +151,7 @@ global.helpers = {
     });
 
     deps ??= global.helpers.deps;
+    meta ??= {};
     doclet = new Doclet(`/**\n${comment.join('\n')}\n*/`, meta, deps);
     if (longname) {
       doclet.longname = longname;
@@ -170,6 +172,10 @@ global.helpers = {
     }
 
     return docletStore;
+  },
+
+  createPackage: (data) => {
+    return new Package(JSON.stringify(data ?? {}));
   },
 
   // Creates a new, fully initialized Template object with the specified configuration settings.

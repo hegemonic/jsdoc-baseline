@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 // eslint-disable-next-line simple-import-sort/imports
 import mock from 'mock-fs';
 
@@ -21,55 +22,30 @@ import path from 'node:path';
 import fs from 'fs-extra';
 
 import { defaultConfig } from '../../../../lib/config.js';
-import { db } from '../../../../lib/db.js';
 import GenerateGlobals from '../../../../lib/tasks/generate-globals.js';
 
 const OUTPUT_DIR = 'out';
 
+function createTestDoclets() {
+  return [
+    helpers.createDoclet(['@name globalConstant', '@longname globalConstant', '@const', '@global']),
+    helpers.createDoclet(['@name globalEvent', '@longname globalEvent', '@event', '@global']),
+    helpers.createDoclet([
+      '@name globalFunction',
+      '@longname globalFunction',
+      '@function',
+      '@global',
+    ]),
+    helpers.createDoclet(['@name globalMember', '@longname globalMember', '@member', '@global']),
+    // TODO: Update views to do something with mixins, then uncomment this doclet.
+    // helpers.createDoclet(['@name globalMixin', '@longname globalMixin', '@mixin', '@global']),
+    helpers.createDoclet(['@name globalTypedef', '@longname globalTypedef', '@typedef', '@global']),
+  ];
+}
+
 describe('lib/tasks/generate-globals', () => {
   let conf;
   let context;
-  const globals = [
-    {
-      kind: 'constant',
-      longname: 'globalConstant',
-      name: 'globalConstant',
-      scope: 'global',
-    },
-    {
-      kind: 'event',
-      longname: 'globalEvent',
-      name: 'globalEvent',
-      scope: 'global',
-    },
-    {
-      kind: 'function',
-      longname: 'globalFunction',
-      name: 'globalFunction',
-      scope: 'global',
-    },
-    {
-      kind: 'member',
-      longname: 'globalMember',
-      name: 'globalMember',
-      scope: 'global',
-    },
-    // TODO: Update views to do something with mixins, then uncomment this doclet.
-    /*
-        {
-            kind: 'mixin',
-            longname: 'globalMixin',
-            name: 'globalMixin',
-            scope: 'global'
-        },
-        */
-    {
-      kind: 'typedef',
-      longname: 'globalTypedef',
-      name: 'globalTypedef',
-      scope: 'global',
-    },
-  ];
   let instance;
 
   beforeEach(async () => {
@@ -81,10 +57,7 @@ describe('lib/tasks/generate-globals', () => {
     context = {
       config: conf,
       destination: OUTPUT_DIR,
-      globals: db({
-        config: conf,
-        values: globals,
-      }),
+      docletStore: helpers.createDocletStore(createTestDoclets()),
       pageTitlePrefix: '',
       template: await helpers.createTemplate(defaultConfig),
       templateConfig: defaultConfig,
@@ -99,6 +72,7 @@ describe('lib/tasks/generate-globals', () => {
 
   afterEach(() => {
     mock.restore();
+    context.docletStore._removeListeners();
   });
 
   it('is a constructor', () => {
@@ -138,10 +112,8 @@ describe('lib/tasks/generate-globals', () => {
     });
 
     it('generates nothing if there are no globals', async () => {
-      context.globals = db({
-        config: conf,
-        values: [],
-      });
+      context.docletStore._removeListeners();
+      context.docletStore = helpers.createDocletStore([]);
 
       await instance.run(context);
 
@@ -169,7 +141,7 @@ describe('lib/tasks/generate-globals', () => {
       await instance.run(context);
       file = fs.readFileSync(path.join(OUTPUT_DIR, 'global.html'), 'utf8');
 
-      for (const global of globals) {
+      for (const global of context.docletStore.globals) {
         expect(file).toContain(global.name);
       }
     });
@@ -178,9 +150,15 @@ describe('lib/tasks/generate-globals', () => {
       it('is singular when there is one global', async () => {
         let file;
 
-        context.globals = db({
-          values: [globals[0]],
-        });
+        context.docletStore._removeListeners();
+        context.docletStore = helpers.createDocletStore([
+          helpers.createDoclet([
+            '@name globalConstant',
+            '@longname globalConstant',
+            '@const',
+            '@global',
+          ]),
+        ]);
         await instance.run(context);
         file = fs.readFileSync(path.join(OUTPUT_DIR, 'global.html'), 'utf8');
 

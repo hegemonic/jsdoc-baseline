@@ -14,22 +14,27 @@
   limitations under the License.
 */
 import { name } from '@jsdoc/core';
-import _ from 'lodash';
 
 import { defaultConfig } from '../../../../lib/config.js';
-import { db } from '../../../../lib/db.js';
 import SetTocData from '../../../../lib/tasks/set-toc-data.js';
 
 const OUTPUT_DIR = 'out';
 const TYPE_ERROR = 'TypeError';
 
-function findTocLongnames(items, seen = []) {
+function findTocLongnames(items, seen) {
+  let result;
+
+  seen ??= new Set();
+
   items.forEach((item) => {
-    seen.push(item.id);
+    seen.add(item.id);
     findTocLongnames(item.children, seen);
   });
 
-  return _.uniq(seen).sort();
+  result = Array.from(seen);
+  result.sort();
+
+  return result;
 }
 
 describe('lib/tasks/set-toc-data', () => {
@@ -51,45 +56,30 @@ describe('lib/tasks/set-toc-data', () => {
 
   describe('run', () => {
     let context;
-    const globals = db({
-      values: [
-        {
-          kind: 'constant',
-          longname: 'globalConstant',
-          name: 'globalConstant',
-          scope: 'global',
-        },
-        {
-          kind: 'function',
-          longname: 'globalFunction',
-          name: 'globalFunction',
-          scope: 'global',
-        },
-        {
-          kind: 'member',
-          longname: 'globalMember',
-          name: 'globalMember',
-          scope: 'global',
-        },
-        {
-          kind: 'typedef',
-          longname: 'globalTypedef',
-          name: 'globalTypedef',
-          scope: 'global',
-        },
-      ],
-    });
+    const globals = [
+      helpers.createDoclet([
+        '@name globalConstant',
+        '@longname globalConstant',
+        '@constant',
+        '@global',
+      ]),
+      helpers.createDoclet([
+        '@name globalFunction',
+        '@longname globalFunction',
+        '@function',
+        '@global',
+      ]),
+      helpers.createDoclet(['@name globalMember', '@longname globalMember', '@member', '@global']),
+      helpers.createDoclet([
+        '@name globalTypedef',
+        '@longname globalTypedef',
+        '@typedef',
+        '@global',
+      ]),
+    ];
     const nonGlobals = [
-      {
-        kind: 'namespace',
-        longname: 'foo',
-        name: 'foo',
-      },
-      {
-        kind: 'class',
-        longname: 'foo.Bar',
-        name: 'Bar',
-      },
+      helpers.createDoclet(['@name foo', '@longname foo', '@namespace']),
+      helpers.createDoclet(['@name Bar', '@longname foo.Bar', '@memberof foo', '@class']),
     ];
     const navTree = name.longnamesToTree(
       nonGlobals.map((d) => d.longname),
@@ -109,18 +99,21 @@ describe('lib/tasks/set-toc-data', () => {
           opts: {},
         },
         destination: OUTPUT_DIR,
-        globals,
+        docletStore: helpers.createDocletStore(globals.concat(nonGlobals)),
         linkManager: template.linkManager,
         navTree,
-        // template,
-        // templateConfig: defaultConfig,
       };
     });
 
-    it('fails if the `globals` are missing', async () => {
+    afterEach(() => {
+      context.docletStore?._removeListeners();
+    });
+
+    it('fails if the `docletStore` is missing', async () => {
       let error;
 
-      context.globals = null;
+      context.docletStore._removeListeners();
+      context.docletStore = null;
       try {
         await instance.run(context);
       } catch (e) {
@@ -153,7 +146,8 @@ describe('lib/tasks/set-toc-data', () => {
       const longnames = nonGlobals.map((d) => d.longname).sort();
       let tocLongnames;
 
-      context.globals = db({ values: [] });
+      context.docletStore._removeListeners();
+      context.docletStore = helpers.createDocletStore(nonGlobals);
       await instance.run(context);
       tocLongnames = findTocLongnames(context.tocData);
 
@@ -163,7 +157,8 @@ describe('lib/tasks/set-toc-data', () => {
     it('does not include an entry for globals if there are no globals', async () => {
       let tocLongnames;
 
-      context.globals = db({ values: [] });
+      context.docletStore._removeListeners();
+      context.docletStore = helpers.createDocletStore(nonGlobals);
       await instance.run(context);
       tocLongnames = findTocLongnames(context.tocData);
 
