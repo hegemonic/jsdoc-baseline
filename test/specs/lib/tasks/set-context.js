@@ -151,9 +151,13 @@ describe('lib/tasks/set-context', () => {
 
         expect(context.allLongnamesTree).toBeObject();
         expect(context.allLongnamesTree.Foo).toBeObject();
-        expect(context.allLongnamesTree.Foo.doclet).toBeObject();
+        expect(context.allLongnamesTree.Foo.doclet).toBe(
+          fakeDoclets.filter((d) => d.longname === 'Foo')[0]
+        );
         expect(context.allLongnamesTree.bar).toBeObject();
-        expect(context.allLongnamesTree.bar.doclet).toBeObject();
+        expect(context.allLongnamesTree.bar.doclet).toBe(
+          fakeDoclets.filter((d) => d.longname === 'bar')[0]
+        );
       });
 
       it('sets `destination` correctly', async () => {
