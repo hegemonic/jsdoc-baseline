@@ -19,7 +19,6 @@ import _ from 'lodash';
 
 import { loadConfigSync } from './lib/config.js';
 import tasks from './lib/default-tasks.js';
-import DocletHelper from './lib/doclethelper.js';
 
 export async function publish(docletStore, dependencies) {
   const options = dependencies.get('options');
@@ -40,10 +39,7 @@ export async function publish(docletStore, dependencies) {
     docletStore,
     templateConfig,
   };
-  const docletHelper = new DocletHelper();
   const runner = new TaskRunner();
-
-  docletHelper.addDoclets(docletStore);
 
   runner.addTasks(tasks);
   try {
