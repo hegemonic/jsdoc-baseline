@@ -96,7 +96,7 @@
     "parcel": "^2.10.1",
     "parcel-namer-rewrite": "^2.0.0-rc.3",
     "prettier": "^3.0.3",
-    "sass": "^1.69.4"
+    "sass": "^1.69.5"
   },
   "engines": {
     "node": ">=v16.0.0"
