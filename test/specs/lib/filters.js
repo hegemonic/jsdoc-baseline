@@ -173,7 +173,7 @@ describe('lib/filters', () => {
       it('uses "unknown type" if no type is provided', () => {
         const description = instance.describeType(undefined);
 
-        expect(description.toString()).toBe('unknown');
+        expect(description.toString()).toBe('<code>unknown</code>');
       });
 
       it('throws if the requested format is not available', () => {
@@ -187,19 +187,47 @@ describe('lib/filters', () => {
       it('returns the simple description by default', () => {
         const description = instance.describeType(parsedType);
 
-        expect(description.toString()).toBe('non-null string');
+        expect(description.toString()).toBe('non-null <code>string</code>');
       });
 
       it('returns the extended format\'s description when the format is "extended"', () => {
         const description = instance.describeType(parsedType, 'extended');
 
-        expect(description.toString()).toBe('string');
+        expect(description.toString()).toBe('<code>string</code>');
       });
 
       it('returns the requested property when the format is "extended"', () => {
         const description = instance.describeType(parsedType, 'extended', 'modifiers.nullable');
 
         expect(description.toString()).toBe('Must not be null.');
+      });
+
+      it('lets you omit the <code> tag', () => {
+        const description = instance.describeType(parsedType, 'simple', 'description', null);
+
+        expect(description.toString()).toBe('non-null string');
+      });
+
+      it('lets you add a tag other than <code>', () => {
+        const description = instance.describeType(parsedType, 'simple', 'description', 'space-cat');
+
+        expect(description.toString()).toBe('non-null <space-cat>string</space-cat>');
+      });
+    });
+
+    describe('describeTypePlaintext', () => {
+      const parsedType = catharsis.parse('!string');
+
+      it('returns the simple description by default', () => {
+        const description = instance.describeTypePlaintext(parsedType);
+
+        expect(description.toString()).toBe('non-null string');
+      });
+
+      it('returns the extended format\'s description when the format is "extended"', () => {
+        const description = instance.describeTypePlaintext(parsedType, 'extended');
+
+        expect(description.toString()).toBe('string');
       });
     });
 

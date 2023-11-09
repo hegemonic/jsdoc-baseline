@@ -22,9 +22,9 @@
     {%- set types = returnTypes(item) -%}
     {%- if item.kind != 'class' and types -%}
       {{- 'returnTypesSeparator' | translate -}}
-      <span class="signature-returns"> {{ types | describeType }}</span>
+      <span class="signature-returns"> {{ types | describeTypePlaintext }}</span>
     {%- endif -%}
   </span>
 {%- elif item.type -%}
-  <small class="property-type">&nbsp;{{ item.type.parsedType | describeType }}</small>
+  <small class="property-type">&nbsp;{{ item.type.parsedType | describeTypePlaintext }}</small>
 {%- endif -%}
