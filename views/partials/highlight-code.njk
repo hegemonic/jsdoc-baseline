@@ -22,5 +22,5 @@
       {% endif -%}
     {%- endfor -%}
   </code>
-  {{ docs | highlight(filenameExtension) | safe }}
+  {{ docs | highlightOmitPre(filenameExtension) }}
 </pre>
