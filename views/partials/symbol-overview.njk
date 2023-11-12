@@ -20,7 +20,7 @@
 
 {%- include 'summary-blocks.njk' -%}
 
-{%- for doc in docs %}
+{%- for item in docs %}
   {%- block first -%}
     {%- if loop.first -%}
       {#- Everything except classes gets a heading that indicates what we're about to list. -#}
@@ -32,15 +32,13 @@
 
   {%- block details %}
     {#- Classes get extra information. -#}
-    {%- if doc.kind == 'class' %}
+    {%- if item.kind == 'class' %}
       <section>
-        {%- set item = doc -%}
         {% include 'symbol-detail.njk' %}
       </section>
     {#- Externals get extra information. -#}
-    {%- elif doc.kind == 'external' %}
+    {%- elif item.kind == 'external' %}
       <section>
-        {%- set item = doc -%}
         {%- set details -%}{% include 'details.njk' %}{%- endset -%}
         {%- if details | trim %}
           <dl class="dl-compact">
@@ -49,9 +47,8 @@
         {% endif -%}
       </section>
     {#- Namespaces that are functions get extra information. -#}
-    {%- elif doc.kind == 'namespace' and doc | needsSignature %}
+    {%- elif item.kind == 'namespace' and item | needsSignature %}
       <section>
-        {%- set item = doc -%}
         {% include 'symbol-detail.njk' %}
       </section>
     {% endif -%}
