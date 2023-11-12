@@ -36,8 +36,6 @@
 
 {%- if not item.hideconstructor %}
   {%- include 'description.njk' -%}
-  {#- TODO: Examples aren't showing up in the output. Template assumes this has happened: -#}
-  {#- https://github.com/jsdoc/jsdoc/blob/1a3195ce/packages/jsdoc/templates/default/publish.js#L475-L490 -#}
   {%- include 'examples.njk' -%}
   {%- include 'params.njk' -%}
   {%- include 'properties.njk' -%}

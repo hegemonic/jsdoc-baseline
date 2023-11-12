@@ -815,6 +815,24 @@ describe('lib/filters', () => {
       });
     });
 
+    describe('processExample', () => {
+      it('extracts the caption if one is present', () => {
+        const example = '<caption>Create a <code>Foo</code></caption>\nconst foo = new Foo();';
+        const processed = instance.processExample(example);
+
+        expect(String(processed.caption)).toBe('Create a <code>Foo</code>');
+        expect(processed.code).toBe('const foo = new Foo();');
+      });
+
+      it('returns the code when there is no caption', () => {
+        const example = 'let foo = new Foo();';
+        const processed = instance.processExample(example);
+
+        expect(String(processed.caption)).toBeEmptyString();
+        expect(processed.code).toBe(example);
+      });
+    });
+
     xdescribe('registerAll', () => {
       xit('TODO: Write me');
     });

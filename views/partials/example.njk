@@ -15,9 +15,9 @@
 -#}
 {#- TODO: Improve appearance. -#}
 <div class="example">
-  {%- if caption %}
+  {%- if example.caption %}
     {#- TODO: Improve markup. -#}
-    <p class="example-caption">{{ caption }}</p>
+    <p class="example-caption">{{ example.caption }}</p>
   {% endif -%}
-  {{ code | highlight }}
+  {{ example.code | highlight }}
 </div>
