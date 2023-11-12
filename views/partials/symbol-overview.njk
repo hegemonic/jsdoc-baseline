@@ -22,12 +22,6 @@
 
 {%- for item in docs %}
   {%- block first -%}
-    {%- if loop.first -%}
-      {#- Everything except classes gets a heading that indicates what we're about to list. -#}
-      {%- if pageCategory != 'classes' and exports -%}
-        <h>{{ 'headings.exports' | translate(docs) }}</h>
-      {%- endif -%}
-    {%- endif -%}
   {% endblock -%}
 
   {%- block details %}

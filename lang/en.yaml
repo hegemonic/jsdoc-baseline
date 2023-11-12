@@ -79,7 +79,6 @@ headings:
     {items, plural,
         =1 {Example}
         other {Examples}}
-  exports: 'Exports'
   externals: |
     {items, plural,
         =1 {External}
