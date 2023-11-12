@@ -94,7 +94,7 @@ describe('lib/tasks/generate-core-docs', () => {
 
     afterEach(() => {
       mock.restore();
-      context.docletStore?._removeListeners();
+      context.docletStore?.stopListening();
     });
 
     it('returns a promise on success', () => {
@@ -148,7 +148,7 @@ describe('lib/tasks/generate-core-docs', () => {
         ];
         const values = doclets.concat(newDoclets);
 
-        context.docletStore._removeListeners();
+        context.docletStore.stopListening();
         context.docletStore = helpers.createDocletStore(values);
         context.needsOutputFile[longname] = true;
         context.linkManager.registerDoclet(newDoclets[0]);

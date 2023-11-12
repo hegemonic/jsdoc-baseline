@@ -72,7 +72,7 @@ describe('lib/tasks/generate-globals', () => {
 
   afterEach(() => {
     mock.restore();
-    context.docletStore._removeListeners();
+    context.docletStore.stopListening();
   });
 
   it('is a constructor', () => {
@@ -112,7 +112,7 @@ describe('lib/tasks/generate-globals', () => {
     });
 
     it('generates nothing if there are no globals', async () => {
-      context.docletStore._removeListeners();
+      context.docletStore.stopListening();
       context.docletStore = helpers.createDocletStore([]);
 
       await instance.run(context);
@@ -150,7 +150,7 @@ describe('lib/tasks/generate-globals', () => {
       it('is singular when there is one global', async () => {
         let file;
 
-        context.docletStore._removeListeners();
+        context.docletStore.stopListening();
         context.docletStore = helpers.createDocletStore([
           helpers.createDoclet([
             '@name globalConstant',

@@ -75,10 +75,10 @@
     "prettier": "^3.0.3"
   },
   "devDependencies": {
-    "@jsdoc/doclet": "^0.2.5",
-    "@jsdoc/eslint-config": "^1.2.4",
-    "@jsdoc/prettier-config": "^0.2.3",
-    "@jsdoc/test-matchers": "^0.2.4",
+    "@jsdoc/doclet": "^0.2.6",
+    "@jsdoc/eslint-config": "^1.2.5",
+    "@jsdoc/prettier-config": "^0.2.4",
+    "@jsdoc/test-matchers": "^0.2.5",
     "@parcel/transformer-sass": "^2.10.2",
     "@shoelace-style/shoelace": "^2.11.2",
     "bootstrap": "^5.3.2",

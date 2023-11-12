@@ -106,13 +106,13 @@ describe('lib/tasks/set-toc-data', () => {
     });
 
     afterEach(() => {
-      context.docletStore?._removeListeners();
+      context.docletStore?.stopListening();
     });
 
     it('fails if the `docletStore` is missing', async () => {
       let error;
 
-      context.docletStore._removeListeners();
+      context.docletStore.stopListening();
       context.docletStore = null;
       try {
         await instance.run(context);
@@ -146,7 +146,7 @@ describe('lib/tasks/set-toc-data', () => {
       const longnames = nonGlobals.map((d) => d.longname).sort();
       let tocLongnames;
 
-      context.docletStore._removeListeners();
+      context.docletStore.stopListening();
       context.docletStore = helpers.createDocletStore(nonGlobals);
       await instance.run(context);
       tocLongnames = findTocLongnames(context.tocData);
@@ -157,7 +157,7 @@ describe('lib/tasks/set-toc-data', () => {
     it('does not include an entry for globals if there are no globals', async () => {
       let tocLongnames;
 
-      context.docletStore._removeListeners();
+      context.docletStore.stopListening();
       context.docletStore = helpers.createDocletStore(nonGlobals);
       await instance.run(context);
       tocLongnames = findTocLongnames(context.tocData);

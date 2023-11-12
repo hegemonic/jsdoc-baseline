@@ -48,7 +48,7 @@ describe('lib/tasks/set-context', () => {
   });
 
   afterEach(() => {
-    context.docletStore._removeListeners();
+    context.docletStore.stopListening();
   });
 
   it('is a constructor', () => {
@@ -120,7 +120,7 @@ describe('lib/tasks/set-context', () => {
           '@listens event:foo',
         ]);
 
-        context.docletStore._removeListeners();
+        context.docletStore.stopListening();
         context.docletStore = helpers.createDocletStore([eventDoclet, listenerDoclet]);
         await instance.run(context);
 
@@ -137,7 +137,7 @@ describe('lib/tasks/set-context', () => {
           '@variation 2',
         ]);
 
-        context.docletStore._removeListeners();
+        context.docletStore.stopListening();
         context.docletStore = helpers.createDocletStore([doclet]);
         await instance.run(context);
 
@@ -190,7 +190,7 @@ describe('lib/tasks/set-context', () => {
       it('does not set `package` when the package is a placeholder', async () => {
         const fakePackage = helpers.createPackage();
 
-        context.docletStore._removeListeners();
+        context.docletStore.stopListening();
         context.docletStore = helpers.createDocletStore([...fakeDoclets, fakePackage]);
         await instance.run(context);
 
@@ -200,7 +200,7 @@ describe('lib/tasks/set-context', () => {
       it('sets `package` correctly when there is a package', async () => {
         const fakePackage = helpers.createPackage({ name: 'foo' });
 
-        context.docletStore._removeListeners();
+        context.docletStore.stopListening();
         context.docletStore = helpers.createDocletStore([...fakeDoclets, fakePackage]);
         await instance.run(context);
 
@@ -213,7 +213,7 @@ describe('lib/tasks/set-context', () => {
           helpers.createPackage({ name: 'bar' }),
         ];
 
-        context.docletStore._removeListeners();
+        context.docletStore.stopListening();
         context.docletStore = helpers.createDocletStore(fakeDoclets.concat(fakePackages));
         await instance.run(context);
 
@@ -246,7 +246,7 @@ describe('lib/tasks/set-context', () => {
       });
 
       it('sets `sourceFiles` correctly when there is one source file', async () => {
-        context.docletStore._removeListeners();
+        context.docletStore.stopListening();
         context.docletStore = helpers.createDocletStore(fakeDoclets.slice(0, 1));
 
         await instance.run(context);
