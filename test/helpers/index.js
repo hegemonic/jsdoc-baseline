@@ -17,6 +17,7 @@
 // Helper functions for testing the Baseline template.
 import mock from 'mock-fs'; // eslint-disable-line
 
+import EventEmitter from 'node:events';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -24,7 +25,7 @@ import { fileURLToPath } from 'node:url';
 import { Dependencies } from '@jsdoc/core';
 import { Doclet, DocletStore, Package } from '@jsdoc/doclet';
 import { Dictionary } from '@jsdoc/tag';
-import { EventBus } from '@jsdoc/util';
+import { getLogFunctions } from '@jsdoc/util';
 import deepExtend from 'deep-extend';
 import { format } from 'prettier';
 import glob from 'fast-glob';
@@ -47,6 +48,8 @@ function stripWhitespace(str) {
 
 // Resets environment variables used by JSDoc to the default values for tests.
 function resetJsdocEnv() {
+  let deps;
+  const emitter = new EventEmitter();
   const env = {};
 
   env.conf = {
@@ -75,11 +78,12 @@ function resetJsdocEnv() {
     number: '1.2.3.4',
   };
 
-  global.helpers.deps = new Dependencies();
-  global.helpers.deps.registerValue('config', env.conf);
-  global.helpers.deps.registerValue('env', env);
-  global.helpers.deps.registerValue('eventBus', new EventBus('jsdoc'));
-  global.helpers.deps.registerSingletonFactory('tags', () => Dictionary.fromConfig(env));
+  global.helpers.deps = deps = new Dependencies();
+  deps.registerValue('config', env.conf);
+  deps.registerValue('emitter', emitter);
+  deps.registerValue('env', env);
+  deps.registerValue('log', getLogFunctions(emitter));
+  deps.registerSingletonFactory('tags', () => Dictionary.fromConfig(deps));
 }
 
 function findMatchingFilepath(filepaths, filename) {
@@ -158,7 +162,7 @@ global.helpers = {
     }
 
     if (meta?._emitEvent !== false) {
-      deps.get('eventBus').emit('newDoclet', { doclet });
+      deps.get('emitter').emit('newDoclet', { doclet });
     }
 
     return doclet;
@@ -174,8 +178,8 @@ global.helpers = {
     return docletStore;
   },
 
-  createPackage: (data) => {
-    return new Package(JSON.stringify(data ?? {}));
+  createPackage: (data, deps) => {
+    return new Package(JSON.stringify(data ?? {}), deps ?? global.helpers.deps);
   },
 
   // Creates a new, fully initialized Template object with the specified configuration settings.

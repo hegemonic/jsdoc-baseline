@@ -13,20 +13,22 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-
-import { EventBus } from '@jsdoc/util';
 
 import * as config from '../../../lib/config.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 describe('lib/config', () => {
+  let emitter;
   let env;
-  const bus = new EventBus('jsdoc');
 
-  beforeEach(() => (env = helpers.deps.get('env')));
+  beforeEach(() => {
+    emitter = helpers.deps.get('emitter');
+    env = helpers.deps.get('env');
+  });
   afterEach(() => helpers.setup());
 
   it('is an object', () => {
@@ -61,19 +63,20 @@ describe('lib/config', () => {
       expect(conf.templatePath).toBe('/foo/bar/baz');
     });
 
-    it('sets default values if the config file is missing', () => {
-      let conf;
+    it('emits a fatal error if the config file is missing', () => {
       let event;
+
+      function listener(e) {
+        event = e;
+      }
 
       env.conf.templates.baseline = path.resolve(__dirname, '/not/a/real/path');
 
-      bus.once('logger:fatal', (e) => {
-        event = e;
-      });
-      conf = config.loadConfigSync(helpers.deps);
+      emitter.on('logger:fatal', listener);
+      config.loadConfigSync(helpers.deps);
+      emitter.off('logger:fatal', listener);
 
       expect(event).toBeDefined();
-      expect(Object.keys(conf).length).toBeGreaterThan(0);
     });
 
     it('supports JSON files that contain comments', () => {
@@ -86,9 +89,9 @@ describe('lib/config', () => {
 
       env.conf.templates.baseline = path.resolve(__dirname, '../../fixtures/comments.json');
 
-      bus.on('logger:fatal', listener);
+      emitter.on('logger:fatal', listener);
       conf = config.loadConfigSync(helpers.deps);
-      bus.off('logger:fatal', listener);
+      emitter.off('logger:fatal', listener);
 
       expect(event).toBeUndefined();
       expect(conf.foo).toBe('bar');
@@ -125,12 +128,12 @@ describe('lib/config', () => {
       expect(readJson().foo).toBe('bar');
     });
 
-    it('logs a fatal error if there is an exception', () => {
+    it('throws if there is an exception', () => {
       function readJson() {
         return config.readJsonSync(path.resolve(__dirname, 'no-such-file.json'));
       }
 
-      expect(readJson).not.toThrow();
+      expect(readJson).toThrow();
     });
 
     it('returns `undefined` if no path is specified', () => {

@@ -26,7 +26,7 @@ describe('lib/template', () => {
 
   it('should be a constructor', () => {
     expect(Template).toBeFunction();
-    expect(new Template(defaultConfig, helpers.deps)).toBeInstanceOf(Template);
+    expect(new Template(defaultConfig, {}, helpers.deps)).toBeInstanceOf(Template);
   });
 
   xdescribe('render', () => {

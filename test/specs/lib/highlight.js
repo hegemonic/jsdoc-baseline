@@ -13,10 +13,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-
-import { log } from '@jsdoc/util';
 
 import * as highlight from '../../../lib/highlight.js';
 
@@ -33,6 +32,7 @@ function fakeDeps(highlightValue) {
       },
     },
   });
+  deps.set('log', global.helpers.deps.get('log'));
 
   return deps;
 }
@@ -42,6 +42,14 @@ function cssClass(classname) {
 }
 
 describe('lib/highlight', () => {
+  let emitter;
+  let log;
+
+  beforeEach(() => {
+    emitter = global.helpers.deps.get('emitter');
+    log = global.helpers.deps.get('log');
+  });
+
   it('has a `getHighlighter` method', () => {
     expect(highlight).toHaveMethod('getHighlighter');
   });
@@ -52,12 +60,6 @@ describe('lib/highlight', () => {
 
     beforeEach(async () => {
       highlighter = await getHighlighter(fakeDeps());
-    });
-
-    it('works if the dependencies are not provided', () => {
-      expect(async () => {
-        await getHighlighter();
-      }).not.toThrow();
     });
 
     it('returns the default highlighter if none is specified', async () => {
@@ -81,12 +83,19 @@ describe('lib/highlight', () => {
     });
 
     it('logs an error and returns the default if the module cannot be loaded', async () => {
+      const events = [];
       let newHighlighter;
-      const spy = spyOn(log, 'error');
 
+      function listener(e) {
+        events.push(e);
+      }
+
+      emitter.on('logger:error', listener);
       newHighlighter = await getHighlighter(fakeDeps('./not-a-real-module'));
+      emitter.off('logger:error', listener);
 
-      expect(spy).toHaveBeenCalled();
+      expect(events).toBeArrayOfSize(1);
+      expect(events[0]).toBeString();
       expect(newHighlighter('hello')).toBe(highlighter('hello'));
     });
 
