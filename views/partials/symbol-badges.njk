@@ -13,11 +13,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
-{%- set allLabels = labels(item) -%}
-{%- if allLabels and allLabels.length %}
-  <div class="symbol-detail-labels">
-    {% for label in allLabels -%}
-      <span class="label {{ label.class }}">{{ label.text }}</span>
+
+{%- set allBadges = badges(item) -%}
+{%- if allBadges and allBadges.length %}
+  <div class="symbol-detail-badges">
+    {% for badge in allBadges -%}
+      <span class="badge {{ badge.class }}">{{ badge.text }}</span>
       {%- if not loop.last %}&nbsp;{%- endif -%}
     {%- endfor %}
   </div>

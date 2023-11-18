@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 alphaList:
   _numeric: '0 to 9'
   _other: 'Other'
@@ -40,6 +41,18 @@ alphaList:
   x: 'X'
   y: 'Y'
   z: 'Z'
+badges:
+  async: 'async'
+  constant: 'constant'
+  generator: 'generator'
+  inner: 'inner'
+  package: 'package'
+  private: 'private'
+  protected: 'protected'
+  public: 'public'
+  readonly: 'read-only'
+  static: 'static'
+  virtual: 'abstract'
 brandDefault: 'Home'
 constructor:
   prefix: 'new&nbsp;'
@@ -159,18 +172,6 @@ kinds:
   package: 'package'
   param: 'param'
   typedef: 'abstract type'
-labels:
-  async: 'async'
-  constant: 'constant'
-  generator: 'generator'
-  inner: 'inner'
-  package: 'package'
-  private: 'private'
-  protected: 'protected'
-  public: 'public'
-  readonly: 'read-only'
-  static: 'static'
-  virtual: 'abstract'
 linkToLine: |
   {items, plural,
       =1 {{filepath}}

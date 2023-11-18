@@ -99,6 +99,24 @@ describe('lib/filters', () => {
       });
     });
 
+    describe('badges', () => {
+      xit('TODO: Write more tests');
+
+      it('maps CSS classes as needed', async () => {
+        let badges;
+
+        await init({
+          cssClassMap: {
+            'badge-kind': 'badge-kinder-egg',
+          },
+        });
+        badges = instance.badges({ kind: 'class' });
+
+        expect(badges).toBeArrayOfSize(1);
+        expect(badges[0].class).toContain('badge-kinder-egg');
+      });
+    });
+
     describe('basename', () => {
       it('returns the basename of the specified path', () => {
         const filepath = instance.basename('/foo/bar/baz.html');
@@ -439,24 +457,6 @@ describe('lib/filters', () => {
         });
 
         expect(keys.sort()).toEqual(['bar', 'baz', 'foo']);
-      });
-    });
-
-    describe('labels', () => {
-      xit('TODO: Write more tests');
-
-      it('maps CSS classes as needed', async () => {
-        let labels;
-
-        await init({
-          cssClassMap: {
-            'label-kind': 'label-kinder-egg',
-          },
-        });
-        labels = instance.labels({ kind: 'class' });
-
-        expect(labels).toBeArrayOfSize(1);
-        expect(labels[0].class).toContain('label-kinder-egg');
       });
     });
 

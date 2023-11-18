@@ -13,12 +13,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
+
 {#-
-    We omit the labels for classes, modules, and namespaces, because those labels would duplicate
-    the labels for the page's main heading.
+    We omit the badges for classes, modules, and namespaces, because those badges would duplicate
+    the badges for the page's main heading.
 -#}
 {%- if item.kind and not item.kind | includes(['class', 'module', 'namespace']) -%}
-  {%- include 'symbol-labels.njk' -%}
+  {%- include 'symbol-badges.njk' -%}
 {%- endif -%}
 
 {%- if not item.hideconstructor %}

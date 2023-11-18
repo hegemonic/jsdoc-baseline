@@ -17,7 +17,7 @@
 
 <header class="page-header">
   {%- block heading %}
-    {%- include 'symbol-labels.njk' -%}
+    {%- include 'symbol-badges.njk' -%}
     <h>
       {%- if item.longname != item.memberof -%}
         {%- set itemAncestors -%}{{ item.longname | ancestors | trim }}{%- endset -%}
