@@ -15,7 +15,7 @@
 */
 import _ from 'lodash';
 
-import LinkManager from '../../../lib/link-manager.js';
+import { LinkManager } from '../../../lib/link-manager.js';
 
 const ARGUMENT_ERROR = 'ArgumentError';
 
