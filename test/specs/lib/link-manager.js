@@ -181,11 +181,11 @@ describe('lib/link-manager', () => {
     });
 
     describe('<code> tag', () => {
-      it('by default, does not add <code> to autopopulated link text that is a URI', () => {
+      it('by default, adds <code> to autopopulated link text that is a URI', () => {
         const link = instance.createLink('https://example.com/some/page');
 
         expect(link).toBe(
-          '<a href="https://example.com/some/page">https://example.com/some/page</a>'
+          '<a href="https://example.com/some/page"><code>https://example.com/some/page</code></a>'
         );
       });
 
@@ -199,6 +199,18 @@ describe('lib/link-manager', () => {
         });
 
         expect(link).toBe('<a href="foo.html">https://example.com/</a>');
+      });
+
+      it('by default, does not add <code> to user-specified link text that is not a URI', () => {
+        let link;
+        const longname = 'foo';
+
+        instance.requestFilename(longname);
+        link = instance.createLink(longname, {
+          linkText: 'learn more about foo',
+        });
+
+        expect(link).toBe('<a href="foo.html">learn more about foo</a>');
       });
 
       it('respects `opts.monospace = true` for longnames', () => {
@@ -223,6 +235,14 @@ describe('lib/link-manager', () => {
         });
 
         expect(link).toBe('<a href="foo.html">foo</a>');
+      });
+
+      it('respects `opts.monospace = false` for URIs', () => {
+        const link = instance.createLink('https://example.com/some/page', { monospace: false });
+
+        expect(link).toBe(
+          '<a href="https://example.com/some/page">https://example.com/some/page</a>'
+        );
       });
     });
 
@@ -259,13 +279,24 @@ describe('lib/link-manager', () => {
       it('turns URIs into links', () => {
         const link = instance.createLink('https://example.com/');
 
-        expect(link).toBe('<a href="https://example.com/">https://example.com/</a>');
+        expect(link).toBe('<a href="https://example.com/"><code>https://example.com/</code></a>');
       });
 
       it('turns URIs that are enclosed in angle brackets into links', () => {
         const link = instance.createLink('<https://example.com/>');
 
-        expect(link).toBe('<a href="https://example.com/">https://example.com/</a>');
+        expect(link).toBe('<a href="https://example.com/"><code>https://example.com/</code></a>');
+      });
+    });
+
+    describe('inline tags', () => {
+      it('processes inline {@link} tags', () => {
+        let link;
+
+        instance.requestFilename('foo');
+        link = instance.createLink('{@link foo}');
+
+        expect(link).toBe('<a href="foo.html"><code>foo</code></a>');
       });
     });
   });

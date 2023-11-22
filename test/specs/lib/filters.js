@@ -630,7 +630,9 @@ describe('lib/filters', () => {
 
         link = instance.linkWithSignature(fakeDoclet, 'flibble');
 
-        expect(link.toString()).toBe('<a href="foo.html" class="flobble">Foo(bar)</a>');
+        expect(link.toString()).toBe(
+          '<a href="foo.html" class="flobble"><code>Foo(bar)</code></a>'
+        );
       });
     });
 
