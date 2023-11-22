@@ -75,7 +75,7 @@
     "prettier": "^3.1.0"
   },
   "devDependencies": {
-    "@jsdoc/doclet": "^0.2.7",
+    "@jsdoc/doclet": "^0.2.8",
     "@jsdoc/eslint-config": "^1.2.5",
     "@jsdoc/prettier-config": "^0.2.5",
     "@jsdoc/test-matchers": "^0.2.5",
