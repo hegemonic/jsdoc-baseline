@@ -3,6 +3,3 @@ coverage/
 
 # Ignore static files that are part of the template's output.
 static/**
-
-# Ignore test fixtures.
-test/fixtures/**
