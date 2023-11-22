@@ -83,6 +83,7 @@ function resetJsdocEnv() {
   deps.registerValue('emitter', emitter);
   deps.registerValue('env', env);
   deps.registerValue('log', getLogFunctions(emitter));
+  deps.registerValue('options', env.opts);
   deps.registerSingletonFactory('tags', () => Dictionary.fromConfig(deps));
 }
 

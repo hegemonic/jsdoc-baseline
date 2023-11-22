@@ -14,40 +14,12 @@
   limitations under the License.
 */
 
-import { TaskRunner } from '@jsdoc/task-runner';
-import _ from 'lodash';
-
-import { loadConfigSync } from './lib/config.js';
-import tasks from './lib/default-tasks.js';
+import { Publisher } from './lib/publisher.js';
 
 export async function publish(docletStore, dependencies) {
-  const options = dependencies.get('options');
-  const templateConfig = loadConfigSync(dependencies);
-  const allConfig = _.defaults(
-    {},
-    {
-      templates: {
-        baseline: templateConfig,
-      },
-    },
-    options,
-    { opts: options }
-  );
-  const context = {
-    config: allConfig,
-    dependencies,
-    docletStore,
-    templateConfig,
-  };
-  const runner = new TaskRunner();
+  const publisher = new Publisher(docletStore, dependencies);
 
-  runner.addTasks(tasks);
-  try {
-    await runner.run(context);
-  } catch (e) {
-    // TODO: Send to message bus
-    return Promise.reject(e);
-  }
+  await publisher.init();
 
-  return Promise.resolve();
+  return publisher.publish();
 }

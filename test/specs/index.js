@@ -13,49 +13,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import * as index from '../../index.js';
 
 describe('index', () => {
-  it('exports a "publish" function', () => {
-    expect(index.publish).toBeDefined();
+  it('exports a `publish` function', () => {
     expect(index.publish).toBeFunction();
   });
 
-  describe('publish', () => {
-    xit('creates the output directory', () => {
-      // TODO
-    });
-
-    xit('copies static files to the output directory', () => {
-      // TODO
-    });
-
-    xit('generates an index page', () => {
-      // TODO
-    });
-
-    xit('generates a globals page when there are globals', () => {
-      // TODO
-    });
-
-    xit('does not generate a globals page when there are no globals', () => {
-      // TODO
-    });
-
-    xit('generates source files by default', () => {
-      // TODO
-    });
-
-    xit('does not generate source files if the user disabled them', () => {
-      // TODO
-    });
-
-    xit('generates output files for doclets that get their own output file', () => {
-      // TODO
-    });
-
-    xit('does not generate output files for doclets that do not get their own output file', () => {
-      // TODO
-    });
-  });
+  // TODO: Test `publish` function
 });
