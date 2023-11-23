@@ -13,10 +13,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import { name } from '@jsdoc/core';
 
 import { defaultConfig } from '../../../../lib/config.js';
-import SetTocData from '../../../../lib/tasks/set-toc-data.js';
+import SetTocDataTree from '../../../../lib/tasks/set-toc-data-tree.js';
 
 const OUTPUT_DIR = 'out';
 const TYPE_ERROR = 'TypeError';
@@ -37,18 +38,18 @@ function findTocLongnames(items, seen) {
   return result;
 }
 
-describe('lib/tasks/set-toc-data', () => {
+describe('lib/tasks/set-toc-data-tree', () => {
   let instance;
 
   beforeEach(() => {
-    instance = new SetTocData({
+    instance = new SetTocDataTree({
       name: 'setTocData',
     });
   });
 
   it('is a constructor', () => {
     function factory() {
-      return new SetTocData({ name: 'setTocData' });
+      return new SetTocDataTree({ name: 'setTocDataTree' });
     }
 
     expect(factory).not.toThrow();

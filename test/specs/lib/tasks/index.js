@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import _ from 'lodash';
 
 import t from '../../../../lib/tasks/index.js';
@@ -25,7 +26,7 @@ const expectedTasks = [
   'GenerateIndex',
   'GenerateSourceFiles',
   'SetContext',
-  'SetTocData',
+  'SetTocDataTree',
 ];
 
 describe('lib/tasks/index', () => {
