@@ -108,6 +108,7 @@
     },
     "main": false
   },
+  "browserslist": "defaults",
   "parcel-namer-rewrite": {
     "rules": {
       "^(?:.+/)?(.+)$": "$1"
