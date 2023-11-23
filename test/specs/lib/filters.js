@@ -258,13 +258,11 @@ describe('lib/filters', () => {
     });
 
     describe('generatedBy', () => {
-      // TODO: Enable when we start inserting the version number
-      xit('includes the JSDoc version number', () => {
-        /*
+      it('includes the JSDoc version number', () => {
+        const env = helpers.deps.get('env');
         const generatedBy = instance.generatedBy();
 
         expect(generatedBy.toString()).toContain(env.version.number);
-        */
       });
 
       it('includes the date', () => {
@@ -436,10 +434,9 @@ describe('lib/filters', () => {
       });
     });
 
-    xdescribe('jsdocVersion', () => {
-      // TODO: Enable when we start inserting the version number
-      xit('should return the version number as a string', () => {
-        // look for the fake version number set by the test helpers
+    describe('jsdocVersion', () => {
+      it('returns the version number as a string', () => {
+        // The test helpers set this bogus version number.
         expect(instance.jsdocVersion()).toBe('1.2.3.4');
       });
     });
