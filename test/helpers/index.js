@@ -225,6 +225,9 @@ global.helpers = {
 
   // Sets up the runtime environment so that JSDoc can work properly.
   setup: resetJsdocEnv,
+
+  // Converts a class instance to a dictionary-like object, so that `toEqual()` works.
+  toObject: (instance) => JSON.parse(JSON.stringify(instance)),
 };
 
 global.helpers.template = await (async () => {

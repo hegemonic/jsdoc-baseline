@@ -166,13 +166,6 @@ describe('lib/tasks/set-context', () => {
         expect(context.destination).toBe('out');
       });
 
-      it('sets `navTree` correctly', async () => {
-        await instance.run(context);
-
-        expect(context.navTree).toBeObject();
-        expect(context.navTree.Foo).toBeObject();
-      });
-
       it('sets `needsOutputFile` correctly', async () => {
         await instance.run(context);
 

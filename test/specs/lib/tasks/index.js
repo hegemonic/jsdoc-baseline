@@ -16,7 +16,7 @@
 
 import _ from 'lodash';
 
-import t from '../../../../lib/tasks/index.js';
+import tasks from '../../../../lib/tasks/index.js';
 
 const expectedTasks = [
   'CopyStaticFiles',
@@ -26,12 +26,13 @@ const expectedTasks = [
   'GenerateIndex',
   'GenerateSourceFiles',
   'SetContext',
+  'SetTocData',
   'SetTocDataTree',
 ];
 
 describe('lib/tasks/index', () => {
   it('is an object', () => {
-    expect(t).toBeObject();
+    expect(tasks).toBeObject();
   });
 
   for (const key of expectedTasks) {
@@ -40,7 +41,7 @@ describe('lib/tasks/index', () => {
     it(`is lib/tasks/${fileName}`, async () => {
       const { default: klass } = await import(`../../../../lib/tasks/${fileName}.js`);
 
-      expect(t[key]).toBe(klass);
+      expect(tasks[key]).toBe(klass);
     });
   }
 });

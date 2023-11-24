@@ -19,7 +19,6 @@ import { name } from '@jsdoc/core';
 import { defaultConfig } from '../../../../lib/config.js';
 import SetTocDataTree from '../../../../lib/tasks/set-toc-data-tree.js';
 
-const OUTPUT_DIR = 'out';
 const TYPE_ERROR = 'TypeError';
 
 function findTocLongnames(items, seen) {
@@ -43,7 +42,7 @@ describe('lib/tasks/set-toc-data-tree', () => {
 
   beforeEach(() => {
     instance = new SetTocDataTree({
-      name: 'setTocData',
+      name: 'setTocDataTree',
     });
   });
 
@@ -91,19 +90,29 @@ describe('lib/tasks/set-toc-data-tree', () => {
       }),
       {}
     );
+    const needsOutputFile = {
+      foo: nonGlobals[0],
+      'foo.Bar': nonGlobals[1],
+    };
 
     beforeEach(async () => {
+      const doclets = globals.concat(nonGlobals);
       const template = await helpers.createTemplate(defaultConfig);
 
       context = {
         config: {
           opts: {},
         },
-        destination: OUTPUT_DIR,
-        docletStore: helpers.createDocletStore(globals.concat(nonGlobals)),
+        destination: 'out',
+        docletStore: helpers.createDocletStore(doclets),
         linkManager: template.linkManager,
         navTree,
+        needsOutputFile,
       };
+
+      for (const doclet of doclets) {
+        template.linkManager.registerDoclet(doclet);
+      }
     });
 
     afterEach(() => {
@@ -124,23 +133,45 @@ describe('lib/tasks/set-toc-data-tree', () => {
       expect(error).toBeErrorOfType(TYPE_ERROR);
     });
 
-    it('fails if the `navTree` is missing', async () => {
-      let error;
+    it('sets `navTree` correctly', async () => {
+      await instance.run(context);
 
-      context.navTree = null;
-      try {
-        await instance.run(context);
-      } catch (e) {
-        error = e;
-      }
-
-      expect(error).toBeErrorOfType(TYPE_ERROR);
+      expect(context.navTree).toBeObject();
+      expect(context.navTree.foo).toBeObject();
     });
 
     it('adds the TOC data to the context', async () => {
+      const expected = [
+        {
+          descendantHrefs: [],
+          href: 'global.html',
+          id: 'global',
+          kind: 'namespace',
+          label: 'Globals',
+          children: [],
+        },
+        {
+          descendantHrefs: ['foo-bar.html'],
+          href: 'foo.html',
+          id: 'foo',
+          kind: 'namespace',
+          label: 'foo',
+          children: [
+            {
+              descendantHrefs: [],
+              href: 'foo-bar.html',
+              id: 'foo.Bar',
+              kind: 'class',
+              label: 'Bar',
+              children: [],
+            },
+          ],
+        },
+      ];
+
       await instance.run(context);
 
-      expect(context.tocData).toBeArrayOfObjects();
+      expect(helpers.toObject(context.tocData)).toEqual(expected);
     });
 
     it('adds everything in the `navTree` to the TOC', async () => {
