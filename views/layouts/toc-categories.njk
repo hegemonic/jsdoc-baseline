@@ -1,0 +1,40 @@
+{#-
+  Copyright 2023 the Baseline Authors.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-#}
+
+{%- macro add_details_modifiers(hrefs) -%}
+  {%- if hrefs.includes(href) %} open{%- endif -%}
+{%- endmacro -%}
+
+{%- macro add_tree_item_modifiers(item) -%}
+  {%- if href == item.href %} selected{% endif -%}
+{%- endmacro -%}
+
+{%- macro make_accordion(section) -%}
+  <sl-details {{- add_details_modifiers(section.hrefs) -}}>
+    <p slot="summary">{{ translate('headings.' + section.category, section.items) }}</p>
+    <sl-tree>
+      {% for item in section.items -%}
+        <sl-tree-item id="{{ item.id }}" {{- add_tree_item_modifiers(item) -}}>
+          <a href="{{ item.href }}">{{ item.label }}</a>
+        </sl-tree-item>
+      {%- endfor %}
+    </sl-tree>
+  </sl-details>
+{%- endmacro -%}
+
+{%- for section in tocData -%}
+  {{- make_accordion(section) -}}
+{%- endfor -%}

@@ -15,6 +15,7 @@
 */
 
 import { name } from '@jsdoc/core';
+import _ from 'lodash';
 
 import { defaultConfig } from '../../../../lib/config.js';
 import SetTocData from '../../../../lib/tasks/set-toc-data.js';
@@ -68,6 +69,8 @@ describe('lib/tasks/set-toc-data', () => {
         linkManager: template.linkManager,
         navTree,
         needsOutputFile,
+        template,
+        templateConfig: defaultConfig,
       };
 
       for (const doclet of doclets) {
@@ -79,7 +82,38 @@ describe('lib/tasks/set-toc-data', () => {
       context.docletStore?.stopListening();
     });
 
-    it('creates tree-shaped TOC data by default', async () => {
+    it('creates category-based TOC data by default', async () => {
+      const expected = [
+        {
+          category: 'namespaces',
+          hrefs: ['foo.html'],
+          items: [
+            {
+              href: 'foo.html',
+              id: 'foo',
+              label: 'foo',
+            },
+          ],
+        },
+        {
+          category: 'classes',
+          hrefs: ['foo-bar.html'],
+          items: [
+            {
+              href: 'foo-bar.html',
+              id: 'foo.Bar',
+              label: 'Bar',
+            },
+          ],
+        },
+      ];
+
+      await instance.run(context);
+
+      expect(context.tocData).toEqual(expected);
+    });
+
+    it('creates tree-shaped TOC data by request', async () => {
       const expected = [
         {
           descendantHrefs: ['foo-bar.html'],
@@ -100,6 +134,17 @@ describe('lib/tasks/set-toc-data', () => {
         },
       ];
 
+      context.templateConfig = _.defaults(
+        {},
+        {
+          toc: {
+            type: 'tree',
+          },
+        },
+        defaultConfig
+      );
+      // eslint-disable-next-line require-atomic-updates
+      context.template = await helpers.createTemplate(context.templateConfig);
       await instance.run(context);
 
       expect(helpers.toObject(context.tocData)).toEqual(expected);
