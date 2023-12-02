@@ -138,10 +138,10 @@ describe('lib/tasks/set-toc-data-categories', () => {
         },
         {
           category: 'events',
-          hrefs: ['alpha.html'],
+          hrefs: ['alpha.html#.event:foxtrot'],
           items: [
             {
-              href: 'alpha.html',
+              href: 'alpha.html#.event:foxtrot',
               id: 'event:alpha.foxtrot',
               label: 'foxtrot',
             },
@@ -169,10 +169,10 @@ describe('lib/tasks/set-toc-data-categories', () => {
       const expected = [
         {
           category: 'functions',
-          hrefs: ['alpha.html'],
+          hrefs: ['alpha.html#.hotel'],
           items: [
             {
-              href: 'alpha.html',
+              href: 'alpha.html#.hotel',
               id: 'alpha.hotel',
               label: 'hotel',
             },

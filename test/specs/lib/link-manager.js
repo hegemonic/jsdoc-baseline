@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import _ from 'lodash';
 
 import { LinkManager } from '../../../lib/link-manager.js';
@@ -334,6 +335,15 @@ describe('lib/link-manager', () => {
       expect(uri).toBe('');
     });
 
+    it('returns the correct URI, with an `.html` extension by default', () => {
+      let uri;
+
+      instance.requestFilename('foo');
+      uri = instance.getUri('foo');
+
+      expect(uri).toBe('foo.html');
+    });
+
     it('returns the correct URI, with the requested link extension', () => {
       let uri;
 
@@ -342,6 +352,42 @@ describe('lib/link-manager', () => {
       uri = instance.getUri('foo');
 
       expect(uri).toBe('foo.test');
+    });
+
+    it('allows an empty link extension', () => {
+      let uri;
+
+      instance.linkExtension = '';
+      instance.requestFilename('foo');
+      uri = instance.getUri('foo');
+
+      expect(uri).toBe('foo');
+    });
+
+    it('includes the fragment ID if one is needed', () => {
+      const fakeDoclets = [
+        {
+          kind: 'class',
+          longname: 'foo',
+          name: 'foo',
+        },
+        {
+          kind: 'function',
+          longname: 'foo.bar',
+          memberof: 'foo',
+          name: 'bar',
+          scope: 'static',
+        },
+      ];
+      let uri;
+
+      for (const fakeDoclet of fakeDoclets) {
+        instance.registerDoclet(fakeDoclet);
+      }
+
+      uri = instance.getUri('foo.bar');
+
+      expect(uri).toBe('foo.html#.bar');
     });
   });
 
