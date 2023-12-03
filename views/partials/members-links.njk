@@ -17,7 +17,7 @@
   <h>{{ headingKey | translate(items) }}</h>
   <section id="members-links">
     {%- for item in items %}
-      <h>{{ item.longname | link(item.name, false) }}</h>
+      <h>{{ item.longname | link(item.name, monospace=false) }}</h>
       {% include 'summary.njk' %}
       {{ item.sourceFile }}
     {% endfor -%}

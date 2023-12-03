@@ -459,19 +459,12 @@ describe('lib/filters', () => {
       it('allows you to force a link to use a fixed-width font', () => {
         const uri = 'https://example.com/';
         const defaultLink = instance.link(uri);
-        const monospaceLink = instance.link(uri, null, true);
+        const monospaceLink = instance.link(uri, null, { monospace: true });
 
         // First, make sure we're actually overriding the default behavior.
         expect(defaultLink.toString()).not.toBe(monospaceLink.toString());
 
         expect(monospaceLink.toString()).toContain('<code>');
-      });
-
-      it('ignores a `monospace` argument that is not a boolean', () => {
-        const uri = 'https://example.com/';
-        const fakeMonospaceLink = instance.link(uri, null, 17);
-
-        expect(fakeMonospaceLink.toString()).not.toContain('<code>');
       });
     });
 
