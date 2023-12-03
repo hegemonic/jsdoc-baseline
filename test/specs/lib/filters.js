@@ -196,7 +196,7 @@ describe('lib/filters', () => {
 
       it('throws if the requested format is not available', () => {
         function shouldThrow() {
-          return instance.describeType(parsedType, 'marshmallow');
+          return instance.describeType(parsedType, { format: 'marshmallow' });
         }
 
         expect(shouldThrow).toThrow();
@@ -209,25 +209,28 @@ describe('lib/filters', () => {
       });
 
       it('returns the extended format\'s description when the format is "extended"', () => {
-        const description = instance.describeType(parsedType, 'extended');
+        const description = instance.describeType(parsedType, { format: 'extended' });
 
         expect(description.toString()).toBe('<code>string</code>');
       });
 
       it('returns the requested property when the format is "extended"', () => {
-        const description = instance.describeType(parsedType, 'extended', 'modifiers.nullable');
+        const description = instance.describeType(parsedType, {
+          format: 'extended',
+          property: 'modifiers.nullable',
+        });
 
         expect(description.toString()).toBe('Must not be null.');
       });
 
       it('lets you omit the <code> tag', () => {
-        const description = instance.describeType(parsedType, 'simple', 'description', null);
+        const description = instance.describeType(parsedType, { codeTag: '' });
 
         expect(description.toString()).toBe('non-null string');
       });
 
       it('lets you add a tag other than <code>', () => {
-        const description = instance.describeType(parsedType, 'simple', 'description', 'space-cat');
+        const description = instance.describeType(parsedType, { codeTag: 'space-cat' });
 
         expect(description.toString()).toBe('non-null <space-cat>string</space-cat>');
       });

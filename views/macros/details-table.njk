@@ -28,7 +28,7 @@
 {%- macro detailsTableTypes(type) -%}
   <td class="details-table-types">
     {% if type and type.parsedType %}
-      <p>{{ type.parsedType | describeType('extended') }}</p>
+      <p>{{ type.parsedType | describeType(format='extended') }}</p>
     {%- else -%}
       <p>&nbsp;</p>
     {% endif %}
