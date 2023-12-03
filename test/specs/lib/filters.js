@@ -471,31 +471,6 @@ describe('lib/filters', () => {
       });
     });
 
-    describe('linkLongnameWithSignature', () => {
-      xit('TODO: Write more tests');
-
-      it('maps CSS classes as needed', async () => {
-        let fakeDoclet = {
-          kind: 'class',
-          longname: 'Foo',
-          name: 'Foo',
-          params: [{ name: 'bar' }],
-        };
-        let link;
-
-        await init({
-          cssClassMap: {
-            flibble: 'flobble',
-          },
-        });
-        requestFilenames(['Foo']);
-
-        link = instance.linkLongnameWithSignature(fakeDoclet, 'flibble');
-
-        expect(link.toString()).toContain('class="flobble"');
-      });
-    });
-
     describe('linkToLine', () => {
       const fakeDocletMeta = {
         lineno: 70,
@@ -559,8 +534,54 @@ describe('lib/filters', () => {
     describe('linkWithSignature', () => {
       xit('TODO: Write more tests');
 
+      it('uses the longname in the link by default', () => {
+        const fooDoclet = {
+          kind: 'class',
+          longname: 'Foo',
+          name: 'Foo',
+        };
+        const barDoclet = {
+          kind: 'function',
+          longname: 'Foo#bar',
+          memberof: 'Foo',
+          name: 'bar',
+          scope: 'instance',
+        };
+        let link;
+
+        linkManager.registerDoclet(fooDoclet);
+        linkManager.registerDoclet(barDoclet);
+
+        link = instance.linkWithSignature(barDoclet);
+
+        expect(link.toString()).toBe('<a href="foo.html#bar"><code>Foo#<wbr />bar()</code></a>');
+      });
+
+      it('uses the name in the link by request', () => {
+        const fooDoclet = {
+          kind: 'class',
+          longname: 'Foo',
+          name: 'Foo',
+        };
+        const barDoclet = {
+          kind: 'function',
+          longname: 'Foo#bar',
+          memberof: 'Foo',
+          name: 'bar',
+          scope: 'instance',
+        };
+        let link;
+
+        linkManager.registerDoclet(fooDoclet);
+        linkManager.registerDoclet(barDoclet);
+
+        link = instance.linkWithSignature(barDoclet, { linkType: 'name' });
+
+        expect(link.toString()).toBe('<a href="foo.html#bar"><code>bar()</code></a>');
+      });
+
       it('maps CSS classes as needed', async () => {
-        let fakeDoclet = {
+        const fakeDoclet = {
           kind: 'class',
           longname: 'Foo',
           name: 'Foo',
@@ -575,11 +596,26 @@ describe('lib/filters', () => {
         });
         requestFilenames(['Foo']);
 
-        link = instance.linkWithSignature(fakeDoclet, 'flibble');
+        link = instance.linkWithSignature(fakeDoclet, { cssClass: 'flibble' });
 
         expect(link.toString()).toBe(
           '<a href="foo.html" class="flobble"><code>Foo(bar)</code></a>'
         );
+      });
+
+      it('omits the `<code>` tag by request', () => {
+        const fooDoclet = {
+          kind: 'class',
+          longname: 'Foo',
+          name: 'Foo',
+        };
+        let link;
+
+        linkManager.registerDoclet(fooDoclet);
+
+        link = instance.linkWithSignature(fooDoclet, { monospace: false });
+
+        expect(link.toString()).toBe('<a href="foo.html">Foo()</a>');
       });
     });
 

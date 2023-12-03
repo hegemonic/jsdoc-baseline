@@ -13,11 +13,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
+
 <div class="symbol-index-column">
   <dl class="symbol-index-list">
     {%- for item in items %}
       <dt class="symbol-index-name">
-        {{- item | linkLongnameWithSignature('symbol-index-name') -}}
+        {{- item | linkWithSignature(cssClass='symbol-index-name', monospace=false) -}}
       </dt>
       <dd>
         {%- include 'summary.njk' -%}
