@@ -233,22 +233,6 @@ describe('lib/filters', () => {
       });
     });
 
-    describe('describeTypePlaintext', () => {
-      const parsedType = catharsis.parse('!string');
-
-      it('returns the simple description by default', () => {
-        const description = instance.describeTypePlaintext(parsedType);
-
-        expect(description.toString()).toBe('non-null string');
-      });
-
-      it('returns the extended format\'s description when the format is "extended"', () => {
-        const description = instance.describeTypePlaintext(parsedType, 'extended');
-
-        expect(description.toString()).toBe('string');
-      });
-    });
-
     xdescribe('filterProperties', () => {
       xit('TODO: Write me');
     });
