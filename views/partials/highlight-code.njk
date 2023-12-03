@@ -22,5 +22,5 @@
       {% endif -%}
     {%- endfor -%}
   </code>
-  {{ docs | highlightOmitPre(filenameExtension) }}
+  {{ docs | highlight(filenameExtension, omitPre=true) }}
 </pre>

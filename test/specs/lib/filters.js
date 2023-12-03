@@ -320,17 +320,17 @@ describe('lib/filters', () => {
     describe('highlight', () => {
       // Behavior is tested further by the tests for `lib/highlight`.
 
-      it('returns highlighted code wrapped in <code>', () => {
+      it('returns highlighted code wrapped in `<pre><code>`', () => {
         const highlighted = instance.highlight('const foo = "bar";', 'js');
 
-        expect(highlighted.toString()).toMatch(/<code[^>]*>.+<\/code>/);
+        expect(highlighted.toString()).toMatch(/<pre><code[^>]*>.+<\/code><\/pre>/);
         expect(highlighted.toString()).toMatch('hljs');
       });
 
       it('works when no language is specified', () => {
         const highlighted = instance.highlight('const foo = "bar";');
 
-        expect(highlighted.toString()).toMatch(/<code[^>]*>.+<\/code>/);
+        expect(highlighted.toString()).toMatch(/<pre><code[^>]*>.+<\/code><\/pre>/);
         expect(highlighted.toString()).toMatch('hljs');
       });
 
@@ -346,42 +346,12 @@ describe('lib/filters', () => {
 
         expect(highlighted.toString()).toMatch(/class=".*language-ecmascript.*"/);
       });
-    });
 
-    describe('highlightOmitPre', () => {
-      // Behavior is tested further by the tests for `lib/highlight`.
-
-      it('returns highlighted code that is not wrapped in <pre>', () => {
-        const highlighted = instance.highlightOmitPre('const foo = "bar";', 'js');
+      it('omits the `<pre>` tag when asked', () => {
+        const highlighted = instance.highlight('const foo = "bar";', 'js', { omitPre: true });
 
         expect(highlighted.toString()).not.toMatch(/<pre><code[^>]*>.+<\/code><\/pre>/);
         expect(highlighted.toString()).toMatch(/<code[^>]*>.+<\/code>/);
-        expect(highlighted.toString()).toMatch('hljs');
-      });
-
-      it('works when no language is specified', () => {
-        const highlighted = instance.highlightOmitPre('const foo = "bar";');
-
-        expect(highlighted.toString()).not.toMatch(/<pre><code[^>]*>.+<\/code><\/pre>/);
-        expect(highlighted.toString()).toMatch(/<code[^>]*>.+<\/code>/);
-        expect(highlighted.toString()).toMatch('hljs');
-      });
-    });
-
-    describe('highlightUnwrapped', () => {
-      // Behavior is tested further by the tests for `lib/highlight`.
-
-      it('returns highlighted code that is not wrapped in <pre><code>', () => {
-        const highlighted = instance.highlightUnwrapped('const foo = "bar";', 'js');
-
-        expect(highlighted.toString()).not.toMatch(/<pre><code[^>]*>.+<\/code><\/pre>/);
-        expect(highlighted.toString()).toMatch('hljs');
-      });
-
-      it('works when no language is specified', () => {
-        const highlighted = instance.highlightUnwrapped('const foo = "bar";');
-
-        expect(highlighted.toString()).not.toMatch(/<code[^>]*>.+<\/code>/);
         expect(highlighted.toString()).toMatch('hljs');
       });
     });
