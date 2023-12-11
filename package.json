@@ -49,9 +49,9 @@
   },
   "homepage": "https://github.com/hegemonic/jsdoc-baseline",
   "dependencies": {
-    "@jsdoc/core": "^0.5.6",
-    "@jsdoc/tag": "^0.2.9",
-    "@jsdoc/task-runner": "^0.2.3",
+    "@jsdoc/core": "^0.5.7",
+    "@jsdoc/tag": "^0.2.10",
+    "@jsdoc/task-runner": "^0.2.4",
     "@jsdoc/util": "^0.3.2",
     "@messageformat/core": "^3.3.0",
     "@sindresorhus/slugify": "^2.2.1",
@@ -75,9 +75,9 @@
     "prettier": "^3.1.1"
   },
   "devDependencies": {
-    "@jsdoc/doclet": "^0.2.9",
-    "@jsdoc/eslint-config": "^1.2.7",
-    "@jsdoc/prettier-config": "^0.2.6",
+    "@jsdoc/doclet": "^0.2.10",
+    "@jsdoc/eslint-config": "^1.2.8",
+    "@jsdoc/prettier-config": "^0.2.7",
     "@jsdoc/test-matchers": "^0.2.6",
     "@parcel/transformer-sass": "^2.10.3",
     "@shoelace-style/shoelace": "^2.12.0",
