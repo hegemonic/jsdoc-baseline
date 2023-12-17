@@ -17,25 +17,26 @@
 // Helper functions for testing the Baseline template.
 import mock from 'mock-fs'; // eslint-disable-line
 
-import EventEmitter from 'node:events';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { Dependencies } from '@jsdoc/core';
+import { Env } from '@jsdoc/core';
 import { Doclet, DocletStore, Package } from '@jsdoc/doclet';
 import { Dictionary } from '@jsdoc/tag';
-import { getLogFunctions } from '@jsdoc/util';
 import deepExtend from 'deep-extend';
-import { format } from 'prettier';
 import glob from 'fast-glob';
 import _ from 'lodash';
+import { format } from 'prettier';
 
 import { defaultConfig } from '../../lib/config.js';
 import Template from '../../lib/template.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const LONGNAME_FAKE_TAG = '@longname ';
+
+// Forward-declare global helpers.
+let helpers;
 
 function stripWhitespace(str) {
   // Remove leading whitespace.
@@ -48,9 +49,7 @@ function stripWhitespace(str) {
 
 // Resets environment variables used by JSDoc to the default values for tests.
 function resetJsdocEnv() {
-  let deps;
-  const emitter = new EventEmitter();
-  const env = {};
+  const env = new Env();
 
   env.conf = {
     markdown: {},
@@ -74,17 +73,12 @@ function resetJsdocEnv() {
     // path to the JSDoc template
     template: path.resolve(__dirname, '../..'),
   };
+  env.tags = Dictionary.fromConfig(env);
   env.version = {
     number: '1.2.3.4',
   };
 
-  global.helpers.deps = deps = new Dependencies();
-  deps.registerValue('config', env.conf);
-  deps.registerValue('emitter', emitter);
-  deps.registerValue('env', env);
-  deps.registerValue('log', getLogFunctions(emitter));
-  deps.registerValue('options', env.opts);
-  deps.registerSingletonFactory('tags', () => Dictionary.fromConfig(deps));
+  helpers.deps = helpers.env = env;
 }
 
 function findMatchingFilepath(filepaths, filename) {
@@ -100,7 +94,7 @@ function findMatchingFilepath(filepaths, filename) {
   return result;
 }
 
-global.helpers = {
+global.helpers = helpers = {
   // Maps each base view's path to its contents. Allows base views to be read when file system is
   // mocked.
   baseViews: (() => {
@@ -122,7 +116,7 @@ global.helpers = {
 
   // The same as `baseViews()`, but you can override the contents of specific files.
   baseViewsModified: (mods) => {
-    const filepaths = Object.keys(global.helpers.baseViews);
+    const filepaths = Object.keys(helpers.baseViews);
     let views = {};
 
     Object.keys(mods).forEach((filename) => {
@@ -137,10 +131,10 @@ global.helpers = {
       views = _.defaults(views, { [baseViewsKey]: mods[filename] });
     });
 
-    return _.defaults(views, global.helpers.baseViews);
+    return _.defaults(views, helpers.baseViews);
   },
 
-  createDoclet: (comment, meta, deps) => {
+  createDoclet: (comment, meta, env) => {
     let doclet;
     let longname;
 
@@ -155,22 +149,22 @@ global.helpers = {
       return true;
     });
 
-    deps ??= global.helpers.deps;
+    env ??= helpers.env;
     meta ??= {};
-    doclet = new Doclet(`/**\n${comment.join('\n')}\n*/`, meta, deps);
+    doclet = new Doclet(`/**\n${comment.join('\n')}\n*/`, meta, env);
     if (longname) {
       doclet.longname = longname;
     }
 
     if (meta?._emitEvent !== false) {
-      deps.get('emitter').emit('newDoclet', { doclet });
+      env.emitter.emit('newDoclet', { doclet });
     }
 
     return doclet;
   },
 
   createDocletStore: (doclets) => {
-    const docletStore = new DocletStore(global.helpers.deps);
+    const docletStore = new DocletStore(helpers.env);
 
     for (const doclet of doclets) {
       docletStore.add(doclet);
@@ -179,14 +173,14 @@ global.helpers = {
     return docletStore;
   },
 
-  createPackage: (data, deps) => {
-    return new Package(JSON.stringify(data ?? {}), deps ?? global.helpers.deps);
+  createPackage: (data, env) => {
+    return new Package(JSON.stringify(data ?? {}), env ?? helpers.env);
   },
 
   // Creates a new, fully initialized Template object with the specified configuration settings.
   createTemplate: (config) => {
     config = config || {};
-    global.helpers.setup();
+    helpers.setup();
 
     config = deepExtend({}, defaultConfig, config);
 
@@ -198,6 +192,8 @@ global.helpers = {
   },
 
   deps: null,
+
+  env: null,
 
   handlePromise: (promise, cb) =>
     promise.then(
@@ -215,12 +211,12 @@ global.helpers = {
   },
 
   // Renders a Handlebars view.
-  render: (...args) => global.helpers.template.render(...args),
+  render: (...args) => helpers.template.render(...args),
 
   renderAndNormalize: async (...args) => {
-    const rendered = await global.helpers.render(...args);
+    const rendered = await helpers.render(...args);
 
-    return global.helpers.normalizeHtml(rendered);
+    return helpers.normalizeHtml(rendered);
   },
 
   // Sets up the runtime environment so that JSDoc can work properly.
@@ -230,8 +226,8 @@ global.helpers = {
   toObject: (instance) => JSON.parse(JSON.stringify(instance)),
 };
 
-global.helpers.template = await (async () => {
-  const template = await global.helpers.createTemplate();
+helpers.template = await (async () => {
+  const template = await helpers.createTemplate();
 
   return template;
 })();
