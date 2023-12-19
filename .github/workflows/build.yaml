@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node: [18]
+        node: [20]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -27,7 +27,6 @@ jobs:
           node-version: ${{ matrix.node }}
       - name: Check license headers
         run: |
-          npm install -g npm
           npm install
           npm run license-check
   lint:
@@ -35,7 +34,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node: [18]
+        node: [20]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -43,7 +42,6 @@ jobs:
           node-version: ${{ matrix.node }}
       - name: Lint
         run: |
-          npm install -g npm
           npm install
           npm run lint
   test:
@@ -51,7 +49,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node: [16, 18]
+        node: [18, 20]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
