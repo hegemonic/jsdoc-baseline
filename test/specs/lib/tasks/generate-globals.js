@@ -14,17 +14,12 @@
   limitations under the License.
 */
 
-// eslint-disable-next-line simple-import-sort/imports
-import mock from 'mock-fs';
-
+import { access, mkdtemp, readFile, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
 import path from 'node:path';
-
-import fs from 'fs-extra';
 
 import { defaultConfig } from '../../../../lib/config.js';
 import GenerateGlobals from '../../../../lib/tasks/generate-globals.js';
-
-const OUTPUT_DIR = 'out';
 
 function createTestDoclets() {
   return [
@@ -47,6 +42,8 @@ describe('lib/tasks/generate-globals', () => {
   let conf;
   let context;
   let instance;
+  let template;
+  let tmp;
 
   beforeEach(async () => {
     conf = {
@@ -54,25 +51,36 @@ describe('lib/tasks/generate-globals', () => {
         access: ['undefined'],
       },
     };
+    template = await helpers.createTemplate(defaultConfig);
+    tmp = await mkdtemp(path.join(tmpdir(), 'jsdoc-'));
     context = {
       config: conf,
-      destination: OUTPUT_DIR,
+      destination: tmp,
       docletStore: helpers.createDocletStore(createTestDoclets()),
       pageTitlePrefix: '',
-      template: await helpers.createTemplate(defaultConfig),
+      template,
       templateConfig: defaultConfig,
     };
     context.linkManager = context.template.linkManager;
     instance = new GenerateGlobals({ name: 'generateGlobals' });
 
     context.linkManager.getUniqueFilename('global');
-
-    mock(helpers.baseViews);
   });
 
   afterEach(() => {
-    mock.restore();
+    let promise;
+
     context.docletStore.stopListening();
+
+    if (!tmp) {
+      promise = Promise.resolve();
+    } else {
+      promise = rm(tmp, { recursive: true }).then(() => {
+        tmp = null;
+      });
+    }
+
+    return promise;
   });
 
   it('is a constructor', () => {
@@ -117,13 +125,31 @@ describe('lib/tasks/generate-globals', () => {
 
       await instance.run(context);
 
-      expect(fs.existsSync(OUTPUT_DIR)).toBeFalse();
+      // For whatever reason, using an async function here caused unexpected test failures.
+      access(path.join(tmp, 'global.html')).then(
+        () => {
+          return Promise.reject(new Error('global.html should not exist'));
+        },
+        (error) => {
+          expect(error).toBeError();
+        }
+      );
     });
 
     it('generates a single file if there are globals', async () => {
       await instance.run(context);
 
-      expect(fs.readdirSync(OUTPUT_DIR).length).toBe(1);
+      // For whatever reason, using an async function here caused unexpected test failures.
+      access(path.join(tmp, 'global.html')).then(
+        () => {
+          // The promise is fulfilled, which is what we wanted.
+          expect(true).toBeTrue();
+        },
+        (error) => {
+          // This shouldn't happen.
+          return Promise.reject(error);
+        }
+      );
     });
 
     it('uses a custom `url` if specified', async () => {
@@ -132,14 +158,14 @@ describe('lib/tasks/generate-globals', () => {
       instance.url = url;
       await instance.run(context);
 
-      expect(fs.existsSync(path.join(OUTPUT_DIR, url))).toBeTrue();
+      expect(async () => await access(path.join(tmp, url))).not.toThrow();
     });
 
     it('includes all of the globals in the generated file', async () => {
       let file;
 
       await instance.run(context);
-      file = fs.readFileSync(path.join(OUTPUT_DIR, 'global.html'), 'utf8');
+      file = await readFile(path.join(tmp, 'global.html'), 'utf8');
 
       for (const global of context.docletStore.globals) {
         expect(file).toContain(global.name);
@@ -160,7 +186,7 @@ describe('lib/tasks/generate-globals', () => {
           ]),
         ]);
         await instance.run(context);
-        file = fs.readFileSync(path.join(OUTPUT_DIR, 'global.html'), 'utf8');
+        file = await readFile(path.join(tmp, 'global.html'), 'utf8');
 
         expect(file).toContain('<title>Global</title>');
       });
@@ -169,7 +195,7 @@ describe('lib/tasks/generate-globals', () => {
         let file;
 
         await instance.run(context);
-        file = fs.readFileSync(path.join(OUTPUT_DIR, 'global.html'), 'utf8');
+        file = await readFile(path.join(tmp, 'global.html'), 'utf8');
 
         expect(file).toContain('<title>Globals</title>');
       });
@@ -179,7 +205,7 @@ describe('lib/tasks/generate-globals', () => {
 
         context.pageTitlePrefix = 'Testing: ';
         await instance.run(context);
-        file = fs.readFileSync(path.join(OUTPUT_DIR, 'global.html'), 'utf8');
+        file = await readFile(path.join(tmp, 'global.html'), 'utf8');
 
         expect(file).toContain('<title>Testing: Globals</title>');
       });

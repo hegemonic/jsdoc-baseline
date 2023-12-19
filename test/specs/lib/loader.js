@@ -13,16 +13,17 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-// eslint-disable-next-line simple-import-sort/imports
-import mock from 'mock-fs';
 
+import { readFile } from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import { FileSystemLoader } from 'nunjucks';
 
 import ClassMap from '../../../lib/class-map.js';
 import * as loader from '../../../lib/loader.js';
-import { BASE_VIEWS } from '../../../lib/template.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 describe('lib/loader', () => {
   it('exports a ViewLoader constructor', () => {
@@ -30,26 +31,12 @@ describe('lib/loader', () => {
   });
 
   describe('ViewLoader', () => {
-    const fakePath = path.join(path.dirname(Object.keys(helpers.baseViews)[0]), 'fake.njk');
-    const fakes = {
-      [fakePath]: null,
-    };
     let instance;
-    const ViewLoader = loader.ViewLoader;
-
-    function mockSource(str) {
-      let source;
-
-      fakes[fakePath] = str;
-      mock(fakes);
-      source = instance.getSource('fake.njk');
-      mock.restore();
-
-      return source;
-    }
+    const { ViewLoader } = loader;
+    const viewPath = path.resolve(__dirname, '../../fixtures/views/loader');
 
     beforeEach(() => {
-      instance = new ViewLoader(BASE_VIEWS, {
+      instance = new ViewLoader([viewPath], {
         cssClassMap: new ClassMap({ fun: 'work', games: 'toil' }),
       });
     });
@@ -65,7 +52,7 @@ describe('lib/loader', () => {
         instance.once('load', (name, src) => {
           source = src;
         });
-        instance.emit('load', 'foo.njk', {});
+        instance.emit('load', 'loader-test.njk', {});
 
         expect(source).toBeUndefined();
       });
@@ -76,7 +63,7 @@ describe('lib/loader', () => {
         instance.once('load', (name, src) => {
           source = src;
         });
-        instance.emit('load', 'foo.njk', { src: 'hello world' }, 'REALLY_EMIT_KEY');
+        instance.emit('load', 'loader-test.njk', { src: 'hello world' }, 'REALLY_EMIT_KEY');
 
         expect(source).toBeObject();
         expect(source.src).toBe('hello world');
@@ -90,7 +77,7 @@ describe('lib/loader', () => {
           source = src;
           key = emitKey;
         });
-        instance.emit('load', 'foo.njk', { src: 'hello world' }, 'REALLY_EMIT_KEY');
+        instance.emit('load', 'loader-test.njk', { src: 'hello world' }, 'REALLY_EMIT_KEY');
 
         expect(source).toBeObject();
         expect(key).toBeUndefined();
@@ -98,53 +85,48 @@ describe('lib/loader', () => {
     });
 
     describe('getSource', () => {
-      it('reads the specified file', () => {
-        const fakeSource = 'hello world';
-        const source = mockSource(fakeSource);
+      it('reads the specified file', async () => {
+        const source = instance.getSource('loader-test.njk');
+        const actual = await readFile(path.join(viewPath, 'loader-test.njk'), 'utf8');
 
         expect(source).toBeObject();
-        expect(source.src).toBeString();
-        expect(source.src).toBe(fakeSource);
+        expect(source.src).toBe(actual);
       });
 
       it('maps CSS classes', () => {
-        const fakeSource = '<span class="fun">yay!</span>';
-        const source = mockSource(fakeSource);
+        const source = instance.getSource('css-map.njk');
 
-        expect(source.src).toBe('<span class="work">yay!</span>');
+        // The class in the template file is `fun`, not `work`.
+        expect(source.src).toContain('<span class="work">yay!</span>');
       });
 
       it('adds helpers to <h> elements with no attributes', () => {
-        const fakeSource = '<h>hello world</h>';
-        const source = mockSource(fakeSource);
+        const source = instance.getSource('h-no-attributes.njk');
 
-        expect(source.src).toBe('<h{{ headingLevel() }}>hello world</h{{ headingLevel() }}>');
+        expect(source.src).toContain('<h{{ headingLevel() }}>hello world</h{{ headingLevel() }}>');
       });
 
       it('adds helpers to <h> elements with attributes', () => {
-        const fakeSource = '<h id="hi">hello world</h>';
-        const source = mockSource(fakeSource);
+        const source = instance.getSource('h-with-attributes.njk');
 
-        expect(source.src).toBe(
+        expect(source.src).toContain(
           '<h{{ headingLevel() }} id="hi">hello world</h{{ headingLevel() }}>'
         );
       });
 
       it('adds helpers to <section> elements with no attributes', () => {
-        const fakeSource = '<section><p>hello world</p></section>';
-        const source = mockSource(fakeSource);
+        const source = instance.getSource('section-no-attributes.njk');
 
-        expect(source.src).toBe(
+        expect(source.src).toContain(
           '<section>{{ incrementHeading() }}<p>hello world</p>' +
             '{{ decrementHeading() }}</section>'
         );
       });
 
       it('adds helpers to <section> elements with attributes', () => {
-        const fakeSource = '<section id="hi"><p>hello world</p></section>';
-        const source = mockSource(fakeSource);
+        const source = instance.getSource('section-with-attributes.njk');
 
-        expect(source.src).toBe(
+        expect(source.src).toContain(
           '<section id="hi">{{ incrementHeading() }}' +
             '<p>hello world</p>{{ decrementHeading() }}</section>'
         );

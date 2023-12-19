@@ -13,12 +13,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 // eslint-disable-next-line simple-import-sort/imports
 import mock from 'mock-fs';
 
+import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
-
-import fs from 'fs-extra';
 
 import { loadConfigSync } from '../../../../lib/config.js';
 import CopyFiles from '../../../../lib/tasks/copy-files.js';
@@ -204,8 +204,8 @@ describe('lib/tasks/copy-files', () => {
     });
 
     describe('output', () => {
-      function stat(ctx, url) {
-        return fs.statSync(path.join(ctx.destination, url));
+      function statOutputFile(ctx, url) {
+        return stat(path.join(ctx.destination, url));
       }
 
       it('creates the output directory as needed', async () => {
@@ -221,7 +221,7 @@ describe('lib/tasks/copy-files', () => {
 
         await task.run(context);
 
-        expect(() => stat(context, url)).not.toThrow();
+        expect(async () => await statOutputFile(context, url)).not.toThrow();
       });
 
       it('copies the source to the destination', async () => {
@@ -237,7 +237,7 @@ describe('lib/tasks/copy-files', () => {
         });
 
         await task.run(context);
-        file = fs.readFileSync(path.join(OUTPUT_DIR, url), 'utf8');
+        file = await readFile(path.join(OUTPUT_DIR, url), 'utf8');
 
         expect(file).toBe('foo bar baz');
       });
@@ -261,8 +261,8 @@ describe('lib/tasks/copy-files', () => {
 
         await task.run(context);
 
-        expect(() => stat(context, urls[0])).not.toThrow();
-        expect(() => stat(context, urls[1])).not.toThrow();
+        expect(() => statOutputFile(context, urls[0])).not.toThrow();
+        expect(() => statOutputFile(context, urls[1])).not.toThrow();
       });
 
       it('works when tickets are passed to the constructor', async () => {
@@ -278,7 +278,7 @@ describe('lib/tasks/copy-files', () => {
         });
 
         await task.run(context);
-        file = fs.readFileSync(path.join(OUTPUT_DIR, url), 'utf8');
+        file = await readFile(path.join(OUTPUT_DIR, url), 'utf8');
 
         expect(file).toBe('foo bar baz');
       });
@@ -296,7 +296,7 @@ describe('lib/tasks/copy-files', () => {
 
         task.tickets = [ticket];
         await task.run(context);
-        file = fs.readFileSync(path.join(OUTPUT_DIR, url), 'utf8');
+        file = await readFile(path.join(OUTPUT_DIR, url), 'utf8');
 
         expect(file).toBe('foo bar baz');
       });

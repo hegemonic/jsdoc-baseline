@@ -17,9 +17,8 @@
 // eslint-disable-next-line simple-import-sort/imports
 import mock from 'mock-fs';
 
+import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
-
-import fs from 'fs-extra';
 
 import { defaultConfig } from '../../../../lib/config.js';
 import { KIND_TO_CATEGORY, OUTPUT_FILE_CATEGORIES } from '../../../../lib/enums.js';
@@ -127,7 +126,7 @@ describe('lib/tasks/generate-core-docs', () => {
         let files;
 
         await instance.run(context);
-        files = fs.readdirSync(OUTPUT_DIR).sort();
+        files = (await readdir(OUTPUT_DIR)).sort();
 
         expect(files.length).toBe(2);
         expect(files[0]).toMatch(/^foo-bar/);
@@ -154,7 +153,7 @@ describe('lib/tasks/generate-core-docs', () => {
         context.linkManager.registerDoclet(newDoclets[0]);
 
         await instance.run(context);
-        files = fs.readdirSync(OUTPUT_DIR, 'utf8').sort();
+        files = (await readdir(OUTPUT_DIR, 'utf8')).sort();
 
         expect(files.length).toBe(3);
         expect(files[0]).toMatch(/^foo-bar/);
@@ -167,8 +166,8 @@ describe('lib/tasks/generate-core-docs', () => {
         let files;
 
         await instance.run(context);
-        files = fs.readdirSync(OUTPUT_DIR, 'utf8').filter((f) => f.match(/^foo\.[^B]/));
-        file = fs.readFileSync(path.join(OUTPUT_DIR, files[0]), 'utf8');
+        files = (await readdir(OUTPUT_DIR, 'utf8')).filter((f) => f.match(/^foo\.[^B]/));
+        file = await readFile(path.join(OUTPUT_DIR, files[0]), 'utf8');
 
         expect(file).toContain('symbol-name');
       });
@@ -178,8 +177,8 @@ describe('lib/tasks/generate-core-docs', () => {
         let files;
 
         await instance.run(context);
-        files = fs.readdirSync(OUTPUT_DIR, 'utf8').filter((f) => f.match(/^foo\.[^B]/));
-        file = fs.readFileSync(path.join(OUTPUT_DIR, files[0]), 'utf8');
+        files = (await readdir(OUTPUT_DIR, 'utf8')).filter((f) => f.match(/^foo\.[^B]/));
+        file = await readFile(path.join(OUTPUT_DIR, files[0]), 'utf8');
 
         expect(file).toContain('foo-bar');
       });
@@ -190,8 +189,8 @@ describe('lib/tasks/generate-core-docs', () => {
           let files;
 
           await instance.run(context);
-          files = fs.readdirSync(OUTPUT_DIR, 'utf8').filter((f) => f.match(/^foo\.[^B]/));
-          file = fs.readFileSync(path.join(OUTPUT_DIR, files[0]), 'utf8');
+          files = (await readdir(OUTPUT_DIR, 'utf8')).filter((f) => f.match(/^foo\.[^B]/));
+          file = await readFile(path.join(OUTPUT_DIR, files[0]), 'utf8');
 
           expect(file).toContain('<title>Namespace: foo</title>');
         });
@@ -202,8 +201,8 @@ describe('lib/tasks/generate-core-docs', () => {
 
           context.pageTitlePrefix = 'Prefix: ';
           await instance.run(context);
-          files = fs.readdirSync(OUTPUT_DIR, 'utf8').filter((f) => f.match(/^foo\.[^B]/));
-          file = fs.readFileSync(path.join(OUTPUT_DIR, files[0]), 'utf8');
+          files = (await readdir(OUTPUT_DIR, 'utf8')).filter((f) => f.match(/^foo\.[^B]/));
+          file = await readFile(path.join(OUTPUT_DIR, files[0]), 'utf8');
 
           expect(file).toContain('<title>Prefix: Namespace: foo</title');
         });

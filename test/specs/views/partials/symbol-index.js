@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 // eslint-disable-next-line simple-import-sort/imports
 import mock from 'mock-fs';
 
@@ -62,16 +63,7 @@ describe('symbol-index partial', () => {
 
   beforeEach(async () => {
     allLongnamesTree = longnamesToTree(Object.keys(fakeDoclets), fakeDoclets);
-    mock(
-      helpers.baseViewsModified({
-        'symbol-index-section.njk': `
-          <index-group>
-            {% for item in items -%}
-              <index-item>{{ item.longname }}</index-item>
-            {% endfor %}
-          </index-group>`,
-      })
-    );
+    mock(helpers.baseViews);
     template = await helpers.createTemplate();
   });
 
@@ -109,10 +101,14 @@ describe('symbol-index partial', () => {
           <div class="symbol-index-content">
             <h2 id="module:breakfast">module:breakfast</h2>
             <div class="symbol-index-section">
-              <index-group>
-                <index-item>module:breakfast</index-item>
-                <index-item>module:breakfast.eat</index-item>
-              </index-group>
+              <div class="symbol-index-column">
+                <dl class="symbol-index-list">
+                  <dt class="symbol-index-name">breakfast</dt>
+                  <dd></dd>
+                  <dt class="symbol-index-name">breakfast.<wbr />eat()</dt>
+                  <dd></dd>
+                </dl>
+              </div>
             </div>
           </div>
         </section>
@@ -123,10 +119,14 @@ describe('symbol-index partial', () => {
           <div class="symbol-index-content">
             <h2 id="module:lunch">module:lunch</h2>
             <div class="symbol-index-section">
-              <index-group>
-                <index-item>module:lunch</index-item>
-                <index-item>module:lunch.getFavorite</index-item>
-              </index-group>
+              <div class="symbol-index-column">
+                <dl class="symbol-index-list">
+                  <dt class="symbol-index-name">lunch</dt>
+                  <dd></dd>
+                  <dt class="symbol-index-name">lunch.<wbr />getFavorite()</dt>
+                  <dd></dd>
+                </dl>
+              </div>
             </div>
           </div>
         </section>
@@ -151,28 +151,38 @@ describe('symbol-index partial', () => {
     it('sorts the groups by name', async () => {
       let data;
       const expected = await helpers.normalizeHtml(`
-        <section>
-          <div class="symbol-index-content">
-            <h2 id="module:lunch">module:lunch</h2>
-            <div class="symbol-index-section">
-              <index-group>
-                <index-item>module:lunch</index-item>
-                <index-item>module:lunch.getFavorite</index-item>
-              </index-group>
+        <div class="symbol-index">
+          <section>
+            <div class="symbol-index-content">
+              <h2 id="module:lunch">module:lunch</h2>
+              <div class="symbol-index-section">
+                <div class="symbol-index-column">
+                  <dl class="symbol-index-list">
+                    <dt class="symbol-index-name">lunch</dt>
+                    <dd></dd>
+                    <dt class="symbol-index-name">lunch.<wbr />getFavorite()</dt>
+                    <dd></dd>
+                  </dl>
+                </div>
+              </div>
             </div>
-          </div>
-        </section>
-        <section>
-          <div class="symbol-index-content">
-            <h2 id="Sandwich">Sandwich</h2>
-            <div class="symbol-index-section">
-              <index-group>
-                <index-item>Sandwich</index-item>
-                <index-item>Sandwich#addCheeses</index-item>
-              </index-group>
+          </section>
+          <section>
+            <div class="symbol-index-content">
+              <h2 id="Sandwich">Sandwich</h2>
+              <div class="symbol-index-section">
+                <div class="symbol-index-column">
+                  <dl class="symbol-index-list">
+                    <dt class="symbol-index-name">Sandwich()</dt>
+                    <dd></dd>
+                    <dt class="symbol-index-name">Sandwich#<wbr />addCheeses()</dt>
+                    <dd></dd>
+                  </dl>
+                </div>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </div>
       `);
       let longnames = [
         'Sandwich',
@@ -194,11 +204,25 @@ describe('symbol-index partial', () => {
       it('keeps 3 items in a single column', async () => {
         let data;
         const expected = await helpers.normalizeHtml(`
-          <index-group>
-            <index-item>Sandwich</index-item>
-            <index-item>Sandwich#addCheeses</index-item>
-            <index-item>Sandwich#addProteins</index-item>
-          </index-group>
+          <div class="symbol-index">
+            <section>
+              <div class="symbol-index-content">
+                <h2 id="Sandwich">Sandwich</h2>
+                <div class="symbol-index-section">
+                  <div class="symbol-index-column">
+                    <dl class="symbol-index-list">
+                      <dt class="symbol-index-name">Sandwich()</dt>
+                      <dd></dd>
+                      <dt class="symbol-index-name">Sandwich#<wbr />addCheeses()</dt>
+                      <dd></dd>
+                      <dt class="symbol-index-name">Sandwich#<wbr />addProteins()</dt>
+                      <dd></dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
         `);
         const longnames = ['Sandwich', 'Sandwich#addCheeses', 'Sandwich#addProteins'];
         let rendered;
@@ -214,14 +238,31 @@ describe('symbol-index partial', () => {
       it('splits 4 items across 2 columns', async () => {
         let data;
         const expected = await helpers.normalizeHtml(`
-          <index-group>
-            <index-item>Sandwich</index-item>
-            <index-item>Sandwich#addCheeses</index-item>
-          </index-group>
-          <index-group>
-            <index-item>Sandwich#addProteins</index-item>
-            <index-item>Sandwich#addSpreads</index-item>
-          </index-group>
+          <div class="symbol-index">
+            <section>
+              <div class="symbol-index-content">
+                <h2 id="Sandwich">Sandwich</h2>
+                <div class="symbol-index-section">
+                  <div class="symbol-index-column">
+                    <dl class="symbol-index-list">
+                      <dt class="symbol-index-name">Sandwich()</dt>
+                      <dd></dd>
+                      <dt class="symbol-index-name">Sandwich#<wbr />addCheeses()</dt>
+                      <dd></dd>
+                    </dl>
+                  </div>
+                  <div class="symbol-index-column">
+                    <dl class="symbol-index-list">
+                      <dt class="symbol-index-name">Sandwich#<wbr />addProteins()</dt>
+                      <dd></dd>
+                      <dt class="symbol-index-name">Sandwich#<wbr />addSpreads()</dt>
+                      <dd></dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
         `);
         const longnames = [
           'Sandwich',
@@ -242,18 +283,39 @@ describe('symbol-index partial', () => {
       it('splits 6 items across 3 columns', async () => {
         let data;
         const expected = await helpers.normalizeHtml(`
-          <index-group>
-            <index-item>Sandwich</index-item>
-            <index-item>Sandwich#addCheeses</index-item>
-          </index-group>
-          <index-group>
-            <index-item>Sandwich#addProteins</index-item>
-            <index-item>Sandwich#addSpreads</index-item>
-          </index-group>
-          <index-group>
-            <index-item>Sandwich#addToppings</index-item>
-            <index-item>Sandwich#chooseBread</index-item>
-          </index-group>
+          <div class="symbol-index">
+            <section>
+              <div class="symbol-index-content">
+                <h2 id="Sandwich">Sandwich</h2>
+                <div class="symbol-index-section">
+                  <div class="symbol-index-column">
+                    <dl class="symbol-index-list">
+                      <dt class="symbol-index-name">Sandwich()</dt>
+                      <dd></dd>
+                      <dt class="symbol-index-name">Sandwich#<wbr />addCheeses()</dt>
+                      <dd></dd>
+                    </dl>
+                  </div>
+                  <div class="symbol-index-column">
+                    <dl class="symbol-index-list">
+                      <dt class="symbol-index-name">Sandwich#<wbr />addProteins()</dt>
+                      <dd></dd>
+                      <dt class="symbol-index-name">Sandwich#<wbr />addSpreads()</dt>
+                      <dd></dd>
+                    </dl>
+                  </div>
+                  <div class="symbol-index-column">
+                    <dl class="symbol-index-list">
+                      <dt class="symbol-index-name">Sandwich#<wbr />addToppings()</dt>
+                      <dd></dd>
+                      <dt class="symbol-index-name">Sandwich#<wbr />chooseBread()</dt>
+                      <dd></dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
         `);
         const longnames = [
           'Sandwich',
@@ -284,13 +346,22 @@ describe('symbol-index partial', () => {
         data = { allLongnamesTree };
         rendered = await template.render('symbol-index.njk', data);
 
-        expect([...rendered.matchAll(/<index-group>/g)]).toBeArrayOfSize(3);
+        expect([...rendered.matchAll(/<div class="symbol-index-column">/g)]).toBeArrayOfSize(3);
       });
 
       it('balances the number of items in each column', async () => {
-        function extract(column, elementName) {
-          const regexp = new RegExp(`(?:<${elementName}>[\\s\\S]+?<\\/${elementName}>)`, 'g');
-          const items = [...column.matchAll(regexp)];
+        function extract(column, elementName, className) {
+          let items;
+          let regexp;
+
+          if (className) {
+            className = ` class="${className}"`;
+          } else {
+            className = '';
+          }
+
+          regexp = new RegExp(`(?:<${elementName}${className}>[\\s\\S]+?<\\/${elementName}>)`, 'g');
+          items = [...column.matchAll(regexp)];
 
           return _.flatten(items);
         }
@@ -305,11 +376,11 @@ describe('symbol-index partial', () => {
         allLongnamesTree = filteredTree(longnames);
         data = { allLongnamesTree };
         rendered = await template.render('symbol-index.njk', data);
-        columns = extract(rendered, 'index-group');
+        columns = extract(rendered, 'div', 'symbol-index-column');
 
-        expect(extract(columns[0], 'index-item')).toBeArrayOfSize(4);
-        expect(extract(columns[1], 'index-item')).toBeArrayOfSize(4);
-        expect(extract(columns[2], 'index-item')).toBeArrayOfSize(3);
+        expect(extract(columns[0], 'dt', 'symbol-index-name')).toBeArrayOfSize(4);
+        expect(extract(columns[1], 'dt', 'symbol-index-name')).toBeArrayOfSize(4);
+        expect(extract(columns[2], 'dt', 'symbol-index-name')).toBeArrayOfSize(3);
       });
     });
   });

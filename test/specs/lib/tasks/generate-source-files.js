@@ -19,9 +19,9 @@ import mock from 'mock-fs';
 // Prettier lazy-loads its parsers, so preload the HTML parser while we're not mocked.
 import 'prettier/esm/parser-html.mjs';
 
+import { readdir, readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 
-import fs from 'fs-extra';
 import _ from 'lodash';
 
 import { defaultConfig } from '../../../../lib/config.js';
@@ -93,8 +93,8 @@ describe('lib/tasks/generate-source-files', () => {
     });
 
     describe('output', () => {
-      function findOutputFile(start) {
-        const files = fs.readdirSync(OUTPUT_DIR);
+      async function findOutputFile(start) {
+        const files = await readdir(OUTPUT_DIR);
 
         for (const file of files) {
           if (file.startsWith(start)) {
@@ -115,15 +115,15 @@ describe('lib/tasks/generate-source-files', () => {
         await task.run(context);
 
         try {
-          fooFile = findOutputFile('foo-js');
-          fs.statSync(path.join(OUTPUT_DIR, fooFile));
+          fooFile = await findOutputFile('foo-js');
+          await stat(path.join(OUTPUT_DIR, fooFile));
         } catch (e) {
           fooError = e;
         }
 
         try {
-          barFile = findOutputFile('bar-js');
-          fs.statSync(path.join(OUTPUT_DIR, barFile));
+          barFile = await findOutputFile('bar-js');
+          await stat(path.join(OUTPUT_DIR, barFile));
         } catch (e) {
           barError = e;
         }
@@ -155,8 +155,8 @@ describe('lib/tasks/generate-source-files', () => {
 
         await task.run(context);
 
-        fileName = findOutputFile('foo-js');
-        file = fs.readFileSync(path.join(OUTPUT_DIR, fileName), 'utf8');
+        fileName = await findOutputFile('foo-js');
+        file = await readFile(path.join(OUTPUT_DIR, fileName), 'utf8');
 
         expect(file).toMatch(/<code[^>]+>.*exports.*\..*foo.*<\/code>/);
       });
@@ -168,8 +168,8 @@ describe('lib/tasks/generate-source-files', () => {
 
         await task.run(context);
 
-        fileName = findOutputFile('bar-js');
-        file = fs.readFileSync(path.join(OUTPUT_DIR, fileName), 'utf8');
+        fileName = await findOutputFile('bar-js');
+        file = await readFile(path.join(OUTPUT_DIR, fileName), 'utf8');
 
         expect(file).toMatch(/2.* .*&lt;.* .*3/);
       });
@@ -181,8 +181,8 @@ describe('lib/tasks/generate-source-files', () => {
 
         await task.run(context);
 
-        fileName = findOutputFile('foo-js');
-        file = fs.readFileSync(path.join(OUTPUT_DIR, fileName), 'utf8');
+        fileName = await findOutputFile('foo-js');
+        file = await readFile(path.join(OUTPUT_DIR, fileName), 'utf8');
 
         expect(file).toMatch(/foo.js<\/title>/);
       });
@@ -194,8 +194,8 @@ describe('lib/tasks/generate-source-files', () => {
 
         await task.run(context);
 
-        fileName = findOutputFile('foo-js');
-        file = fs.readFileSync(path.join(OUTPUT_DIR, fileName), 'utf8');
+        fileName = await findOutputFile('foo-js');
+        file = await readFile(path.join(OUTPUT_DIR, fileName), 'utf8');
 
         expect(file).toContain('<title>Source');
       });
@@ -208,8 +208,8 @@ describe('lib/tasks/generate-source-files', () => {
         context.pageTitlePrefix = 'Hello';
         await task.run(context);
 
-        fileName = findOutputFile('foo-js');
-        file = fs.readFileSync(path.join(OUTPUT_DIR, fileName), 'utf8');
+        fileName = await findOutputFile('foo-js');
+        file = await readFile(path.join(OUTPUT_DIR, fileName), 'utf8');
 
         expect(file).toContain('<title>Hello');
       });

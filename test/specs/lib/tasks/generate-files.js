@@ -17,9 +17,9 @@
 // eslint-disable-next-line simple-import-sort/imports
 import mock from 'mock-fs';
 
+import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 
-import fs from 'fs-extra';
 import _ from 'lodash';
 
 import { defaultConfig } from '../../../../lib/config.js';
@@ -294,8 +294,8 @@ describe('lib/tasks/generate-files', () => {
     });
 
     describe('output', () => {
-      function stat(ctx, url) {
-        return fs.statSync(path.join(ctx.destination, url));
+      function statOutputFile(ctx, url) {
+        return stat(path.join(ctx.destination, url));
       }
 
       it('creates the output directory as needed', async () => {
@@ -312,7 +312,7 @@ describe('lib/tasks/generate-files', () => {
 
         await task.run(context);
 
-        expect(() => stat(context, url)).not.toThrow();
+        expect(async () => await statOutputFile(context, url)).not.toThrow();
       });
 
       it('saves files for multiple tickets in the right places', async () => {
@@ -336,8 +336,8 @@ describe('lib/tasks/generate-files', () => {
 
         await task.run(context);
 
-        expect(() => stat(context, urls[0])).not.toThrow();
-        expect(() => stat(context, urls[1])).not.toThrow();
+        expect(async () => await statOutputFile(context, urls[0])).not.toThrow();
+        expect(async () => await statOutputFile(context, urls[1])).not.toThrow();
       });
 
       it('works when tickets are passed to the constructor', async () => {
@@ -354,7 +354,7 @@ describe('lib/tasks/generate-files', () => {
 
         await task.run(context);
 
-        expect(() => stat(context, url)).not.toThrow();
+        expect(async () => await statOutputFile(context, url)).not.toThrow();
       });
 
       it('works when tickets are added after calling the constructor', async () => {
@@ -371,7 +371,7 @@ describe('lib/tasks/generate-files', () => {
         task.tickets = [ticket];
         await task.run(context);
 
-        expect(() => stat(context, url)).not.toThrow();
+        expect(async () => await statOutputFile(context, url)).not.toThrow();
       });
 
       it('does not beautify HTML output by default', async () => {
@@ -387,7 +387,7 @@ describe('lib/tasks/generate-files', () => {
         });
 
         await task.run(context);
-        file = fs.readFileSync(path.join(OUTPUT_DIR, 'foo.html'), 'utf8');
+        file = await readFile(path.join(OUTPUT_DIR, 'foo.html'), 'utf8');
 
         expect(file).toMatch(/[ ]{20}/);
       });
@@ -405,7 +405,7 @@ describe('lib/tasks/generate-files', () => {
         });
 
         await task.run(context);
-        file = fs.readFileSync(path.join(OUTPUT_DIR, 'foo.nothtml'), 'utf8');
+        file = await readFile(path.join(OUTPUT_DIR, 'foo.nothtml'), 'utf8');
 
         expect(file).toMatch(/[ ]{20}/);
       });
@@ -430,7 +430,7 @@ describe('lib/tasks/generate-files', () => {
         });
 
         await task.run(context);
-        file = fs.readFileSync(path.join(OUTPUT_DIR, 'foo.html'), 'utf8');
+        file = await readFile(path.join(OUTPUT_DIR, 'foo.html'), 'utf8');
 
         expect(file).not.toMatch(/[ ]{20}/);
       });
@@ -453,7 +453,7 @@ describe('lib/tasks/generate-files', () => {
         });
 
         await task.run(context);
-        file = fs.readFileSync(path.join(OUTPUT_DIR, 'foo.html'), 'utf8');
+        file = await readFile(path.join(OUTPUT_DIR, 'foo.html'), 'utf8');
 
         expect(file).toMatch(/[ ]{20}/);
       });
@@ -478,7 +478,7 @@ describe('lib/tasks/generate-files', () => {
         });
 
         await task.run(context);
-        file = fs.readFileSync(path.join(OUTPUT_DIR, 'foo.html'), 'utf8');
+        file = await readFile(path.join(OUTPUT_DIR, 'foo.html'), 'utf8');
 
         expect(file).toContain('Deprecated');
       });

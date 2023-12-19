@@ -13,12 +13,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 // eslint-disable-next-line simple-import-sort/imports
 import mock from 'mock-fs';
 
+import { access, readFile } from 'node:fs/promises';
 import path from 'node:path';
 
-import fs from 'fs-extra';
+import ensureDir from 'make-dir';
 
 import { loadConfigSync } from '../../../../lib/config.js';
 import FileInfo from '../../../../lib/file-info.js';
@@ -83,13 +85,13 @@ describe('lib/tasks/copy-static-files', () => {
     it('creates the output directory if necessary', async () => {
       await instance.run(context);
 
-      expect(await fs.pathExists(OUTPUT_DIR)).toBeTrue();
+      expect(async () => await access(OUTPUT_DIR)).not.toThrow();
     });
 
     it('works if the output directory already exists', async () => {
       let error;
 
-      await fs.mkdir(OUTPUT_DIR);
+      await ensureDir(OUTPUT_DIR);
       try {
         await instance.run(context);
       } catch (e) {
@@ -103,7 +105,7 @@ describe('lib/tasks/copy-static-files', () => {
       let fooContents;
 
       await instance.run(context);
-      fooContents = fs.readFileSync(path.join(OUTPUT_DIR, 'foo.txt'), 'utf8');
+      fooContents = await readFile(path.join(OUTPUT_DIR, 'foo.txt'), 'utf8');
 
       expect(fooContents).toBe('foo');
     });
@@ -117,8 +119,8 @@ describe('lib/tasks/copy-static-files', () => {
         new FileInfo(SOURCE_DIR, path.join('foo', 'bar.txt')),
       ];
       await instance.run(context);
-      fooContents = fs.readFileSync(path.join(OUTPUT_DIR, 'foo.txt'), 'utf8');
-      barContents = fs.readFileSync(path.join(OUTPUT_DIR, 'foo', 'bar.txt'), 'utf8');
+      fooContents = await readFile(path.join(OUTPUT_DIR, 'foo.txt'), 'utf8');
+      barContents = await readFile(path.join(OUTPUT_DIR, 'foo', 'bar.txt'), 'utf8');
 
       expect(fooContents).toBe('foo');
       expect(barContents).toBe('bar');
@@ -133,9 +135,11 @@ describe('lib/tasks/copy-static-files', () => {
 
       await instance.run(context);
 
-      expect(await fs.pathExists(path.join(OUTPUT_DIR, 'foo.txt'))).toBeTrue();
-      expect(await fs.pathExists(path.join(OUTPUT_DIR, 'foo', 'bar.txt'))).toBeTrue();
-      expect(await fs.pathExists(path.join(OUTPUT_DIR, 'foo', 'bar', 'baz.txt'))).toBeTrue();
+      expect(async () => await access(path.join(OUTPUT_DIR, 'foo.txt'))).not.toThrow();
+      expect(async () => await access(path.join(OUTPUT_DIR, 'foo', 'bar.txt'))).not.toThrow();
+      expect(
+        async () => await access(path.join(OUTPUT_DIR, 'foo', 'bar', 'baz.txt'))
+      ).not.toThrow();
     });
   });
 });

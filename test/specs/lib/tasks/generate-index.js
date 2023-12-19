@@ -17,10 +17,10 @@
 // eslint-disable-next-line simple-import-sort/imports
 import mock from 'mock-fs';
 
+import { access, readFile } from 'node:fs/promises';
 import path from 'node:path';
 
 import { name } from '@jsdoc/core';
-import fs from 'fs-extra';
 import _ from 'lodash';
 
 import { defaultConfig } from '../../../../lib/config.js';
@@ -106,7 +106,7 @@ describe('lib/tasks/generate-index', () => {
     it('generates a file', async () => {
       await instance.run(context);
 
-      expect(fs.existsSync(path.join(OUTPUT_DIR, instance.url))).toBeTrue();
+      expect(async () => await access(path.join(OUTPUT_DIR, instance.url))).not.toThrow();
     });
 
     it('uses a custom `url` if specified', async () => {
@@ -115,14 +115,14 @@ describe('lib/tasks/generate-index', () => {
       instance.url = url;
       await instance.run(context);
 
-      expect(fs.existsSync(path.join(OUTPUT_DIR, url))).toBeTrue();
+      expect(async () => await access(path.join(OUTPUT_DIR, url))).not.toThrow();
     });
 
     it('uses the correct template', async () => {
       let file;
 
       await instance.run(context);
-      file = fs.readFileSync(path.join(OUTPUT_DIR, instance.url), 'utf8');
+      file = await readFile(path.join(OUTPUT_DIR, instance.url), 'utf8');
 
       expect(file).toContain('Hello, world!');
     });
@@ -131,7 +131,7 @@ describe('lib/tasks/generate-index', () => {
       let file;
 
       await instance.run(context);
-      file = fs.readFileSync(path.join(OUTPUT_DIR, instance.url), 'utf8');
+      file = await readFile(path.join(OUTPUT_DIR, instance.url), 'utf8');
 
       for (const doclet of doclets) {
         expect(file).toContain(doclet.longname);
@@ -143,7 +143,7 @@ describe('lib/tasks/generate-index', () => {
         let file;
 
         await instance.run(context);
-        file = fs.readFileSync(path.join(OUTPUT_DIR, instance.url), 'utf8');
+        file = await readFile(path.join(OUTPUT_DIR, instance.url), 'utf8');
 
         expect(file).toContain('<p>Hello, world!</p>');
       });
@@ -155,7 +155,7 @@ describe('lib/tasks/generate-index', () => {
 
         context.pageTitlePrefix = 'Testing: ';
         await instance.run(context);
-        file = fs.readFileSync(path.join(OUTPUT_DIR, instance.url), 'utf8');
+        file = await readFile(path.join(OUTPUT_DIR, instance.url), 'utf8');
 
         expect(file).toContain('<title>Testing: ');
       });

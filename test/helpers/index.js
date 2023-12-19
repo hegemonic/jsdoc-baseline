@@ -99,15 +99,25 @@ global.helpers = helpers = {
   // mocked.
   baseViews: (() => {
     const baseViews = {};
+    const l10nPath = path.resolve(__dirname, '../../lang');
     const viewsPath = path.resolve(__dirname, '../../views');
-    const globbed = glob.sync('**/*.njk', {
+    let globbed = glob.sync('**/*.njk', {
+      absolute: true,
       cwd: viewsPath,
       fs,
       onlyFiles: true,
     });
 
+    globbed = globbed.concat(
+      glob.sync('**/*.yaml', {
+        absolute: true,
+        cwd: l10nPath,
+        fs,
+        onlyFiles: true,
+      })
+    );
+
     globbed.forEach((filepath) => {
-      filepath = path.join(viewsPath, filepath);
       baseViews[filepath] = fs.readFileSync(filepath);
     });
 
@@ -179,16 +189,11 @@ global.helpers = helpers = {
 
   // Creates a new, fully initialized Template object with the specified configuration settings.
   createTemplate: (config) => {
-    config = config || {};
     helpers.setup();
 
-    config = deepExtend({}, defaultConfig, config);
+    config = deepExtend({}, defaultConfig, config ?? {});
 
-    return mock.bypass(async () => {
-      const template = await Template.create(config, {}, global.helpers.deps);
-
-      return template;
-    });
+    return Template.create(config, {}, global.helpers.deps);
   },
 
   deps: null,
