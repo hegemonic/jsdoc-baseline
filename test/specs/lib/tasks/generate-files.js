@@ -14,9 +14,6 @@
   limitations under the License.
 */
 
-// eslint-disable-next-line simple-import-sort/imports
-import mock from 'mock-fs';
-
 import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 
@@ -171,25 +168,24 @@ describe('lib/tasks/generate-files', () => {
   describe('run', () => {
     let context;
     let result;
-
-    beforeAll(async () => {
-      // Prettier lazy-loads its HTML parser. Force it to load while the filesystem isn't mocked.
-      await helpers.normalizeHtml('<p>foo</p>');
-    });
+    let tmp;
+    let tmpdir;
 
     beforeEach(async () => {
       const templateConfig = _.cloneDeep(defaultConfig);
 
       context = {
-        destination: OUTPUT_DIR,
+        destination: null,
         templateConfig,
       };
+      tmpdir = await helpers.tmpdir();
+      tmp = tmpdir.tmp;
+      context.destination = path.join(tmp, OUTPUT_DIR);
       context.template = await helpers.createTemplate(templateConfig);
-      mock(helpers.baseViews);
     });
 
-    afterEach(() => {
-      mock.restore();
+    afterEach(async () => {
+      await tmpdir.reset();
     });
 
     it('returns a promise on success', (cb) => {
@@ -387,7 +383,7 @@ describe('lib/tasks/generate-files', () => {
         });
 
         await task.run(context);
-        file = await readFile(path.join(OUTPUT_DIR, 'foo.html'), 'utf8');
+        file = await readFile(path.join(context.destination, 'foo.html'), 'utf8');
 
         expect(file).toMatch(/[ ]{20}/);
       });
@@ -405,7 +401,7 @@ describe('lib/tasks/generate-files', () => {
         });
 
         await task.run(context);
-        file = await readFile(path.join(OUTPUT_DIR, 'foo.nothtml'), 'utf8');
+        file = await readFile(path.join(context.destination, 'foo.nothtml'), 'utf8');
 
         expect(file).toMatch(/[ ]{20}/);
       });
@@ -430,7 +426,7 @@ describe('lib/tasks/generate-files', () => {
         });
 
         await task.run(context);
-        file = await readFile(path.join(OUTPUT_DIR, 'foo.html'), 'utf8');
+        file = await readFile(path.join(context.destination, 'foo.html'), 'utf8');
 
         expect(file).not.toMatch(/[ ]{20}/);
       });
@@ -453,7 +449,7 @@ describe('lib/tasks/generate-files', () => {
         });
 
         await task.run(context);
-        file = await readFile(path.join(OUTPUT_DIR, 'foo.html'), 'utf8');
+        file = await readFile(path.join(context.destination, 'foo.html'), 'utf8');
 
         expect(file).toMatch(/[ ]{20}/);
       });
@@ -478,7 +474,7 @@ describe('lib/tasks/generate-files', () => {
         });
 
         await task.run(context);
-        file = await readFile(path.join(OUTPUT_DIR, 'foo.html'), 'utf8');
+        file = await readFile(path.join(context.destination, 'foo.html'), 'utf8');
 
         expect(file).toContain('Deprecated');
       });

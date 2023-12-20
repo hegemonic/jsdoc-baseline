@@ -14,9 +14,6 @@
   limitations under the License.
 */
 
-// eslint-disable-next-line simple-import-sort/imports
-import mock from 'mock-fs';
-
 import { name as jsdocName } from '@jsdoc/core';
 import _ from 'lodash';
 
@@ -56,6 +53,7 @@ describe('symbol-index partial', () => {
   };
   const fakeDoclets = makeDoclets(longnameToKind);
   let template;
+  let tmpdir;
 
   function filteredTree(longnames) {
     return longnamesToTree(longnames, fakeDoclets);
@@ -63,12 +61,12 @@ describe('symbol-index partial', () => {
 
   beforeEach(async () => {
     allLongnamesTree = longnamesToTree(Object.keys(fakeDoclets), fakeDoclets);
-    mock(helpers.baseViews);
+    tmpdir = await helpers.tmpdir();
     template = await helpers.createTemplate();
   });
 
-  afterEach(() => {
-    mock.restore();
+  afterEach(async () => {
+    await tmpdir.reset();
   });
 
   describe('heading', () => {

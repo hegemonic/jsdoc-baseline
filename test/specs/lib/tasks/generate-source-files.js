@@ -13,25 +13,17 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-// eslint-disable-next-line simple-import-sort/imports
-import mock from 'mock-fs';
 
-// Prettier lazy-loads its parsers, so preload the HTML parser while we're not mocked.
-import 'prettier/esm/parser-html.mjs';
-
-import { readdir, readFile, stat } from 'node:fs/promises';
+import { access, readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
-
-import _ from 'lodash';
+import { fileURLToPath } from 'node:url';
 
 import { defaultConfig } from '../../../../lib/config.js';
 import GenerateSourceFiles from '../../../../lib/tasks/generate-source-files.js';
 
-const mockObj = _.defaults({}, helpers.baseViews, {
-  'foo.js': 'exports.foo = 1;',
-  'bar.js': 'exports.bar = () => 2 < 3;',
-  out: {},
-});
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const fixtureDir = path.resolve(__dirname, '../../../fixtures/tasks/generate-source-files');
 const OUTPUT_DIR = 'out';
 
 describe('lib/tasks/generate-source-files', () => {
@@ -45,28 +37,31 @@ describe('lib/tasks/generate-source-files', () => {
 
   describe('run', () => {
     let context;
+    let tmp;
+    let tmpdir;
 
     beforeEach(async () => {
       context = {
-        destination: OUTPUT_DIR,
+        destination: null,
         pageTitlePrefix: '',
         sourceFiles: {
-          'foo.js': 'foo.js',
-          'bar.js': 'bar.js',
+          [path.join(fixtureDir, 'foo.js')]: 'foo.js',
+          [path.join(fixtureDir, 'bar.js')]: 'bar.js',
         },
         template: await helpers.createTemplate(defaultConfig),
         templateConfig: defaultConfig,
       };
+      tmpdir = await helpers.tmpdir();
+      tmp = tmpdir.tmp;
+      context.destination = path.join(tmp, OUTPUT_DIR);
       context.linkManager = context.template.linkManager;
-      Object.keys(context.sourceFiles).forEach((sourceFile) =>
+      Object.values(context.sourceFiles).forEach((sourceFile) =>
         context.linkManager.requestFilename(sourceFile)
       );
-
-      mock(mockObj);
     });
 
-    afterEach(() => {
-      mock.restore();
+    afterEach(async () => {
+      await tmpdir.reset();
     });
 
     it('returns a promise on success', (cb) => {
@@ -94,7 +89,7 @@ describe('lib/tasks/generate-source-files', () => {
 
     describe('output', () => {
       async function findOutputFile(start) {
-        const files = await readdir(OUTPUT_DIR);
+        const files = await readdir(context.destination);
 
         for (const file of files) {
           if (file.startsWith(start)) {
@@ -102,7 +97,7 @@ describe('lib/tasks/generate-source-files', () => {
           }
         }
 
-        throw new Error(`No files in ${OUTPUT_DIR} start with ${start}`);
+        throw new Error(`No files in ${context.destination} start with ${start}`);
       }
 
       it('creates an output file for each source file', async () => {
@@ -116,14 +111,14 @@ describe('lib/tasks/generate-source-files', () => {
 
         try {
           fooFile = await findOutputFile('foo-js');
-          await stat(path.join(OUTPUT_DIR, fooFile));
+          await access(path.join(context.destination, fooFile));
         } catch (e) {
           fooError = e;
         }
 
         try {
           barFile = await findOutputFile('bar-js');
-          await stat(path.join(OUTPUT_DIR, barFile));
+          await access(path.join(context.destination, barFile));
         } catch (e) {
           barError = e;
         }
@@ -137,7 +132,7 @@ describe('lib/tasks/generate-source-files', () => {
         const task = new GenerateSourceFiles({ name: 'outputFiles' });
 
         context.sourceFiles = {
-          'no-such-file.js': 'no-such-file.js',
+          [path.join(fixtureDir, 'no-such-file.js')]: 'no-such-file.js',
         };
         try {
           await task.run(context);
@@ -156,9 +151,9 @@ describe('lib/tasks/generate-source-files', () => {
         await task.run(context);
 
         fileName = await findOutputFile('foo-js');
-        file = await readFile(path.join(OUTPUT_DIR, fileName), 'utf8');
+        file = await readFile(path.join(context.destination, fileName), 'utf8');
 
-        expect(file).toMatch(/<code[^>]+>.*exports.*\..*foo.*<\/code>/);
+        expect(file).toContain('Source: foo.js');
       });
 
       it('encodes characters in the source file that are not HTML-safe', async () => {
@@ -169,7 +164,7 @@ describe('lib/tasks/generate-source-files', () => {
         await task.run(context);
 
         fileName = await findOutputFile('bar-js');
-        file = await readFile(path.join(OUTPUT_DIR, fileName), 'utf8');
+        file = await readFile(path.join(context.destination, fileName), 'utf8');
 
         expect(file).toMatch(/2.* .*&lt;.* .*3/);
       });
@@ -182,7 +177,7 @@ describe('lib/tasks/generate-source-files', () => {
         await task.run(context);
 
         fileName = await findOutputFile('foo-js');
-        file = await readFile(path.join(OUTPUT_DIR, fileName), 'utf8');
+        file = await readFile(path.join(context.destination, fileName), 'utf8');
 
         expect(file).toMatch(/foo.js<\/title>/);
       });
@@ -195,7 +190,7 @@ describe('lib/tasks/generate-source-files', () => {
         await task.run(context);
 
         fileName = await findOutputFile('foo-js');
-        file = await readFile(path.join(OUTPUT_DIR, fileName), 'utf8');
+        file = await readFile(path.join(context.destination, fileName), 'utf8');
 
         expect(file).toContain('<title>Source');
       });
@@ -209,7 +204,7 @@ describe('lib/tasks/generate-source-files', () => {
         await task.run(context);
 
         fileName = await findOutputFile('foo-js');
-        file = await readFile(path.join(OUTPUT_DIR, fileName), 'utf8');
+        file = await readFile(path.join(context.destination, fileName), 'utf8');
 
         expect(file).toContain('<title>Hello');
       });

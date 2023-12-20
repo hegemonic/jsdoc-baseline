@@ -15,9 +15,9 @@
 */
 
 // Helper functions for testing the Baseline template.
-import mock from 'mock-fs'; // eslint-disable-line
-
 import fs from 'node:fs';
+import { mkdtemp, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -226,6 +226,15 @@ global.helpers = helpers = {
 
   // Sets up the runtime environment so that JSDoc can work properly.
   setup: resetJsdocEnv,
+
+  tmpdir: async () => {
+    const tmp = await mkdtemp(path.join(tmpdir(), 'jsdoc-'));
+
+    return {
+      reset: () => rm(tmp, { recursive: true }),
+      tmp,
+    };
+  },
 
   // Converts a class instance to a dictionary-like object, so that `toEqual()` works.
   toObject: (instance) => JSON.parse(JSON.stringify(instance)),

@@ -14,9 +14,6 @@
   limitations under the License.
 */
 
-// eslint-disable-next-line simple-import-sort/imports
-import mock from 'mock-fs';
-
 import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 
@@ -54,6 +51,8 @@ describe('lib/tasks/generate-core-docs', () => {
     let context;
     let doclets;
     let instance;
+    let tmp;
+    let tmpdir;
 
     beforeEach(async () => {
       doclets = createTestDoclets();
@@ -64,7 +63,7 @@ describe('lib/tasks/generate-core-docs', () => {
       };
       context = {
         config: conf,
-        destination: OUTPUT_DIR,
+        destination: null,
         docletStore: helpers.createDocletStore(doclets),
         needsOutputFile: (() => {
           const obj = {};
@@ -82,32 +81,30 @@ describe('lib/tasks/generate-core-docs', () => {
         template: await helpers.createTemplate(defaultConfig),
         templateConfig: defaultConfig,
       };
+      tmpdir = await helpers.tmpdir();
+      tmp = tmpdir.tmp;
+      context.destination = path.join(tmp, OUTPUT_DIR);
       context.linkManager = context.template.linkManager;
       for (const doclet of doclets) {
         context.linkManager.registerDoclet(doclet);
       }
       instance = new GenerateCoreDocs({ name: 'generateCoreDocs' });
-
-      mock(helpers.baseViews);
     });
 
-    afterEach(() => {
-      mock.restore();
+    afterEach(async () => {
       context.docletStore?.stopListening();
+      await tmpdir.reset();
     });
 
-    it('returns a promise on success', () => {
+    it('returns a promise on success', (cb) => {
       const result = instance.run(context);
 
       expect(result).toBeInstanceOf(Promise);
 
-      result.then(
-        () => null,
-        () => null
-      );
+      helpers.handlePromise(result, cb);
     });
 
-    it('returns a promise on failure', () => {
+    it('returns a promise on failure', (cb) => {
       let result;
 
       context.docletStore = null;
@@ -115,10 +112,7 @@ describe('lib/tasks/generate-core-docs', () => {
 
       expect(result).toBeInstanceOf(Promise);
 
-      result.then(
-        () => null,
-        () => null
-      );
+      helpers.handlePromise(result, cb);
     });
 
     describe('output', () => {
@@ -126,7 +120,7 @@ describe('lib/tasks/generate-core-docs', () => {
         let files;
 
         await instance.run(context);
-        files = (await readdir(OUTPUT_DIR)).sort();
+        files = (await readdir(context.destination)).sort();
 
         expect(files.length).toBe(2);
         expect(files[0]).toMatch(/^foo-bar/);
@@ -153,7 +147,7 @@ describe('lib/tasks/generate-core-docs', () => {
         context.linkManager.registerDoclet(newDoclets[0]);
 
         await instance.run(context);
-        files = (await readdir(OUTPUT_DIR, 'utf8')).sort();
+        files = (await readdir(context.destination)).sort();
 
         expect(files.length).toBe(3);
         expect(files[0]).toMatch(/^foo-bar/);
@@ -166,8 +160,8 @@ describe('lib/tasks/generate-core-docs', () => {
         let files;
 
         await instance.run(context);
-        files = (await readdir(OUTPUT_DIR, 'utf8')).filter((f) => f.match(/^foo\.[^B]/));
-        file = await readFile(path.join(OUTPUT_DIR, files[0]), 'utf8');
+        files = (await readdir(context.destination, 'utf8')).filter((f) => f.match(/^foo\.[^B]/));
+        file = await readFile(path.join(context.destination, files[0]), 'utf8');
 
         expect(file).toContain('symbol-name');
       });
@@ -177,8 +171,8 @@ describe('lib/tasks/generate-core-docs', () => {
         let files;
 
         await instance.run(context);
-        files = (await readdir(OUTPUT_DIR, 'utf8')).filter((f) => f.match(/^foo\.[^B]/));
-        file = await readFile(path.join(OUTPUT_DIR, files[0]), 'utf8');
+        files = (await readdir(context.destination, 'utf8')).filter((f) => f.match(/^foo\.[^B]/));
+        file = await readFile(path.join(context.destination, files[0]), 'utf8');
 
         expect(file).toContain('foo-bar');
       });
@@ -189,8 +183,8 @@ describe('lib/tasks/generate-core-docs', () => {
           let files;
 
           await instance.run(context);
-          files = (await readdir(OUTPUT_DIR, 'utf8')).filter((f) => f.match(/^foo\.[^B]/));
-          file = await readFile(path.join(OUTPUT_DIR, files[0]), 'utf8');
+          files = (await readdir(context.destination, 'utf8')).filter((f) => f.match(/^foo\.[^B]/));
+          file = await readFile(path.join(context.destination, files[0]), 'utf8');
 
           expect(file).toContain('<title>Namespace: foo</title>');
         });
@@ -201,8 +195,8 @@ describe('lib/tasks/generate-core-docs', () => {
 
           context.pageTitlePrefix = 'Prefix: ';
           await instance.run(context);
-          files = (await readdir(OUTPUT_DIR, 'utf8')).filter((f) => f.match(/^foo\.[^B]/));
-          file = await readFile(path.join(OUTPUT_DIR, files[0]), 'utf8');
+          files = (await readdir(context.destination, 'utf8')).filter((f) => f.match(/^foo\.[^B]/));
+          file = await readFile(path.join(context.destination, files[0]), 'utf8');
 
           expect(file).toContain('<title>Prefix: Namespace: foo</title');
         });

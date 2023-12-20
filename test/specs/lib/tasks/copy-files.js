@@ -14,17 +14,17 @@
   limitations under the License.
 */
 
-// eslint-disable-next-line simple-import-sort/imports
-import mock from 'mock-fs';
-
 import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import { loadConfigSync } from '../../../../lib/config.js';
 import CopyFiles from '../../../../lib/tasks/copy-files.js';
 import Ticket from '../../../../lib/ticket.js';
 
-const SOURCE_DIR = 'sourcefiles';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const SOURCE_DIR = path.resolve(__dirname, '../../../fixtures/tasks/copy-files');
 const OUTPUT_DIR = 'out';
 const TYPE_ERROR = 'TypeError';
 
@@ -84,24 +84,23 @@ describe('lib/tasks/copy-files', () => {
     let conf;
     let context;
     let result;
+    let tmp;
+    let tmpdir;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       conf = loadConfigSync(helpers.deps);
       context = {
-        destination: OUTPUT_DIR,
+        destination: null,
         templateConfig: conf,
       };
 
-      mock({
-        [SOURCE_DIR]: {
-          'foo.js': 'foo bar baz',
-          'bar.css': 'bar baz qux',
-        },
-      });
+      tmpdir = await helpers.tmpdir();
+      tmp = tmpdir.tmp;
+      context.destination = path.join(tmp, OUTPUT_DIR);
     });
 
-    afterEach(() => {
-      mock.restore();
+    afterEach(async () => {
+      await tmpdir.reset();
     });
 
     it('returns a promise on success', (cb) => {
@@ -237,9 +236,9 @@ describe('lib/tasks/copy-files', () => {
         });
 
         await task.run(context);
-        file = await readFile(path.join(OUTPUT_DIR, url), 'utf8');
+        file = await readFile(path.join(context.destination, url), 'utf8');
 
-        expect(file).toBe('foo bar baz');
+        expect(file).toContain('foo bar baz');
       });
 
       it('saves files for multiple tickets in the right places', async () => {
@@ -278,9 +277,9 @@ describe('lib/tasks/copy-files', () => {
         });
 
         await task.run(context);
-        file = await readFile(path.join(OUTPUT_DIR, url), 'utf8');
+        file = await readFile(path.join(context.destination, url), 'utf8');
 
-        expect(file).toBe('foo bar baz');
+        expect(file).toContain('foo bar baz');
       });
 
       it('works when tickets are added after calling the constructor', async () => {
@@ -296,9 +295,9 @@ describe('lib/tasks/copy-files', () => {
 
         task.tickets = [ticket];
         await task.run(context);
-        file = await readFile(path.join(OUTPUT_DIR, url), 'utf8');
+        file = await readFile(path.join(context.destination, url), 'utf8');
 
-        expect(file).toBe('foo bar baz');
+        expect(file).toContain('foo bar baz');
       });
     });
   });

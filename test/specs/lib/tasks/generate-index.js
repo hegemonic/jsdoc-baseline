@@ -14,17 +14,16 @@
   limitations under the License.
 */
 
-// eslint-disable-next-line simple-import-sort/imports
-import mock from 'mock-fs';
-
 import { access, readFile } from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import { name } from '@jsdoc/core';
-import _ from 'lodash';
 
 import { defaultConfig } from '../../../../lib/config.js';
 import GenerateIndex from '../../../../lib/tasks/generate-index.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const OUTPUT_DIR = 'out';
 
@@ -45,6 +44,8 @@ describe('lib/tasks/generate-index', () => {
   ];
   let indexFilename;
   let instance;
+  let tmp;
+  let tmpdir;
 
   beforeEach(async () => {
     conf = {
@@ -62,28 +63,25 @@ describe('lib/tasks/generate-index', () => {
         }, {})
       ),
       config: conf,
-      destination: OUTPUT_DIR,
+      destination: null,
       pageTitlePrefix: '',
-      readme: 'fixtures/readme.md',
+      readme: path.resolve(__dirname, '../../../fixtures/tasks/generate-index/readme.md'),
       template: await helpers.createTemplate(defaultConfig),
       templateConfig: defaultConfig,
     };
+    tmpdir = await helpers.tmpdir();
+    tmp = tmpdir.tmp;
+    context.destination = path.join(tmp, OUTPUT_DIR);
     context.linkManager = context.template.linkManager;
     indexFilename = context.linkManager.getUniqueFilename('index');
     instance = new GenerateIndex({
       name: 'generateIndex',
       url: indexFilename,
     });
-
-    mock(
-      _.defaults({}, helpers.baseViews, {
-        'fixtures/readme.md': 'Hello, world!',
-      })
-    );
   });
 
-  afterEach(() => {
-    mock.restore();
+  afterEach(async () => {
+    await tmpdir.reset();
   });
 
   it('is a constructor', () => {
@@ -106,7 +104,7 @@ describe('lib/tasks/generate-index', () => {
     it('generates a file', async () => {
       await instance.run(context);
 
-      expect(async () => await access(path.join(OUTPUT_DIR, instance.url))).not.toThrow();
+      expect(async () => await access(path.join(context.destination, instance.url))).not.toThrow();
     });
 
     it('uses a custom `url` if specified', async () => {
@@ -115,14 +113,14 @@ describe('lib/tasks/generate-index', () => {
       instance.url = url;
       await instance.run(context);
 
-      expect(async () => await access(path.join(OUTPUT_DIR, url))).not.toThrow();
+      expect(async () => await access(path.join(context.destination, url))).not.toThrow();
     });
 
     it('uses the correct template', async () => {
       let file;
 
       await instance.run(context);
-      file = await readFile(path.join(OUTPUT_DIR, instance.url), 'utf8');
+      file = await readFile(path.join(context.destination, instance.url), 'utf8');
 
       expect(file).toContain('Hello, world!');
     });
@@ -131,7 +129,7 @@ describe('lib/tasks/generate-index', () => {
       let file;
 
       await instance.run(context);
-      file = await readFile(path.join(OUTPUT_DIR, instance.url), 'utf8');
+      file = await readFile(path.join(context.destination, instance.url), 'utf8');
 
       for (const doclet of doclets) {
         expect(file).toContain(doclet.longname);
@@ -143,7 +141,7 @@ describe('lib/tasks/generate-index', () => {
         let file;
 
         await instance.run(context);
-        file = await readFile(path.join(OUTPUT_DIR, instance.url), 'utf8');
+        file = await readFile(path.join(context.destination, instance.url), 'utf8');
 
         expect(file).toContain('<p>Hello, world!</p>');
       });
@@ -155,7 +153,7 @@ describe('lib/tasks/generate-index', () => {
 
         context.pageTitlePrefix = 'Testing: ';
         await instance.run(context);
-        file = await readFile(path.join(OUTPUT_DIR, instance.url), 'utf8');
+        file = await readFile(path.join(context.destination, instance.url), 'utf8');
 
         expect(file).toContain('<title>Testing: ');
       });

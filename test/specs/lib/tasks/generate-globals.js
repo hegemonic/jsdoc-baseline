@@ -14,8 +14,7 @@
   limitations under the License.
 */
 
-import { access, mkdtemp, readFile, rm } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
+import { access, readFile } from 'node:fs/promises';
 import path from 'node:path';
 
 import { defaultConfig } from '../../../../lib/config.js';
@@ -44,6 +43,7 @@ describe('lib/tasks/generate-globals', () => {
   let instance;
   let template;
   let tmp;
+  let tmpdir;
 
   beforeEach(async () => {
     conf = {
@@ -52,7 +52,8 @@ describe('lib/tasks/generate-globals', () => {
       },
     };
     template = await helpers.createTemplate(defaultConfig);
-    tmp = await mkdtemp(path.join(tmpdir(), 'jsdoc-'));
+    tmpdir = await helpers.tmpdir();
+    tmp = tmpdir.tmp;
     context = {
       config: conf,
       destination: tmp,
@@ -67,20 +68,9 @@ describe('lib/tasks/generate-globals', () => {
     context.linkManager.getUniqueFilename('global');
   });
 
-  afterEach(() => {
-    let promise;
-
+  afterEach(async () => {
     context.docletStore.stopListening();
-
-    if (!tmp) {
-      promise = Promise.resolve();
-    } else {
-      promise = rm(tmp, { recursive: true }).then(() => {
-        tmp = null;
-      });
-    }
-
-    return promise;
+    await tmpdir.reset();
   });
 
   it('is a constructor', () => {

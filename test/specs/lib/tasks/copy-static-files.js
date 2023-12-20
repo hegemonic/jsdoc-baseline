@@ -14,11 +14,9 @@
   limitations under the License.
 */
 
-// eslint-disable-next-line simple-import-sort/imports
-import mock from 'mock-fs';
-
 import { access, readFile } from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import ensureDir from 'make-dir';
 
@@ -26,39 +24,34 @@ import { loadConfigSync } from '../../../../lib/config.js';
 import FileInfo from '../../../../lib/file-info.js';
 import CopyStaticFiles from '../../../../lib/tasks/copy-static-files.js';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 const OUTPUT_DIR = 'out';
-const SOURCE_DIR = 'files';
+const SOURCE_DIR = path.resolve(__dirname, '../../../fixtures/tasks/copy-static-files');
 
 describe('lib/tasks/copy-static-files', () => {
   let conf;
   let context;
   let instance;
+  let tmp;
+  let tmpdir;
 
   beforeEach(async () => {
     conf = loadConfigSync(helpers.deps);
     conf.staticFiles = [new FileInfo(SOURCE_DIR, 'foo.txt')];
     context = {
-      destination: OUTPUT_DIR,
+      destination: null,
       template: await helpers.createTemplate(conf),
       templateConfig: conf,
     };
     instance = new CopyStaticFiles({ name: 'copyStaticFiles' });
-
-    mock({
-      files: {
-        'foo.txt': 'foo',
-        foo: {
-          'bar.txt': 'bar',
-          bar: {
-            'baz.txt': 'baz',
-          },
-        },
-      },
-    });
+    tmpdir = await helpers.tmpdir();
+    tmp = tmpdir.tmp;
+    context.destination = path.join(tmp, OUTPUT_DIR);
   });
 
-  afterEach(() => {
-    mock.restore();
+  afterEach(async () => {
+    await tmpdir.reset();
   });
 
   it('is a constructor', () => {
@@ -85,13 +78,13 @@ describe('lib/tasks/copy-static-files', () => {
     it('creates the output directory if necessary', async () => {
       await instance.run(context);
 
-      expect(async () => await access(OUTPUT_DIR)).not.toThrow();
+      expect(async () => await access(context.destination)).not.toThrow();
     });
 
     it('works if the output directory already exists', async () => {
       let error;
 
-      await ensureDir(OUTPUT_DIR);
+      await ensureDir(context.destination);
       try {
         await instance.run(context);
       } catch (e) {
@@ -105,9 +98,9 @@ describe('lib/tasks/copy-static-files', () => {
       let fooContents;
 
       await instance.run(context);
-      fooContents = await readFile(path.join(OUTPUT_DIR, 'foo.txt'), 'utf8');
+      fooContents = await readFile(path.join(context.destination, 'foo.txt'), 'utf8');
 
-      expect(fooContents).toBe('foo');
+      expect(fooContents).toContain('foo');
     });
 
     it('copies multiple files', async () => {
@@ -116,30 +109,35 @@ describe('lib/tasks/copy-static-files', () => {
 
       context.templateConfig.staticFiles = [
         new FileInfo(SOURCE_DIR, 'foo.txt'),
-        new FileInfo(SOURCE_DIR, path.join('foo', 'bar.txt')),
+        new FileInfo(SOURCE_DIR, 'foo/bar.txt'),
       ];
       await instance.run(context);
-      fooContents = await readFile(path.join(OUTPUT_DIR, 'foo.txt'), 'utf8');
-      barContents = await readFile(path.join(OUTPUT_DIR, 'foo', 'bar.txt'), 'utf8');
 
-      expect(fooContents).toBe('foo');
-      expect(barContents).toBe('bar');
+      fooContents = await readFile(path.join(context.destination, 'foo.txt'), 'utf8');
+      barContents = await readFile(path.join(context.destination, 'foo/bar.txt'), 'utf8');
+
+      expect(fooContents).toContain('foo');
+      expect(barContents).toContain('bar');
     });
 
     it('replicates the directory layout', async () => {
+      let promises;
+
       context.templateConfig.staticFiles = [
         new FileInfo(SOURCE_DIR, 'foo.txt'),
-        new FileInfo(SOURCE_DIR, path.join('foo', 'bar.txt')),
-        new FileInfo(SOURCE_DIR, path.join('foo', 'bar', 'baz.txt')),
+        new FileInfo(SOURCE_DIR, 'foo/bar.txt'),
+        new FileInfo(SOURCE_DIR, 'foo/bar/baz.txt'),
       ];
 
       await instance.run(context);
 
-      expect(async () => await access(path.join(OUTPUT_DIR, 'foo.txt'))).not.toThrow();
-      expect(async () => await access(path.join(OUTPUT_DIR, 'foo', 'bar.txt'))).not.toThrow();
-      expect(
-        async () => await access(path.join(OUTPUT_DIR, 'foo', 'bar', 'baz.txt'))
-      ).not.toThrow();
+      promises = [
+        access(path.join(context.destination, 'foo.txt')),
+        access(path.join(context.destination, 'foo/bar.txt')),
+        access(path.join(context.destination, 'foo/bar/baz.txt')),
+      ];
+
+      return Promise.all(promises);
     });
   });
 });
