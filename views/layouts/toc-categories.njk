@@ -15,7 +15,8 @@
 -#}
 
 {%- macro add_details_modifiers(hrefs) -%}
-  {%- if hrefs.includes(href) %} open{%- endif -%}
+  {%- if config('toc.categories.alwaysExpanded') == true %} keep-open open
+  {%- elif hrefs.includes(href) %} open{%- endif -%}
 {%- endmacro -%}
 
 {%- macro add_tree_item_modifiers(item) -%}
