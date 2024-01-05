@@ -88,7 +88,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.2",
     "execa": "^8.0.1",
-    "hereby": "^1.8.8",
+    "hereby": "^1.8.9",
     "jasmine": "^5.1.0",
     "jasmine-console-reporter": "^3.1.0",
     "license-check-and-add": "^4.0.5",
