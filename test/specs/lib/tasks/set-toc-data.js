@@ -94,6 +94,9 @@ describe('lib/tasks/set-toc-data', () => {
               label: 'foo',
             },
           ],
+          nameCount: {
+            foo: 1,
+          },
         },
         {
           category: 'classes',
@@ -105,6 +108,9 @@ describe('lib/tasks/set-toc-data', () => {
               label: 'Bar',
             },
           ],
+          nameCount: {
+            Bar: 1,
+          },
         },
       ];
 

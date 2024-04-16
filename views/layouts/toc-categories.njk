@@ -23,13 +23,22 @@
   {%- if href == item.href %} selected{% endif -%}
 {%- endmacro -%}
 
+{%- macro choose_label(section, item) -%}
+  {%- if section.nameCount[item.label] > 1 -%}
+    {{ item.id }}
+  {%- else -%}
+    {{ item.label }}
+  {%- endif -%}
+{%- endmacro -%}
+
 {%- macro make_accordion(section) -%}
   <sl-details {{- add_details_modifiers(section.hrefs) -}}>
     <p slot="summary">{{ translate('headings.' + section.category, section.items) }}</p>
     <sl-tree>
       {% for item in section.items -%}
+        {%- set label %}{{ choose_label(section, item) }}{% endset -%}
         <sl-tree-item id="{{ item.id }}" {{- add_tree_item_modifiers(item) -}}>
-          <a href="{{ item.href }}">{{ item.label }}</a>
+          <a href="{{ item.href }}">{{ label }}</a>
         </sl-tree-item>
       {%- endfor %}
     </sl-tree>

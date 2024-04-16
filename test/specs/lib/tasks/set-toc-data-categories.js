@@ -57,9 +57,10 @@ describe('lib/tasks/set-toc-data-categories', () => {
         '@function',
       ]),
     ];
+    let template;
 
     beforeEach(async () => {
-      const template = await helpers.createTemplate(defaultConfig);
+      template = await helpers.createTemplate(defaultConfig);
 
       context = {
         config: {
@@ -91,6 +92,9 @@ describe('lib/tasks/set-toc-data-categories', () => {
               label: 'charlie',
             },
           ],
+          nameCount: {
+            charlie: 1,
+          },
         },
         {
           category: 'externals',
@@ -102,6 +106,9 @@ describe('lib/tasks/set-toc-data-categories', () => {
               label: 'delta',
             },
           ],
+          nameCount: {
+            delta: 1,
+          },
         },
         {
           category: 'namespaces',
@@ -113,6 +120,9 @@ describe('lib/tasks/set-toc-data-categories', () => {
               label: 'alpha',
             },
           ],
+          nameCount: {
+            alpha: 1,
+          },
         },
         {
           category: 'classes',
@@ -124,6 +134,9 @@ describe('lib/tasks/set-toc-data-categories', () => {
               label: 'Bravo',
             },
           ],
+          nameCount: {
+            Bravo: 1,
+          },
         },
         {
           category: 'interfaces',
@@ -135,6 +148,9 @@ describe('lib/tasks/set-toc-data-categories', () => {
               label: 'IEcho',
             },
           ],
+          nameCount: {
+            IEcho: 1,
+          },
         },
         {
           category: 'events',
@@ -146,6 +162,9 @@ describe('lib/tasks/set-toc-data-categories', () => {
               label: 'foxtrot',
             },
           ],
+          nameCount: {
+            foxtrot: 1,
+          },
         },
         {
           category: 'mixins',
@@ -157,6 +176,9 @@ describe('lib/tasks/set-toc-data-categories', () => {
               label: 'golf',
             },
           ],
+          nameCount: {
+            golf: 1,
+          },
         },
       ];
 
@@ -177,6 +199,9 @@ describe('lib/tasks/set-toc-data-categories', () => {
               label: 'hotel',
             },
           ],
+          nameCount: {
+            hotel: 1,
+          },
         },
         {
           category: 'modules',
@@ -188,10 +213,51 @@ describe('lib/tasks/set-toc-data-categories', () => {
               label: 'charlie',
             },
           ],
+          nameCount: {
+            charlie: 1,
+          },
         },
       ];
 
       context.tocCategories = [CATEGORIES.FUNCTIONS, CATEGORIES.MODULES];
+      await instance.run(context);
+
+      expect(context.tocData).toEqual(expected);
+    });
+
+    it('tracks the number of doclets with the same name by category', async () => {
+      const expected = [
+        {
+          category: 'functions',
+          hrefs: ['alpha.html#.hotel', 'india.html#.hotel'],
+          items: [
+            {
+              href: 'alpha.html#.hotel',
+              id: 'alpha.hotel',
+              label: 'hotel',
+            },
+            {
+              href: 'india.html#.hotel',
+              id: 'india.hotel',
+              label: 'hotel',
+            },
+          ],
+          nameCount: {
+            hotel: 2,
+          },
+        },
+      ];
+      const doclet = helpers.createDoclet([
+        '@name hotel',
+        '@longname india.hotel',
+        '@memberof india',
+        '@function',
+      ]);
+
+      doclets.push(doclet);
+      template.linkManager.registerDoclet(doclet);
+
+      context.tocCategories = [CATEGORIES.FUNCTIONS];
       await instance.run(context);
 
       expect(context.tocData).toEqual(expected);
