@@ -65,7 +65,7 @@ describe('params atom', () => {
           },
         });
 
-        expect(text).toContain('<th>Parameter</th>');
+        expect(text).toContain('<th>Name</th>');
       });
 
       it('shows the parameter name in bold code font', async () => {
