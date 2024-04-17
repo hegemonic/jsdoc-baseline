@@ -201,6 +201,9 @@ tables:
     nullable:
       long: 'Value can be null.'
       short: 'nullable'
+    optional:
+      long: 'Value is optional.'
+      short: 'optional'
     repeatable:
       long: 'Value can be repeated.'
       short: 'repeatable'
@@ -209,6 +212,4 @@ tables:
   header:
     description: 'Description'
     name: 'Name'
-    optional: 'Optional'
-    type: 'Type'
-  notApplicable: '&#8212;'
+  notApplicable: '&mdash;'

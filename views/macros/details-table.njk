@@ -13,59 +13,50 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
-{%- macro detailsTableName(name) -%}
+
+{%- macro detailsTableName(value) -%}
   <td class="details-table-name">
     <p>
-      {%- if name -%}
-        <code>{{ name }}</code>
+      {%- if value.name -%}
+        <code><strong>{{ value.name }}</strong></code>
       {%- else -%}
-        {{ 'tables.notApplicable' | translate }}
+        <strong>{{ 'tables.notApplicable' | translate }}</strong>
       {%- endif -%}
     </p>
   </td>
 {%- endmacro -%}
 
-{%- macro detailsTableTypes(type) -%}
-  <td class="details-table-types">
-    {% if type and type.parsedType %}
-      <p>{{ type.parsedType | describeType(format='extended') }}</p>
-    {%- else -%}
-      <p>&nbsp;</p>
-    {% endif %}
-  </td>
-{%- endmacro -%}
-
-{%- macro detailsTableOptional(optional) -%}
-  {#- TODO: Make it possible to collapse this column, and do so by default. -#}
-  <td class="details-table-optional">
-    {% if optional %}
-      <p>{{ 'tables.body.isOptional' | translate }}</p>
-    {%- else -%}
-      <p>{{ 'tables.body.isRequired' | translate }}</p>
-    {% endif %}
-  </td>
-{%- endmacro -%}
-
 {%- macro detailsTableDescription(value, isEnum) -%}
   <td class="details-table-description">
-    {% if value.description %}
+    {% if value.optional or (value.type and value.type.parsedType) -%}
+      <p class="details-table-type">
+        {#- TODO: Handle this in `hasModifiers`. -#}
+        {% if value.optional -%}
+          {{ 'tables.body.optional.short' | translate }}&nbsp;
+        {%- endif -%}
+        {%- if value.type and value.type.parsedType -%}
+          {{ value.type.parsedType | describeType(format='extended') }}
+        {%- else -%}
+          &nbsp;
+        {%- endif %}
+      </p>
+    {%- endif %}
+    {% if value.description -%}
       {{ value.description | markdown | resolveLinks }}
-    {% endif -%}
-    {%- if value | hasModifiers(isEnum) %}
+    {%- endif %}
+    {% if value | hasModifiers(isEnum) -%}
       <p>{{ value | modifierText(isEnum) }}</p>
-    {% endif -%}
-    {%- if value.children %}
+    {%- endif %}
+    {% if value.children -%}
       <p>{{ 'tables.body.eachValueHasProperties' | translate(1, name=value.name) }}</p>
       {{ detailsTable(value.children) }}
-    {% endif %}
+    {%- endif %}
   </td>
 {%- endmacro -%}
 
 {%- macro detailsTableRow(value, isEnum) -%}
   <tr>
-    {{ detailsTableName(value.name) }}
-    {{ detailsTableTypes(value.type) }}
-    {{ detailsTableOptional(value.optional) }}
+    {{ detailsTableName(value) }}
     {{ detailsTableDescription(value, isEnum) }}
   </tr>
 {%- endmacro -%}
@@ -79,19 +70,13 @@
     <thead>
       <tr>
         <th>{{ 'tables.header.name' | translate }}</th>
-        <th>{{ 'tables.header.type' | translate }}</th>
-        {#-
-          TODO: Make it possible to collapse this column if there are no optional values.
-          Do that by default, with a pref to always show the column.
-        -#}
-        <th>{{ 'tables.header.optional' | translate }}</th>
         <th>{{ 'tables.header.description' | translate }}</th>
       </tr>
     </thead>
     <tbody>
-      {%- for value in values %}
+      {% for value in values -%}
         {{ detailsTableRow(value, isEnum) }}
-      {% endfor -%}
+      {%- endfor %}
     </tbody>
   </table>
 {%- endmacro -%}
