@@ -13,6 +13,9 @@
 # limitations under the License.
 name: build
 on: [push, pull_request]
+env:
+  # Don't install Git hooks.
+  HUSKY: 0
 jobs:
   license-check:
     runs-on: ${{ matrix.os }}

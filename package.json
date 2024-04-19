@@ -14,6 +14,7 @@
     "js": "node_modules/.bin/hereby js",
     "license-check": "node_modules/.bin/hereby license-check",
     "lint": "node_modules/.bin/hereby lint",
+    "prepare": "node .husky/install.js",
     "test": "node_modules/.bin/hereby test"
   },
   "repository": {
@@ -90,6 +91,7 @@
     "eslint-plugin-prettier": "^5.1.3",
     "execa": "^8.0.1",
     "hereby": "^1.8.9",
+    "husky": "^9.0.11",
     "jasmine": "^5.1.0",
     "jasmine-console-reporter": "^3.1.0",
     "license-check-and-add": "^4.0.5",
