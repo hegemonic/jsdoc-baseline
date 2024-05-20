@@ -22,6 +22,10 @@ import ConsoleReporter from 'jasmine-console-reporter';
 import path from 'path';
 
 const BIN_DIR = 'node_modules/.bin';
+const EXECA_OUT = {
+  stdout: 'inherit',
+  stderr: 'inherit',
+};
 const sourceGlob = {
   code: ['publish.js', 'lib/**/*.js', 'scripts/**/*.js'],
   css: ['styles/hljs-tomorrow.css'],
@@ -78,7 +82,11 @@ const jsBuild = task({
   run: async () => {
     const files = await glob(sourceGlob.js.minify);
 
-    await execa(bin('parcel'), ['build', ...files, '--dist-dir', target.js, '--no-optimize']);
+    await execa(
+      bin('parcel'),
+      ['build', ...files, '--dist-dir', target.js, '--no-optimize'],
+      EXECA_OUT
+    );
   },
 });
 
@@ -96,7 +104,11 @@ const jsMinify = task({
   run: async () => {
     const files = await glob(sourceGlob.js.minify);
 
-    await execa(bin('parcel'), ['build', ...files, '--dist-dir', target.js, '--no-source-maps']);
+    await execa(
+      bin('parcel'),
+      ['build', ...files, '--dist-dir', target.js, '--no-source-maps'],
+      EXECA_OUT
+    );
   },
 });
 
@@ -105,7 +117,11 @@ const sassBuild = task({
   run: async () => {
     const files = await glob(sourceGlob.css.concat(sourceGlob.sass));
 
-    await execa(bin('parcel'), ['build', ...files, '--dist-dir', target.css, '--no-optimize']);
+    await execa(
+      bin('parcel'),
+      ['build', ...files, '--dist-dir', target.css, '--no-optimize'],
+      EXECA_OUT
+    );
   },
 });
 
@@ -128,7 +144,11 @@ export const css = task({
     const files = await glob(sourceGlob.css.concat(sourceGlob.sass));
 
     await removeMaps(target.css);
-    await execa(bin('parcel'), ['build', ...files, '--dist-dir', target.css, '--no-source-maps']);
+    await execa(
+      bin('parcel'),
+      ['build', ...files, '--dist-dir', target.css, '--no-source-maps'],
+      EXECA_OUT
+    );
   },
 });
 
@@ -161,21 +181,21 @@ export const build = task({
 export const licenseCheck = task({
   name: 'license-check',
   run: async () => {
-    await execa(bin('license-check-and-add'), ['check', '-f', '.license-check.json']);
+    await execa(bin('license-check-and-add'), ['check', '-f', '.license-check.json'], EXECA_OUT);
   },
 });
 
 export const lint = task({
   name: 'lint',
   run: async () => {
-    await execa(bin('eslint'), [...sourceGlob.lint]);
+    await execa(bin('eslint'), [...sourceGlob.lint], EXECA_OUT);
   },
 });
 
 export const report = task({
   name: 'coverage-report',
   run: async () => {
-    await execa(bin('c8'), ['report']);
+    await execa(bin('c8'), ['report'], EXECA_OUT);
   },
 });
 
