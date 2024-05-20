@@ -13,11 +13,29 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-module.exports = {
-  extends: ['@jsdoc', 'plugin:prettier/recommended'],
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
+
+import jsdoc from '@jsdoc/eslint-config';
+import globals from 'globals';
+
+export default [
+  {
+    ignores: ['static/**/*', 'test/fixtures/**'],
   },
-  root: true,
-};
+  {
+    files: ['scripts/**'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+      },
+    },
+  },
+  {
+    files: ['test/**'],
+    languageOptions: {
+      globals: {
+        helpers: 'readonly',
+      },
+    },
+  },
+  ...jsdoc,
+];
