@@ -64,7 +64,7 @@
     "html-escaper": "^3.0.3",
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
-    "make-dir": "^4.0.0",
+    "make-dir": "^5.0.0",
     "markdown-it": "^14.1.0",
     "markdown-it-anchor": "^9.0.1",
     "nunjucks": "^3.2.4",
