@@ -14,11 +14,9 @@
   limitations under the License.
 */
 
-import { access, readFile } from 'node:fs/promises';
+import { access, mkdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-
-import ensureDir from 'make-dir';
 
 import { loadConfigSync } from '../../../../lib/config.js';
 import FileInfo from '../../../../lib/file-info.js';
@@ -84,7 +82,7 @@ describe('lib/tasks/copy-static-files', () => {
     it('works if the output directory already exists', async () => {
       let error;
 
-      await ensureDir(context.destination);
+      await mkdir(context.destination, { recursive: true });
       try {
         await instance.run(context);
       } catch (e) {
