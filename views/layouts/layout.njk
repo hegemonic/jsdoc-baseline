@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
+
 <!doctype html>
 <html lang="{{ config('lang') }}">
   {%- block head -%}
@@ -42,18 +43,18 @@
       {% endblock -%}
 
       {%- block body_content_container %}
-        <div id="jsdoc-content-container">
+        <div id="jsdoc-content-container" class="jsdoc-content-container">
           {%- block body_content %}
-            <div id="jsdoc-content">
+            <div id="jsdoc-content" class="jsdoc-content">
               {%- block body_main %}
-                <div id="jsdoc-main" role="main">
+                <div id="jsdoc-main" class="jsdoc-main" role="main">
                   {%- block body_main_content %}
                     {#- Override this block to add content. -#}
                   {% endblock -%}
                 </div>
               {% endblock -%}
               {%- block body_toc_navbar %}
-                <nav id="jsdoc-toc-nav">
+                <nav id="jsdoc-toc-nav" class="jsdoc-toc-nav">
                   {%- include 'toc.njk' -%}
                 </nav>
               {% endblock -%}
@@ -66,7 +67,7 @@
         {%- if config('components.footer') %}
           <footer id="jsdoc-footer" class="jsdoc-footer">
             {%- block body_footer_container %}
-              <div id="jsdoc-footer-container">
+              <div id="jsdoc-footer-container" class="jsdoc-footer-container">
                 {%- block body_footer_content %}
                   <p>
                     {{ generatedBy() }}
