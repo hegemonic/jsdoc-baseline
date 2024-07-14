@@ -385,7 +385,7 @@ describe('lib/tasks/generate-files', () => {
         await task.run(context);
         file = await readFile(path.join(context.destination, 'foo.html'), 'utf8');
 
-        expect(file).toMatch(/[ ]{20}/);
+        expect(file).toContain('\n    <body>');
       });
 
       it('only beautifies HTML output', async () => {
@@ -403,10 +403,10 @@ describe('lib/tasks/generate-files', () => {
         await task.run(context);
         file = await readFile(path.join(context.destination, 'foo.nothtml'), 'utf8');
 
-        expect(file).toMatch(/[ ]{20}/);
+        expect(file).toContain('\n    <body>');
       });
 
-      it('beautifies the output file if asked to', async () => {
+      it('beautifies HTML output if asked to', async () => {
         let file;
         let task;
         const templateConfig = (context.templateConfig = _.cloneDeep(defaultConfig));
@@ -428,10 +428,10 @@ describe('lib/tasks/generate-files', () => {
         await task.run(context);
         file = await readFile(path.join(context.destination, 'foo.html'), 'utf8');
 
-        expect(file).not.toMatch(/[ ]{20}/);
+        expect(file).toContain('\n  <body>');
       });
 
-      it('does not beautify the output file if asked not to', async () => {
+      it('does not beautify HTML output if asked not to', async () => {
         let file;
         let task;
         let ticket;
@@ -451,7 +451,7 @@ describe('lib/tasks/generate-files', () => {
         await task.run(context);
         file = await readFile(path.join(context.destination, 'foo.html'), 'utf8');
 
-        expect(file).toMatch(/[ ]{20}/);
+        expect(file).toContain('\n    <body>');
       });
     });
 

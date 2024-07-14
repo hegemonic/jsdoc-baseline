@@ -15,14 +15,16 @@
 -#}
 
 <div class="symbol-index-column">
-  <dl class="symbol-index-list">
-    {%- for item in items %}
-      <dt class="symbol-index-name">
-        {{- item | linkWithSignature(cssClass='symbol-index-name', monospace=false) -}}
-      </dt>
-      <dd>
-        {%- include 'summary.njk' -%}
-      </dd>
-    {% endfor -%}
-  </dl>
+  {%- if items %}
+    <dl class="symbol-index-list">
+      {%- for item in items %}
+        <dt class="symbol-index-name">
+          {{- item | linkWithSignature(cssClass='symbol-index-name', monospace=false) -}}
+        </dt>
+        <dd>
+          {%- include 'summary.njk' -%}
+        </dd>
+      {% endfor -%}
+    </dl>
+  {% endif -%}
 </div>

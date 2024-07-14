@@ -13,14 +13,18 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
+
+{%- set NUM_COLUMNS = 3 -%}
+
 {%- if items %}
   <div class="summary-callout">
     {%- if headingKey %}
       <h class="summary-callout-heading">{{ headingKey | translate(items) }}</h>
     {% endif -%}
     <div class="summary-content">
-      {%- set groups = items | slice(3) -%}
-      {%- for summaryGroup in groups %}
+      {%- set groups = items | slice(NUM_COLUMNS) -%}
+      {%- for idx in range(0, NUM_COLUMNS) %}
+        {%- set summaryGroup = groups[idx] -%}
         {%- include 'summary-block-column.njk' -%}
       {% endfor -%}
     </div>

@@ -14,9 +14,9 @@
   limitations under the License.
 -#}
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="{{ config('lang') }}">
-  {%- block head -%}
+  {%- block head %}
     <head>
       {%- block meta %}
         <meta name="generator" content="JSDoc {{ jsdocVersion() }}">
@@ -38,45 +38,38 @@
   {% endblock -%}
   {%- block body %}
     <body>
-      {%- block body_navbar %}
-        {%- include 'navbar.njk' -%}
-      {% endblock -%}
+      {%- block body_content %}
+        <div id="jsdoc-content" class="jsdoc-content">
+          {%- block body_navbar %}
+            {%- include 'navbar.njk' -%}
+          {% endblock -%}
 
-      {%- block body_content_container %}
-        <div id="jsdoc-content-container" class="jsdoc-content-container">
-          {%- block body_content %}
-            <div id="jsdoc-content" class="jsdoc-content">
-              {%- block body_main %}
-                <div id="jsdoc-main" class="jsdoc-main" role="main">
-                  {%- block body_main_content %}
-                    {#- Override this block to add content. -#}
-                  {% endblock -%}
-                </div>
-              {% endblock -%}
-              {%- block body_toc_navbar %}
-                <nav id="jsdoc-toc-nav" class="jsdoc-toc-nav">
-                  {%- include 'toc.njk' -%}
-                </nav>
+          {%- block body_main %}
+            <div id="jsdoc-main" class="jsdoc-main" role="main">
+              {%- block body_main_content %}
+                {#- Override this block to add content. -#}
               {% endblock -%}
             </div>
           {% endblock -%}
-        </div>
-      {% endblock -%}
 
-      {%- block body_footer %}
-        {%- if config('components.footer') %}
-          <footer id="jsdoc-footer" class="jsdoc-footer">
-            {%- block body_footer_container %}
-              <div id="jsdoc-footer-container" class="jsdoc-footer-container">
+          {%- block body_toc_navbar %}
+            <nav id="jsdoc-toc-nav" class="jsdoc-toc-nav">
+              {%- include 'toc.njk' -%}
+            </nav>
+          {% endblock -%}
+
+          {%- block body_footer %}
+            {%- if config('components.footer') %}
+              <footer id="jsdoc-footer" class="jsdoc-footer">
                 {%- block body_footer_content %}
                   <p>
                     {{ generatedBy() }}
                   </p>
                 {% endblock -%}
-              </div>
-            {% endblock -%}
-          </footer>
-        {% endif -%}
+              </footer>
+            {% endif -%}
+          {% endblock -%}
+        </div>
       {% endblock -%}
 
       {%- block body_scripts %}

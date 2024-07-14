@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
+
 {%- set NUM_COLUMNS = 3 -%}
 
 {%- macro content() %}
@@ -28,7 +29,9 @@
           {%- if batch_size > NUM_COLUMNS -%}
             {%- set batch_size = (batch_size / NUM_COLUMNS) | round(0, 'ceil') -%}
           {%- endif -%}
-          {%- for items in group | batch(batch_size) %}
+          {%- set columns = group | batch(batch_size) -%}
+          {%- for idx in range(0, NUM_COLUMNS) %}
+            {%- set items = columns[idx] -%}
             {%- include 'symbol-index-section.njk' -%}
           {% endfor -%}
         </div>

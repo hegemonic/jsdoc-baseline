@@ -13,13 +13,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
+
 {%- if items %}
   <h>{{ headingKey | translate(items) }}</h>
-  <section id="members-links">
+  <section id="members-links" class="members-links">
     {%- for item in items %}
+      {#- TODO: Improve spacing between headings when no summary is present. -#}
       <h>{{ item.longname | link(item.name, monospace=false) }}</h>
       {% include 'summary.njk' %}
-      {{ item.sourceFile }}
     {% endfor -%}
   </section>
 {%- endif -%}

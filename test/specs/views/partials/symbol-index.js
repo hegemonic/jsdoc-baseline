@@ -107,6 +107,8 @@ describe('symbol-index partial', () => {
                   <dd></dd>
                 </dl>
               </div>
+              <div class="symbol-index-column"></div>
+              <div class="symbol-index-column"></div>
             </div>
           </div>
         </section>
@@ -125,6 +127,8 @@ describe('symbol-index partial', () => {
                   <dd></dd>
                 </dl>
               </div>
+              <div class="symbol-index-column"></div>
+              <div class="symbol-index-column"></div>
             </div>
           </div>
         </section>
@@ -162,6 +166,8 @@ describe('symbol-index partial', () => {
                     <dd></dd>
                   </dl>
                 </div>
+                <div class="symbol-index-column"></div>
+                <div class="symbol-index-column"></div>
               </div>
             </div>
           </section>
@@ -177,6 +183,8 @@ describe('symbol-index partial', () => {
                     <dd></dd>
                   </dl>
                 </div>
+                <div class="symbol-index-column"></div>
+                <div class="symbol-index-column"></div>
               </div>
             </div>
           </section>
@@ -217,6 +225,8 @@ describe('symbol-index partial', () => {
                       <dd></dd>
                     </dl>
                   </div>
+                  <div class="symbol-index-column"></div>
+                  <div class="symbol-index-column"></div>
                 </div>
               </div>
             </section>
@@ -257,6 +267,7 @@ describe('symbol-index partial', () => {
                       <dd></dd>
                     </dl>
                   </div>
+                  <div class="symbol-index-column"></div>
                 </div>
               </div>
             </section>
