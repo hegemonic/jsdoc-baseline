@@ -91,7 +91,7 @@
     "execa": "^9.3.0",
     "globals": "^15.8.0",
     "hereby": "^1.9.0",
-    "husky": "^9.0.11",
+    "husky": "^9.1.0",
     "jasmine": "^5.1.0",
     "jasmine-console-reporter": "^3.1.0",
     "license-check-and-add": "^4.0.5",
