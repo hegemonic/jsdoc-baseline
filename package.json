@@ -85,7 +85,7 @@
     "c8": "^10.1.2",
     "csso-cli": "^4.0.2",
     "easy-ease": "^1.0.9",
-    "eslint": "^9.11.0",
+    "eslint": "^9.11.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "execa": "^9.4.0",
