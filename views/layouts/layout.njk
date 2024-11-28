@@ -39,37 +39,39 @@
   {%- block body %}
     <body>
       {%- block body_content %}
-        <div id="jsdoc-content" class="jsdoc-content">
-          {%- block body_navbar %}
-            {%- include 'navbar.njk' -%}
-          {% endblock -%}
+        {%- block body_navbar %}
+          {%- include 'navbar.njk' -%}
+        {% endblock -%}
 
-          {%- block body_main %}
-            <div id="jsdoc-main" class="jsdoc-main" role="main">
+        {%- block body_main %}
+          <main class="jsdoc-main">
+            {%- block body_toc_navbar %}
+              <nav class="jsdoc-toc-nav">
+                <div class="jsdoc-toc-nav-content">
+                  {%- include 'toc.njk' -%}
+                </div>
+              </nav>
+            {% endblock -%}
+
+            <div class="jsdoc-content">
               {%- block body_main_content %}
                 {#- Override this block to add content. -#}
               {% endblock -%}
             </div>
           {% endblock -%}
+          </main>
+        {% endblock -%}
 
-          {%- block body_toc_navbar %}
-            <nav id="jsdoc-toc-nav" class="jsdoc-toc-nav">
-              {%- include 'toc.njk' -%}
-            </nav>
-          {% endblock -%}
-
-          {%- block body_footer %}
-            {%- if config('components.footer') %}
-              <footer id="jsdoc-footer" class="jsdoc-footer">
-                {%- block body_footer_content %}
-                  <p>
-                    {{ generatedBy() }}
-                  </p>
-                {% endblock -%}
-              </footer>
-            {% endif -%}
-          {% endblock -%}
-        </div>
+      {%- block body_footer %}
+        {%- if config('components.footer') %}
+          <footer class="jsdoc-footer">
+            {%- block body_footer_content %}
+              <p>
+                {{ generatedBy() }}
+              </p>
+            {% endblock -%}
+          </footer>
+        {% endif -%}
       {% endblock -%}
 
       {%- block body_scripts %}
