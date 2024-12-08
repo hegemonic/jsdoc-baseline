@@ -368,7 +368,7 @@ describe('lib/filters', () => {
     });
 
     xdescribe('idForString', () => {
-      // TODO: Write me
+      xit('TODO: Write me');
     });
 
     xdescribe('includes', () => {
