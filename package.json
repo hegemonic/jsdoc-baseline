@@ -88,7 +88,7 @@
     "eslint": "^9.16.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
-    "execa": "^9.5.1",
+    "execa": "^9.5.2",
     "globals": "^15.13.0",
     "hereby": "^1.10.0",
     "husky": "^9.1.7",
