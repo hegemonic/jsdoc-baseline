@@ -23,7 +23,7 @@
 {%- endif -%}
 
 {%- if not item.hideconstructor %}
-  {%- set itemId = id(item) -%}
+  {%- set itemId = idForDoclet(item) -%}
   <h {%- if itemId %} id="{{ itemId }}"{%- endif %}>
     {%- include 'constructor-prefix.njk' -%}
     <span class="symbol-name">{{ item.name }}</span>

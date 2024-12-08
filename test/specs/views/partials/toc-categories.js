@@ -49,7 +49,7 @@ describe('TOC categories partial', () => {
     });
 
     it('uses the correct properties for the container element', async () => {
-      const output = await template.render('toc-categories.njk', { tocData });
+      const output = await template.render('toc-categories.njk', { href: 'test.html', tocData });
 
       expect(output).toContain('<sl-details keep-open open>');
     });

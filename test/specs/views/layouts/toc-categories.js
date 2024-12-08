@@ -59,7 +59,10 @@ describe('toc-categories layout', () => {
     });
     it('uses the `name` as the label by default', async () => {
       const expected = '<a href="foo-bar.html">Bar</a>';
-      const text = await helpers.renderAndNormalize('toc-categories.njk', { tocData });
+      const text = await helpers.renderAndNormalize('toc-categories.njk', {
+        href: 'test.html',
+        tocData,
+      });
 
       expect(text).toContain(expected);
     });
@@ -67,7 +70,10 @@ describe('toc-categories layout', () => {
     it('uses the `longname` as the label when multiple items share a `name`', async () => {
       const expectedAlpha = '<a href="alpha.html#.hotel">alpha.hotel</a>';
       const expectedIndia = '<a href="india.html#.hotel">india.hotel</a>';
-      const text = await helpers.renderAndNormalize('toc-categories.njk', { tocData });
+      const text = await helpers.renderAndNormalize('toc-categories.njk', {
+        href: 'test.html',
+        tocData,
+      });
 
       expect(text).toContain(expectedAlpha);
       expect(text).toContain(expectedIndia);

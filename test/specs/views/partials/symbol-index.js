@@ -71,7 +71,7 @@ describe('symbol-index partial', () => {
 
   describe('heading', () => {
     it('adds a heading if there is a README', async () => {
-      const data = { allLongnamesTree, readme: 'hello' };
+      const data = { allLongnamesTree, href: 'test.html', readme: 'hello' };
       const expected = '<h2>Package index</h2>';
       let rendered = await template.render('symbol-index.njk', data);
 
@@ -81,7 +81,7 @@ describe('symbol-index partial', () => {
     });
 
     it('omits the heading if there is not a README', async () => {
-      const data = { allLongnamesTree };
+      const data = { allLongnamesTree, href: 'test.html' };
       const unexpected = '<h2>Package index</h2>';
       let rendered = await template.render('symbol-index.njk', data);
 
@@ -142,7 +142,7 @@ describe('symbol-index partial', () => {
       let rendered;
 
       allLongnamesTree = filteredTree(longnames);
-      data = { allLongnamesTree };
+      data = { allLongnamesTree, href: 'test.html' };
       rendered = await template.render('symbol-index.njk', data);
       rendered = await helpers.normalizeHtml(rendered);
 
@@ -199,7 +199,7 @@ describe('symbol-index partial', () => {
       let rendered;
 
       allLongnamesTree = filteredTree(longnames);
-      data = { allLongnamesTree };
+      data = { allLongnamesTree, href: 'test.html' };
       rendered = await template.render('symbol-index.njk', data);
       rendered = await helpers.normalizeHtml(rendered);
 
@@ -236,7 +236,7 @@ describe('symbol-index partial', () => {
         let rendered;
 
         allLongnamesTree = filteredTree(longnames);
-        data = { allLongnamesTree };
+        data = { allLongnamesTree, href: 'test.html' };
         rendered = await template.render('symbol-index.njk', data);
         rendered = await helpers.normalizeHtml(rendered);
 
@@ -282,7 +282,7 @@ describe('symbol-index partial', () => {
         let rendered;
 
         allLongnamesTree = filteredTree(longnames);
-        data = { allLongnamesTree };
+        data = { allLongnamesTree, href: 'test.html' };
         rendered = await template.render('symbol-index.njk', data);
         rendered = await helpers.normalizeHtml(rendered);
 
@@ -337,7 +337,7 @@ describe('symbol-index partial', () => {
         let rendered;
 
         allLongnamesTree = filteredTree(longnames);
-        data = { allLongnamesTree };
+        data = { allLongnamesTree, href: 'test.html' };
         rendered = await template.render('symbol-index.njk', data);
         rendered = await helpers.normalizeHtml(rendered);
 
@@ -352,7 +352,7 @@ describe('symbol-index partial', () => {
         let rendered;
 
         allLongnamesTree = filteredTree(longnames);
-        data = { allLongnamesTree };
+        data = { allLongnamesTree, href: 'test.html' };
         rendered = await template.render('symbol-index.njk', data);
 
         expect([...rendered.matchAll(/<div class="symbol-index-column">/g)]).toBeArrayOfSize(3);
@@ -383,7 +383,7 @@ describe('symbol-index partial', () => {
         let rendered;
 
         allLongnamesTree = filteredTree(longnames);
-        data = { allLongnamesTree };
+        data = { allLongnamesTree, href: 'test.html' };
         rendered = await template.render('symbol-index.njk', data);
         columns = extract(rendered, 'div', 'symbol-index-column');
 

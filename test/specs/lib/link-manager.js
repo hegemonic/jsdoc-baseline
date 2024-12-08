@@ -558,10 +558,50 @@ describe('lib/link-manager', () => {
       expect(register).toThrowErrorOfType(ARGUMENT_ERROR);
     });
 
-    it('uses the specified ID', () => {
+    it('uses the specified ID if it has not already been used', () => {
       const id = instance.registerFragmentId('foo', 'bar');
 
       expect(id).toBe('bar');
+    });
+
+    it('returns a unique ID if the requested ID has already been used', () => {
+      let id;
+
+      instance.registerFragmentId('foo', 'bar');
+      id = instance.registerFragmentId('foo', 'bar');
+
+      expect(id).toBe('bar-2');
+    });
+
+    it('tracks uniqueness by filename', () => {
+      const id1 = instance.registerFragmentId('foo', 'bar');
+      const id2 = instance.registerFragmentId('baz', 'bar');
+
+      expect(id1).toBe(id2);
+    });
+
+    it('preserves capitalization', () => {
+      const id = instance.registerFragmentId('foo', 'BarBaz');
+
+      expect(id).toBe('BarBaz');
+    });
+
+    it('preserves these characters: _#.~:', () => {
+      const id = instance.registerFragmentId('foo', 'test_#.~:');
+
+      expect(id).toBe('test_#.~:');
+    });
+
+    it('preserves leading underscores', () => {
+      const id = instance.registerFragmentId('foo', '_bar');
+
+      expect(id).toBe('_bar');
+    });
+
+    it('preserves trailing dashes', () => {
+      const id = instance.registerFragmentId('foo', 'bar-');
+
+      expect(id).toBe('bar-');
     });
   });
 

@@ -16,7 +16,7 @@
 
 {%- if items %}
   <h>{{ headingKey | translate(items) }}</h>
-  <section id="members-links" class="members-links">
+  <section class="members-links">
     {%- for item in items %}
       {#- TODO: Improve spacing between headings when no summary is present. -#}
       <h>{{ item.longname | link(item.name, monospace=false) }}</h>

@@ -359,12 +359,16 @@ describe('lib/filters', () => {
       });
     });
 
-    xdescribe('id', () => {
+    xdescribe('idForDoclet', () => {
       // TODO: Write me
 
       xit('should not crash if nothing is passed in', () => {
         // TODO: Write me
       });
+    });
+
+    xdescribe('idForString', () => {
+      // TODO: Write me
     });
 
     xdescribe('includes', () => {
