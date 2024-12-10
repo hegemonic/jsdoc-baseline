@@ -78,7 +78,7 @@ function resetJsdocEnv() {
     number: '1.2.3.4',
   };
 
-  helpers.deps = helpers.env = env;
+  helpers.env = env;
 }
 
 function findMatchingFilepath(filepaths, filename) {
@@ -193,10 +193,8 @@ global.helpers = helpers = {
 
     config = deepExtend({}, defaultConfig, config ?? {});
 
-    return Template.create(config, {}, global.helpers.deps);
+    return Template.create(config, {}, helpers.env);
   },
-
-  deps: null,
 
   env: null,
 

@@ -16,8 +16,8 @@
 
 import { Publisher } from './lib/publisher.js';
 
-export async function publish(docletStore, dependencies) {
-  const publisher = new Publisher(docletStore, dependencies);
+export async function publish(docletStore, env) {
+  const publisher = new Publisher(docletStore, env);
 
   await publisher.init();
 

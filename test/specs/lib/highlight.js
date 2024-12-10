@@ -22,19 +22,11 @@ import * as highlight from '../../../lib/highlight.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-function fakeDeps(highlightValue) {
-  const deps = new Map();
+function setHighlightValue(highlightValue) {
+  const env = helpers.env;
 
-  deps.set('env', {
-    conf: {
-      markdown: {
-        highlight: highlightValue,
-      },
-    },
-  });
-  deps.set('log', global.helpers.deps.get('log'));
-
-  return deps;
+  env.conf.markdown ??= {};
+  env.conf.markdown.highlight = highlightValue;
 }
 
 function cssClass(classname) {
@@ -42,12 +34,8 @@ function cssClass(classname) {
 }
 
 describe('lib/highlight', () => {
-  let emitter;
-  let log;
-
-  beforeEach(() => {
-    emitter = global.helpers.deps.get('emitter');
-    log = global.helpers.deps.get('log');
+  afterEach(() => {
+    helpers.setup();
   });
 
   it('has a `getHighlighter` method', () => {
@@ -59,13 +47,13 @@ describe('lib/highlight', () => {
     let highlighter;
 
     beforeEach(async () => {
-      highlighter = await getHighlighter(fakeDeps());
+      highlighter = await getHighlighter(helpers.env);
     });
 
     it('returns the default highlighter if none is specified', async () => {
       // We don't have a good way to check whether it's the "default highlighter," so we just
       // confirm that it's a function that returns a string. Its behavior is tested elsewhere.
-      const defaultHighlighter = await getHighlighter(fakeDeps());
+      const defaultHighlighter = await getHighlighter(helpers.env);
 
       expect(defaultHighlighter).toBeFunction();
       expect(defaultHighlighter('hello')).toBeString();
@@ -76,7 +64,8 @@ describe('lib/highlight', () => {
       let newHighlighter;
       const requirePath = path.resolve(__dirname, '../../fixtures/highlighter/highlighter.js');
 
-      newHighlighter = await getHighlighter(fakeDeps(requirePath));
+      setHighlightValue(requirePath);
+      newHighlighter = await getHighlighter(helpers.env);
       html = newHighlighter('hello');
 
       expect(html).toBe('hello is highlighted!');
@@ -90,9 +79,10 @@ describe('lib/highlight', () => {
         events.push(e);
       }
 
-      emitter.on('logger:error', listener);
-      newHighlighter = await getHighlighter(fakeDeps('./not-a-real-module'));
-      emitter.off('logger:error', listener);
+      helpers.env.emitter.on('logger:error', listener);
+      setHighlightValue('./not-a-real-module');
+      newHighlighter = await getHighlighter(helpers.env);
+      helpers.env.emitter.off('logger:error', listener);
 
       expect(events).toBeArrayOfSize(1);
       expect(events[0]).toBeString();
@@ -101,18 +91,20 @@ describe('lib/highlight', () => {
 
     it('logs an error and returns the default if the module has no `highlight` method', async () => {
       let newHighlighter;
-      const spy = spyOn(log, 'error');
+      const spy = spyOn(helpers.env.log, 'error');
 
-      newHighlighter = await getHighlighter(fakeDeps(`./${__filename}`));
+      setHighlightValue(`./${__filename}`);
+      newHighlighter = await getHighlighter(helpers.env);
 
       expect(spy).toHaveBeenCalled();
       expect(newHighlighter('hello')).toBe(highlighter('hello'));
     });
 
     it('uses the function in the config file if specified', async () => {
-      const newHighlighter = await getHighlighter(
-        fakeDeps((code) => `This highlighter is ${code}`)
-      );
+      let newHighlighter;
+
+      setHighlightValue((code) => `This highlighter is ${code}`);
+      newHighlighter = await getHighlighter(helpers.env);
 
       expect(newHighlighter('lackluster')).toBe('This highlighter is lackluster');
     });

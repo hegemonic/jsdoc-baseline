@@ -246,10 +246,9 @@ describe('lib/filters', () => {
 
     describe('generatedBy', () => {
       it('includes the JSDoc version number', () => {
-        const env = helpers.deps.get('env');
         const generatedBy = instance.generatedBy();
 
-        expect(generatedBy.toString()).toContain(env.version.number);
+        expect(generatedBy.toString()).toContain(helpers.env.version.number);
       });
 
       it('includes the date', () => {

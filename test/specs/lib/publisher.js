@@ -41,11 +41,11 @@ describe('Publisher', () => {
     expect(publisher.docletStore).toBe(fakeStore);
   });
 
-  it('sets `dependencies`', () => {
-    const fakeDeps = {};
-    const publisher = new Publisher(null, fakeDeps);
+  it('sets `env`', () => {
+    const fakeEnv = {};
+    const publisher = new Publisher(null, fakeEnv);
 
-    expect(publisher.dependencies).toBe(fakeDeps);
+    expect(publisher.env).toBe(fakeEnv);
   });
 
   it('sets `tasks`', () => {
@@ -61,11 +61,11 @@ describe('Publisher', () => {
     let templateConfig;
 
     beforeEach(() => {
-      env = helpers.deps.get('env');
+      env = helpers.env;
       env.conf.templates.baseline = resolve(__dirname, '../../fixtures/config.json');
       fakeStore = {};
-      publisher = new Publisher(fakeStore, helpers.deps);
-      templateConfig = loadConfigSync(helpers.deps);
+      publisher = new Publisher(fakeStore, env);
+      templateConfig = loadConfigSync(env);
     });
     afterEach(() => helpers.setup());
 
@@ -85,8 +85,8 @@ describe('Publisher', () => {
 
       expect(publisher.context).toBeObject();
       expect(publisher.context.config).toBe(publisher.config);
-      expect(publisher.context.dependencies).toBe(publisher.dependencies);
       expect(publisher.context.docletStore).toBe(publisher.docletStore);
+      expect(publisher.context.env).toBe(publisher.env);
       expect(publisher.context.templateConfig).toBe(publisher.templateConfig);
     });
 
@@ -135,7 +135,7 @@ describe('Publisher', () => {
         }
       }
 
-      publisher = new Publisher({}, global.helpers.deps);
+      publisher = new Publisher({}, helpers.env);
       await publisher.init();
       publisher.tasks = [new TaskA(), new TaskB()];
       await publisher.publish();

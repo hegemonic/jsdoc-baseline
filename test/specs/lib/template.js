@@ -21,12 +21,12 @@ describe('lib/template', () => {
   let instance; // eslint-disable-line no-unused-vars
 
   beforeEach(() => {
-    instance = Template.create(defaultConfig, {}, helpers.deps);
+    instance = Template.create(defaultConfig, {}, helpers.env);
   });
 
   it('should be a constructor', () => {
     expect(Template).toBeFunction();
-    expect(new Template(defaultConfig, {}, helpers.deps)).toBeInstanceOf(Template);
+    expect(new Template(defaultConfig, {}, helpers.env)).toBeInstanceOf(Template);
   });
 
   xdescribe('render', () => {

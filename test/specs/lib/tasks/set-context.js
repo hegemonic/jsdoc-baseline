@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import { loadConfigSync } from '../../../../lib/config.js';
 import SetContext from '../../../../lib/tasks/set-context.js';
 import Template from '../../../../lib/template.js';
@@ -40,9 +41,9 @@ describe('lib/tasks/set-context', () => {
           destination: 'out',
         },
       },
-      dependencies: helpers.deps,
+      env: helpers.env,
       docletStore: helpers.createDocletStore(fakeDoclets),
-      templateConfig: loadConfigSync(helpers.deps),
+      templateConfig: loadConfigSync(helpers.env),
     };
     instance = new SetContext({ name: 'setContext' });
   });

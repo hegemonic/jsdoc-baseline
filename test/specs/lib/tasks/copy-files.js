@@ -88,7 +88,7 @@ describe('lib/tasks/copy-files', () => {
     let tmpdir;
 
     beforeEach(async () => {
-      conf = loadConfigSync(helpers.deps);
+      conf = loadConfigSync(helpers.env);
       context = {
         destination: null,
         templateConfig: conf,

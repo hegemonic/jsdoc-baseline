@@ -26,8 +26,8 @@ describe('lib/config', () => {
   let env;
 
   beforeEach(() => {
-    emitter = helpers.deps.get('emitter');
-    env = helpers.deps.get('env');
+    emitter = helpers.env.emitter;
+    env = helpers.env;
   });
   afterEach(() => helpers.setup());
 
@@ -46,7 +46,7 @@ describe('lib/config', () => {
       env.conf.templates.baseline = {
         beautify: !config.defaultConfig.beautify,
       };
-      conf = config.loadConfigSync(helpers.deps);
+      conf = config.loadConfigSync(env);
 
       expect(conf.beautify).toBe(!config.defaultConfig.beautify);
     });
@@ -57,7 +57,7 @@ describe('lib/config', () => {
       env.conf.templates.baseline = path.resolve(__dirname, '../../fixtures/config.json');
       env.opts.template = '/foo/bar/baz';
 
-      conf = config.loadConfigSync(helpers.deps);
+      conf = config.loadConfigSync(env);
 
       expect(conf.foo).toBe('bar');
       expect(conf.templatePath).toBe('/foo/bar/baz');
@@ -73,7 +73,7 @@ describe('lib/config', () => {
       env.conf.templates.baseline = path.resolve(__dirname, '/not/a/real/path');
 
       emitter.on('logger:fatal', listener);
-      config.loadConfigSync(helpers.deps);
+      config.loadConfigSync(env);
       emitter.off('logger:fatal', listener);
 
       expect(event).toBeDefined();
@@ -90,7 +90,7 @@ describe('lib/config', () => {
       env.conf.templates.baseline = path.resolve(__dirname, '../../fixtures/comments.json');
 
       emitter.on('logger:fatal', listener);
-      conf = config.loadConfigSync(helpers.deps);
+      conf = config.loadConfigSync(env);
       emitter.off('logger:fatal', listener);
 
       expect(event).toBeUndefined();
@@ -102,7 +102,7 @@ describe('lib/config', () => {
 
       env.conf.templates.baseline = path.resolve(__dirname, '../../fixtures/config.json');
 
-      conf = config.loadConfigSync(helpers.deps);
+      conf = config.loadConfigSync(env);
 
       expect(conf.l10nFile).toBe('en.yaml');
     });
@@ -112,7 +112,7 @@ describe('lib/config', () => {
 
       env.conf.templates.baseline = path.resolve(__dirname, '../../fixtures/config-l10nfile.json');
 
-      conf = config.loadConfigSync(helpers.deps);
+      conf = config.loadConfigSync(env);
 
       expect(conf.l10nFile).toBe('l10n.yaml');
     });

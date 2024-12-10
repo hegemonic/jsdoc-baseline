@@ -35,7 +35,7 @@ describe('lib/tasks/copy-static-files', () => {
   let tmpdir;
 
   beforeEach(async () => {
-    conf = loadConfigSync(helpers.deps);
+    conf = loadConfigSync(helpers.env);
     conf.staticFiles = [new FileInfo(SOURCE_DIR, 'foo.txt')];
     context = {
       destination: null,
