@@ -14,7 +14,7 @@
   limitations under the License.
 */
 
-import { name } from '@jsdoc/core';
+import * as name from '@jsdoc/name';
 import _ from 'lodash';
 
 import { defaultConfig } from '../../../../lib/config.js';

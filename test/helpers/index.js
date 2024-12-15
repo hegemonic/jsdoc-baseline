@@ -73,7 +73,7 @@ function resetJsdocEnv() {
     // path to the JSDoc template
     template: path.resolve(__dirname, '../..'),
   };
-  env.tags = Dictionary.fromConfig(env);
+  env.tags = Dictionary.fromEnv(env);
   env.version = {
     number: '1.2.3.4',
   };

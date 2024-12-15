@@ -18,7 +18,7 @@ import { access, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { name } from '@jsdoc/core';
+import * as name from '@jsdoc/name';
 
 import { defaultConfig } from '../../../../lib/config.js';
 import GenerateIndex from '../../../../lib/tasks/generate-index.js';

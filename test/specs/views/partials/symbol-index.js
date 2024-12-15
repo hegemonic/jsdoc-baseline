@@ -14,10 +14,8 @@
   limitations under the License.
 */
 
-import { name as jsdocName } from '@jsdoc/core';
+import { longnamesToTree } from '@jsdoc/name';
 import _ from 'lodash';
-
-const { longnamesToTree } = jsdocName;
 
 function makeDoclets(longnameMap) {
   let doclets = {};
