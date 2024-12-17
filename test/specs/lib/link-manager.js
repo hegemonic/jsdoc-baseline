@@ -776,22 +776,24 @@ describe('lib/link-manager', () => {
   });
 
   describe('stringToLinkUri', () => {
-    it('has keys that are known strings and values that are URIs for those strings', () => {
+    it('is a map-like object', () => {
+      expect(instance.stringToLinkUri.get).toBeFunction();
+    });
+
+    it('stores keys that are known strings and values that are URIs for those strings', () => {
       const extension = '.html';
       const filename1 = instance.requestFilename('foo');
       const filename2 = instance.requestFilename('bar');
 
-      // toEqual() doesn't work with proxies.
-      expect(instance.stringToLinkUri.foo).toBe(filename1 + extension);
-      expect(instance.stringToLinkUri.bar).toBe(filename2 + extension);
+      expect(instance.stringToLinkUri.get('foo')).toBe(filename1 + extension);
+      expect(instance.stringToLinkUri.get('bar')).toBe(filename2 + extension);
     });
 
     it('uses the extension for links, not the extension for generated files', () => {
       instance.requestFilename('foo');
       instance.linkExtension = '.test';
 
-      // toEqual() doesn't work with proxies.
-      expect(instance.stringToLinkUri.foo).toBe('foo.test');
+      expect(instance.stringToLinkUri.get('foo')).toBe('foo.test');
     });
   });
 });

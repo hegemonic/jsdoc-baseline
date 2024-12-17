@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import catharsis from 'catharsis';
 
 describe('signature partial', () => {
@@ -65,5 +66,25 @@ describe('signature partial', () => {
     const text = await helpers.render('signature.njk', { item: fakeDoclet });
 
     expect(text).toContain('nullable function(non-null string)');
+  });
+
+  it('links to known types in the same package', async () => {
+    const fakeDoclet = {
+      kind: 'function',
+      name: 'bar',
+      returns: [
+        {
+          type: {
+            names: ['foo'],
+          },
+        },
+      ],
+    };
+    let text;
+
+    helpers.template.linkManager.requestFilename('foo');
+    text = await helpers.render('signature.njk', { item: fakeDoclet });
+
+    expect(text).toContain('<span class="signature-returns"> <a href="foo.html">foo</a></span>');
   });
 });

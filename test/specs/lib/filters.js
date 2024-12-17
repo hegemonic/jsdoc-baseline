@@ -223,6 +223,16 @@ describe('lib/filters', () => {
         expect(description.toString()).toBe('Must not be null.');
       });
 
+      it('links to known types in the same package', () => {
+        let description;
+        const fooType = catharsis.parse('foo');
+
+        linkManager.requestFilename('foo');
+        description = instance.describeType(fooType);
+
+        expect(description.toString()).toBe('<code><a href="foo.html">foo</a></code>');
+      });
+
       it('lets you omit the <code> tag', () => {
         const description = instance.describeType(parsedType, { codeTag: '' });
 

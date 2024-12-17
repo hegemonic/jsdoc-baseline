@@ -13,18 +13,19 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
-{#
+
+{#-
   This section intentionally omits the return type for constructors, and for methods with no
   explicit return type.
-#}
+-#}
 {%- if needsSignature(item) -%}
   <span class="signature"><span class="signature-params">{{ item.params | formatParams }}</span>
     {%- set types = returnTypes(item) -%}
     {%- if item.kind != 'class' and types -%}
       {{- 'returnTypesSeparator' | translate -}}
-      <span class="signature-returns"> {{ types | describeType | striptags }}</span>
+      <span class="signature-returns"> {{ types | describeType(codeTag='') }}</span>
     {%- endif -%}
   </span>
 {%- elif item.type -%}
-  <small class="property-type">&nbsp;{{ item.type.parsedType | describeType | striptags }}</small>
+  <small class="property-type">&nbsp;{{ item.type.parsedType | describeType(codeTag='') }}</small>
 {%- endif -%}
