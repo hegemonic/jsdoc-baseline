@@ -492,10 +492,11 @@ describe('lib/filters', () => {
       };
 
       beforeEach(() => {
-        linkManager.requestFilename('glitch.js');
-        instance._template.context.sourceFiles = {
+        template.context.sourceFiles = {
           '/Users/someone/glitch.js': 'glitch.js',
         };
+
+        linkManager.requestFilename('glitch.js');
       });
 
       it('works when a CSS class is specified', () => {
@@ -521,7 +522,7 @@ describe('lib/filters', () => {
           },
         });
         linkManager.requestFilename('glitch.js');
-        instance._template.context.sourceFiles = {
+        template.context.sourceFiles = {
           '/Users/someone/glitch.js': 'glitch.js',
         };
 
