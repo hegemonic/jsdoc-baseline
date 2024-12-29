@@ -27,15 +27,21 @@
 {%- endmacro -%}
 
 {%- macro detailsTableDescription(value, isEnum) -%}
+  {% if value.type and value.type.expression -%}
+    {%- set typeExpression = value.type.expression -%}
+  {%- else -%}
+    {%- set typeExpression = null -%}
+  {%- endif -%}
+
   <td class="details-table-description">
-    {% if value.optional or (value.type and value.type.parsedType) -%}
+    {% if value.optional or typeExpression -%}
       <p class="details-table-type">
         {#- TODO: Handle this in `hasModifiers`. -#}
         {% if value.optional -%}
           {{ 'tables.body.optional.short' | translate }}&nbsp;
         {%- endif -%}
-        {%- if value.type and value.type.parsedType -%}
-          {{ value.type.parsedType | describeType(format='extended') }}
+        {%- if typeExpression -%}
+          <code>{{ typeExpression | linkifyTypeExpression }}</code>
         {%- else -%}
           &nbsp;
         {%- endif %}
@@ -44,8 +50,8 @@
     {% if value.description -%}
       {{ value.description | markdown | resolveLinks }}
     {%- endif %}
-    {% if value | hasModifiers(isEnum) -%}
-      <p>{{ value | modifierText(isEnum) }}</p>
+    {% if value | hasModifiers(isEnum=isEnum) -%}
+      <p>{{ value | modifierText(isEnum=isEnum) }}</p>
     {%- endif %}
     {% if value.children -%}
       <p>{{ 'tables.body.eachValueHasProperties' | translate(1, name=value.name) }}</p>
@@ -62,8 +68,8 @@
 {%- endmacro -%}
 
 {#-
-  This table must be implemented as a macro so that it can be called recursively, without shadowing
-  or overwriting variables in a parent scope.
+  This table is implemented as a macro so that it can be called recursively, without shadowing or
+  overwriting variables in a parent scope.
 -#}
 {%- macro detailsTable(values, isEnum)-%}
   <table class="jsdoc-details-table">

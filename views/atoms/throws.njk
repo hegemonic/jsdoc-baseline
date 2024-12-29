@@ -13,13 +13,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
+
 {% if item.exceptions and item.exceptions.length %}
   <dt>{{ 'headings.throws' | translate(item.exceptions) }}</dt>
   {% for exception in item.exceptions %}
     <dd>
       {%- filter markdown -%}
-        {%- if exception.type and exception.type.parsedType -%}
-          <code>{{ exception.type.parsedType | describeType }}</code>&nbsp;
+        {%- if exception.type and exception.type.expression -%}
+          <code>{{ exception.type.expression | linkifyTypeExpression }}</code>&nbsp;
         {%- endif -%}
         {{- exception.description | resolveLinks -}}
       {%- endfilter -%}

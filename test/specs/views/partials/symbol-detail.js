@@ -13,7 +13,6 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-import catharsis from 'catharsis';
 
 describe('symbol detail partial', () => {
   describe('labels', () => {
@@ -183,7 +182,7 @@ describe('symbol detail partial', () => {
           {
             type: {
               names: ['string'],
-              parsedType: catharsis.parse('string'),
+              expression: 'string',
             },
             description: 'Return value.',
           },

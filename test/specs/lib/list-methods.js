@@ -13,17 +13,18 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 import * as list from '../../../lib/list-methods.js';
+
+const { listMethods } = list;
 
 describe('lib/list-methods', () => {
   it('has a listMethods method', () => {
-    expect(list.listMethods).toBeFunction();
+    expect(listMethods).toBeFunction();
   });
 
   /* eslint-disable no-empty-function */
   describe('listMethods', () => {
-    const listMethods = list.listMethods;
-
     it('lists methods owned by an object', () => {
       class Point {
         x() {}
@@ -121,6 +122,38 @@ describe('lib/list-methods', () => {
       });
 
       expect(methods.sort()).toEqual(['x', 'y']);
+    });
+
+    it('accepts a regexp that identifies members to ignore completely', () => {
+      class Point {
+        x() {}
+        y() {}
+        z() {}
+      }
+
+      const point = new Point();
+      const methods = listMethods(point, {
+        ignoreRegExp: /^(y|z)$/,
+      });
+
+      expect(methods).toEqual(['x']);
+    });
+
+    it('respects `ignoreRegExp` when private methods are included', () => {
+      class Point {
+        _private() {}
+        x() {}
+        y() {}
+        z() {}
+      }
+
+      const point = new Point();
+      const methods = listMethods(point, {
+        ignoreRegExp: /^(y|z)$/,
+        includePrivate: true,
+      });
+
+      expect(methods.sort()).toEqual(['_private', 'x']);
     });
   });
   /* eslint-enable no-empty-function */

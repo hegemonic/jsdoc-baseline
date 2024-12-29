@@ -14,8 +14,6 @@
   limitations under the License.
 */
 
-import catharsis from 'catharsis';
-
 describe('params atom', () => {
   const PARAMS = 'params.njk';
 
@@ -27,7 +25,7 @@ describe('params atom', () => {
         description: 'Param with type',
         name: 'hasType',
         type: {
-          parsedType: catharsis.parse('string'),
+          expression: 'string',
         },
       },
       noName: {
@@ -42,7 +40,7 @@ describe('params atom', () => {
         name: 'optionalHasType',
         optional: true,
         type: {
-          parsedType: catharsis.parse('string'),
+          expression: 'string',
         },
       },
       optionalNoType: {

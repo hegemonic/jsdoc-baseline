@@ -21,11 +21,13 @@
 {%- if needsSignature(item) -%}
   <span class="signature"><span class="signature-params">{{ item.params | formatParams }}</span>
     {%- set types = returnTypes(item) -%}
-    {%- if item.kind != 'class' and types -%}
+    {%- if types and item.kind !== 'class' -%}
       {{- 'returnTypesSeparator' | translate -}}
-      <span class="signature-returns"> {{ types | describeType(codeTag='') }}</span>
+      <span class="signature-returns"> {{ types | linkifyTypeExpression }}</span>
     {%- endif -%}
   </span>
-{%- elif item.type -%}
-  <small class="property-type">&nbsp;{{ item.type.parsedType | describeType(codeTag='') }}</small>
+{%- elif item.type and item.type.expression -%}
+  <small class="property-type">&nbsp;
+    {{- item.type.expression | linkifyTypeExpression -}}
+  </small>
 {%- endif -%}

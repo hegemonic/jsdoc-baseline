@@ -14,8 +14,6 @@
   limitations under the License.
 */
 
-import catharsis from 'catharsis';
-
 describe('signature partial', () => {
   // TODO: more tests
 
@@ -60,12 +58,12 @@ describe('signature partial', () => {
       name: 'foo',
       type: {
         names: ['function'],
-        parsedType: catharsis.parse('?function(!string)'),
+        expression: '?function(!string)',
       },
     };
     const text = await helpers.render('signature.njk', { item: fakeDoclet });
 
-    expect(text).toContain('nullable function(non-null string)');
+    expect(text).toContain('?function(!string)');
   });
 
   it('links to known types in the same package', async () => {

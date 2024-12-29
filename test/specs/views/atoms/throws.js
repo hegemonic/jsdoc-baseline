@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 describe('throws atom', () => {
   it('should generate nothing if the doclet has no "exceptions" items', async () => {
     const text = await helpers.render('throws.njk', {});
@@ -34,15 +35,11 @@ describe('throws atom', () => {
   });
 
   it('should describe the exception type, if specified', async () => {
-    const parsedType = {
-      type: 'NameExpression',
-      name: 'TypeError',
-    };
     const doclet = {
       exceptions: [
         {
           type: {
-            parsedType,
+            expression: 'TypeError',
           },
         },
       ],

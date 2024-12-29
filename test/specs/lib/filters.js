@@ -14,8 +14,6 @@
   limitations under the License.
 */
 
-import catharsis from 'catharsis';
-
 import * as filters from '../../../lib/filters.js';
 
 describe('lib/filters', () => {
@@ -186,8 +184,6 @@ describe('lib/filters', () => {
     });
 
     describe('describeType', () => {
-      const parsedType = catharsis.parse('!string');
-
       it('uses "unknown type" if no type is provided', () => {
         const description = instance.describeType(undefined);
 
@@ -196,26 +192,26 @@ describe('lib/filters', () => {
 
       it('throws if the requested format is not available', () => {
         function shouldThrow() {
-          return instance.describeType(parsedType, { format: 'marshmallow' });
+          return instance.describeType('!string', { format: 'marshmallow' });
         }
 
         expect(shouldThrow).toThrow();
       });
 
       it('returns the simple description by default', () => {
-        const description = instance.describeType(parsedType);
+        const description = instance.describeType('!string');
 
         expect(description.toString()).toBe('non-null <code>string</code>');
       });
 
       it('returns the extended format\'s description when the format is "extended"', () => {
-        const description = instance.describeType(parsedType, { format: 'extended' });
+        const description = instance.describeType('!string', { format: 'extended' });
 
         expect(description.toString()).toBe('<code>string</code>');
       });
 
       it('returns the requested property when the format is "extended"', () => {
-        const description = instance.describeType(parsedType, {
+        const description = instance.describeType('!string', {
           format: 'extended',
           property: 'modifiers.nullable',
         });
@@ -225,24 +221,11 @@ describe('lib/filters', () => {
 
       it('links to known types in the same package', () => {
         let description;
-        const fooType = catharsis.parse('foo');
 
         linkManager.requestFilename('foo');
-        description = instance.describeType(fooType);
+        description = instance.describeType('foo');
 
         expect(description.toString()).toBe('<code><a href="foo.html">foo</a></code>');
-      });
-
-      it('lets you omit the <code> tag', () => {
-        const description = instance.describeType(parsedType, { codeTag: '' });
-
-        expect(description.toString()).toBe('non-null string');
-      });
-
-      it('lets you add a tag other than <code>', () => {
-        const description = instance.describeType(parsedType, { codeTag: 'space-cat' });
-
-        expect(description.toString()).toBe('non-null <space-cat>string</space-cat>');
       });
     });
 
@@ -278,7 +261,7 @@ describe('lib/filters', () => {
         const fakeDoclet = {
           defaultvalue: 'foo',
         };
-        const hasModifiers = instance.hasModifiers(fakeDoclet, false);
+        const hasModifiers = instance.hasModifiers(fakeDoclet, { isEnum: false });
 
         expect(hasModifiers).toBe(true);
       });
@@ -287,7 +270,7 @@ describe('lib/filters', () => {
         const fakeDoclet = {
           defaultvalue: 'foo',
         };
-        const hasModifiers = instance.hasModifiers(fakeDoclet, true);
+        const hasModifiers = instance.hasModifiers(fakeDoclet, { isEnum: true });
 
         expect(hasModifiers).toBe(false);
       });
@@ -296,7 +279,7 @@ describe('lib/filters', () => {
         const fakeDoclet = {
           nullable: true,
         };
-        const hasModifiers = instance.hasModifiers(fakeDoclet, false);
+        const hasModifiers = instance.hasModifiers(fakeDoclet, { isEnum: false });
 
         expect(hasModifiers).toBe(true);
       });
@@ -305,7 +288,7 @@ describe('lib/filters', () => {
         const fakeDoclet = {
           optional: true,
         };
-        const hasModifiers = instance.hasModifiers(fakeDoclet, false);
+        const hasModifiers = instance.hasModifiers(fakeDoclet, { isEnum: false });
 
         expect(hasModifiers).toBe(false);
       });
@@ -314,7 +297,7 @@ describe('lib/filters', () => {
         const fakeDoclet = {
           variable: true,
         };
-        const hasModifiers = instance.hasModifiers(fakeDoclet, false);
+        const hasModifiers = instance.hasModifiers(fakeDoclet, { isEnum: false });
 
         expect(hasModifiers).toBe(true);
       });
@@ -481,6 +464,35 @@ describe('lib/filters', () => {
         expect(defaultLink.toString()).not.toBe(monospaceLink.toString());
 
         expect(monospaceLink.toString()).toContain('<code>');
+      });
+    });
+
+    describe('linkifyTypeExpression', () => {
+      it('uses "unknown type" if no type is provided', () => {
+        const linkified = instance.linkifyTypeExpression(undefined);
+
+        expect(linkified.toString()).toBe('?');
+      });
+
+      it('returns the simple description by default', () => {
+        const linkified = instance.linkifyTypeExpression('!string');
+
+        expect(linkified.toString()).toBe('!string');
+      });
+
+      it('normalizes and HTML-escapes type applications', () => {
+        const linkified = instance.linkifyTypeExpression('Array.<string>');
+
+        expect(linkified.toString()).toBe('Array&lt;string&gt;');
+      });
+
+      it('links to known types in the same package', () => {
+        let linkified;
+
+        linkManager.requestFilename('foo');
+        linkified = instance.linkifyTypeExpression('foo');
+
+        expect(linkified.toString()).toBe('<a href="foo.html">foo</a>');
       });
     });
 
@@ -676,7 +688,7 @@ describe('lib/filters', () => {
         const fakeDoclet = {
           nullable: true,
         };
-        const text = instance.modifierText(fakeDoclet, false);
+        const text = instance.modifierText(fakeDoclet, { isEnum: false });
 
         expect(text.toString()).not.toBe('');
       });
@@ -685,7 +697,7 @@ describe('lib/filters', () => {
         const fakeDoclet = {
           nullable: false,
         };
-        const text = instance.modifierText(fakeDoclet, false);
+        const text = instance.modifierText(fakeDoclet, { isEnum: false });
 
         expect(text.toString()).not.toBe('');
       });
@@ -694,7 +706,7 @@ describe('lib/filters', () => {
         const fakeDoclet = {
           variable: true,
         };
-        const text = instance.modifierText(fakeDoclet, false);
+        const text = instance.modifierText(fakeDoclet, { isEnum: false });
 
         expect(text.toString()).not.toBe('');
       });
@@ -703,7 +715,7 @@ describe('lib/filters', () => {
         const fakeDoclet = {
           defaultvalue: 0,
         };
-        const text = instance.modifierText(fakeDoclet, false);
+        const text = instance.modifierText(fakeDoclet, { isEnum: false });
 
         expect(text.toString()).toContain('0');
       });
@@ -712,7 +724,7 @@ describe('lib/filters', () => {
         const fakeDoclet = {
           defaultvalue: '1',
         };
-        const text = instance.modifierText(fakeDoclet, false);
+        const text = instance.modifierText(fakeDoclet, { isEnum: false });
 
         expect(text.toString()).toContain('1');
       });
@@ -721,9 +733,65 @@ describe('lib/filters', () => {
         const fakeDoclet = {
           defaultvalue: '1',
         };
-        const text = instance.modifierText(fakeDoclet, true);
+        const text = instance.modifierText(fakeDoclet, { isEnum: true });
 
         expect(text.toString()).toBe('');
+      });
+
+      describe('with type expression', () => {
+        it('omits nullability by default if the type expression contains that info', () => {
+          const fakeDoclet = {
+            nullable: false,
+            type: {
+              expression: '!string',
+            },
+          };
+          const text = instance.modifierText(fakeDoclet, { isEnum: false });
+
+          expect(text.toString()).toBe('');
+        });
+
+        it('if requested, shows nullability no matter what', () => {
+          const fakeDoclet = {
+            nullable: false,
+            type: {
+              expression: '!string',
+            },
+          };
+          const text = instance.modifierText(fakeDoclet, {
+            isEnum: false,
+            showAllModifiers: true,
+          });
+
+          expect(text.toString()).not.toBe('');
+        });
+
+        it('omits repeatability by default if the type expression contains that info', () => {
+          const fakeDoclet = {
+            variable: true,
+            type: {
+              expression: '...string',
+            },
+          };
+          const text = instance.modifierText(fakeDoclet, { isEnum: false });
+
+          expect(text.toString()).toBe('');
+        });
+
+        it('if requested, shows repeatability no matter what', () => {
+          const fakeDoclet = {
+            variable: true,
+            type: {
+              expression: '...string',
+            },
+          };
+          const text = instance.modifierText(fakeDoclet, {
+            isEnum: false,
+            showAllModifiers: true,
+          });
+
+          expect(text.toString()).not.toBe('');
+        });
       });
     });
 
@@ -1012,45 +1080,6 @@ describe('lib/filters', () => {
         ]);
       });
 
-      it('preserves the parsed type of child properties', () => {
-        const fakeDoclet = {
-          params: [
-            {
-              name: 'foo',
-            },
-            {
-              name: 'foo.bar',
-              type: {},
-            },
-          ],
-        };
-        let reparented;
-
-        // JSDoc adds the parsed type as a non-enumerable property, so we do too.
-        Object.defineProperty(fakeDoclet.params[1].type, 'parsedType', {
-          value: {
-            type: 'NameExpression',
-          },
-        });
-        reparented = instance.reparentItems(fakeDoclet, 'params');
-
-        expect(reparented).toEqual([
-          {
-            name: 'foo',
-            children: [
-              {
-                name: 'bar',
-                type: {
-                  parsedType: {
-                    type: 'NameExpression',
-                  },
-                },
-              },
-            ],
-          },
-        ]);
-      });
-
       it('does not crash when parameters have weird names like `{Object)`', () => {
         function reparent() {
           const fakeDoclet = {
@@ -1130,12 +1159,9 @@ describe('lib/filters', () => {
             },
           ],
         };
-        const parsedType = instance.returnTypes(fakeDoclet);
+        const typeExpression = instance.returnTypes(fakeDoclet);
 
-        expect(parsedType).toEqual({
-          type: 'NameExpression',
-          name: 'string',
-        });
+        expect(typeExpression).toBe('string');
       });
 
       it('finds values in the `yields` property', () => {
@@ -1149,12 +1175,9 @@ describe('lib/filters', () => {
             },
           ],
         };
-        const parsedType = instance.returnTypes(fakeDoclet);
+        const typeExpression = instance.returnTypes(fakeDoclet);
 
-        expect(parsedType).toEqual({
-          type: 'NameExpression',
-          name: 'number',
-        });
+        expect(typeExpression).toBe('number');
       });
 
       it('prefers `yields` over `returns`', () => {
@@ -1176,12 +1199,25 @@ describe('lib/filters', () => {
             },
           ],
         };
-        const parsedType = instance.returnTypes(fakeDoclet);
+        const typeExpression = instance.returnTypes(fakeDoclet);
 
-        expect(parsedType).toEqual({
-          type: 'NameExpression',
-          name: 'number',
-        });
+        expect(typeExpression).toBe('number');
+      });
+
+      it('works with multiple return types', () => {
+        const fakeDoclet = {
+          returns: [
+            {
+              type: {
+                names: ['string', 'number'],
+              },
+              description: 'A string. Or, perhaps, a number.',
+            },
+          ],
+        };
+        const typeExpression = instance.returnTypes(fakeDoclet);
+
+        expect(typeExpression).toBe('(string|number)');
       });
 
       it('works if `doclet.returns` is passed in directly', () => {
@@ -1193,12 +1229,9 @@ describe('lib/filters', () => {
             description: 'A string.',
           },
         ];
-        const parsedType = instance.returnTypes(fakeReturns);
+        const typeExpression = instance.returnTypes(fakeReturns);
 
-        expect(parsedType).toEqual({
-          type: 'NameExpression',
-          name: 'string',
-        });
+        expect(typeExpression).toBe('string');
       });
     });
 
