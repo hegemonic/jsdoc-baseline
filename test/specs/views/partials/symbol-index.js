@@ -101,7 +101,7 @@ describe('symbol-index partial', () => {
                 <dl class="symbol-index-list">
                   <dt class="symbol-index-name">breakfast</dt>
                   <dd></dd>
-                  <dt class="symbol-index-name">breakfast.<wbr />eat()</dt>
+                  <dt class="symbol-index-name">breakfast.<wbr>eat()</dt>
                   <dd></dd>
                 </dl>
               </div>
@@ -121,7 +121,7 @@ describe('symbol-index partial', () => {
                 <dl class="symbol-index-list">
                   <dt class="symbol-index-name">lunch</dt>
                   <dd></dd>
-                  <dt class="symbol-index-name">lunch.<wbr />getFavorite()</dt>
+                  <dt class="symbol-index-name">lunch.<wbr>getFavorite()</dt>
                   <dd></dd>
                 </dl>
               </div>
@@ -160,7 +160,7 @@ describe('symbol-index partial', () => {
                   <dl class="symbol-index-list">
                     <dt class="symbol-index-name">lunch</dt>
                     <dd></dd>
-                    <dt class="symbol-index-name">lunch.<wbr />getFavorite()</dt>
+                    <dt class="symbol-index-name">lunch.<wbr>getFavorite()</dt>
                     <dd></dd>
                   </dl>
                 </div>
@@ -177,7 +177,7 @@ describe('symbol-index partial', () => {
                   <dl class="symbol-index-list">
                     <dt class="symbol-index-name">Sandwich()</dt>
                     <dd></dd>
-                    <dt class="symbol-index-name">Sandwich#<wbr />addCheeses()</dt>
+                    <dt class="symbol-index-name">Sandwich#<wbr>addCheeses()</dt>
                     <dd></dd>
                   </dl>
                 </div>
@@ -217,9 +217,9 @@ describe('symbol-index partial', () => {
                     <dl class="symbol-index-list">
                       <dt class="symbol-index-name">Sandwich()</dt>
                       <dd></dd>
-                      <dt class="symbol-index-name">Sandwich#<wbr />addCheeses()</dt>
+                      <dt class="symbol-index-name">Sandwich#<wbr>addCheeses()</dt>
                       <dd></dd>
-                      <dt class="symbol-index-name">Sandwich#<wbr />addProteins()</dt>
+                      <dt class="symbol-index-name">Sandwich#<wbr>addProteins()</dt>
                       <dd></dd>
                     </dl>
                   </div>
@@ -253,15 +253,15 @@ describe('symbol-index partial', () => {
                     <dl class="symbol-index-list">
                       <dt class="symbol-index-name">Sandwich()</dt>
                       <dd></dd>
-                      <dt class="symbol-index-name">Sandwich#<wbr />addCheeses()</dt>
+                      <dt class="symbol-index-name">Sandwich#<wbr>addCheeses()</dt>
                       <dd></dd>
                     </dl>
                   </div>
                   <div class="symbol-index-column">
                     <dl class="symbol-index-list">
-                      <dt class="symbol-index-name">Sandwich#<wbr />addProteins()</dt>
+                      <dt class="symbol-index-name">Sandwich#<wbr>addProteins()</dt>
                       <dd></dd>
-                      <dt class="symbol-index-name">Sandwich#<wbr />addSpreads()</dt>
+                      <dt class="symbol-index-name">Sandwich#<wbr>addSpreads()</dt>
                       <dd></dd>
                     </dl>
                   </div>
@@ -299,23 +299,23 @@ describe('symbol-index partial', () => {
                     <dl class="symbol-index-list">
                       <dt class="symbol-index-name">Sandwich()</dt>
                       <dd></dd>
-                      <dt class="symbol-index-name">Sandwich#<wbr />addCheeses()</dt>
+                      <dt class="symbol-index-name">Sandwich#<wbr>addCheeses()</dt>
                       <dd></dd>
                     </dl>
                   </div>
                   <div class="symbol-index-column">
                     <dl class="symbol-index-list">
-                      <dt class="symbol-index-name">Sandwich#<wbr />addProteins()</dt>
+                      <dt class="symbol-index-name">Sandwich#<wbr>addProteins()</dt>
                       <dd></dd>
-                      <dt class="symbol-index-name">Sandwich#<wbr />addSpreads()</dt>
+                      <dt class="symbol-index-name">Sandwich#<wbr>addSpreads()</dt>
                       <dd></dd>
                     </dl>
                   </div>
                   <div class="symbol-index-column">
                     <dl class="symbol-index-list">
-                      <dt class="symbol-index-name">Sandwich#<wbr />addToppings()</dt>
+                      <dt class="symbol-index-name">Sandwich#<wbr>addToppings()</dt>
                       <dd></dd>
-                      <dt class="symbol-index-name">Sandwich#<wbr />chooseBread()</dt>
+                      <dt class="symbol-index-name">Sandwich#<wbr>chooseBread()</dt>
                       <dd></dd>
                     </dl>
                   </div>

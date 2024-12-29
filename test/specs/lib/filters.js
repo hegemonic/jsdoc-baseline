@@ -57,10 +57,10 @@ describe('lib/filters', () => {
 
         expect(ancestors.toString()).toBe(
           [
-            '<a href="module-foo-bar.html">foo/<wbr />bar</a>',
-            '.<wbr />',
+            '<a href="module-foo-bar.html">foo/<wbr>bar</a>',
+            '.<wbr>',
             '<a href="module-foo-bar-baz.html">Baz</a>',
-            '#<wbr />',
+            '#<wbr>',
           ].join('')
         );
       });
@@ -69,7 +69,7 @@ describe('lib/filters', () => {
         const ancestors = instance.ancestors('module:foo/bar.Baz', 'frozzle');
 
         expect(ancestors.toString()).toBe(
-          '<a href="module-foo-bar.html" class="frozzle">foo/<wbr />bar</a>.<wbr />'
+          '<a href="module-foo-bar.html" class="frozzle">foo/<wbr>bar</a>.<wbr>'
         );
       });
 
@@ -86,7 +86,7 @@ describe('lib/filters', () => {
         ancestors = instance.ancestors('module:foo/bar.Baz', 'flibble');
 
         expect(ancestors.toString()).toBe(
-          '<a href="module-foo-bar.html" class="flobble">foo/<wbr />bar</a>.<wbr />'
+          '<a href="module-foo-bar.html" class="flobble">foo/<wbr>bar</a>.<wbr>'
         );
       });
 
@@ -515,14 +515,14 @@ describe('lib/filters', () => {
         const link = instance.linkToLine(fakeDocletMeta, 'foo');
 
         expect(link.toString()).toBe(
-          '<a href="glitch-js.html#L70" class="foo">glitch.<wbr />js:70</a>'
+          '<a href="glitch-js.html#L70" class="foo">glitch.<wbr>js:70</a>'
         );
       });
 
       it('works when no CSS class is specified', () => {
         const link = instance.linkToLine(fakeDocletMeta);
 
-        expect(link.toString()).toBe('<a href="glitch-js.html#L70">glitch.<wbr />js:70</a>');
+        expect(link.toString()).toBe('<a href="glitch-js.html#L70">glitch.<wbr>js:70</a>');
       });
 
       it('maps CSS classes as needed', async () => {
@@ -541,7 +541,7 @@ describe('lib/filters', () => {
         link = instance.linkToLine(fakeDocletMeta, 'flibble');
 
         expect(link.toString()).toBe(
-          '<a href="glitch-js.html#L70" class="flobble">glitch.<wbr />js:70</a>'
+          '<a href="glitch-js.html#L70" class="flobble">glitch.<wbr>js:70</a>'
         );
       });
 
@@ -553,7 +553,7 @@ describe('lib/filters', () => {
         };
         const link = instance.linkToLine(meta);
 
-        expect(link.toString()).toBe('<a href="glitch-js.html">glitch.<wbr />js</a>');
+        expect(link.toString()).toBe('<a href="glitch-js.html">glitch.<wbr>js</a>');
       });
     });
 
@@ -580,7 +580,7 @@ describe('lib/filters', () => {
 
         link = instance.linkWithSignature(barDoclet);
 
-        expect(link.toString()).toBe('<a href="foo.html#bar"><code>Foo#<wbr />bar()</code></a>');
+        expect(link.toString()).toBe('<a href="foo.html#bar"><code>Foo#<wbr>bar()</code></a>');
       });
 
       it('uses the name in the link by request', () => {

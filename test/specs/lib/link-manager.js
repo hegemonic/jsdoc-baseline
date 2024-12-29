@@ -119,7 +119,7 @@ describe('lib/link-manager', () => {
           monospace: false,
         });
 
-        expect(link).toBe('<a href="foo-bar-baz.html">foo.<wbr />bar.<wbr />baz</a>');
+        expect(link).toBe('<a href="foo-bar-baz.html">foo.<wbr>bar.<wbr>baz</a>');
       });
 
       it('adds soft breaks to link text where appropriate', () => {
@@ -132,7 +132,7 @@ describe('lib/link-manager', () => {
           monospace: false,
         });
 
-        expect(link).toBe('<a href="foo-bar-baz.html">some/<wbr />other/<wbr />thing</a>');
+        expect(link).toBe('<a href="foo-bar-baz.html">some/<wbr>other/<wbr>thing</a>');
       });
 
       it('does not add soft breaks to link text that is also a URI', () => {
