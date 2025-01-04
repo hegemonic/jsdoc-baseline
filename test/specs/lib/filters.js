@@ -738,6 +738,15 @@ describe('lib/filters', () => {
         expect(text.toString()).toBe('');
       });
 
+      it('does not HTML-escape the string', () => {
+        const fakeDoclet = {
+          defaultvalue: 1,
+        };
+        const text = instance.modifierText(fakeDoclet, { isEnum: false });
+
+        expect(text.toString()).toContain('<code>1</code>');
+      });
+
       describe('with type expression', () => {
         it('omits nullability by default if the type expression contains that info', () => {
           const fakeDoclet = {
