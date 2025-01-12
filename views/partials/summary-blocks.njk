@@ -13,7 +13,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
+
 {%- if config('components.summary') %}
+  {%- from 'members-by-category.njk' import membersByCategory -%}
   {%-
     if headingDocs
       or members.classes
@@ -24,7 +26,6 @@
       or members.typedefs
       or members.events
   %}
-    {#- TODO: Ensure this list stays in the same order as symbol-content.njk. -#}
     <section id="{{ idForString(href, 'jsdoc-summary') }}" class="jsdoc-summary">
       {#-
         Either constructors (for a class) or symbols exported by the module (for a module).
@@ -39,47 +40,8 @@
         {%- include 'summary-block.njk' -%}
       {% endblock -%}
 
-      {%- block classes %}
-        {%- set items = members.classes -%}
-        {%- set headingKey = 'headings.childClasses' -%}
-        {%- include 'summary-block.njk' -%}
-      {% endblock -%}
-
-      {%- block interfaces %}
-        {%- set items = members.interfaces -%}
-        {%- set headingKey = 'headings.childInterfaces' -%}
-        {%- include 'summary-block.njk' -%}
-      {% endblock -%}
-
-      {%- block namespaces %}
-        {%- set items = members.namespaces -%}
-        {%- set headingKey = 'headings.namespaces' -%}
-        {%- include 'summary-block.njk' -%}
-      {% endblock -%}
-
-      {%- block properties %}
-        {%- set items = members.properties -%}
-        {%-set headingKey = 'headings.properties' -%}
-        {%- include 'summary-block.njk' -%}
-      {% endblock -%}
-
-      {%- block functions %}
-        {%- set items = members.functions -%}
-        {%- set headingKey = 'headings.functions' -%}
-        {%- include 'summary-block.njk' -%}
-      {% endblock -%}
-
-      {%- block typedefs %}
-        {%- set items = members.typedefs -%}
-        {%- set headingKey = 'headings.typedefs' -%}
-        {%- include 'summary-block.njk' -%}
-      {% endblock -%}
-
-      {%- block events %}
-        {%- set items = members.events -%}
-        {%- set headingKey = 'headings.events' -%}
-        {%- include 'summary-block.njk' -%}
-      {% endblock -%}
+      {%- set headingKeys = { classes: 'headings.childClasses', interfaces: 'headings.childInterfaces' } -%}
+      {{- membersByCategory(members, 'summary-block.njk', headingKeys=headingKeys) -}}
     </section>
   {% endif -%}
 {%- endif -%}
