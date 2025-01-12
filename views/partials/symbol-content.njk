@@ -14,17 +14,9 @@
   limitations under the License.
 -#}
 
-{%-
-  if members.classes
-    or members.interfaces
-    or members.namespaces
-    or members.properties
-    or members.functions
-    or members.typedefs
-    or members.events
-%}
+{%- from 'members-by-category.njk' import allCategories, detailCategories, linkCategories, membersByCategory -%}
+{%- if members | hasOneOf(allCategories) %}
   <section>
-    {%- from 'members-by-category.njk' import detailCategories, linkCategories, membersByCategory -%}
     {{- membersByCategory(members, 'members-links.njk', categories=linkCategories) -}}
     {{- membersByCategory(members, 'members-details.njk', categories=detailCategories) -}}
   </section>

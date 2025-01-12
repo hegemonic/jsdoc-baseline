@@ -13,11 +13,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
+
 {%- import 'details-table.njk' as details -%}
 {%- if item.params and item.params.length %}
   <section>
     <h class="h symbol-params">{{ 'headings.parameters' | translate(item.params) }}</h>
     {%- set values = reparentItems(item, 'params') -%}
-    {{ details.detailsTable(values, item.isEnum) }}
+    {{ details.detailsTable(values, item) }}
   </section>
 {% endif -%}

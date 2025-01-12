@@ -71,7 +71,8 @@
   This table is implemented as a macro so that it can be called recursively, without shadowing or
   overwriting variables in a parent scope.
 -#}
-{%- macro detailsTable(values, isEnum)-%}
+{%- macro detailsTable(values, parentItem)-%}
+  {%- set isEnum = parentItem.kind === 'enum' -%}
   <table class="jsdoc-details-table">
     <thead>
       <tr>

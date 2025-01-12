@@ -303,6 +303,26 @@ describe('lib/filters', () => {
       });
     });
 
+    describe('hasOneOf', () => {
+      it('retuns `true` if an object has at least one of the specified properties', () => {
+        const obj = { baz: true };
+        const props = ['foo', 'bar', 'baz'];
+
+        expect(instance.hasOneOf(obj, props)).toBeTrue();
+      });
+
+      it('returns `false` if an object has none of the specified properties', () => {
+        const obj = { qux: true };
+        const props = ['foo', 'bar', 'baz'];
+
+        expect(instance.hasOneOf(obj, props)).toBeFalse();
+      });
+
+      it('returns `false` if the object is missing', () => {
+        expect(instance.hasOneOf()).toBeFalse();
+      });
+    });
+
     describe('headingLevel', () => {
       it('returns a positive number', () => {
         const level = instance.headingLevel();

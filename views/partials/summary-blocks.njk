@@ -15,17 +15,8 @@
 -#}
 
 {%- if config('components.summary') %}
-  {%- from 'members-by-category.njk' import membersByCategory -%}
-  {%-
-    if headingDocs
-      or members.classes
-      or members.interfaces
-      or members.namespaces
-      or members.properties
-      or members.functions
-      or members.typedefs
-      or members.events
-  %}
+  {%- from 'members-by-category.njk' import allCategories, membersByCategory -%}
+  {%- if headingDocs or members | hasOneOf(allCategories) %}
     <section id="{{ idForString(href, 'jsdoc-summary') }}" class="jsdoc-summary">
       {#-
         Either constructors (for a class) or symbols exported by the module (for a module).

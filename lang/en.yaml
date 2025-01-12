@@ -83,6 +83,10 @@ headings:
   copyright: 'Copyright'
   defaultValue: 'Default value'
   deprecated: 'Deprecated'
+  enums: |
+    {items, plural,
+        =1 {Enum}
+        other {Enums}}
   events: |
     {items, plural,
         =1 {Event}
