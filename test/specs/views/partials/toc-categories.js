@@ -19,19 +19,7 @@ describe('TOC categories partial', () => {
 
   describe('always expanded', () => {
     let template;
-    const tocData = [
-      {
-        category: 'modules',
-        hrefs: ['module-foo.html'],
-        items: [
-          {
-            href: 'module-foo.html',
-            id: 'module:foo',
-            label: 'foo',
-          },
-        ],
-      },
-    ];
+    let tocData;
 
     beforeEach(async () => {
       template = await helpers.createTemplate({
@@ -42,6 +30,19 @@ describe('TOC categories partial', () => {
           },
         },
       });
+      tocData = [
+        {
+          category: 'modules',
+          hrefs: ['module-foo.html'],
+          items: [
+            {
+              href: 'module-foo.html',
+              id: 'module:foo',
+              label: 'foo',
+            },
+          ],
+        },
+      ];
     });
 
     afterEach(() => {
@@ -52,6 +53,21 @@ describe('TOC categories partial', () => {
       const output = await template.render('toc-categories.njk', { href: 'test.html', tocData });
 
       expect(output).toContain('<sl-details keep-open open>');
+    });
+
+    it('does not add a heading to the TOC item for globals', async () => {
+      const globalTocCategory = {
+        category: 'globals',
+        hrefs: ['global.html'],
+        items: [{ href: 'global.html', id: 'global', label: 'Global' }],
+        nameCount: {},
+      };
+      let output;
+
+      tocData.shift(globalTocCategory);
+      output = await template.render('toc-categories.njk', { href: 'test.html', tocData });
+
+      expect(output).not.toContain('Global');
     });
   });
 });

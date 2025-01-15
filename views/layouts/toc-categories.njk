@@ -33,7 +33,10 @@
 
 {%- macro make_accordion(section) -%}
   <sl-details {{- add_details_modifiers(section.hrefs) -}}>
-    <p slot="summary">{{ translate('headings.' + section.category, section.items) }}</p>
+    {#- Don't add a section heading for globals. -#}
+    {%- if section.category !== 'globals' %}
+      <p slot="summary">{{ translate('headings.' + section.category, section.items) }}</p>
+    {% endif -%}
     <sl-tree>
       {% for item in section.items -%}
         {%- set label %}{{ choose_label(section, item) }}{% endset -%}

@@ -37,31 +37,32 @@ describe('lib/tasks/set-toc-data-categories', () => {
 
   describe('run', () => {
     let context;
-    const doclets = [
-      helpers.createDoclet(['@name alpha', '@longname alpha', '@namespace']),
-      helpers.createDoclet(['@name Bravo', '@longname alpha.Bravo', '@memberof alpha', '@class']),
-      helpers.createDoclet(['@name charlie', '@longname module:charlie', '@module']),
-      helpers.createDoclet(['@name delta', '@longname external:delta', '@external']),
-      helpers.createDoclet(['@name IEcho', '@longname IEcho', '@interface']),
-      helpers.createDoclet([
-        '@name foxtrot',
-        '@longname event:alpha.foxtrot',
-        '@memberof alpha',
-        '@event',
-      ]),
-      helpers.createDoclet(['@name golf', '@longname golf', '@mixin']),
-      helpers.createDoclet([
-        '@name hotel',
-        '@longname alpha.hotel',
-        '@memberof alpha',
-        '@function',
-      ]),
-    ];
+    let doclets;
     let template;
 
     beforeEach(async () => {
       template = await helpers.createTemplate(defaultConfig);
 
+      doclets = [
+        helpers.createDoclet(['@name alpha', '@longname alpha', '@namespace']),
+        helpers.createDoclet(['@name Bravo', '@longname alpha.Bravo', '@memberof alpha', '@class']),
+        helpers.createDoclet(['@name charlie', '@longname module:charlie', '@module']),
+        helpers.createDoclet(['@name delta', '@longname external:delta', '@external']),
+        helpers.createDoclet(['@name IEcho', '@longname IEcho', '@interface']),
+        helpers.createDoclet([
+          '@name foxtrot',
+          '@longname event:alpha.foxtrot',
+          '@memberof alpha',
+          '@event',
+        ]),
+        helpers.createDoclet(['@name golf', '@longname golf', '@mixin']),
+        helpers.createDoclet([
+          '@name hotel',
+          '@longname alpha.hotel',
+          '@memberof alpha',
+          '@function',
+        ]),
+      ];
       context = {
         config: {
           opts: {},
@@ -69,6 +70,7 @@ describe('lib/tasks/set-toc-data-categories', () => {
         destination: 'out',
         docletStore: helpers.createDocletStore(doclets),
         linkManager: template.linkManager,
+        template,
       };
 
       for (const doclet of doclets) {
@@ -261,6 +263,26 @@ describe('lib/tasks/set-toc-data-categories', () => {
       await instance.run(context);
 
       expect(context.tocData).toEqual(expected);
+    });
+
+    it('adds an entry for globals, when present, at the start of the TOC', async () => {
+      const expected = {
+        href: 'global.html',
+        id: 'global',
+        label: 'Global',
+      };
+      const globalDoclet = helpers.createDoclet([
+        '@name india',
+        '@longname india',
+        '@function',
+        '@global',
+      ]);
+      doclets.push(globalDoclet);
+      template.linkManager.registerDoclet(globalDoclet);
+
+      await instance.run(context);
+
+      expect(context.tocData[0].items).toContain(expected);
     });
   });
 });
