@@ -53,7 +53,7 @@
     "@jsdoc/core": "^0.5.9",
     "@jsdoc/name": "^0.1.0",
     "@jsdoc/tag": "^0.2.12",
-    "@jsdoc/task-runner": "^0.2.6",
+    "@jsdoc/task-runner": "^0.2.7",
     "@jsdoc/util": "^0.3.4",
     "@messageformat/core": "^3.4.0",
     "@sindresorhus/slugify": "^2.2.1",

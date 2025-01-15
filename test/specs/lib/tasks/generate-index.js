@@ -101,6 +101,17 @@ describe('lib/tasks/generate-index', () => {
   });
 
   describe('run', () => {
+    it('emits lifecycle events', async () => {
+      let success;
+
+      instance.on('start', () => {
+        success = true;
+      });
+      await instance.run(context);
+
+      expect(success).toBeTrue();
+    });
+
     it('generates a file', async () => {
       await instance.run(context);
 

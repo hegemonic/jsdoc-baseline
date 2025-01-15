@@ -96,6 +96,17 @@ describe('lib/tasks/generate-core-docs', () => {
       await tmpdir.reset();
     });
 
+    it('emits lifecycle events', async () => {
+      let success;
+
+      instance.on('start', () => {
+        success = true;
+      });
+      await instance.run(context);
+
+      expect(success).toBeTrue();
+    });
+
     it('returns a promise on success', (cb) => {
       const result = instance.run(context);
 

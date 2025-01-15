@@ -64,6 +64,18 @@ describe('lib/tasks/generate-source-files', () => {
       await tmpdir.reset();
     });
 
+    it('emits lifecycle events', async () => {
+      let success;
+      const task = new GenerateSourceFiles({ name: 'emitsLifecycleEvents' });
+
+      task.on('start', () => {
+        success = true;
+      });
+      await task.run(context);
+
+      expect(success).toBeTrue();
+    });
+
     it('returns a promise on success', (cb) => {
       const task = new GenerateSourceFiles({ name: 'success' });
       const result = task.run(context);

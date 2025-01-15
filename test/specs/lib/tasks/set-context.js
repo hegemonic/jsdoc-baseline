@@ -61,6 +61,17 @@ describe('lib/tasks/set-context', () => {
   });
 
   describe('run', () => {
+    it('emits lifecycle events', async () => {
+      let success;
+
+      instance.on('start', () => {
+        success = true;
+      });
+      await instance.run(context);
+
+      expect(success).toBeTrue();
+    });
+
     it('fails if the context is missing', async () => {
       let error;
 

@@ -82,6 +82,17 @@ describe('lib/tasks/set-toc-data', () => {
       context.docletStore?.stopListening();
     });
 
+    it('emits lifecycle events', async () => {
+      let success;
+
+      instance.on('start', () => {
+        success = true;
+      });
+      await instance.run(context);
+
+      expect(success).toBeTrue();
+    });
+
     it('creates category-based TOC data by default', async () => {
       const expected = [
         {
