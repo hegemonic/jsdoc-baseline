@@ -78,7 +78,7 @@
   },
   "devDependencies": {
     "@jsdoc/doclet": "^0.2.13",
-    "@jsdoc/eslint-config": "^2.0.1",
+    "@jsdoc/eslint-config": "^2.0.2",
     "@jsdoc/prettier-config": "^0.2.9",
     "@jsdoc/test-matchers": "^0.2.6",
     "@parcel/transformer-sass": "^2.13.3",
