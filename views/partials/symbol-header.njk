@@ -13,25 +13,31 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
+
 {%- import 'list.njk' as list -%}
 
 <header class="page-header">
   {%- block heading %}
     {%- include 'symbol-badges.njk' -%}
     <h>
-      {%- if item.longname != item.memberof -%}
+      {%- if pageHeading -%}
+        {{- pageHeading -}}
+      {%- elif item.longname != item.memberof -%}
         {%- set itemAncestors -%}{{ item.longname | ancestors | trim }}{%- endset -%}
         {%- if itemAncestors -%}
           <small>{{ itemAncestors | safe }}</small>
         {%- endif -%}
       {%- endif -%}
-      <span class="symbol-name">
-        {%- if item.kind == 'external' -%}
-          {{ item.name | dequote }}
-        {%- else -%}
-          {{ item.name }}
-        {%- endif -%}
-      </span></h>
+      {%- if item -%}
+        <span class="symbol-name">
+          {%- if item.kind == 'external' -%}
+            {{ item.name | dequote }}
+          {%- else -%}
+            {{ item.name }}
+          {%- endif -%}
+        </span>
+      {%- endif -%}
+    </h>
   {% endblock -%}
 
   {%- block source %}

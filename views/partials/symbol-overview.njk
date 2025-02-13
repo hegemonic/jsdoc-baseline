@@ -13,7 +13,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
-{%- if docs %}
+
+{%- if docs or pageHeading %}
   {%- set item = docs[0] -%}
   {%- include 'symbol-header.njk' -%}
 {% endif -%}

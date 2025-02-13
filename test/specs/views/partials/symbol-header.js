@@ -16,6 +16,17 @@
 describe('symbol header partial', () => {
   // TODO: more tests
 
+  describe('title', () => {
+    // TODO: more tests
+
+    it('uses `pageHeading` as the title if it is defined', async () => {
+      const expected = '<header class="page-header"><h1>Hello</h1></header>';
+      const text = await helpers.renderAndNormalize('symbol-header.njk', { pageHeading: 'Hello' });
+
+      expect(text).toContain(expected);
+    });
+  });
+
   describe('description', () => {
     // TODO: more tests
 

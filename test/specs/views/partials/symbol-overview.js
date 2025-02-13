@@ -16,6 +16,19 @@
 describe('symbol overview partial', () => {
   // TODO: more tests
 
+  describe('header', () => {
+    // TODO: more tests
+
+    it('shows a header for globals', async () => {
+      const expected = '<header class="page-header"><h1>Hello</h1></header>';
+      const text = await helpers.renderAndNormalize('symbol-overview.njk', {
+        pageHeading: 'Hello',
+      });
+
+      expect(text).toContain(expected);
+    });
+  });
+
   describe('details', () => {
     // TODO: more tests
 

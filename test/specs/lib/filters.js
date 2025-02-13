@@ -100,6 +100,10 @@ describe('lib/filters', () => {
     describe('badges', () => {
       xit('TODO: Write more tests');
 
+      it('returns an empty array if no doclet is provided', () => {
+        expect(instance.badges()).toBeEmptyArray();
+      });
+
       it('maps CSS classes as needed', async () => {
         let badges;
 
