@@ -74,7 +74,7 @@
     "strip-json-comments": "^5.0.2"
   },
   "optionalDependencies": {
-    "prettier": "^3.6.0"
+    "prettier": "^3.6.1"
   },
   "devDependencies": {
     "@jsdoc/doclet": "^0.2.13",
@@ -99,7 +99,7 @@
     "license-check-and-add": "^4.0.5",
     "parcel": "^2.15.4",
     "parcel-namer-rewrite": "^2.0.0-rc.3",
-    "prettier": "^3.6.0",
+    "prettier": "^3.6.1",
     "sass": "^1.89.2"
   },
   "engines": {
