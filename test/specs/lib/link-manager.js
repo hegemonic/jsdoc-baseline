@@ -776,17 +776,38 @@ describe('lib/link-manager', () => {
   });
 
   describe('stringToLinkUri', () => {
-    it('is a map-like object', () => {
+    it('has a `get` method', () => {
       expect(instance.stringToLinkUri.get).toBeFunction();
     });
 
-    it('stores keys that are known strings and values that are URIs for those strings', () => {
+    it('has keys that are known strings and values that are URIs for those strings', () => {
       const extension = '.html';
       const filename1 = instance.requestFilename('foo');
       const filename2 = instance.requestFilename('bar');
 
       expect(instance.stringToLinkUri.get('foo')).toBe(filename1 + extension);
       expect(instance.stringToLinkUri.get('bar')).toBe(filename2 + extension);
+    });
+
+    it('includes a fragment ID in the link when necessary', () => {
+      const fakeDoclets = [
+        {
+          kind: 'class',
+          longname: 'Foo',
+          name: 'Foo',
+        },
+        {
+          kind: 'function',
+          longname: 'Foo#bar',
+          memberof: 'Foo',
+          name: 'bar',
+          scope: 'instance',
+        },
+      ];
+
+      fakeDoclets.forEach((d) => instance.registerDoclet(d));
+
+      expect(instance.stringToLinkUri.get('Foo#bar')).toBe('foo.html#bar');
     });
 
     it('uses the extension for links, not the extension for generated files', () => {
