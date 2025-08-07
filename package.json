@@ -67,7 +67,7 @@
     "lodash": "^4.17.21",
     "markdown-it": "^14.1.0",
     "markdown-it-anchor": "^9.2.0",
-    "memize": "^2.1.0",
+    "memize": "^2.1.1",
     "nunjucks": "^3.2.4",
     "ow": "^2.0.0",
     "spdx-license-list": "^6.10.0",
