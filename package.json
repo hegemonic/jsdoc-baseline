@@ -98,7 +98,6 @@
     "jasmine-console-reporter": "^3.1.0",
     "license-check-and-add": "^4.0.5",
     "parcel": "^2.15.4",
-    "parcel-namer-rewrite": "^2.0.0-rc.3",
     "prettier": "^3.6.2",
     "sass": "^1.90.0"
   },
@@ -106,16 +105,13 @@
     "node": ">=v16.0.0"
   },
   "targets": {
-    "default": {
+    "css": {},
+    "js": {
       "context": "browser",
       "optimize": true
     },
     "main": false
   },
-  "browserslist": "defaults",
-  "parcel-namer-rewrite": {
-    "rules": {
-      "^(?:.+/)?(.+)$": "$1"
-    }
-  }
+  "js": "static/scripts/jsdoc.js",
+  "browserslist": "defaults"
 }
