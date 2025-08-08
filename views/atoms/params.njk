@@ -14,11 +14,11 @@
   limitations under the License.
 -#}
 
-{%- import 'details-table.njk' as details -%}
+{%- from 'details-table.njk' import detailsTable -%}
 {%- if item.params and item.params.length %}
   <section>
     <h class="h symbol-params">{{ 'headings.parameters' | translate(item.params) }}</h>
     {%- set values = reparentItems(item, 'params') -%}
-    {{ details.detailsTable(values, item) }}
+    {{ detailsTable(values, item) }}
   </section>
 {% endif -%}

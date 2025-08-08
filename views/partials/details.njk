@@ -13,10 +13,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
-{%- import 'list.njk' as list -%}
+{%- from 'list.njk' import dictList, dictListTypes -%}
 
 {%- block augments %}
-  {{ list.dictList(item.augments, 'headings.augments') }}
+  {{ dictList(item.augments, 'headings.augments') }}
 {% endblock -%}
 
 {%- block version %}
@@ -32,15 +32,15 @@
 {% endblock -%}
 
 {%- block implements %}
-  {{ list.dictList(item.implements, 'headings.implements') }}
+  {{ dictList(item.implements, 'headings.implements') }}
 {% endblock-%}
 
 {%- block implementations %}
-  {{ list.dictList(item.implementations, 'headings.implementations') }}
+  {{ dictList(item.implementations, 'headings.implementations') }}
 {% endblock -%}
 
 {%- block mixes %}
-  {{ list.dictList(item.mixes, 'headings.mixes') }}
+  {{ dictList(item.mixes, 'headings.mixes') }}
 {% endblock -%}
 
 {%- block deprecated %}
@@ -68,33 +68,33 @@
 {% endblock -%}
 
 {%- block todo %}
-  {{ list.dictList(item.todo, 'headings.todo') }}
+  {{ dictList(item.todo, 'headings.todo') }}
 {% endblock -%}
 
 {%- block requires %}
-  {{ list.dictList(item.requires, 'headings.requires') }}
+  {{ dictList(item.requires, 'headings.requires') }}
 {% endblock -%}
 
 {%- block fires %}
-  {{ list.dictList(item.fires, 'headings.fires') }}
+  {{ dictList(item.fires, 'headings.fires') }}
 {% endblock -%}
 
 {%- block listens %}
-  {{ list.dictList(item.listens, 'headings.listens') }}
+  {{ dictList(item.listens, 'headings.listens') }}
 {% endblock -%}
 
 {%- block listeners %}
-  {{ list.dictList(item.listeners, 'headings.listeners') }}
+  {{ dictList(item.listeners, 'headings.listeners') }}
 {% endblock -%}
 
 {%- block throws %}
-  {{ list.dictListTypes(item.throws, 'headings.throws') }}
+  {{ dictListTypes(item.throws, 'headings.throws') }}
 {% endblock -%}
 
 {%- block returns %}
-  {{ list.dictListTypes(item.returns, 'headings.returns') }}
+  {{ dictListTypes(item.returns, 'headings.returns') }}
 {% endblock -%}
 
 {%- block yields %}
-  {{ list.dictListTypes(item.yields, 'headings.yields') }}
+  {{ dictListTypes(item.yields, 'headings.yields') }}
 {% endblock -%}

@@ -14,7 +14,7 @@
   limitations under the License.
 -#}
 
-{%- import 'list.njk' as list -%}
+{%- from 'list.njk' import dictList -%}
 
 <header class="page-header">
   {%- block heading %}
@@ -82,7 +82,7 @@
     {%- set details -%}
       {%- include 'implements.njk' -%}
       {%- include 'implementations.njk' -%}
-      {{- list.dictList(item.mixes, 'headings.mixes') -}}
+      {{- dictList(item.mixes, 'headings.mixes') -}}
     {%- endset -%}
     {%- if details | trim -%}
       <dl class="dl-compact">
