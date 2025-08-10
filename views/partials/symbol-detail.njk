@@ -14,9 +14,11 @@
   limitations under the License.
 -#}
 
+{%- from 'heading.njk' import heading -%}
+
 {#-
-    We omit the badges for classes, modules, and namespaces, because those badges would duplicate
-    the badges for the page's main heading.
+  We omit the badges for classes, modules, and namespaces, because they would duplicate the badges
+  for the page's main heading.
 -#}
 {%- if item.kind and not item.kind | includes(['class', 'module', 'namespace']) -%}
   {%- include 'symbol-badges.njk' -%}
@@ -24,11 +26,12 @@
 
 {%- if not item.hideconstructor %}
   {%- set itemId = idForDoclet(item) -%}
-  <h {%- if itemId %} id="{{ itemId }}"{%- endif %}>
+  {%- set headingText -%}
     {%- include 'constructor-prefix.njk' -%}
     <span class="symbol-name">{{ item.name }}</span>
     {%- include 'signature.njk' -%}
-  </h>
+  {%- endset -%}
+  {{ heading(id=itemId, text=headingText) }}
 {% endif -%}
 
 {%- if not config('sourceFiles.singleLink') and not item.hideconstructor %}

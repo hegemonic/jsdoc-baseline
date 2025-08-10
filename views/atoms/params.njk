@@ -15,9 +15,12 @@
 -#}
 
 {%- from 'details-table.njk' import detailsTable -%}
+{%- from 'heading.njk' import heading -%}
+
 {%- if item.params and item.params.length %}
   <section>
-    <h class="h symbol-params">{{ 'headings.parameters' | translate(item.params) }}</h>
+    {%- set headingText = translate('headings.parameters', item.params) -%}
+    {{ heading(cssClass='h symbol-params', text=headingText) }}
     {%- set values = reparentItems(item, 'params') -%}
     {{ detailsTable(values, item) }}
   </section>

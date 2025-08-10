@@ -15,10 +15,13 @@
 -#}
 
 {%- from 'details-table.njk' import detailsTable -%}
+{%- from 'heading.njk' import heading -%}
+
 {%- set properties = filterProperties(item.properties) -%}
 {%- if properties and properties.length %}
   <section>
-    <h class="h symbol-properties">{{ 'headings.properties' | translate(properties) }}</h>
+    {%- set headingText = translate('headings.properties', properties) -%}
+    {{ heading(cssClass='h symbol-properties', text=headingText) }}
     {%- set values = reparentItems(item, 'properties') -%}
     {{ detailsTable(values, item) }}
   </section>

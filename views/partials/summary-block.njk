@@ -14,12 +14,15 @@
   limitations under the License.
 -#}
 
+{%- from 'heading.njk' import heading -%}
+
 {%- set NUM_COLUMNS = 3 -%}
 
 {%- if items %}
   <div class="summary-callout">
     {%- if headingKey %}
-      <h class="summary-callout-heading">{{ headingKey | translate(items) }}</h>
+      {%- set headingText = translate(headingKey, items) -%}
+      {{ heading(cssClass='summary-callout-heading', text=headingText) }}
     {% endif -%}
     <div class="summary-content">
       {%- set groups = items | slice(NUM_COLUMNS) -%}

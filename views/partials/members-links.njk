@@ -14,12 +14,16 @@
   limitations under the License.
 -#}
 
+{%- from 'heading.njk' import heading -%}
+
 {%- if items %}
-  <h>{{ headingKey | translate(items) }}</h>
+  {%- set headingText = translate(headingKey, items) -%}
+  {{ heading(text=headingText) }}
   <section class="members-links">
     {%- for item in items %}
       {#- TODO: Improve spacing between headings when no summary is present. -#}
-      <h>{{ item.longname | link(item.name, monospace=false) }}</h>
+      {%- set itemHeadingText = link(item.longname, item.name, monospace=false) -%}
+      {{ heading(text=itemHeadingText) }}
       {% include 'summary.njk' %}
     {% endfor -%}
   </section>

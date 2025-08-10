@@ -100,20 +100,6 @@ describe('lib/loader', () => {
         expect(source.src).toContain('<span class="work">yay!</span>');
       });
 
-      it('adds helpers to <h> elements with no attributes', () => {
-        const source = instance.getSource('h-no-attributes.njk');
-
-        expect(source.src).toContain('<h{{ headingLevel() }}>hello world</h{{ headingLevel() }}>');
-      });
-
-      it('adds helpers to <h> elements with attributes', () => {
-        const source = instance.getSource('h-with-attributes.njk');
-
-        expect(source.src).toContain(
-          '<h{{ headingLevel() }} id="hi">hello world</h{{ headingLevel() }}>'
-        );
-      });
-
       it('adds helpers to <section> elements with no attributes', () => {
         const source = instance.getSource('section-no-attributes.njk');
 
@@ -142,12 +128,11 @@ describe('lib/loader', () => {
         expect(text).toBe('<div class="work toil"></div>');
       });
 
-      it('processes <h> and <section> elements', () => {
-        const text = instance.preprocess('<section><h>hello world</h></section>');
+      it('processes <section> elements', () => {
+        const text = instance.preprocess('<section><p>hello world</p></section>');
 
         expect(text).toBe(
-          '<section>{{ incrementHeading() }}<h{{ headingLevel() }}>' +
-            'hello world</h{{ headingLevel() }}>{{ decrementHeading() }}</section>'
+          '<section>{{ incrementHeading() }}<p>hello world</p>{{ decrementHeading() }}</section>'
         );
       });
     });
@@ -159,10 +144,6 @@ describe('lib/loader', () => {
 
       it('has a `classes` method', () => {
         expect(instance.preprocessors.classes).toBeFunction();
-      });
-
-      it('has a `headings` method', () => {
-        expect(instance.preprocessors.headings).toBeFunction();
       });
 
       it('has a `sections` method', () => {

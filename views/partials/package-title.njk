@@ -13,10 +13,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
+
+{%- from 'heading.njk' import heading -%}
+
 {%- if package and not readme %}
   <header class="page-header">
-    <h class="page-title">
+    {%- set headingText -%}
       {{- package.name }}{% if package.version %} {{ package.version }}{% endif -%}
-    </h>
+    {%- endset -%}
+    {{ heading(cssClass='page-title', text=headingText) }}
   </header>
 {% endif -%}

@@ -14,6 +14,8 @@
   limitations under the License.
 -#}
 
+{%- from 'heading.njk' import heading -%}
+
 {%- set NUM_COLUMNS = 3 -%}
 
 {%- macro content() %}
@@ -22,7 +24,8 @@
     {%- set group = groups[groupName] -%}
     <section>
       <div class="symbol-index-content">
-        <h id="{{ idForString(href, groupName) }}">{{ groupName }}</h>
+        {%- set headingId = idForString(href, groupName) -%}
+        {{ heading(id=headingId, text=groupName) }}
         <div class="symbol-index-section">
           {%- set batch_size = group | length -%}
           {%- if batch_size > NUM_COLUMNS -%}
@@ -42,7 +45,8 @@
 <div class="symbol-index">
   {%- if readme %}
     <section>
-      <h>{{ 'headings.packageIndex' | translate }}</h>
+      {%- set headingText = translate('headings.packageIndex') -%}
+      {{ heading(text=headingText) }}
       {{ content() }}
     </section>
   {%- else -%}

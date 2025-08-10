@@ -13,13 +13,17 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
+
 {%- extends 'layout.njk' -%}
+
+{%- from 'heading.njk' import heading -%}
 
 {%- block body_main_content -%}
   <article>
     {%- block source_heading %}
       <header class="page-header">
-        <h class="page-title">{{ translatePageTitle('', pageTitle, 'sources') }}</h>
+        {%- set headingText = translatePageTitle('', pageTitle, 'sources') -%}
+        {{ heading(cssClass='page-title', text=headingText) }}
       </header>
     {% endblock -%}
     {%- block source_content %}

@@ -13,8 +13,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -#}
+
+{%- from 'heading.njk' import heading -%}
+
 {%- if items %}
-  <h>{{ headingKey | translate(items) }}</h>
+  {%- set headingText = translate(headingKey, items) -%}
+  {{ heading(text=headingText) }}
   <section>
     {%- for item in items %}
       {%- include 'symbol-detail.njk' -%}

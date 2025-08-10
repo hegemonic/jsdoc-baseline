@@ -14,12 +14,13 @@
   limitations under the License.
 -#}
 
+{%- from 'heading.njk' import heading as h -%}
 {%- from 'list.njk' import dictList -%}
 
 <header class="page-header">
   {%- block heading %}
     {%- include 'symbol-badges.njk' -%}
-    <h>
+    {%- set headingText -%}
       {%- if pageHeading -%}
         {{- pageHeading -}}
       {%- elif item.longname != item.memberof -%}
@@ -37,7 +38,8 @@
           {%- endif -%}
         </span>
       {%- endif -%}
-    </h>
+    {%- endset -%}
+    {{ h(text=headingText) }}
   {% endblock -%}
 
   {%- block source %}
