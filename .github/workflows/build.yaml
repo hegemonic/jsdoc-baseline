@@ -26,7 +26,7 @@ jobs:
         os: [ubuntu-latest]
         node: [20]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           persist-credentials: false
       - uses: actions/setup-node@v4
@@ -43,7 +43,7 @@ jobs:
         os: [ubuntu-latest]
         node: [20]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           persist-credentials: false
       - uses: actions/setup-node@v4
@@ -60,7 +60,7 @@ jobs:
         os: [ubuntu-latest]
         node: [18, 20]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           persist-credentials: false
       - uses: actions/setup-node@v4
