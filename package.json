@@ -99,7 +99,7 @@
     "license-check-and-add": "^4.0.5",
     "parcel": "^2.15.4",
     "prettier": "^3.6.2",
-    "sass": "^1.91.0"
+    "sass": "^1.92.0"
   },
   "engines": {
     "node": ">=v16.0.0"
