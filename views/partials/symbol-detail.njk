@@ -42,7 +42,19 @@
   {%- include 'description.njk' -%}
   {%- include 'examples.njk' -%}
   {%- include 'params.njk' -%}
-  {%- include 'properties.njk' -%}
+
+  {%- if item.kind === 'enum' -%}
+    {%- set enumMembers = getDescendants(item) -%}
+    {%- if enumMembers | length -%}
+      {%- set originalItem = item -%}
+      {%- set item = { properties: enumMembers } -%}
+      {%- include 'properties.njk' -%}
+      {%- set item = originalItem -%}
+    {%- endif -%}
+  {%- else -%}
+    {%- include 'properties.njk' -%}
+  {%- endif -%}
+
   {%- set details -%}{%- include 'details.njk' -%}{%- endset -%}
   {%- set details = details | trim -%}
   {%- if details -%}

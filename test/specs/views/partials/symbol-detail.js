@@ -169,6 +169,10 @@ describe('symbol detail partial', () => {
 
       expect(text).not.toContain('foo');
     });
+
+    xit('recursively shows enum properties', () => {
+      // TODO
+    });
   });
 
   describe('details', () => {

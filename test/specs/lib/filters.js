@@ -14,6 +14,8 @@
   limitations under the License.
 */
 
+import _ from 'lodash';
+
 import * as filters from '../../../lib/filters.js';
 
 describe('lib/filters', () => {
@@ -253,6 +255,124 @@ describe('lib/filters', () => {
         const generatedBy = instance.generatedBy();
 
         expect(generatedBy.toString()).toContain(year);
+      });
+    });
+
+    describe('getDescendants', () => {
+      it('uses the `memberof` property to find descendants', () => {
+        let descendants;
+        const fooDoclet = helpers.createDoclet(['@name foo', '@longname foo']);
+        const barDoclet = helpers.createDoclet([
+          '@name bar',
+          '@longname foo.bar',
+          '@memberof foo',
+          '@static',
+        ]);
+
+        template.context.docletStore = helpers.createDocletStore([fooDoclet, barDoclet]);
+        descendants = instance.getDescendants(fooDoclet);
+
+        expect(descendants).toBeArrayOfSize(1);
+        expect(descendants[0]).toBe(barDoclet);
+      });
+
+      it('works if there are no descendants', () => {
+        let descendants;
+        const fooDoclet = helpers.createDoclet(['@name foo', '@longname foo']);
+
+        template.context.docletStore = helpers.createDocletStore([fooDoclet]);
+        descendants = instance.getDescendants(fooDoclet);
+
+        expect(descendants).toBeEmptyArray();
+      });
+
+      it('does not return non-descendants', () => {
+        let descendants;
+        const fooDoclet = helpers.createDoclet(['@name foo', '@longname foo']);
+        const barDoclet = helpers.createDoclet([
+          '@name bar',
+          '@longname foo.bar',
+          '@memberof foo',
+          '@static',
+        ]);
+        const bazDoclet = helpers.createDoclet(['@name baz', '@longname baz']);
+
+        template.context.docletStore = helpers.createDocletStore([fooDoclet, barDoclet, bazDoclet]);
+        descendants = instance.getDescendants(fooDoclet);
+
+        expect(descendants).toBeArrayOfSize(1);
+        expect(descendants[0]).toBe(barDoclet);
+      });
+
+      it('finds descendants recursively', () => {
+        let descendants;
+        const fooDoclet = helpers.createDoclet(['@name foo', '@longname foo']);
+        const barDoclet = helpers.createDoclet([
+          '@name bar',
+          '@longname foo.bar',
+          '@memberof foo',
+          '@static',
+        ]);
+        const bazDoclet = helpers.createDoclet([
+          '@name baz',
+          '@longname foo.bar.baz',
+          '@memberof foo.bar',
+          '@static',
+        ]);
+
+        template.context.docletStore = helpers.createDocletStore([fooDoclet, barDoclet, bazDoclet]);
+        descendants = _.sortBy(instance.getDescendants(fooDoclet), 'longname');
+
+        expect(descendants).toBeArrayOfSize(2);
+        expect(descendants[0].longname).toBe('foo.bar');
+        expect(descendants[1].longname).toBe('foo.bar.baz');
+      });
+
+      it('clones descendants and changes their `name` if they are nested', () => {
+        let descendants;
+        const fooDoclet = helpers.createDoclet(['@name foo', '@longname foo']);
+        const barDoclet = helpers.createDoclet([
+          '@name bar',
+          '@longname foo.bar',
+          '@memberof foo',
+          '@static',
+        ]);
+        const bazDoclet = helpers.createDoclet([
+          '@name baz',
+          '@longname foo.bar.baz',
+          '@memberof foo.bar',
+          '@static',
+        ]);
+
+        template.context.docletStore = helpers.createDocletStore([fooDoclet, barDoclet, bazDoclet]);
+        descendants = _.sortBy(instance.getDescendants(fooDoclet), 'longname');
+
+        expect(descendants[0]).toBe(barDoclet);
+        expect(descendants[1]).not.toBe(bazDoclet);
+        expect(descendants[1].name).toBe('bar.baz');
+      });
+
+      it('works with scopes other than `static`', () => {
+        let descendants;
+        const fooDoclet = helpers.createDoclet(['@name foo', '@longname foo']);
+        const barDoclet = helpers.createDoclet([
+          '@name bar',
+          '@longname foo~bar',
+          '@memberof foo',
+          '@inner',
+        ]);
+        const bazDoclet = helpers.createDoclet([
+          '@name baz',
+          '@longname foo~bar#baz',
+          '@memberof foo~bar',
+          '@instance',
+        ]);
+
+        template.context.docletStore = helpers.createDocletStore([fooDoclet, barDoclet, bazDoclet]);
+        descendants = _.sortBy(instance.getDescendants(fooDoclet), 'longname');
+
+        expect(descendants[0]).toBe(barDoclet);
+        expect(descendants[1].name).toBe('bar#baz');
       });
     });
 
