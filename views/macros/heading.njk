@@ -19,5 +19,5 @@
   <h{{ level -}}
     {%- if id %} id="{{ id }}"{% endif -%}
     {%- if cssClass %} class="{{ cssClass }}"{% endif -%}
-  >{{ text | safe }}</h{{ level }}>
+  >{{ text | safe }} {% if id %}<copy-url from="{{ id }}"></copy-url>{% endif %}</h{{ level }}>
 {%- endmacro -%}
