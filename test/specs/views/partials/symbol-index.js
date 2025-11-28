@@ -95,7 +95,9 @@ describe('symbol-index partial', () => {
       const expectedBreakfast = await helpers.normalizeHtml(`
         <section>
           <div class="symbol-index-content">
-            <h2 id="module:breakfast">module:breakfast</h2>
+            <h2 id="module:breakfast">
+            module:breakfast <copy-url from="module:breakfast"></copy-url>
+            </h2>
             <div class="symbol-index-section">
               <div class="symbol-index-column">
                 <dl class="symbol-index-list">
@@ -115,7 +117,8 @@ describe('symbol-index partial', () => {
       const expectedLunch = await helpers.normalizeHtml(`
         <section>
           <div class="symbol-index-content">
-            <h2 id="module:lunch">module:lunch</h2>
+            <h2 id="module:lunch">
+            module:lunch <copy-url from="module:lunch"></copy-url></h2>
             <div class="symbol-index-section">
               <div class="symbol-index-column">
                 <dl class="symbol-index-list">
@@ -154,7 +157,9 @@ describe('symbol-index partial', () => {
         <div class="symbol-index">
           <section>
             <div class="symbol-index-content">
-              <h2 id="module:lunch">module:lunch</h2>
+              <h2 id="module:lunch">
+              module:lunch <copy-url from="module:lunch"></copy-url>
+              </h2>
               <div class="symbol-index-section">
                 <div class="symbol-index-column">
                   <dl class="symbol-index-list">
@@ -171,7 +176,9 @@ describe('symbol-index partial', () => {
           </section>
           <section>
             <div class="symbol-index-content">
-              <h2 id="Sandwich">Sandwich</h2>
+              <h2 id="Sandwich">
+              Sandwich <copy-url from="Sandwich"></copy-url>
+              </h2>
               <div class="symbol-index-section">
                 <div class="symbol-index-column">
                   <dl class="symbol-index-list">
@@ -211,7 +218,9 @@ describe('symbol-index partial', () => {
           <div class="symbol-index">
             <section>
               <div class="symbol-index-content">
-                <h2 id="Sandwich">Sandwich</h2>
+                <h2 id="Sandwich">
+                Sandwich <copy-url from="Sandwich"></copy-url>
+                </h2>
                 <div class="symbol-index-section">
                   <div class="symbol-index-column">
                     <dl class="symbol-index-list">
@@ -247,7 +256,9 @@ describe('symbol-index partial', () => {
           <div class="symbol-index">
             <section>
               <div class="symbol-index-content">
-                <h2 id="Sandwich">Sandwich</h2>
+                <h2 id="Sandwich">
+                Sandwich <copy-url from="Sandwich"></copy-url>
+                </h2>
                 <div class="symbol-index-section">
                   <div class="symbol-index-column">
                     <dl class="symbol-index-list">
@@ -293,7 +304,9 @@ describe('symbol-index partial', () => {
           <div class="symbol-index">
             <section>
               <div class="symbol-index-content">
-                <h2 id="Sandwich">Sandwich</h2>
+                <h2 id="Sandwich">
+                Sandwich <copy-url from="Sandwich"></copy-url>
+                </h2>
                 <div class="symbol-index-section">
                   <div class="symbol-index-column">
                     <dl class="symbol-index-list">
