@@ -135,7 +135,7 @@ describe('lib/link-manager', () => {
         expect(link).toBe('<a href="foo-bar-baz.html">some/<wbr>other/<wbr>thing</a>');
       });
 
-      it('does not add soft breaks to link text that is also a URI', () => {
+      it('does not add soft breaks to link text that is also a URL', () => {
         let link;
         const longname = 'foo';
 
@@ -182,7 +182,7 @@ describe('lib/link-manager', () => {
     });
 
     describe('<code> tag', () => {
-      it('by default, adds <code> to autopopulated link text that is a URI', () => {
+      it('by default, adds <code> to autopopulated link text that is a URL', () => {
         const link = instance.createLink('https://example.com/some/page');
 
         expect(link).toBe(
@@ -190,7 +190,7 @@ describe('lib/link-manager', () => {
         );
       });
 
-      it('by default, does not add <code> to user-specified link text that is a URI', () => {
+      it('by default, does not add <code> to user-specified link text that is a URL', () => {
         let link;
         const longname = 'foo';
 
@@ -202,7 +202,7 @@ describe('lib/link-manager', () => {
         expect(link).toBe('<a href="foo.html">https://example.com/</a>');
       });
 
-      it('by default, does not add <code> to user-specified link text that is not a URI', () => {
+      it('by default, does not add <code> to user-specified link text that is not a URL', () => {
         let link;
         const longname = 'foo';
 
@@ -238,7 +238,7 @@ describe('lib/link-manager', () => {
         expect(link).toBe('<a href="foo.html">foo</a>');
       });
 
-      it('respects `opts.monospace = false` for URIs', () => {
+      it('respects `opts.monospace = false` for URLs', () => {
         const link = instance.createLink('https://example.com/some/page', { monospace: false });
 
         expect(link).toBe(
@@ -276,14 +276,14 @@ describe('lib/link-manager', () => {
       });
     });
 
-    describe('URIs', () => {
-      it('turns URIs into links', () => {
+    describe('URLs', () => {
+      it('turns URLs into links', () => {
         const link = instance.createLink('https://example.com/');
 
         expect(link).toBe('<a href="https://example.com/"><code>https://example.com/</code></a>');
       });
 
-      it('turns URIs that are enclosed in angle brackets into links', () => {
+      it('turns URLs that are enclosed in angle brackets into links', () => {
         const link = instance.createLink('<https://example.com/>');
 
         expect(link).toBe('<a href="https://example.com/"><code>https://example.com/</code></a>');
@@ -320,48 +320,48 @@ describe('lib/link-manager', () => {
     });
   });
 
-  describe('getUri', () => {
+  describe('getUrl', () => {
     it('fails on bad input', () => {
-      function getUri() {
-        return instance.getUri(7);
+      function getUrl() {
+        return instance.getUrl(7);
       }
 
-      expect(getUri).toThrowErrorOfType(ARGUMENT_ERROR);
+      expect(getUrl).toThrowErrorOfType(ARGUMENT_ERROR);
     });
 
     it('returns an empty string for unrecognized input', () => {
-      const uri = instance.getUri('foo');
+      const url = instance.getUrl('foo');
 
-      expect(uri).toBe('');
+      expect(url).toBe('');
     });
 
-    it('returns the correct URI, with an `.html` extension by default', () => {
-      let uri;
+    it('returns the correct URL, with an `.html` extension by default', () => {
+      let url;
 
       instance.requestFilename('foo');
-      uri = instance.getUri('foo');
+      url = instance.getUrl('foo');
 
-      expect(uri).toBe('foo.html');
+      expect(url).toBe('foo.html');
     });
 
-    it('returns the correct URI, with the requested link extension', () => {
-      let uri;
+    it('returns the correct URL, with the requested link extension', () => {
+      let url;
 
       instance.linkExtension = '.test';
       instance.requestFilename('foo');
-      uri = instance.getUri('foo');
+      url = instance.getUrl('foo');
 
-      expect(uri).toBe('foo.test');
+      expect(url).toBe('foo.test');
     });
 
     it('allows an empty link extension', () => {
-      let uri;
+      let url;
 
       instance.linkExtension = '';
       instance.requestFilename('foo');
-      uri = instance.getUri('foo');
+      url = instance.getUrl('foo');
 
-      expect(uri).toBe('foo');
+      expect(url).toBe('foo');
     });
 
     it('includes the fragment ID if one is needed', () => {
@@ -379,17 +379,19 @@ describe('lib/link-manager', () => {
           scope: 'static',
         },
       ];
-      let uri;
+      let url;
 
       for (const fakeDoclet of fakeDoclets) {
         instance.registerDoclet(fakeDoclet);
       }
 
-      uri = instance.getUri('foo.bar');
+      url = instance.getUrl('foo.bar');
 
-      expect(uri).toBe('foo.html#.bar');
+      expect(url).toBe('foo.html#.bar');
     });
   });
+
+  // TODO: test `hasUrlPrefix`
 
   describe('registerDoclet', () => {
     it('fails on bad input', () => {
@@ -775,18 +777,18 @@ describe('lib/link-manager', () => {
     });
   });
 
-  describe('stringToLinkUri', () => {
+  describe('stringToLinkUrl', () => {
     it('has a `get` method', () => {
-      expect(instance.stringToLinkUri.get).toBeFunction();
+      expect(instance.stringToLinkUrl.get).toBeFunction();
     });
 
-    it('has keys that are known strings and values that are URIs for those strings', () => {
+    it('has keys that are known strings and values that are URLs for those strings', () => {
       const extension = '.html';
       const filename1 = instance.requestFilename('foo');
       const filename2 = instance.requestFilename('bar');
 
-      expect(instance.stringToLinkUri.get('foo')).toBe(filename1 + extension);
-      expect(instance.stringToLinkUri.get('bar')).toBe(filename2 + extension);
+      expect(instance.stringToLinkUrl.get('foo')).toBe(filename1 + extension);
+      expect(instance.stringToLinkUrl.get('bar')).toBe(filename2 + extension);
     });
 
     it('includes a fragment ID in the link when necessary', () => {
@@ -807,14 +809,14 @@ describe('lib/link-manager', () => {
 
       fakeDoclets.forEach((d) => instance.registerDoclet(d));
 
-      expect(instance.stringToLinkUri.get('Foo#bar')).toBe('foo.html#bar');
+      expect(instance.stringToLinkUrl.get('Foo#bar')).toBe('foo.html#bar');
     });
 
     it('uses the extension for links, not the extension for generated files', () => {
       instance.requestFilename('foo');
       instance.linkExtension = '.test';
 
-      expect(instance.stringToLinkUri.get('foo')).toBe('foo.test');
+      expect(instance.stringToLinkUrl.get('foo')).toBe('foo.test');
     });
   });
 });

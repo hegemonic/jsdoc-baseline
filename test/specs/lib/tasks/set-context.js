@@ -114,7 +114,7 @@ describe('lib/tasks/set-context', () => {
       await instance.run(context);
 
       for (const doclet of fakeDoclets) {
-        expect(context.linkManager.getUri(doclet.longname)).toBeString();
+        expect(context.linkManager.getUrl(doclet.longname)).toBeString();
       }
     });
 
