@@ -15,7 +15,7 @@
 -#}
 {#- TODO: Improve appearance. -#}
 <div class="example">
-  {%- if example.caption %}
+  {%- if example.caption and example.caption.length %}
     {#- TODO: Improve markup. -#}
     <p class="example-caption">{{ example.caption }}</p>
   {% endif -%}
