@@ -91,7 +91,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "execa": "^9.6.1",
-    "globals": "^16.5.0",
+    "globals": "^17.0.0",
     "hereby": "^1.11.1",
     "husky": "^9.1.7",
     "jasmine": "^5.13.0",
