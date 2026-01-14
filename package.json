@@ -89,7 +89,7 @@
     "easy-ease": "^1.0.9",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-prettier": "^5.5.5",
     "execa": "^9.6.1",
     "globals": "^17.0.0",
     "hereby": "^1.11.1",
