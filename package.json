@@ -71,7 +71,7 @@
     "memize": "^2.1.1",
     "nunjucks": "^3.2.4",
     "ow": "^3.1.1",
-    "spdx-license-list": "^6.10.0",
+    "spdx-license-list": "^6.11.0",
     "strip-json-comments": "^5.0.3"
   },
   "optionalDependencies": {
