@@ -75,7 +75,7 @@
     "strip-json-comments": "^5.0.3"
   },
   "optionalDependencies": {
-    "prettier": "^3.7.4"
+    "prettier": "^3.8.0"
   },
   "devDependencies": {
     "@jsdoc/eslint-config": "^2.0.2",
@@ -99,7 +99,7 @@
     "license-check-and-add": "^4.0.5",
     "lucide": "^0.562.0",
     "parcel": "^2.16.3",
-    "prettier": "^3.7.4",
+    "prettier": "^3.8.0",
     "sass": "^1.97.2"
   },
   "engines": {
