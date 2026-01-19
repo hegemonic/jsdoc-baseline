@@ -389,6 +389,28 @@ describe('lib/link-manager', () => {
 
       expect(url).toBe('foo.html#.bar');
     });
+
+    // TODO: rewrite
+    it('returns an external URL if the longname is not registered locally', () => {
+      let url;
+
+      instance.registerExternalUrls([
+        {
+          longname: 'string',
+          url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String',
+        },
+      ]);
+
+      url = instance.getUrl('string');
+
+      expect(url).toBe(
+        'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String'
+      );
+    });
+
+    it('does not return an external URL if the longname is registered locally', () => {
+      // TODO: write me
+    });
   });
 
   // TODO: test `hasUrlPrefix`
