@@ -32,20 +32,20 @@
 {%- endmacro -%}
 
 {%- macro make_accordion(section) -%}
-  <sl-details {{- add_details_modifiers(section.hrefs) -}}>
+  <wa-details {{- add_details_modifiers(section.hrefs) -}}>
     {#- Don't add a section heading for globals. -#}
     {%- if section.category !== 'globals' %}
       <p slot="summary">{{ translate('headings.' + section.category, section.items) }}</p>
     {% endif -%}
-    <sl-tree>
+    <wa-tree>
       {% for item in section.items -%}
         {%- set label %}{{ choose_label(section, item) }}{% endset -%}
-        <sl-tree-item id="{{ idForString(href, item.id) }}" {{- add_tree_item_modifiers(item) -}}>
+        <wa-tree-item id="{{ idForString(href, item.id) }}" {{- add_tree_item_modifiers(item) -}}>
           <a href="{{ item.href }}">{{ label }}</a>
-        </sl-tree-item>
+        </wa-tree-item>
       {%- endfor %}
-    </sl-tree>
-  </sl-details>
+    </wa-tree>
+  </wa-details>
 {%- endmacro -%}
 
 {%- for section in tocData -%}

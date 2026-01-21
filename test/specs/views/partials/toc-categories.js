@@ -14,6 +14,7 @@
   limitations under the License.
 */
 
+// TODO: Merge into layouts/toc-categories.js
 describe('TOC categories partial', () => {
   // TODO: more tests
 
@@ -52,7 +53,7 @@ describe('TOC categories partial', () => {
     it('uses the correct properties for the container element', async () => {
       const output = await template.render('toc-categories.njk', { href: 'test.html', tocData });
 
-      expect(output).toContain('<sl-details keep-open open>');
+      expect(output).toContain('<wa-details keep-open open>');
     });
 
     it('does not add a heading to the TOC item for globals', async () => {

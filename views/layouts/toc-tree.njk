@@ -31,12 +31,12 @@
   into a new tree item that's a child of the original tree item.
 -#}
 {%- macro make_demoted_link_item(item) -%}
-  <sl-tree-item {{- add_modifiers(item) -}}>
+  <wa-tree-item {{- add_modifiers(item) -}}>
     {%- set l10nKey = 'kinds.' + item.kind -%}
     {%- set linkText %}{{ l10nKey | translate }} details{% endset -%}
     {%- set linkText = linkText | capitalize -%}
     {{ item.id | link(linkText) }}
-  </sl-tree-item>
+  </wa-tree-item>
 {%- endmacro -%}
 
 {%- macro should_demote(item) -%}
@@ -47,7 +47,7 @@
 {%- macro make_tree_items(items) -%}
   {%- for item in items %}
     {% set demoted %}{{ should_demote(item) }}{% endset %}
-    <sl-tree-item {{- add_modifiers(item, demoted) -}}>
+    <wa-tree-item {{- add_modifiers(item, demoted) -}}>
       {#- TODO: Re-enable this behavior when we re-enable demoted items. -#}
       {#-
       {% if not item.children | length %}
@@ -63,10 +63,10 @@
         {% endif -%}
         {{ make_tree_items(item.children) }}
       {% endif -%}
-    </sl-tree-item>
+    </wa-tree-item>
   {% endfor -%}
 {%- endmacro -%}
 
-<sl-tree class="nav-tree">
+<wa-tree class="nav-tree">
   {{ make_tree_items(tocData) }}
-</sl-tree>
+</wa-tree>
