@@ -75,7 +75,7 @@
     "strip-json-comments": "^5.0.3"
   },
   "optionalDependencies": {
-    "prettier": "^3.8.0"
+    "prettier": "^3.8.1"
   },
   "devDependencies": {
     "@awesome.me/webawesome": "^3.1.0",
@@ -99,7 +99,7 @@
     "license-check-and-add": "^4.0.5",
     "lucide": "^0.562.0",
     "parcel": "^2.16.3",
-    "prettier": "^3.8.0",
+    "prettier": "^3.8.1",
     "sass": "^1.97.2"
   },
   "engines": {
