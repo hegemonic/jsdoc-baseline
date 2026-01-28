@@ -1,14 +1,8 @@
 {
   "extends": ["config:base"],
-  "ignoreDeps": ["bootstrap"],
+  "ignoreDeps": ["bootstrap", "lucide", "node"],
   "statusCheckVerify": true,
   "automerge": true,
   "automergeType": "branch",
-  "rangeStrategy": "bump",
-  "packageRules": [
-    {
-      "packageNames": ["node"],
-      "enabled": false
-    }
-  ]
+  "rangeStrategy": "bump"
 }

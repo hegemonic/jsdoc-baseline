@@ -97,7 +97,7 @@
     "jasmine": "^6.0.0",
     "jasmine-console-reporter": "^3.1.0",
     "license-check-and-add": "^4.0.5",
-    "lucide": "^0.563.0",
+    "lucide": "0.562.0",
     "parcel": "^2.16.3",
     "prettier": "^3.8.1",
     "sass": "^1.97.3"
