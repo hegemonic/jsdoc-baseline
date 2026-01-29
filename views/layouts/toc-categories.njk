@@ -37,14 +37,14 @@
     {%- if section.category !== 'globals' %}
       <p slot="summary">{{ translate('headings.' + section.category, section.items) }}</p>
     {% endif -%}
-    <wa-tree>
+    <jsdoc-tree>
       {% for item in section.items -%}
         {%- set label %}{{ choose_label(section, item) }}{% endset -%}
-        <wa-tree-item id="{{ idForString(href, item.id) }}" {{- add_tree_item_modifiers(item) -}}>
+        <jsdoc-tree-item id="{{ idForString(href, item.id) }}" {{- add_tree_item_modifiers(item) -}}>
           <a href="{{ item.href }}">{{ label }}</a>
-        </wa-tree-item>
+        </jsdoc-tree-item>
       {%- endfor %}
-    </wa-tree>
+    </jsdoc-tree>
   </wa-details>
 {%- endmacro -%}
 
