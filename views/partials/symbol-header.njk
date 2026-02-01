@@ -14,7 +14,7 @@
   limitations under the License.
 -#}
 
-{%- from 'heading.njk' import heading as h -%}
+{%- from 'heading.njk' import heading -%}
 {%- from 'list.njk' import dictList -%}
 
 <header class="page-header">
@@ -39,7 +39,8 @@
         </span>
       {%- endif -%}
     {%- endset -%}
-    {{ h(text=headingText) }}
+    {%- set headingId = idForString(href, headingText | striptags) -%}
+    {{ heading(id=headingId, text=headingText) }}
   {% endblock -%}
 
   {%- block source %}

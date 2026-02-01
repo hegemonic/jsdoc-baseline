@@ -46,7 +46,8 @@
   {%- if readme %}
     <section>
       {%- set headingText = translate('headings.packageIndex') -%}
-      {{ heading(text=headingText) }}
+      {%- set headingId = idForString(href, headingText) -%}
+      {{ heading(id=headingId, text=headingText) }}
       {{ content() }}
     </section>
   {%- else -%}

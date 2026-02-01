@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 describe('highlight-code partial', () => {
   // TODO: more tests
 
@@ -28,6 +29,7 @@ describe('highlight-code partial', () => {
       docs: code,
       filename: 'hello.js',
       filenameExtension: 'js',
+      href: 'hello-js.html',
     });
 
     expect(text).toContain('<code class="hljs language-js">');

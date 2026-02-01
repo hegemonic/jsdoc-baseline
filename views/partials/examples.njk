@@ -19,7 +19,8 @@
 {%- if item.examples %}
   <section>
     {%- set headingText = translate('headings.examples', item.examples) -%}
-    {{ heading(cssClass='examples', text=headingText) }}
+    {%- set headingId = idForString(href, headingText) -%}
+    {{ heading(cssClass='examples', id=headingId, text=headingText) }}
     {%- for example in item.examples %}
       {%- set example = example | processExample -%}
       {%- include 'example.njk' -%}

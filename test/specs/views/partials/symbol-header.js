@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 describe('symbol header partial', () => {
   // TODO: more tests
 
@@ -20,8 +21,15 @@ describe('symbol header partial', () => {
     // TODO: more tests
 
     it('uses `pageHeading` as the title if it is defined', async () => {
-      const expected = '<header class="page-header"><h1>Hello</h1></header>';
-      const text = await helpers.renderAndNormalize('symbol-header.njk', { pageHeading: 'Hello' });
+      const expected = await helpers.normalizeHtml(`
+        <header class="page-header">
+          <h1 id="hello">Hello <copy-url from="hello"></copy-url></h1>
+        </header>
+      `);
+      const text = await helpers.renderAndNormalize('symbol-header.njk', {
+        href: 'hello.html',
+        pageHeading: 'Hello',
+      });
 
       expect(text).toContain(expected);
     });
@@ -51,7 +59,10 @@ describe('symbol header partial', () => {
           <p>The foo namespace.</p>
         </div>
       `);
-      const text = await helpers.renderAndNormalize('symbol-header.njk', { item: fakeDoclet });
+      const text = await helpers.renderAndNormalize('symbol-header.njk', {
+        href: 'foo.html',
+        item: fakeDoclet,
+      });
 
       expect(text).toContain(expected);
     });
@@ -68,7 +79,10 @@ describe('symbol header partial', () => {
           <p>The foo module.</p>
         </div>
       `);
-      const text = await helpers.renderAndNormalize('symbol-header.njk', { item: fakeDoclet });
+      const text = await helpers.renderAndNormalize('symbol-header.njk', {
+        href: 'foo.html',
+        item: fakeDoclet,
+      });
 
       expect(text).toContain(expected);
     });
@@ -89,7 +103,10 @@ describe('symbol header partial', () => {
         <dt>Implements</dt>
         <dd>IBar</dd>
       `);
-      const text = await helpers.renderAndNormalize('symbol-header.njk', { item: fakeDoclet });
+      const text = await helpers.renderAndNormalize('symbol-header.njk', {
+        href: 'foo.html',
+        item: fakeDoclet,
+      });
 
       expect(text).toContain(expected);
     });
@@ -102,7 +119,10 @@ describe('symbol header partial', () => {
         scope: 'global',
       };
       const unexpected = '<dl';
-      const text = await helpers.render('symbol-header.njk', { item: fakeDoclet });
+      const text = await helpers.render('symbol-header.njk', {
+        href: 'foo.html',
+        item: fakeDoclet,
+      });
 
       expect(text).not.toContain(unexpected);
     });
@@ -119,7 +139,10 @@ describe('symbol header partial', () => {
         hideconstructor: true,
       };
       const expected = 'Foo';
-      const text = await helpers.render('symbol-header.njk', { item: fakeDoclet });
+      const text = await helpers.render('symbol-header.njk', {
+        href: 'foo.html',
+        item: fakeDoclet,
+      });
 
       expect(text).toContain(expected);
     });

@@ -184,6 +184,10 @@ describe('lib/filters', () => {
         expect(instance.dequote('"hello"')).toBe('hello');
       });
 
+      it('removes escaped enclosing quotation marks', () => {
+        expect(instance.dequote('&quot;hello&quot;')).toBe('hello');
+      });
+
       it('does not change strings with embedded quotation marks', () => {
         expect(instance.dequote('he"llo')).toBe('he"llo');
       });
@@ -496,10 +500,10 @@ describe('lib/filters', () => {
     });
 
     xdescribe('idForDoclet', () => {
-      // TODO: Write me
+      // TODO: more tests
 
-      xit('should not crash if nothing is passed in', () => {
-        // TODO: Write me
+      xit('returns a fragment ID', () => {
+        // TODO
       });
     });
 

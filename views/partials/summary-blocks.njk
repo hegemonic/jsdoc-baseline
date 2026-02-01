@@ -32,7 +32,7 @@
       {% endblock -%}
 
       {%- set headingKeys = { classes: 'headings.childClasses', interfaces: 'headings.childInterfaces' } -%}
-      {{- membersByCategory(members, 'summary-block.njk', headingKeys=headingKeys) -}}
+      {{- membersByCategory(members, 'summary-block.njk', headingKeys=headingKeys, href=href) -}}
     </section>
   {% endif -%}
 {%- endif -%}

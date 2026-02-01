@@ -21,7 +21,8 @@
 {%- if properties and properties.length %}
   <section>
     {%- set headingText = translate('headings.properties', properties) -%}
-    {{ heading(cssClass='h symbol-properties', text=headingText) }}
+    {%- set headingId = idForString(href, headingText) -%}
+    {{ heading(cssClass='h symbol-properties', id=headingId, text=headingText) }}
     {%- set values = reparentItems(item, 'properties') -%}
     {{ detailsTable(values, item) }}
   </section>

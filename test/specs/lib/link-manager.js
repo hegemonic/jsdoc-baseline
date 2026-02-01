@@ -582,10 +582,10 @@ describe('lib/link-manager', () => {
       expect(id1).toBe(id2);
     });
 
-    it('preserves capitalization', () => {
+    it('converts strings to lowercase', () => {
       const id = instance.registerFragmentId('foo', 'BarBaz');
 
-      expect(id).toBe('BarBaz');
+      expect(id).toBe('barbaz');
     });
 
     it('preserves these characters: _#.~:', () => {

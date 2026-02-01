@@ -17,6 +17,12 @@
 describe('signature partial', () => {
   // TODO: more tests
 
+  let template;
+
+  beforeEach(async () => {
+    template = await helpers.createTemplate();
+  });
+
   it('includes the return type for functions if one is supplied', async () => {
     const fakeDoclet = {
       kind: 'function',
@@ -29,8 +35,8 @@ describe('signature partial', () => {
         },
       ],
     };
-    const returnTypesSeparator = helpers.template.translate('returnTypesSeparator');
-    const text = await helpers.render('signature.njk', { item: fakeDoclet });
+    const returnTypesSeparator = template.translate('returnTypesSeparator');
+    const text = await template.render('signature.njk', { item: fakeDoclet });
 
     expect(text).toContain(returnTypesSeparator);
     expect(text).toContain('string');
@@ -46,8 +52,8 @@ describe('signature partial', () => {
         },
       ],
     };
-    const returnTypesSeparator = helpers.template.translate('returnTypesSeparator');
-    const text = await helpers.render('signature.njk', { item: fakeDoclet });
+    const returnTypesSeparator = template.translate('returnTypesSeparator');
+    const text = await template.render('signature.njk', { item: fakeDoclet });
 
     expect(text).not.toContain(returnTypesSeparator);
   });
@@ -61,7 +67,7 @@ describe('signature partial', () => {
         expression: '?function(!string)',
       },
     };
-    const text = await helpers.render('signature.njk', { item: fakeDoclet });
+    const text = await template.render('signature.njk', { item: fakeDoclet });
 
     expect(text).toContain('?function(!string)');
   });
@@ -80,8 +86,8 @@ describe('signature partial', () => {
     };
     let text;
 
-    helpers.template.linkManager.requestFilename('foo');
-    text = await helpers.render('signature.njk', { item: fakeDoclet });
+    template.linkManager.requestFilename('foo');
+    text = await template.render('signature.njk', { item: fakeDoclet });
 
     expect(text).toContain('<span class="signature-returns"> <a href="foo.html">foo</a></span>');
   });

@@ -13,6 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
 describe('symbol overview partial', () => {
   // TODO: more tests
 
@@ -20,8 +21,13 @@ describe('symbol overview partial', () => {
     // TODO: more tests
 
     it('shows a header for globals', async () => {
-      const expected = '<header class="page-header"><h1>Hello</h1></header>';
+      const expected = await helpers.normalizeHtml(`
+        <header class="page-header">
+          <h1 id="hello">Hello <copy-url from="hello"></copy-url></h1>
+        </header>
+      `);
       const text = await helpers.renderAndNormalize('symbol-overview.njk', {
+        href: 'hello.html',
         pageHeading: 'Hello',
       });
 
@@ -52,7 +58,10 @@ describe('symbol overview partial', () => {
         <dt>See also</dt>
         <dd><a href="https://example.com/">https://example.com/</a></dd>
       `);
-      const text = await helpers.renderAndNormalize('symbol-overview.njk', { docs: fakeDoclets });
+      const text = await helpers.renderAndNormalize('symbol-overview.njk', {
+        docs: fakeDoclets,
+        href: 'foo.html',
+      });
 
       expect(text).toContain(expected);
     });
@@ -65,7 +74,10 @@ describe('symbol overview partial', () => {
         scope: 'global',
       };
       const unexpected = await helpers.normalizeHtml('<dl class="dl-compact"></dl>');
-      const text = await helpers.renderAndNormalize('symbol-overview.njk', { docs: [fakeDoclet] });
+      const text = await helpers.renderAndNormalize('symbol-overview.njk', {
+        docs: [fakeDoclet],
+        href: 'foo.html',
+      });
 
       expect(text).not.toContain(unexpected);
     });

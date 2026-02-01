@@ -50,7 +50,7 @@ describe('symbol detail partial', () => {
       const fakeDoclet = {
         hideconstructor: true,
       };
-      const text = await helpers.render('symbol-detail', { item: fakeDoclet });
+      const text = await helpers.render('symbol-detail', { href: 'foo.html', item: fakeDoclet });
 
       expect(text).not.toContain('<h');
     });
@@ -61,10 +61,14 @@ describe('symbol detail partial', () => {
         longname: '"my.external"',
         name: '"my.external"',
       };
-      const text = await helpers.render('symbol-detail', { item: fakeDoclet });
+      const text = await helpers.render('symbol-detail', {
+        href: 'my-external.html',
+        item: fakeDoclet,
+      });
 
       expect(text).toContain('my.external');
-      expect(text).not.toContain('"my.external"');
+      expect(text).not.toContain('>"my.external"<');
+      expect(text).not.toContain('&quot;my.external&quot;');
     });
   });
 
@@ -85,7 +89,7 @@ describe('symbol detail partial', () => {
           lineno: '1',
         },
       };
-      const text = await helpers.render('symbol-detail', { item: fakeDoclet });
+      const text = await helpers.render('symbol-detail', { href: 'foo.html', item: fakeDoclet });
 
       expect(text).not.toContain('<a');
     });
@@ -101,7 +105,7 @@ describe('symbol detail partial', () => {
         description: 'Hidden',
         hideconstructor: true,
       };
-      const text = await helpers.render('symbol-detail', { item: fakeDoclet });
+      const text = await helpers.render('symbol-detail', { href: 'foo.html', item: fakeDoclet });
 
       expect(text).not.toContain('Hidden');
     });
@@ -117,7 +121,7 @@ describe('symbol detail partial', () => {
         examples: ['example'],
         hideconstructor: true,
       };
-      const text = helpers.render('symbol-detail', { item: fakeDoclet });
+      const text = helpers.render('symbol-detail', { href: 'foo.html', item: fakeDoclet });
 
       expect(text).not.toContain('example');
     });
@@ -141,7 +145,7 @@ describe('symbol detail partial', () => {
           },
         ],
       };
-      const text = await helpers.render('symbol-detail', { item: fakeDoclet });
+      const text = await helpers.render('symbol-detail', { href: 'foo.html', item: fakeDoclet });
 
       expect(text).not.toContain('foo');
     });
@@ -165,7 +169,7 @@ describe('symbol detail partial', () => {
           },
         ],
       };
-      const text = await helpers.render('symbol-detail', { item: fakeDoclet });
+      const text = await helpers.render('symbol-detail', { href: 'foo.html', item: fakeDoclet });
 
       expect(text).not.toContain('foo');
     });
@@ -197,7 +201,10 @@ describe('symbol detail partial', () => {
         <dd>
           <p><code>string</code> Return value.</p>
         </dd>`);
-      const text = await helpers.renderAndNormalize('symbol-detail', { item: fakeDoclet });
+      const text = await helpers.renderAndNormalize('symbol-detail', {
+        href: 'foo.html',
+        item: fakeDoclet,
+      });
 
       expect(text).toContain(expected);
     });
@@ -209,7 +216,7 @@ describe('symbol detail partial', () => {
         kind: 'function',
         scope: 'global',
       };
-      const text = await helpers.render('symbol-detail', { item: fakeDoclet });
+      const text = await helpers.render('symbol-detail', { href: 'foo.html', item: fakeDoclet });
 
       expect(text).not.toContain('<dl');
     });
@@ -219,7 +226,7 @@ describe('symbol detail partial', () => {
         copyright: 'Foo',
         hideconstructor: true,
       };
-      const text = await helpers.render('symbol-detail', { item: fakeDoclet });
+      const text = await helpers.render('symbol-detail', { href: 'foo.html', item: fakeDoclet });
 
       expect(text).not.toContain('Foo');
     });

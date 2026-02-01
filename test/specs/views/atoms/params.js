@@ -58,6 +58,7 @@ describe('params atom', () => {
     describe('parameter column', () => {
       it('has a heading', async () => {
         const text = await helpers.render(PARAMS, {
+          href: 'params.html',
           item: {
             params: [params.hasType],
           },
@@ -68,6 +69,7 @@ describe('params atom', () => {
 
       it('shows the parameter name in bold code font', async () => {
         const text = await helpers.render(PARAMS, {
+          href: 'params.html',
           item: {
             params: [params.hasType],
           },
@@ -78,6 +80,7 @@ describe('params atom', () => {
 
       it('shows a placeholder for unnamed params', async () => {
         const text = await helpers.render(PARAMS, {
+          href: 'params.html',
           item: {
             params: [params.noName],
           },
@@ -90,6 +93,7 @@ describe('params atom', () => {
     describe('description column', () => {
       it('has a heading', async () => {
         const text = await helpers.render(PARAMS, {
+          href: 'params.html',
           item: {
             params: [params.hasType],
           },
@@ -100,6 +104,7 @@ describe('params atom', () => {
 
       it('shows the type', async () => {
         const text = await helpers.render(PARAMS, {
+          href: 'params.html',
           item: {
             params: [params.hasType],
           },
@@ -110,6 +115,7 @@ describe('params atom', () => {
 
       it('identifies optional params with types', async () => {
         const text = await helpers.render(PARAMS, {
+          href: 'params.html',
           item: {
             params: [params.optionalHasType],
           },
@@ -120,6 +126,7 @@ describe('params atom', () => {
 
       it('identifies optional params without types', async () => {
         const text = await helpers.render(PARAMS, {
+          href: 'params.html',
           item: {
             params: [params.optionalNoType],
           },
@@ -130,6 +137,7 @@ describe('params atom', () => {
 
       it('works for params with no type', async () => {
         const text = await helpers.renderAndNormalize(PARAMS, {
+          href: 'params.html',
           item: {
             params: [params.noType],
           },
@@ -145,6 +153,7 @@ describe('params atom', () => {
 
       it('shows the description after the type', async () => {
         const text = await helpers.renderAndNormalize(PARAMS, {
+          href: 'params.html',
           item: {
             params: [params.hasType],
           },
@@ -159,6 +168,7 @@ describe('params atom', () => {
 
       it('processes Markdown formatting in the description', async () => {
         const text = await helpers.render(PARAMS, {
+          href: 'params.html',
           item: {
             params: [params.withMarkdown],
           },

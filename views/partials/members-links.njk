@@ -18,12 +18,14 @@
 
 {%- if items %}
   {%- set headingText = translate(headingKey, items) -%}
-  {{ heading(text=headingText) }}
+  {%- set headingId = idForString(href, headingText) -%}
+  {{ heading(id=headingId, text=headingText) }}
   <section class="members-links">
     {%- for item in items %}
       {#- TODO: Improve spacing between headings when no summary is present. -#}
       {%- set itemHeadingText = link(item.longname, item.name, monospace=false) -%}
-      {{ heading(text=itemHeadingText) }}
+      {%- set itemHeadingId = idForString(href, itemHeadingText) -%}
+      {{ heading(id=itemHeadingId, text=itemHeadingText) }}
       {% include 'summary.njk' %}
     {% endfor -%}
   </section>

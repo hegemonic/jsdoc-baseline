@@ -17,7 +17,7 @@
 {%- from 'members-by-category.njk' import allCategories, detailCategories, linkCategories, membersByCategory -%}
 {%- if members | hasOneOf(allCategories) %}
   <section>
-    {{- membersByCategory(members, 'members-links.njk', categories=linkCategories) -}}
-    {{- membersByCategory(members, 'members-details.njk', categories=detailCategories) -}}
+    {{- membersByCategory(members, 'members-links.njk', categories=linkCategories, href=href) -}}
+    {{- membersByCategory(members, 'members-details.njk', categories=detailCategories, href=href) -}}
   </section>
 {% endif -%}

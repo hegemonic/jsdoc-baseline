@@ -19,7 +19,7 @@
 {%- set allCategories = linkCategories.concat(detailCategories) -%}
 
 {#- Renders a template once for each specified category of members. -#}
-{%- macro membersByCategory(members, templateName, categories=allCategories, headingKeys={}) -%}
+{%- macro membersByCategory(members, templateName, href, categories=allCategories, headingKeys={}) -%}
   {%- for category in categories -%}
     {%- set items = members[category] -%}
     {%- set headingKey = headingKeys[category] | default('headings.' + category, true) -%}

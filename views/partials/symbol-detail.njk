@@ -25,10 +25,10 @@
 {%- endif -%}
 
 {%- if not item.hideconstructor %}
-  {%- set itemId = idForDoclet(item) -%}
+  {%- set itemId = idForDoclet(href, item) -%}
   {%- set headingText -%}
-    {%- include 'constructor-prefix.njk' -%}
-    <span class="symbol-name">{{ item.name }}</span>
+    {%- if item.kind == 'class' %}{{ 'constructor.prefix' | translate }}{% endif -%}
+    <span class="symbol-name">{{ item.name | dequote }}</span>
     {%- include 'signature.njk' -%}
   {%- endset -%}
   {{ heading(id=itemId, text=headingText) }}

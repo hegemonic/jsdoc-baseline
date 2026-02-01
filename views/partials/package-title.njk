@@ -21,6 +21,7 @@
     {%- set headingText -%}
       {{- package.name }}{% if package.version %} {{ package.version }}{% endif -%}
     {%- endset -%}
-    {{ heading(cssClass='page-title', text=headingText) }}
+    {%- set headingId = idForDoclet(href, headingText) -%}
+    {{ heading(cssClass='page-title', id=headingId, text=headingText) }}
   </header>
 {% endif -%}

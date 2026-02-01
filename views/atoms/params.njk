@@ -20,7 +20,8 @@
 {%- if item.params and item.params.length %}
   <section>
     {%- set headingText = translate('headings.parameters', item.params) -%}
-    {{ heading(cssClass='h symbol-params', text=headingText) }}
+    {%- set headingId = idForString(href, headingText) -%}
+    {{ heading(cssClass='h symbol-params', id=headingId, text=headingText) }}
     {%- set values = reparentItems(item, 'params') -%}
     {{ detailsTable(values, item) }}
   </section>

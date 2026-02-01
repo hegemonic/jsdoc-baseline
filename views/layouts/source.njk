@@ -23,7 +23,8 @@
     {%- block source_heading %}
       <header class="page-header">
         {%- set headingText = translatePageTitle('', pageTitle, 'sources') -%}
-        {{ heading(cssClass='page-title', text=headingText) }}
+        {%- set headingId = idForString(href, headingText) -%}
+        {{ heading(cssClass='page-title', id=headingId, text=headingText) }}
       </header>
     {% endblock -%}
     {%- block source_content %}

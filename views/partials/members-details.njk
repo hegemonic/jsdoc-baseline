@@ -18,7 +18,8 @@
 
 {%- if items %}
   {%- set headingText = translate(headingKey, items) -%}
-  {{ heading(text=headingText) }}
+  {%- set headingId = idForString(href, headingText) -%}
+  {{ heading(id=headingId, text=headingText) }}
   <section>
     {%- for item in items %}
       {%- include 'symbol-detail.njk' -%}

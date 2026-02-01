@@ -214,7 +214,11 @@ global.helpers = helpers = {
   },
 
   // Renders a Handlebars view.
-  render: (...args) => helpers.template.render(...args),
+  render: async (...args) => {
+    const template = await helpers.createTemplate();
+
+    return template.render(...args);
+  },
 
   renderAndNormalize: async (...args) => {
     const rendered = await helpers.render(...args);
@@ -237,11 +241,5 @@ global.helpers = helpers = {
   // Converts a class instance to a dictionary-like object, so that `toEqual()` works.
   toObject: (instance) => JSON.parse(JSON.stringify(instance)),
 };
-
-helpers.template = await (async () => {
-  const template = await helpers.createTemplate();
-
-  return template;
-})();
 
 resetJsdocEnv();
