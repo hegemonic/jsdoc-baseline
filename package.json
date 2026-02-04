@@ -78,7 +78,7 @@
     "prettier": "^3.8.1"
   },
   "devDependencies": {
-    "@awesome.me/webawesome": "^3.1.0",
+    "@awesome.me/webawesome": "^3.2.1",
     "@jsdoc/eslint-config": "^2.0.2",
     "@jsdoc/prettier-config": "^0.2.10",
     "@jsdoc/test-matchers": "^0.2.6",
