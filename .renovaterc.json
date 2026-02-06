@@ -1,9 +1,7 @@
 {
-  "config": {
-    "extends": ["mergeConfidence:all-badges", "config:recommended"],
-    "ignoreDeps": ["bootstrap", "lucide", "node"],
-    "automerge": true,
-    "automergeType": "branch",
-    "rangeStrategy": "bump"
-  }
+  "extends": ["mergeConfidence:all-badges", "config:recommended"],
+  "ignoreDeps": ["bootstrap", "lucide", "node"],
+  "automerge": true,
+  "automergeType": "branch",
+  "rangeStrategy": "bump"
 }
