@@ -66,7 +66,7 @@
     "html-escaper": "^3.0.3",
     "js-yaml": "^4.1.1",
     "lodash": "^4.17.23",
-    "markdown-it": "^14.1.0",
+    "markdown-it": "^14.1.1",
     "markdown-it-anchor": "^9.2.0",
     "memize": "^2.1.1",
     "nunjucks": "^3.2.4",
