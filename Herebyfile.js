@@ -81,7 +81,11 @@ const jsBuild = task({
   run: async () => {
     const files = await glob(sourceGlob.js.minify);
 
-    await execa(bin('parcel'), ['build', ...files, '--target', 'js', '--no-optimize'], EXECA_OUT);
+    await execa(
+      bin('parcel'),
+      ['build', ...files, '--target', 'js', '--no-optimize', '--no-cache'],
+      EXECA_OUT
+    );
   },
 });
 
@@ -92,7 +96,7 @@ const jsMinify = task({
 
     await execa(
       bin('parcel'),
-      ['build', ...files, '--target', 'js', '--no-source-maps'],
+      ['build', ...files, '--target', 'js', '--no-source-maps', '--no-cache'],
       EXECA_OUT
     );
   },
@@ -105,7 +109,16 @@ const sassBuild = task({
 
     await execa(
       bin('parcel'),
-      ['build', ...files, '--dist-dir', target.css, '--target', 'css', '--no-optimize'],
+      [
+        'build',
+        ...files,
+        '--dist-dir',
+        target.css,
+        '--target',
+        'css',
+        '--no-optimize',
+        '--no-cache',
+      ],
       EXECA_OUT
     );
   },
@@ -132,7 +145,16 @@ export const css = task({
     await removeMaps(target.css);
     await execa(
       bin('parcel'),
-      ['build', ...files, '--dist-dir', target.css, '--target', 'css', '--no-source-maps'],
+      [
+        'build',
+        ...files,
+        '--dist-dir',
+        target.css,
+        '--target',
+        'css',
+        '--no-source-maps',
+        '--no-cache',
+      ],
       EXECA_OUT
     );
   },
