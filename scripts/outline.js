@@ -20,6 +20,8 @@ import { property } from 'lit/decorators/property.js';
 import { queryAll } from 'lit/decorators/query-all.js';
 import throttle from 'lodash-es/throttle.js';
 
+import { getNavbarMargin } from './navbar.js';
+
 const DEFAULT_HEADING_SELECTOR = 'h2, h3, h4, h5, h6';
 
 function extractText(childNodes, childSelector, headingParts = []) {
@@ -163,10 +165,12 @@ export class Outline extends LitElement {
     this.#mutationObserver = new MutationObserver(makeMutationObserverCallback(this));
     this.#observeMutations();
 
-    // TODO: Offset at top when header is visible
-    this.#intersectionObserver = new IntersectionObserver((items) => {
-      this.#handleIntersect(items, this.#visibleLinkTargets);
-    });
+    const navbarMargin = getNavbarMargin();
+    const bottomMargin = navbarMargin / 2;
+    this.#intersectionObserver = new IntersectionObserver(
+      (items) => this.#handleIntersect(items, this.#visibleLinkTargets),
+      { rootMargin: `-${navbarMargin}px 0px -${bottomMargin}px 0px` }
+    );
     this.#toggleCurrentItem();
     this.#observeTargets();
   }
