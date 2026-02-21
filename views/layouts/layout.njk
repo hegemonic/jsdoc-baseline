@@ -57,9 +57,14 @@
                 {#- Override this block to add content. -#}
               {% endblock -%}
             </div>
+
+            <div class="jsdoc-on-this-page">
+              {%- block body_on_this_page %}
+                <jsdoc-outline></jsdoc-outline>
+              {% endblock -%}
           {% endblock -%}
-          </main>
-        {% endblock -%}
+        </main>
+      {% endblock -%}
 
       {%- block body_footer %}
         {%- if config('components.footer') %}

@@ -23,7 +23,8 @@
     {%- if headingKey %}
       {%- set headingText = translate(headingKey, items) -%}
       {%- set headingId = idForString(href, headingText) -%}
-      {{ heading(cssClass='summary-callout-heading', id=headingId, text=headingText) }}
+      {{ heading(cssClass='hide-from-nav summary-callout-heading', id=headingId,
+          text=headingText) }}
     {% endif -%}
     <div class="summary-content">
       {%- set groups = items | slice(NUM_COLUMNS) -%}

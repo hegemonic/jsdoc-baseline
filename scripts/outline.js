@@ -14,7 +14,7 @@
   limitations under the License.
 */
 
-import { html, LitElement } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators/custom-element.js';
 import { property } from 'lit/decorators/property.js';
 import { queryAll } from 'lit/decorators/query-all.js';
@@ -26,6 +26,10 @@ const DEFAULT_HEADING_SELECTOR = 'h2, h3, h4, h5, h6';
 
 function extractText(childNodes, childSelector, headingParts = []) {
   for (const child of childNodes) {
+    if (child instanceof Comment) {
+      continue;
+    }
+
     if (child instanceof Text) {
       headingParts.push(child.textContent);
     } else if (child.matches(childSelector)) {
@@ -87,7 +91,6 @@ class TreeItem {
 
 @customElement('jsdoc-outline')
 export class Outline extends LitElement {
-  /* eslint-disable no-undef */
   @property({ reflect: true })
   accessor heading = 'On this page';
 
@@ -108,13 +111,66 @@ export class Outline extends LitElement {
 
   @property()
   accessor tree;
-  /* eslint-enable no-undef */
 
   #intersectionObserver;
   #linkTargets;
   #mutationObserver;
   #updateTreeThrottled;
   #visibleLinkTargets;
+
+  // TODO: should jsdoc-outline-nested be a `nested` property instead?
+  // TODO: update class names
+  // TODO: slots
+  static styles = [
+    css`
+      :host {
+        --outline-font-size: calc(var(--jsdoc-font-font-size-base) * 0.875);
+        --outline-line-height: 0.825rem;
+      }
+
+      .jsdoc-outline {
+        font-family: var(--jsdoc-font-body-font);
+        font-size: var(--outline-font-size);
+        line-height: var(--outline-line-height);
+        margin-block: revert;
+        margin-inline-start: 1rem;
+        padding-inline-start: 0;
+      }
+
+      .jsdoc-outline li,
+      .jsdoc-outline-nested li {
+        list-style-type: none;
+
+        a {
+          color: inherit;
+          text-decoration: none;
+
+          &:focus,
+          &:hover {
+            color: var(--jsdoc-color-sky-700);
+          }
+        }
+
+        .current {
+          color: var(--jsdoc-color-sky-700);
+          font-weight: bold;
+        }
+      }
+
+      .jsdoc-outline-nested {
+        padding-inline-start: 0.625rem;
+      }
+
+      h2.jsdoc-outline-title,
+      .h2.jsdoc-outline-title {
+        font-family: var(--jsdoc-font-body-font);
+        font-size: var(--jsdoc-font-font-size-base);
+        font-weight: bold;
+        line-height: var(--outline-line-height);
+        margin-inline-start: 1rem;
+      }
+    `,
+  ];
 
   constructor() {
     super();
@@ -152,11 +208,6 @@ export class Outline extends LitElement {
     super.connectedCallback();
 
     this.updateTree();
-  }
-
-  createRenderRoot() {
-    // Render content in light DOM.
-    return this;
   }
 
   firstUpdated() {
@@ -213,10 +264,16 @@ export class Outline extends LitElement {
   }
 
   render() {
+    // TODO: register ID in JSDoc template
+    // TODO: add CSS class to outer element (in templates, not here)
+    // TODO: change "wrapper" to "container"
     return html`
-      <ul class="${this.outlineClass}">
-        ${this.#renderTreeItems(this.tree ?? [])}
-      </ul>
+      <nav class="jsdoc-outline-wrapper" aria-labelledby="jsdoc-outline-title">
+        <h2 id="jsdoc-outline-title" class="jsdoc-outline-title">${this.heading}</h2>
+        <ul class="${this.outlineClass}">
+          ${this.#renderTreeItems(this.tree ?? [])}
+        </ul>
+      </nav>
     `;
   }
 
@@ -281,7 +338,10 @@ export class Outline extends LitElement {
   }
 
   #updateTree() {
-    this.tree = this.#buildHeadingTree(Array.from(document.querySelectorAll(this.levels)));
+    // TODO: update class name
+    this.tree = this.#buildHeadingTree(
+      Array.from(document.querySelectorAll(`.jsdoc-content ${this.levels}`))
+    );
   }
 
   updateTree() {
