@@ -79,9 +79,9 @@
   },
   "devDependencies": {
     "@awesome.me/webawesome": "^3.2.1",
-    "@babel/core": "^7.29.0",
-    "@babel/plugin-proposal-decorators": "^7.29.0",
-    "@jsdoc/eslint-config": "^2.0.2",
+    "@babel/core": "^8.0.0-rc.2",
+    "@babel/plugin-proposal-decorators": "^8.0.0-rc.2",
+    "@jsdoc/eslint-config": "^3.0.0",
     "@jsdoc/prettier-config": "^0.2.10",
     "@jsdoc/test-matchers": "^0.2.6",
     "@parcel/transformer-sass": "^2.16.4",
@@ -89,7 +89,7 @@
     "c8": "^10.1.3",
     "csso-cli": "^4.0.2",
     "easy-ease": "^1.0.9",
-    "eslint": "^9.39.3",
+    "eslint": "^10.0.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
     "execa": "^9.6.1",
@@ -104,6 +104,9 @@
     "parcel": "^2.16.4",
     "prettier": "^3.8.1",
     "sass": "^1.97.3"
+  },
+  "overrides": {
+    "minimatch": "^10.2.1"
   },
   "engines": {
     "node": ">=v16.0.0"
