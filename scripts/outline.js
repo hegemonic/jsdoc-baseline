@@ -17,6 +17,7 @@
 import { css, html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators/custom-element.js';
 import { property } from 'lit/decorators/property.js';
+import { query } from 'lit/decorators/query.js';
 import { queryAll } from 'lit/decorators/query-all.js';
 import throttle from 'lodash-es/throttle.js';
 
@@ -91,8 +92,8 @@ class TreeItem {
 
 @customElement('jsdoc-outline')
 export class Outline extends LitElement {
-  @property({ reflect: true })
-  accessor heading = 'On this page';
+  @query('slot[name="contents"]')
+  accessor contents;
 
   @property({ attribute: 'hide-from-nav-class' })
   accessor hideFromNavClass = 'hide-from-nav';
@@ -103,11 +104,11 @@ export class Outline extends LitElement {
   @queryAll('a')
   accessor links;
 
-  @property({ attribute: 'outline-class' })
-  accessor outlineClass = 'jsdoc-outline';
+  @query('slot[name="title"]')
+  accessor title;
 
-  @property({ attribute: 'outline-nested-class' })
-  accessor outlineNestedClass = 'jsdoc-outline-nested';
+  @property({ reflect: true })
+  accessor titleText = 'On this page';
 
   @property()
   accessor tree;
@@ -118,9 +119,6 @@ export class Outline extends LitElement {
   #updateTreeThrottled;
   #visibleLinkTargets;
 
-  // TODO: should jsdoc-outline-nested be a `nested` property instead?
-  // TODO: update class names
-  // TODO: slots
   static styles = [
     css`
       :host {
@@ -128,7 +126,7 @@ export class Outline extends LitElement {
         --outline-line-height: 0.825rem;
       }
 
-      .jsdoc-outline {
+      .contents {
         font-family: var(--jsdoc-font-body-font);
         font-size: var(--outline-font-size);
         line-height: var(--outline-line-height);
@@ -137,8 +135,7 @@ export class Outline extends LitElement {
         padding-inline-start: 0;
       }
 
-      .jsdoc-outline li,
-      .jsdoc-outline-nested li {
+      .contents li {
         list-style-type: none;
 
         a {
@@ -157,12 +154,11 @@ export class Outline extends LitElement {
         }
       }
 
-      .jsdoc-outline-nested {
+      .nested {
         padding-inline-start: 0.625rem;
       }
 
-      h2.jsdoc-outline-title,
-      .h2.jsdoc-outline-title {
+      .title {
         font-family: var(--jsdoc-font-body-font);
         font-size: var(--jsdoc-font-font-size-base);
         font-weight: bold;
@@ -264,15 +260,17 @@ export class Outline extends LitElement {
   }
 
   render() {
-    // TODO: register ID in JSDoc template
-    // TODO: add CSS class to outer element (in templates, not here)
-    // TODO: change "wrapper" to "container"
     return html`
-      <nav class="jsdoc-outline-wrapper" aria-labelledby="jsdoc-outline-title">
-        <h2 id="jsdoc-outline-title" class="jsdoc-outline-title">${this.heading}</h2>
-        <ul class="${this.outlineClass}">
-          ${this.#renderTreeItems(this.tree ?? [])}
-        </ul>
+      <nav class="container" aria-labelledby="title">
+        <slot name="title">
+          <h2 part="title" class="title">${this.titleText}</h2>
+        </slot>
+        <slot name="contents">
+          <ul part="contents" class="contents">
+            ${this.#renderTreeItems(this.tree ?? [])}
+          </ul>
+        </slot>
+        <slot></slot>
       </nav>
     `;
   }
@@ -283,7 +281,7 @@ export class Outline extends LitElement {
     }
 
     return html`
-      <ul class="${this.outlineNestedClass}">
+      <ul class="contents nested">
         ${this.#renderTreeItems(children)}
       </ul>
     `;
@@ -338,7 +336,6 @@ export class Outline extends LitElement {
   }
 
   #updateTree() {
-    // TODO: update class name
     this.tree = this.#buildHeadingTree(
       Array.from(document.querySelectorAll(`.jsdoc-content ${this.levels}`))
     );
