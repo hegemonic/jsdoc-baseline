@@ -106,7 +106,7 @@
     "sass": "^1.97.3"
   },
   "overrides": {
-    "minimatch": "^10.2.2"
+    "minimatch": "^10.2.4"
   },
   "engines": {
     "node": ">=v16.0.0"
