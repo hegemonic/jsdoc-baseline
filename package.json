@@ -105,9 +105,6 @@
     "prettier": "^3.8.1",
     "sass": "^1.97.3"
   },
-  "overrides": {
-    "minimatch": "^10.2.2"
-  },
   "engines": {
     "node": ">=v16.0.0"
   },
