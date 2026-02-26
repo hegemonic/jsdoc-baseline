@@ -22,7 +22,9 @@
   <div class="summary-callout">
     {%- if headingKey %}
       {%- set headingText = translate(headingKey, items) -%}
-      {%- set headingId = idForString(href, headingText) -%}
+      {#- The ID must be stable, so we always pluralize the heading key for the ID. -#}
+      {%- set headingTextForId = translate(headingKey, 100) -%}
+      {%- set headingId = idForString(href, 'summary-' + headingTextForId) -%}
       {{ heading(cssClass='hide-from-nav summary-callout-heading', id=headingId,
           text=headingText) }}
     {% endif -%}
