@@ -13,6 +13,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
+
+import * as esbuild from 'esbuild';
+import { sassPlugin } from 'esbuild-sass-plugin';
 import { execa } from 'execa';
 import glob from 'fast-glob';
 import { promises as fs } from 'fs';
@@ -26,9 +29,39 @@ const EXECA_OUT = {
   stdout: 'inherit',
   stderr: 'inherit',
 };
+const esbuildDevOptions = {
+  css: {
+    metafile: true,
+    minify: false,
+  },
+  js: {
+    metafile: true,
+    minify: false,
+    // TODO: figure out why this isn't working as expected in Chrome
+    // sourcemap: true,
+  },
+};
+const esbuildOptions = {
+  css: {
+    bundle: true,
+    minify: true,
+    outfile: './static/css/baseline.css',
+    plugins: [
+      sassPlugin({
+        embedded: true,
+      }),
+    ],
+  },
+  js: {
+    bundle: true,
+    minify: true,
+    outfile: './static/scripts/jsdoc.js',
+    target: ['es2020'],
+  },
+};
 const sourceGlob = {
   code: ['publish.js', 'lib/**/*.js', 'scripts/**/*.js'],
-  css: ['styles/hljs-tomorrow.css'],
+  css: [],
   helpers: ['test/helpers/**/*.js'],
   js: {
     copy: [],
@@ -40,6 +73,8 @@ const sourceGlob = {
   views: ['views/**/*.hbs'],
 };
 const target = {
+  // TODO: Should this be `static/css`?
+  // TODO: Add JS path so we can delete .js.map files.
   css: 'static',
 };
 
@@ -81,11 +116,11 @@ const jsBuild = task({
   run: async () => {
     const files = await glob(sourceGlob.js.minify);
 
-    await execa(
-      bin('parcel'),
-      ['build', ...files, '--target', 'js', '--no-optimize', '--no-cache'],
-      EXECA_OUT
-    );
+    return esbuild.build({
+      ...esbuildDevOptions.js,
+      ...esbuildOptions.js,
+      entryPoints: files,
+    });
   },
 });
 
@@ -94,11 +129,10 @@ const jsMinify = task({
   run: async () => {
     const files = await glob(sourceGlob.js.minify);
 
-    await execa(
-      bin('parcel'),
-      ['build', ...files, '--target', 'js', '--no-source-maps', '--no-cache'],
-      EXECA_OUT
-    );
+    return esbuild.build({
+      ...esbuildOptions.js,
+      entryPoints: files,
+    });
   },
 });
 
@@ -107,20 +141,11 @@ const sassBuild = task({
   run: async () => {
     const files = await glob(sourceGlob.css.concat(sourceGlob.sass));
 
-    await execa(
-      bin('parcel'),
-      [
-        'build',
-        ...files,
-        '--dist-dir',
-        target.css,
-        '--target',
-        'css',
-        '--no-optimize',
-        '--no-cache',
-      ],
-      EXECA_OUT
-    );
+    return esbuild.build({
+      ...esbuildDevOptions.css,
+      ...esbuildOptions.css,
+      entryPoints: files,
+    });
   },
 });
 
@@ -143,20 +168,11 @@ export const css = task({
     const files = await glob(sourceGlob.css.concat(sourceGlob.sass));
 
     await removeMaps(target.css);
-    await execa(
-      bin('parcel'),
-      [
-        'build',
-        ...files,
-        '--dist-dir',
-        target.css,
-        '--target',
-        'css',
-        '--no-source-maps',
-        '--no-cache',
-      ],
-      EXECA_OUT
-    );
+
+    return esbuild.build({
+      ...esbuildOptions.css,
+      entryPoints: files,
+    });
   },
 });
 
