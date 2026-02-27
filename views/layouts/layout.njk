@@ -42,6 +42,7 @@
           {%- include 'navbar.njk' -%}
         {% endblock -%}
 
+        {#- TODO: Add blocks around <div>s (e.g., body_main_content_div) -#}
         {%- block body_main %}
           <main class="jsdoc-main">
             {%- block body_toc_navbar %}
@@ -57,9 +58,15 @@
                 {#- Override this block to add content. -#}
               {% endblock -%}
             </div>
+
+            <div class="jsdoc-on-this-page">
+              {%- block body_on_this_page %}
+                <jsdoc-outline></jsdoc-outline>
+              {% endblock -%}
+            </div>
           {% endblock -%}
-          </main>
-        {% endblock -%}
+        </main>
+      {% endblock -%}
 
       {%- block body_footer %}
         {%- if config('components.footer') %}

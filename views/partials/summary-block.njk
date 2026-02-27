@@ -16,14 +16,17 @@
 
 {%- from 'heading.njk' import heading -%}
 
-{%- set NUM_COLUMNS = 3 -%}
+{%- set NUM_COLUMNS = 2 -%}
 
 {%- if items %}
   <div class="summary-callout">
     {%- if headingKey %}
       {%- set headingText = translate(headingKey, items) -%}
-      {%- set headingId = idForString(href, headingText) -%}
-      {{ heading(cssClass='summary-callout-heading', id=headingId, text=headingText) }}
+      {#- The ID must be stable, so we always pluralize the heading key for the ID. -#}
+      {%- set headingTextForId = translate(headingKey, 100) -%}
+      {%- set headingId = idForString(href, 'summary-' + headingTextForId) -%}
+      {{ heading(cssClass='hide-from-nav summary-callout-heading', id=headingId,
+          text=headingText) }}
     {% endif -%}
     <div class="summary-content">
       {%- set groups = items | slice(NUM_COLUMNS) -%}

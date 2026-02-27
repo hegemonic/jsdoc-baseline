@@ -67,6 +67,10 @@
   {% endfor -%}
 {%- endmacro -%}
 
+{#
+  TODO: add label and aria-labelledby attribute:
+  https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/Heading_Elements#labeling_section_content
+#}
 <jsdoc-tree class="nav-tree">
   {{ make_tree_items(tocData) }}
 </jsdoc-tree>

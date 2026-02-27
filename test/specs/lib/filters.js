@@ -1415,8 +1415,16 @@ describe('lib/filters', () => {
         expect(plural.toString()).toBe('Classes');
       });
 
-      it('uses the singular form if the argument is not an array', () => {
-        const singular = instance.translate('headings.classes', 17);
+      it('pluralizes strings based on the number passed in', () => {
+        const singular = instance.translate('headings.classes', 1);
+        const plural = instance.translate('headings.classes', 2);
+
+        expect(singular.toString()).toBe('Class');
+        expect(plural.toString()).toBe('Classes');
+      });
+
+      it('uses the singular form if the argument is not an array or number', () => {
+        const singular = instance.translate('headings.classes', {});
 
         expect(singular.toString()).toBe('Class');
       });
