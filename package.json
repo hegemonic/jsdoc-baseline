@@ -85,7 +85,7 @@
     "@jsdoc/prettier-config": "^0.2.11",
     "@jsdoc/test-matchers": "^0.2.7",
     "@lit-labs/observers": "^2.1.0",
-    "bootstrap": "^5.3.2",
+    "@picocss/pico": "^2.1.1",
     "c8": "^11.0.0",
     "csso-cli": "^4.0.2",
     "easy-ease": "^1.0.9",
