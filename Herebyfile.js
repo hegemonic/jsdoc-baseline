@@ -168,11 +168,13 @@ const jsBuild = task({
   run: async () => {
     const files = await glob(sourceGlob.js.minify);
 
-    return esbuild.build({
+    const result = await esbuild.build({
       ...esbuildDevOptions.js,
       ...esbuildOptions.js,
       entryPoints: files,
     });
+
+    await fs.writeFile('meta.json', JSON.stringify(result.metafile));
   },
 });
 
@@ -181,13 +183,11 @@ const jsMinify = task({
   run: async () => {
     const files = await glob(sourceGlob.js.minify);
 
-    const result = await esbuild.build({
+    return esbuild.build({
       ...esbuildOptions.js,
       entryPoints: files,
       metafile: true,
     });
-
-    await fs.writeFile('meta.json', JSON.stringify(result.metafile));
   },
 });
 
