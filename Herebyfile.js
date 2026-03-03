@@ -14,15 +14,50 @@
   limitations under the License.
 */
 
+import { promises as fs } from 'node:fs';
+import { basename, join } from 'node:path';
+
 import * as esbuild from 'esbuild';
 import { sassPlugin } from 'esbuild-sass-plugin';
+import escapeStringRegexp from 'escape-string-regexp';
 import { execa } from 'execa';
 import glob from 'fast-glob';
-import { promises as fs } from 'fs';
 import { task } from 'hereby';
 import Jasmine from 'jasmine';
 import ConsoleReporter from 'jasmine-console-reporter';
-import path from 'path';
+
+function esbuildTextReplace(options) {
+  options ??= { filter: /.*/, contentFilter: /.*/, replacers: [] };
+
+  function applyReplacers(source, replacers) {
+    let contents = source.slice();
+
+    replacers?.forEach(({ regexp, replacement }) => {
+      contents = contents.replaceAll(regexp, replacement);
+    });
+
+    return contents;
+  }
+
+  return {
+    name: 'textReplace',
+    setup(build) {
+      build.onLoad({ filter: options.filter, namespace: options.namespace }, async ({ path }) => {
+        let contents;
+        let source;
+
+        source = await fs.readFile(path, 'utf8');
+        if (!options.contentFilter || options.contentFilter.test(source)) {
+          contents = applyReplacers(source, options?.replacers);
+        } else {
+          contents = source;
+        }
+
+        return { contents };
+      });
+    },
+  };
+}
 
 const BIN_DIR = 'node_modules/.bin';
 const EXECA_OUT = {
@@ -41,6 +76,7 @@ const esbuildDevOptions = {
     // sourcemap: true,
   },
 };
+
 const esbuildOptions = {
   css: {
     bundle: true,
@@ -56,6 +92,22 @@ const esbuildOptions = {
     bundle: true,
     minify: true,
     outfile: './static/scripts/jsdoc.js',
+    plugins: [
+      esbuildTextReplace({
+        filter: /\/webawesome\/dist\/chunks\/.+\.js$/,
+        contentFilter: new RegExp(escapeStringRegexp('src/components/icon/library.system.ts')),
+        replacers: [
+          {
+            // Remove unused data from JS bundle.
+            //
+            // We want to match everything up to the next `var`. RE2 doesn't support negative
+            // lookahead, so we fake it.
+            regexp: /.*?\s*(var \S+)(?:[^v]|v[^a]|va[^r]|var[^\s])*/gs,
+            replacement: `export $1 = {};`,
+          },
+        ],
+      }),
+    ],
     target: ['es2020'],
   },
 };
@@ -79,12 +131,12 @@ const target = {
 };
 
 function bin(name) {
-  return path.join(BIN_DIR, name);
+  return join(BIN_DIR, name);
 }
 
 function copyTo(dest) {
   return async (file) => {
-    const out = path.join(dest, path.basename(file));
+    const out = join(dest, basename(file));
 
     await fs.copyFile(file, out);
   };
@@ -97,7 +149,7 @@ async function removeMaps(filepath) {
     throw new Error('You must specify a filepath in which to remove .map files.');
   }
 
-  files = await glob(path.join(filepath, '**/*.map'));
+  files = await glob(join(filepath, '**/*.map'));
 
   await Promise.all(files.map((file) => fs.rm(file)));
 }
@@ -129,10 +181,13 @@ const jsMinify = task({
   run: async () => {
     const files = await glob(sourceGlob.js.minify);
 
-    return esbuild.build({
+    const result = await esbuild.build({
       ...esbuildOptions.js,
       entryPoints: files,
+      metafile: true,
     });
+
+    await fs.writeFile('meta.json', JSON.stringify(result.metafile));
   },
 });
 
