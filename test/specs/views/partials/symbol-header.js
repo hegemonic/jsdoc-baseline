@@ -137,6 +137,7 @@ describe('symbol header partial', () => {
       const fakeDoclet = {
         copyright: 'Foo',
         hideconstructor: true,
+        name: 'Foo',
       };
       const expected = 'Foo';
       const text = await helpers.render('symbol-header.njk', {

@@ -16,6 +16,10 @@
 
 {%- from 'heading.njk' import heading -%}
 
+{%- set itemId = idForDoclet(href, item) -%}
+{#- Store the ID for the current doclet so we can use it elsewhere. -#}
+{{- setGlobal('_currentDocletId', itemId) -}}
+
 {#-
   We omit the badges for classes, modules, and namespaces, because they would duplicate the badges
   for the page's main heading.
@@ -25,7 +29,6 @@
 {%- endif -%}
 
 {%- if not item.hideconstructor %}
-  {%- set itemId = idForDoclet(href, item) -%}
   {%- set headingText -%}
     {%- if item.kind == 'class' %}{{ 'constructor.prefix' | translate }}{% endif -%}
     <span class="symbol-name">{{ item.name | dequote }}</span>

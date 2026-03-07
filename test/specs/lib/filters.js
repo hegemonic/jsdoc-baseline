@@ -1396,6 +1396,27 @@ describe('lib/filters', () => {
       xit('TODO: Write me');
     });
 
+    describe('setGlobal', () => {
+      it('sets a global that can be used in Jinja templates', () => {
+        let result;
+
+        instance.setGlobal('food', 'pecans');
+        result = template.renderEnv.renderString('Please enjoy some {{food}}.');
+
+        expect(result).toBe('Please enjoy some pecans.');
+      });
+
+      it('overwrites the existing value', () => {
+        let result;
+
+        instance.setGlobal('food', 'pecans');
+        instance.setGlobal('food', 'sardines');
+        result = template.renderEnv.renderString('Please enjoy some {{food}}.');
+
+        expect(result).toBe('Please enjoy some sardines.');
+      });
+    });
+
     xdescribe('shouldHighlight', () => {
       xit('TODO: Write me');
     });

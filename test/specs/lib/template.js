@@ -14,14 +14,16 @@
   limitations under the License.
 */
 
+import nunjucks from 'nunjucks';
+
 import { defaultConfig } from '../../../lib/config.js';
 import Template from '../../../lib/template.js';
 
 describe('lib/template', () => {
-  let instance; // eslint-disable-line no-unused-vars
+  let instance;
 
-  beforeEach(() => {
-    instance = Template.create(defaultConfig, {}, helpers.env);
+  beforeEach(async () => {
+    instance = await Template.create(defaultConfig, {}, helpers.env);
   });
 
   it('should be a constructor', () => {
@@ -31,6 +33,12 @@ describe('lib/template', () => {
 
   xdescribe('render', () => {
     xit('TODO: Write me');
+  });
+
+  describe('renderEnv', () => {
+    it('is a nunjucks.Environment object', () => {
+      expect(instance.renderEnv).toBeInstanceOf(nunjucks.Environment);
+    });
   });
 
   xdescribe('translate', () => {

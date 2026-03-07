@@ -49,8 +49,14 @@ describe('symbol detail partial', () => {
     it('does not show a heading for hidden constructors', async () => {
       const fakeDoclet = {
         hideconstructor: true,
+        kind: 'class',
+        longname: 'Foo',
+        name: 'Foo',
       };
-      const text = await helpers.render('symbol-detail', { href: 'foo.html', item: fakeDoclet });
+      const text = await helpers.render('symbol-detail', {
+        href: 'foo.html',
+        item: fakeDoclet,
+      });
 
       expect(text).not.toContain('<h');
     });
@@ -84,10 +90,13 @@ describe('symbol detail partial', () => {
     it('does not show a link for hidden constructors', async () => {
       const fakeDoclet = {
         hideconstructor: true,
+        kind: 'class',
+        longname: 'Foo',
         meta: {
           filename: 'foo.js',
           lineno: '1',
         },
+        name: 'Foo',
       };
       const text = await helpers.render('symbol-detail', { href: 'foo.html', item: fakeDoclet });
 
@@ -104,6 +113,9 @@ describe('symbol detail partial', () => {
       const fakeDoclet = {
         description: 'Hidden',
         hideconstructor: true,
+        kind: 'class',
+        longname: 'Foo',
+        name: 'Foo',
       };
       const text = await helpers.render('symbol-detail', { href: 'foo.html', item: fakeDoclet });
 
@@ -120,6 +132,9 @@ describe('symbol detail partial', () => {
       const fakeDoclet = {
         examples: ['example'],
         hideconstructor: true,
+        kind: 'class',
+        longname: 'Foo',
+        name: 'Foo',
       };
       const text = helpers.render('symbol-detail', { href: 'foo.html', item: fakeDoclet });
 
@@ -135,6 +150,9 @@ describe('symbol detail partial', () => {
     it('does not show the params for hidden constructors', async () => {
       const fakeDoclet = {
         hideconstructor: true,
+        kind: 'class',
+        longname: 'Foo',
+        name: 'Foo',
         params: [
           {
             type: {
@@ -159,13 +177,16 @@ describe('symbol detail partial', () => {
     it('does not show the properties for hidden constructors', async () => {
       const fakeDoclet = {
         hideconstructor: true,
+        kind: 'member',
+        longname: 'foo',
+        name: 'foo',
         properties: [
           {
             type: {
               names: ['string'],
             },
-            description: 'Foo property.',
-            name: 'foo',
+            description: 'Bar property.',
+            name: 'bar',
           },
         ],
       };
@@ -225,6 +246,9 @@ describe('symbol detail partial', () => {
       const fakeDoclet = {
         copyright: 'Foo',
         hideconstructor: true,
+        kind: 'member',
+        longname: 'foo',
+        name: 'foo',
       };
       const text = await helpers.render('symbol-detail', { href: 'foo.html', item: fakeDoclet });
 

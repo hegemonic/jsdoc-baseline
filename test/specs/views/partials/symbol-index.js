@@ -112,7 +112,6 @@ describe('symbol-index partial', () => {
                 </dl>
               </div>
               <div class="symbol-index-column"></div>
-              <div class="symbol-index-column"></div>
             </div>
           </div>
         </section>
@@ -132,7 +131,6 @@ describe('symbol-index partial', () => {
                   <dd></dd>
                 </dl>
               </div>
-              <div class="symbol-index-column"></div>
               <div class="symbol-index-column"></div>
             </div>
           </div>
@@ -174,7 +172,6 @@ describe('symbol-index partial', () => {
                   </dl>
                 </div>
                 <div class="symbol-index-column"></div>
-                <div class="symbol-index-column"></div>
               </div>
             </div>
           </section>
@@ -192,7 +189,6 @@ describe('symbol-index partial', () => {
                     <dd></dd>
                   </dl>
                 </div>
-                <div class="symbol-index-column"></div>
                 <div class="symbol-index-column"></div>
               </div>
             </div>
@@ -216,7 +212,7 @@ describe('symbol-index partial', () => {
     });
 
     describe('columns', () => {
-      it('keeps 3 items in a single column', async () => {
+      it('keeps 2 items in a single column', async () => {
         let data;
         const expected = await helpers.normalizeHtml(`
           <div class="symbol-index">
@@ -232,18 +228,15 @@ describe('symbol-index partial', () => {
                       <dd></dd>
                       <dt class="symbol-index-name">Sandwich#<wbr>addCheeses()</dt>
                       <dd></dd>
-                      <dt class="symbol-index-name">Sandwich#<wbr>addProteins()</dt>
-                      <dd></dd>
                     </dl>
                   </div>
-                  <div class="symbol-index-column"></div>
                   <div class="symbol-index-column"></div>
                 </div>
               </div>
             </section>
           </div>
         `);
-        const longnames = ['Sandwich', 'Sandwich#addCheeses', 'Sandwich#addProteins'];
+        const longnames = ['Sandwich', 'Sandwich#addCheeses'];
         let rendered;
 
         allLongnamesTree = filteredTree(longnames);
@@ -280,7 +273,6 @@ describe('symbol-index partial', () => {
                       <dd></dd>
                     </dl>
                   </div>
-                  <div class="symbol-index-column"></div>
                 </div>
               </div>
             </section>
@@ -302,7 +294,7 @@ describe('symbol-index partial', () => {
         expect(rendered).toContain(expected);
       });
 
-      it('splits 6 items across 3 columns', async () => {
+      it('splits 6 items across 2 columns', async () => {
         let data;
         const expected = await helpers.normalizeHtml(`
           <div class="symbol-index">
@@ -318,18 +310,14 @@ describe('symbol-index partial', () => {
                       <dd></dd>
                       <dt class="symbol-index-name">Sandwich#<wbr>addCheeses()</dt>
                       <dd></dd>
-                    </dl>
-                  </div>
-                  <div class="symbol-index-column">
-                    <dl class="symbol-index-list">
                       <dt class="symbol-index-name">Sandwich#<wbr>addProteins()</dt>
                       <dd></dd>
-                      <dt class="symbol-index-name">Sandwich#<wbr>addSpreads()</dt>
-                      <dd></dd>
                     </dl>
                   </div>
                   <div class="symbol-index-column">
                     <dl class="symbol-index-list">
+                      <dt class="symbol-index-name">Sandwich#<wbr>addSpreads()</dt>
+                      <dd></dd>
                       <dt class="symbol-index-name">Sandwich#<wbr>addToppings()</dt>
                       <dd></dd>
                       <dt class="symbol-index-name">Sandwich#<wbr>chooseBread()</dt>
@@ -359,7 +347,7 @@ describe('symbol-index partial', () => {
         expect(rendered).toContain(expected);
       });
 
-      it('creates 3 columns at most, even when there are many items', async () => {
+      it('creates 2 columns at most, even when there are many items', async () => {
         let data;
         const longnames = Object.keys(longnameToKind).filter((longname) =>
           longname.startsWith('Sandwich')
@@ -370,7 +358,7 @@ describe('symbol-index partial', () => {
         data = { allLongnamesTree, href: 'test.html' };
         rendered = await template.render('symbol-index.njk', data);
 
-        expect([...rendered.matchAll(/<div class="symbol-index-column">/g)]).toBeArrayOfSize(3);
+        expect([...rendered.matchAll(/<div class="symbol-index-column">/g)]).toBeArrayOfSize(2);
       });
 
       it('balances the number of items in each column', async () => {
@@ -402,9 +390,8 @@ describe('symbol-index partial', () => {
         rendered = await template.render('symbol-index.njk', data);
         columns = extract(rendered, 'div', 'symbol-index-column');
 
-        expect(extract(columns[0], 'dt', 'symbol-index-name')).toBeArrayOfSize(4);
-        expect(extract(columns[1], 'dt', 'symbol-index-name')).toBeArrayOfSize(4);
-        expect(extract(columns[2], 'dt', 'symbol-index-name')).toBeArrayOfSize(3);
+        expect(extract(columns[0], 'dt', 'symbol-index-name')).toBeArrayOfSize(6);
+        expect(extract(columns[1], 'dt', 'symbol-index-name')).toBeArrayOfSize(5);
       });
     });
   });

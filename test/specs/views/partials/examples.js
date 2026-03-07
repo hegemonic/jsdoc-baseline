@@ -28,11 +28,12 @@ describe('examples partial', () => {
 
   it('inserts a heading', async () => {
     const expected = await helpers.normalizeHtml(`
-      <h2 id="examples" class="examples">
-        Examples <copy-url from="examples"></copy-url>
+      <h2 id="mymethod-examples" class="examples">
+        Examples <copy-url from="mymethod-examples"></copy-url>
       </h2>
     `);
     const actual = await helpers.renderAndNormalize('examples.njk', {
+      _currentDocletId: 'mymethod',
       href: 'foo.html',
       item: fakeDoclet,
     });
@@ -42,6 +43,7 @@ describe('examples partial', () => {
 
   it('shows every example', async () => {
     const actual = await helpers.renderAndNormalize('examples.njk', {
+      _currentDocletId: 'mymethod',
       href: 'foo.html',
       item: fakeDoclet,
     });
@@ -53,6 +55,7 @@ describe('examples partial', () => {
   it('extracts the caption if one is present', async () => {
     const expected = '<p class="example-caption">Create a <code>Foo</code></p>';
     const actual = await helpers.renderAndNormalize('examples.njk', {
+      _currentDocletId: 'mymethod',
       href: 'foo.html',
       item: fakeDoclet,
     });

@@ -19,7 +19,7 @@
 {%- if item.examples %}
   <section>
     {%- set headingText = translate('headings.examples', item.examples) -%}
-    {%- set headingId = idForString(href, headingText) -%}
+    {%- set headingId = idForString(href, _currentDocletId + '-' + headingText) -%}
     {{ heading(cssClass='examples', id=headingId, text=headingText) }}
     {%- for example in item.examples %}
       {%- set example = example | processExample -%}
