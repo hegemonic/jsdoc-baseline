@@ -21,3 +21,14 @@
     {%- if cssClass %} class="{{ cssClass }}"{% endif -%}
   >{{ text | safe }} {% if id %}<copy-url from="{{ id }}"></copy-url>{% endif %}</h{{ level }}>
 {%- endmacro -%}
+
+{%- macro headingForKey(cssClass, headingKey, count, href, idPrefix) -%}
+  {%- set headingText = translate(headingKey, count) -%}
+  {#- The ID must be stable, so we always pluralize the heading key for the ID. -#}
+  {%- set headingTextForId = translate(headingKey, 100) -%}
+  {%- set headingId = idForString(href, headingTextForId) -%}
+  {%- if idPrefix is defined -%}
+    {%- set headingId -%}{{ idPrefix }}-{{ headingId }}{%- endset -%}
+  {%- endif -%}
+  {{- heading(cssClass=cssClass, id=headingId, text=headingText) -}}
+{%- endmacro -%}

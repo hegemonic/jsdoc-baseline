@@ -14,12 +14,17 @@
   limitations under the License.
 -#}
 
-{%- from 'heading.njk' import heading -%}
+{%- from 'heading.njk' import headingForKey -%}
 
 {%- if items %}
-  {%- set headingText = translate(headingKey, items) -%}
-  {%- set headingId = idForString(href, headingText) -%}
-  {{ heading(id=headingId, text=headingText) }}
+  {{ headingForKey(
+      cssClass='h',
+      headingKey=headingKey,
+      count=items,
+      href=href,
+      idPrefix=_currentDocletId
+  ) }}
+
   <section>
     {%- for item in items %}
       {%- include 'symbol-detail.njk' -%}

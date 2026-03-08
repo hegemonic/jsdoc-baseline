@@ -15,13 +15,18 @@
 -#}
 
 {%- from 'details-table.njk' import detailsTable -%}
-{%- from 'heading.njk' import heading -%}
+{%- from 'heading.njk' import headingForKey -%}
 
 {%- if item.params and item.params.length %}
   <section>
-    {%- set headingText = translate('headings.parameters', item.params) -%}
-    {%- set headingId = idForString(href, _currentDocletId + '-' + headingText) -%}
-    {{ heading(cssClass='h hide-from-nav symbol-params', id=headingId, text=headingText) }}
+    {{ headingForKey(
+        cssClass='h hide-from-nav symbol-params',
+        headingKey='headings.parameters',
+        count=item.params,
+        href=href,
+        idPrefix=_currentDocletId
+    ) }}
+
     {%- set values = reparentItems(item, 'params') -%}
     {{ detailsTable(values, item) }}
   </section>

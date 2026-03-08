@@ -14,13 +14,18 @@
   limitations under the License.
 -#}
 
-{%- from 'heading.njk' import heading -%}
+{%- from 'heading.njk' import headingForKey -%}
 
 {%- if item.examples %}
   <section>
-    {%- set headingText = translate('headings.examples', item.examples) -%}
-    {%- set headingId = idForString(href, _currentDocletId + '-' + headingText) -%}
-    {{ heading(cssClass='examples', id=headingId, text=headingText) }}
+    {{ headingForKey(
+        cssClass='h examples',
+        headingKey='headings.examples',
+        count=item.examples,
+        href=href,
+        idPrefix=_currentDocletId
+    ) }}
+
     {%- for example in item.examples %}
       {%- set example = example | processExample -%}
       {%- include 'example.njk' -%}
