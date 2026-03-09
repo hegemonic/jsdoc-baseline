@@ -90,7 +90,7 @@
     "csso-cli": "^4.0.2",
     "easy-ease": "^1.0.9",
     "esbuild": "^0.27.3",
-    "esbuild-sass-plugin": "^3.6.0",
+    "esbuild-sass-plugin": "^3.7.0",
     "eslint": "^10.0.3",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
