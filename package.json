@@ -82,7 +82,7 @@
     "@babel/core": "^8.0.0-rc.2",
     "@babel/plugin-proposal-decorators": "^8.0.0-rc.2",
     "@jsdoc/eslint-config": "^3.0.0",
-    "@jsdoc/prettier-config": "^0.2.11",
+    "@jsdoc/prettier-config": "^0.2.12",
     "@jsdoc/test-matchers": "^0.2.7",
     "@lit-labs/observers": "^2.1.0",
     "@picocss/pico": "^2.1.1",
