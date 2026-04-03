@@ -106,7 +106,7 @@
     "lucide": "^0.575.0",
     "parcel": "^2.16.4",
     "prettier": "^3.8.1",
-    "sass-embedded": "^1.98.0"
+    "sass-embedded": "^1.99.0"
   },
   "engines": {
     "node": ">=v16.0.0"
