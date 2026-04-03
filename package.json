@@ -78,7 +78,7 @@
     "prettier": "^3.8.1"
   },
   "devDependencies": {
-    "@awesome.me/webawesome": "^3.4.0",
+    "@awesome.me/webawesome": "^3.5.0",
     "@babel/core": "^8.0.0-rc.3",
     "@babel/plugin-proposal-decorators": "^8.0.0-rc.3",
     "@jsdoc/eslint-config": "^3.0.1",
