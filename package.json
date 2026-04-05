@@ -53,7 +53,7 @@
     "@jsdoc/core": "^0.5.13",
     "@jsdoc/doclet": "^0.2.16",
     "@jsdoc/name": "^0.1.4",
-    "@jsdoc/tag": "^0.2.15",
+    "@jsdoc/tag": "^0.2.16",
     "@jsdoc/task-runner": "^0.2.9",
     "@jsdoc/util": "^0.3.6",
     "@messageformat/core": "^3.4.0",
