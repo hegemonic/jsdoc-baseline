@@ -384,7 +384,7 @@ lucide.createIcons({icons});\``);if(typeof r>"u")throw new Error("`createIcons()
         --wa-tooltip-border-radius: 0.25rem;
         background-color: var(--jsdoc-color-zinc-600);
         color: var(--jsdoc-color-white);
-        font-size: calc(var(--jsdoc-font-font-size-base) * 0.8);
+        font-size: calc(var(--jsdoc-font-size-base) * 0.8);
         font-family: var(--jsdoc-font-sans-serif-font);
         padding: 0.25rem 0.5rem;
       }
@@ -411,7 +411,7 @@ lucide.createIcons({icons});\``);if(typeof r>"u")throw new Error("`createIcons()
         </li>
       `);return r},Hs=function(o,r){let a=[],s=tr(r);for(;tr(o[0])>s;){let i=o.shift();this.isHidden(i)||a.push(i)}return a},sr=function(){let o=Array.from(this.links);o.find(r=>{let a=de(this,st).get(r);return a&&de(this,lt).has(a)?(o.forEach(s=>s.classList.toggle("current",s===r)),!0):!1})},zs=function(){let r=this.levels.split(",").map(a=>a.trim()).map(a=>`.jsdoc-content ${a}`).join(", ");this.tree=K(this,F,rr).call(this,Array.from(document.querySelectorAll(r)))},I(M,4,"contents",Ds,ee,Xo),I(M,4,"hideFromNavClass",$s,ee,Ko),I(M,4,"levels",_s,ee,Yo),I(M,4,"links",Rs,ee,Zo),I(M,4,"title",Ls,ee,Qo),I(M,4,"titleText",Ts,ee,Jo),I(M,4,"tree",Ps,ee,er),ee=I(M,0,"Outline",Ms,ee),_t(ee,"styles",[R`
       :host {
-        --outline-font-size: calc(var(--jsdoc-font-font-size-base) * 0.875);
+        --outline-font-size: calc(var(--jsdoc-font-size-base) * 0.875);
         --outline-line-height: 0.825rem;
       }
 
@@ -450,7 +450,7 @@ lucide.createIcons({icons});\``);if(typeof r>"u")throw new Error("`createIcons()
 
       .title {
         font-family: var(--jsdoc-font-body-font);
-        font-size: var(--jsdoc-font-font-size-base);
+        font-size: var(--jsdoc-font-size-base);
         font-weight: bold;
         line-height: var(--outline-line-height);
         margin-inline-start: 1rem;

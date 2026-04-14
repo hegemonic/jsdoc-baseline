@@ -166,7 +166,7 @@ export class CopyUrl extends LitElement {
         --wa-tooltip-border-radius: 0.25rem;
         background-color: var(--jsdoc-color-zinc-600);
         color: var(--jsdoc-color-white);
-        font-size: calc(var(--jsdoc-font-font-size-base) * 0.8);
+        font-size: calc(var(--jsdoc-font-size-base) * 0.8);
         font-family: var(--jsdoc-font-sans-serif-font);
         padding: 0.25rem 0.5rem;
       }

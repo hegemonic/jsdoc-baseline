@@ -122,7 +122,7 @@ export class Outline extends LitElement {
   static styles = [
     css`
       :host {
-        --outline-font-size: calc(var(--jsdoc-font-font-size-base) * 0.875);
+        --outline-font-size: calc(var(--jsdoc-font-size-base) * 0.875);
         --outline-line-height: 0.825rem;
       }
 
@@ -161,7 +161,7 @@ export class Outline extends LitElement {
 
       .title {
         font-family: var(--jsdoc-font-body-font);
-        font-size: var(--jsdoc-font-font-size-base);
+        font-size: var(--jsdoc-font-size-base);
         font-weight: bold;
         line-height: var(--outline-line-height);
         margin-inline-start: 1rem;
