@@ -420,9 +420,8 @@ lucide.createIcons({icons});\``);if(typeof r>"u")throw new Error("`createIcons()
         font-family: var(--jsdoc-font-body-font);
         font-size: var(--outline-font-size);
         line-height: var(--outline-line-height);
-        margin-block: revert;
-        margin-inline-start: 1rem;
-        padding-inline-start: 0;
+        margin: 0;
+        padding: 0;
       }
 
       .contents li {
@@ -453,7 +452,7 @@ lucide.createIcons({icons});\``);if(typeof r>"u")throw new Error("`createIcons()
         font-size: var(--jsdoc-font-size-base);
         font-weight: bold;
         line-height: var(--outline-line-height);
-        margin-inline-start: 1rem;
+        margin: 0;
       }
     `]),w(M,1,ee);var Ws=R`
   :host {

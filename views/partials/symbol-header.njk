@@ -74,6 +74,12 @@
     {%- endif -%}
   {% endblock -%}
 
+  {%- block on_this_page %}
+    <div class="jsdoc-on-this-page embedded">
+      <jsdoc-outline></jsdoc-outline>
+    </div>
+  {% endblock -%}
+
   {%- block examples %}
     {#- TODO: Why not show examples for classes? Do they show up elsewhere? -#}
     {%- if item.kind != 'class' -%}

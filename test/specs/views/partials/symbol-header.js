@@ -24,6 +24,9 @@ describe('symbol header partial', () => {
       const expected = await helpers.normalizeHtml(`
         <header class="page-header">
           <h1 id="hello">Hello <copy-url from="hello"></copy-url></h1>
+          <div class="jsdoc-on-this-page embedded">
+            <jsdoc-outline></jsdoc-outline>
+          </div>
         </header>
       `);
       const text = await helpers.renderAndNormalize('symbol-header.njk', {

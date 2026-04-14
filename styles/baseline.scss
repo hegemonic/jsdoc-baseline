@@ -347,8 +347,32 @@ code {
 
 .jsdoc-on-this-page {
   @include mixins.sidebar;
+  $margin: 1rem;
 
+  display: none;
+  margin-inline-start: $margin;
   z-index: navbar.$z-index - 2;
+
+  @media screen and (width >= #{breakpoints.$lg}) {
+    display: block;
+  }
+
+  .title {
+    margin-inline-start: $margin;
+  }
+
+  &.embedded {
+    display: none;
+    margin: 0;
+
+    @media screen and (width < #{breakpoints.$lg}) {
+      display: block;
+    }
+
+    .title {
+      margin: 0;
+    }
+  }
 }
 
 .jsdoc-footer {
