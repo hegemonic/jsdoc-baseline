@@ -28,9 +28,7 @@ describe('examples partial', () => {
 
   it('inserts a heading', async () => {
     const expected = await helpers.normalizeHtml(`
-      <h2 id="mymethod-examples" class="h examples">
-        Examples <copy-url from="mymethod-examples"></copy-url>
-      </h2>
+      <h2 id="mymethod-examples" class="h examples">Examples</h2>
     `);
     const actual = await helpers.renderAndNormalize('examples.njk', {
       _currentDocletId: 'mymethod',

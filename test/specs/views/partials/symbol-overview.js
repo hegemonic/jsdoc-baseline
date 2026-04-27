@@ -23,7 +23,7 @@ describe('symbol overview partial', () => {
     it('shows a header for globals', async () => {
       const expected = await helpers.normalizeHtml(`
         <header class="page-header">
-          <h1 id="hello">Hello <copy-url from="hello"></copy-url></h1>
+          <h1 id="hello">Hello</h1>
           <div class="jsdoc-on-this-page embedded">
             <jsdoc-outline></jsdoc-outline>
           </div>

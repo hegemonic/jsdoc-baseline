@@ -71,9 +71,7 @@ describe('symbol-index partial', () => {
     it('adds a heading if there is a README', async () => {
       const data = { allLongnamesTree, href: 'test.html', readme: 'hello' };
       const expected = await helpers.normalizeHtml(`
-        <h2 id="package-index">
-          Package index <copy-url from="package-index"></copy-url>
-        </h2>
+        <h2 id="package-index">Package index</h2>
       `);
       let rendered = await template.render('symbol-index.njk', data);
 
@@ -99,9 +97,7 @@ describe('symbol-index partial', () => {
       const expectedBreakfast = await helpers.normalizeHtml(`
         <section>
           <div class="symbol-index-content">
-            <h2 id="module:breakfast">
-            module:breakfast <copy-url from="module:breakfast"></copy-url>
-            </h2>
+            <h2 id="module:breakfast">module:breakfast</h2>
             <div class="symbol-index-section">
               <div class="symbol-index-column">
                 <dl class="symbol-index-list">
@@ -120,8 +116,7 @@ describe('symbol-index partial', () => {
       const expectedLunch = await helpers.normalizeHtml(`
         <section>
           <div class="symbol-index-content">
-            <h2 id="module:lunch">
-            module:lunch <copy-url from="module:lunch"></copy-url></h2>
+            <h2 id="module:lunch">module:lunch</h2>
             <div class="symbol-index-section">
               <div class="symbol-index-column">
                 <dl class="symbol-index-list">
@@ -159,9 +154,7 @@ describe('symbol-index partial', () => {
         <div class="symbol-index">
           <section>
             <div class="symbol-index-content">
-              <h2 id="module:lunch">
-              module:lunch <copy-url from="module:lunch"></copy-url>
-              </h2>
+              <h2 id="module:lunch">module:lunch</h2>
               <div class="symbol-index-section">
                 <div class="symbol-index-column">
                   <dl class="symbol-index-list">
@@ -177,9 +170,7 @@ describe('symbol-index partial', () => {
           </section>
           <section>
             <div class="symbol-index-content">
-              <h2 id="sandwich">
-              Sandwich <copy-url from="sandwich"></copy-url>
-              </h2>
+              <h2 id="sandwich">Sandwich</h2>
               <div class="symbol-index-section">
                 <div class="symbol-index-column">
                   <dl class="symbol-index-list">
@@ -219,7 +210,7 @@ describe('symbol-index partial', () => {
             <section>
               <div class="symbol-index-content">
                 <h2 id="sandwich">
-                Sandwich <copy-url from="sandwich"></copy-url>
+                  Sandwich
                 </h2>
                 <div class="symbol-index-section">
                   <div class="symbol-index-column">
@@ -254,7 +245,7 @@ describe('symbol-index partial', () => {
             <section>
               <div class="symbol-index-content">
                 <h2 id="sandwich">
-                Sandwich <copy-url from="sandwich"></copy-url>
+                  Sandwich
                 </h2>
                 <div class="symbol-index-section">
                   <div class="symbol-index-column">
@@ -301,7 +292,7 @@ describe('symbol-index partial', () => {
             <section>
               <div class="symbol-index-content">
                 <h2 id="sandwich">
-                Sandwich <copy-url from="sandwich"></copy-url>
+                  Sandwich
                 </h2>
                 <div class="symbol-index-section">
                   <div class="symbol-index-column">

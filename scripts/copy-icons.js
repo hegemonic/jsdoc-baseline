@@ -1,5 +1,5 @@
 /*
-  Copyright 2025 the Baseline Authors.
+  Copyright 2026 the Baseline Authors.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,11 +14,15 @@
   limitations under the License.
 */
 
-import './copy-icons.js';
-import './copy-url-animations.js';
-import './copy-url.js';
-import './fouce.js';
-import './icons.js';
-import './navbar.js';
-import './outline.js';
-import './toc.js';
+(() => {
+  const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+  for (let heading of headings) {
+    if (heading.id) {
+      const copyUrl = document.createElement('copy-url');
+
+      copyUrl.from = heading.id;
+      heading.append(' ', copyUrl);
+    }
+  }
+})();

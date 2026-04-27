@@ -30,9 +30,7 @@ describe('summary block partial', () => {
         },
       ];
       const expected = await helpers.normalizeHtml(`
-        <h1 id="summary-namespaces" class="hide-from-nav summary-callout-heading">
-          Namespace <copy-url from="summary-namespaces"></copy-url>
-        </h1>
+        <h1 id="summary-namespaces" class="hide-from-nav summary-callout-heading">Namespace</h1>
       `);
       const text = await helpers.renderAndNormalize('summary-block.njk', {
         headingKey: 'headings.namespaces',

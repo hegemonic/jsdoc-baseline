@@ -32,9 +32,7 @@ describe('members links partial', () => {
         },
       ];
       const expected = await helpers.normalizeHtml(`
-        <h1 id="namespaces">
-          Namespace <copy-url from="namespaces"></copy-url>
-        </h1>
+        <h1 id="namespaces">Namespace</h1>
       `);
       const text = await helpers.renderAndNormalize('members-links.njk', {
         headingKey: 'headings.namespaces',
@@ -79,9 +77,7 @@ describe('members links partial', () => {
     describe('item headings', () => {
       it('does not use HTML tags in the heading ID', async () => {
         const expected = await helpers.normalizeHtml(`
-        <h2 id="bar">
-          Bar <copy-url from="bar"></copy-url>
-        </h2>
+        <h2 id="bar">Bar</h2>
       `);
         const text = await helpers.renderAndNormalize('members-links.njk', {
           headingKey: 'headings.namespaces',
