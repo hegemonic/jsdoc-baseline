@@ -180,10 +180,6 @@ jsdoc-tree-item::part(expand-button) {
   stroke-width: 1px;
 }
 
-jsdoc-tree-item::part(indentation) {
-  width: 1em;
-}
-
 jsdoc-tree-item::part(item):hover {
   background-color: colors.$zinc-100;
 }
@@ -197,6 +193,7 @@ jsdoc-tree-item:state(selected)::part(item),
 jsdoc-tree-item:state(selected)::part(item):hover {
   background-color: $selected-item-background-color;
   box-shadow: navbar.$shadow-primary !important;
+  border-inline-start-width: 3px;
   border-inline-start-color: colors.$sky-700;
 }
 
