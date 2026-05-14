@@ -101,7 +101,7 @@
     "jasmine": "^6.2.0",
     "jasmine-console-reporter": "^3.1.0",
     "license-check-and-add": "^4.0.5",
-    "lit": "^3.3.2",
+    "lit": "^3.3.3",
     "lodash-es": "^4.18.1",
     "lucide": "^0.575.0",
     "parcel": "^2.16.4",
