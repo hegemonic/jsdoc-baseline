@@ -51,7 +51,7 @@
   "homepage": "https://github.com/hegemonic/jsdoc-baseline",
   "dependencies": {
     "@jsdoc/core": "^0.5.14",
-    "@jsdoc/doclet": "^0.2.16",
+    "@jsdoc/doclet": "^0.2.17",
     "@jsdoc/name": "^0.1.4",
     "@jsdoc/tag": "^0.2.16",
     "@jsdoc/task-runner": "^0.2.10",
