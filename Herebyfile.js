@@ -294,8 +294,10 @@ export const test = task({
     jasmine.exitOnCompletion = false;
     jasmine.loadConfig({
       helpers: sourceGlob.helpers,
-      random: false,
       spec_files: sourceGlob.tests, // eslint-disable-line camelcase
+    });
+    jasmine.env.configure({
+      random: false,
     });
 
     await jasmine.execute();
